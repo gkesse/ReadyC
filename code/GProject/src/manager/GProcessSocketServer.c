@@ -31,7 +31,7 @@ GProcessO* GProcessSocketServer() {
 }
 //===============================================
 static void GProcessSocketServer_Run(int argc, char** argv) {
-    GSocket()->Start(2, 0);
+    /*GSocket()->Start(2, 0);
     GSocket()->Status();
     GSocket()->Major();
     GSocket()->Minor();
@@ -50,6 +50,6 @@ static void GProcessSocketServer_Run(int argc, char** argv) {
     	GSocket()->Close2();
     }
     GSocket()->Close();
-    GSocket()->Clean();
+    GSocket()->Clean();*/
 }
 //===============================================

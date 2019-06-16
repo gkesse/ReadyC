@@ -31,12 +31,12 @@ GProcessO* GProcessSocketClient() {
 }
 //===============================================
 static void GProcessSocketClient_Run(int argc, char** argv) {
-    GSocket()->Start(2, 0);
+    /*GSocket()->Start(2, 0);
     GSocket()->Socket(AF_INET, SOCK_STREAM, 0);
     GSocket()->Address(AF_INET, "127.0.0.1", 5566);
     GSocket()->Connect();
     GSocket()->Recv();
     GSocket()->Close();
-    GSocket()->Clean();
+    GSocket()->Clean();*/
 }
 //===============================================
