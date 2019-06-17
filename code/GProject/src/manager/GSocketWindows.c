@@ -3,6 +3,7 @@
 #include "GString.h"
 #include "GConsole.h"
 //===============================================
+#if defined(__WIN32)
 typedef char* GCHAR_PTR;
 typedef WSADATA* GWSADATA_PTR;
 typedef SOCKET* GSOCKET_PTR;
@@ -16,6 +17,7 @@ GDEFINE_MAP(GCHAR_PTR, GSOCKET_PTR, GSocketWindows_GCHAR_PTR_GSOCKET_PTR)
 //===============================================
 GDECLARE_MAP(GCHAR_PTR, GSOCKADDR_IN_PTR, GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)
 GDEFINE_MAP(GCHAR_PTR, GSOCKADDR_IN_PTR, GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)
+#endif
 //===============================================
 static GSocketO* m_GSocketWindowsO = 0;
 //===============================================
@@ -42,16 +44,20 @@ static void GSocketWindows_Recv(char* socketName, char* message, int size);
 static void GSocketWindows_Close(char* socketName);
 static void GSocketWindows_Clean(char* socketName);
 //===============================================
+#if defined(__WIN32)
 static int GSocketWindows_MapEqual(char* key1, char* key2);
+#endif
 //===============================================
 GSocketO* GSocketWindows_New() {
 	GSocketO* lParent = GSocket_New();
 	GSocketWindowsO* lChild = (GSocketWindowsO*)malloc(sizeof(GSocketWindowsO));
 
 	lChild->m_parent = lParent;
+#if defined(__WIN32)
 	lChild->m_wsaDataMap = GMap_New_GSocketWindows_GCHAR_PTR_GWSADATA_PTR();
 	lChild->m_socketMap = GMap_New_GSocketWindows_GCHAR_PTR_GSOCKET_PTR();
 	lChild->m_addressMap = GMap_New_GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR();
+#endif
 
 	lParent->m_child = lChild;
 	lParent->Delete = GSocketWindows_Delete;
@@ -332,9 +338,11 @@ static void GSocketWindows_Clean(char* socketName) {
 #endif
 }
 //===============================================
+#if defined(__WIN32)
 static int GSocketWindows_MapEqual(char* key1, char* key2) {
     int lStrcmp = strcmp(key1, key2);
     if(lStrcmp == 0) return TRUE;
     return FALSE;
 }
+#endif
 //===============================================
