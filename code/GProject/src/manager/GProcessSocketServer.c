@@ -68,16 +68,32 @@ static void GProcessSocketServer_Run(int argc, char** argv) {
 	// allouer une adresse
 	GSocket()->Address("SERVER");
 	GSocket()->Address("CLIENT");
+	// créer une socket
+	GSocket()->Socket2("SERVER", AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	// créer une adresse
+	GSocket()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
 	// lier la socket à l'adresse
 	GSocket()->Bind("SERVER", "SERVER");
 	// définir  le nombre de clients à écouter
 	GSocket()->Listen("SERVER", 5);
 	while(1) {
+		// Accepter une connexion cliente
 		GSocket()->Accept("SERVER", "CLIENT");
+		// Envoyer un message au client
 		GSocket()->Write("CLIENT", "Bonjour tout le monde", 0);
+		// Lire un message du client
 		GSocket()->Read("CLIENT", lMessage, 255);
 		GConsole()->Print("[ SERVER ] Read: %s\n", lMessage);
+		// Fermer une socket
 	}
+	// Fermer une socket
+	GSocket()->Close("SERVER");
+	// Libérer une socket
+	GSocket()->Clean2("SERVER");
+	GSocket()->Clean2("CLIENT");
+	// Libérer une adresse
+	GSocket()->Clean3("SERVER");
+	GSocket()->Clean3("CLIENT");
 #endif
 }
 //===============================================
