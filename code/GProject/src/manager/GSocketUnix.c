@@ -28,9 +28,12 @@ static void GSocketUnix_Bind(char* socketName, char* addressName);
 static void GSocketUnix_Listen(char* socketName, int backlog);
 static void GSocketUnix_Accept(char* socketName, char* clientName);
 static void GSocketUnix_Connect(char* socketName);
+static void GSocketUnix_Write(char* socketName, char* message, int size);
+static void GSocketUnix_Read(char* socketName, char* message, int size);
 static void GSocketUnix_Send(char* socketName, char* message, int size);
 static void GSocketUnix_Recv(char* socketName, char* message, int size);
 static void GSocketUnix_Close(char* socketName);
+static void GSocketUnix_Clean(char* socketName);
 //===============================================
 #if defined(__unix)
 static int GSocketUnix_MapEqual(char* key1, char* key2);
@@ -57,9 +60,12 @@ GSocketO* GSocketUnix_New() {
 	lParent->Listen = GSocketUnix_Listen;
 	lParent->Accept = GSocketUnix_Accept;
 	lParent->Connect = GSocketUnix_Connect;
+	lParent->Write = GSocketUnix_Write;
+	lParent->Read = GSocketUnix_Read;
 	lParent->Send = GSocketUnix_Send;
 	lParent->Recv = GSocketUnix_Recv;
 	lParent->Close = GSocketUnix_Close;
+	lParent->Clean = GSocketUnix_Clean;
 	return lParent;
 }
 //===============================================
@@ -134,25 +140,77 @@ static void GSocketUnix_Port(char* addressName) {
 //===============================================
 static void GSocketUnix_Bind(char* socketName, char* addressName) {
 #if defined(__unix)
-
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	GMapO(GSocketUnix_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, socketName, GSocketUnix_MapEqual);
+	int lSize = sizeof(lAddress);
+	int lOk = bind(*lSocket, (struct sockaddr*)lAddress, lSize);
+	if(lOk == -1) {GConsole()->Print(" [ GSocketWindows ] Error GSocketUnix_Bind: %d\n", errno); exit(0);}
 #endif
 }
 //===============================================
 static void GSocketUnix_Listen(char* socketName, int backlog) {
 #if defined(__unix)
-
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	int lOk = listen(*lSocket, backlog);
+	if(lOk == -1) {GConsole()->Print(" [ GSocketWindows ] Error GSocketUnix_Listen: %d\n", errno); exit(0);}
 #endif
 }
 //===============================================
 static void GSocketUnix_Accept(char* socketName, char* clientName) {
 #if defined(__unix)
-
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	GMapO(GSocketUnix_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	int* lSocket2 = lSocketMap->GetData(lSocketMap, clientName, GSocketUnix_MapEqual);
+	struct sockaddr_in* lAddress2 = lAddressMap->GetData(lAddressMap, clientName, GSocketUnix_MapEqual);
+	bzero(lAddress2, sizeof(lAddress2));
+	int lSize2 = sizeof(lAddress2);
+	*lSocket2 = accept(*lSocket, (struct sockaddr*)lAddress2, (socklen_t*)&lSize2);
+	if(*lSocket2 == -1) {GConsole()->Print(" [ GSocketWindows ] Error GSocketUnix_Accept: %d\n", errno); exit(0);}
 #endif
 }
 //===============================================
 static void GSocketUnix_Connect(char* socketName) {
 #if defined(__unix)
-
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	GMapO(GSocketUnix_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, socketName, GSocketUnix_MapEqual);
+	int lSize = sizeof(lAddress);
+	int lOk = connect(*lSocket, (struct sockaddr*)lAddress, lSize);
+	if(lOk == -1) {GConsole()->Print(" [ GSocketWindows ] Error GSocketUnix_Connect: %d\n", errno); exit(0);}
+#endif
+}
+//===============================================
+static void GSocketUnix_Write(char* socketName, char* message, int size) {
+#if defined(__unix)
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	int lSize = size;
+	if(lSize <= 0) lSize = strlen(message);
+	int lBytes = write(*lSocket, message, lSize);
+	if(lBytes == -1) {GConsole()->Print(" [ GSocketWindows ] Error GSocketUnix_Write: %d\n", errno); exit(0);}
+#endif
+}
+//===============================================
+static void GSocketUnix_Read(char* socketName, char* message, int size) {
+#if defined(__unix)
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	int lSize = size;
+	if(lSize <= 0) lSize = strlen(message);
+	int lBytes = read(*lSocket, message, lSize);
+	if(lBytes == -1) {GConsole()->Print(" [ GSocketWindows ] Error GSocketUnix_Read: %d\n", errno); exit(0);}
+	message[lBytes] = 0;
 #endif
 }
 //===============================================
@@ -170,7 +228,23 @@ static void GSocketUnix_Recv(char* socketName, char* message, int size) {
 //===============================================
 static void GSocketUnix_Close(char* socketName) {
 #if defined(__unix)
-
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	int lOk = close(*lSocket);
+	if(lOk == -1) {GConsole()->Print(" [ GSocketWindows ] Error GSocketUnix_Close: %d\n", errno); exit(0);}
+#endif
+}
+//===============================================
+static void GSocketUnix_Clean(char* socketName) {
+#if defined(__unix)
+	GSocketUnixO* lSocketUnix = m_GSocketUnixO->m_child;
+	GMapO(GSocketUnix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	GMapO(GSocketUnix_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketUnix_MapEqual);
+	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, socketName, GSocketUnix_MapEqual);
+	free(lSocket);
+	free(lAddress);
 #endif
 }
 //===============================================

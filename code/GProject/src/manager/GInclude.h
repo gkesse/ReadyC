@@ -19,6 +19,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <errno.h>
+#include <strings.h>
 #endif
 //===============================================
 /* SQLite */

@@ -27,6 +27,8 @@ struct _GSocketO {
 	void (*Listen)(char* socketName, int backlog);
 	void (*Accept)(char* socketName, char* clientName);
 	void (*Connect)(char* socketName);
+	void (*Write)(char* socketName, char* message, int size);
+	void (*Read)(char* socketName, char* message, int size);
 	void (*Send)(char* socketName, char* message, int size);
 	void (*Recv)(char* socketName, char* message, int size);
 	void (*Close)(char* socketName);
