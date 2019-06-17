@@ -14,6 +14,11 @@
 #define G_PLATEFORM_OS "WINDOWS"
 #elif defined(__unix)
 #define G_PLATEFORM_OS "UNIX"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <errno.h>
 #endif
 //===============================================
 /* SQLite */
