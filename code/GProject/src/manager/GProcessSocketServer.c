@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessSocketServer.h"
 #include "GSocket.h"
+#include "GConsole.h"
 //===============================================
 static GProcessO* m_GProcessSocketServerO = 0;
 //===============================================
@@ -31,25 +32,32 @@ GProcessO* GProcessSocketServer() {
 }
 //===============================================
 static void GProcessSocketServer_Run(int argc, char** argv) {
-    /*GSocket()->Start(2, 0);
-    GSocket()->Status();
-    GSocket()->Major();
-    GSocket()->Minor();
-    GSocket()->MajorMax();
-    GSocket()->MinorMax();
-    GSocket()->Socket(AF_INET, SOCK_STREAM, 0);
-    GSocket()->Address2(AF_INET, INADDR_ANY, 5566);
-    GSocket()->Bind();
-    GSocket()->Listen(5);
+    GConsole()->Print("[ SERVER ] Start\n");
+
+	GSocket()->Socket("SERVER");
+    GSocket()->Address("SERVER");
+    GSocket()->WsaData("SERVER");
+
+    GSocket()->Start("SERVER", 2, 0);
+    GSocket()->Status("SERVER");
+    GSocket()->Major("SERVER");
+    GSocket()->Minor("SERVER");
+    GSocket()->MajorMax("SERVER");
+    GSocket()->MinorMax("SERVER");
+    GSocket()->Socket2("SERVER", AF_INET, SOCK_STREAM, 0);
+    GSocket()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
+    GSocket()->Bind("SERVER", "SERVER");
+    GSocket()->Listen("SERVER", 5);
     while(1) {
-    	GSocket()->Accept();
-    	GSocket()->SocketName();
-    	GSocket()->IpAddress();
-    	GSocket()->Port();
-    	GSocket()->Send();
-    	GSocket()->Close2();
+        GSocket()->Address("CLIENT");
+    	GSocket()->Accept("SERVER", "CLIENT");
+    	GSocket()->SocketName("CLIENT", "CLIENT");
+    	GSocket()->AddressIp("CLIENT");
+    	GSocket()->Port("CLIENT");
+    	GSocket()->Send("CLIENT", "Bonjour tout le monde", 0);
+    	GSocket()->Close("CLIENT");
     }
-    GSocket()->Close();
-    GSocket()->Clean();*/
+    GSocket()->Close("SERVER");
+    GSocket()->Clean("SERVER");
 }
 //===============================================

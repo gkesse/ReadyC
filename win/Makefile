@@ -4,10 +4,12 @@ GBUILD = build
 GTARGET = $(GBIN)/GProject.exe
 
 GINCS = \
-    -I$(GSRC)/manager
+    -I$(GSRC)/manager \
+    -IC:\Users\Admin\Downloads\sqlite-amalgamation-3_7_0_1
     
 GLIBS = \
-    -lws2_32
+    -LC:\Users\Admin\Downloads\sqlite-amalgamation-3_7_0_1 \
+    -lws2_32 -lsqlite3
     
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
