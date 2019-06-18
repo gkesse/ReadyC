@@ -12,7 +12,7 @@ typedef struct _GMapO_GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR GMapO_GSocketWin
 struct _GSocketWindowsO {
     GSocketO* m_parent;
 #if defined(__WIN32)
-    GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* m_wsaDataMap;
+    GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* m_dataMap;
     GMapO(GSocketWindows_GCHAR_PTR_GSOCKET_PTR)* m_socketMap;
     GMapO(GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)* m_addressMap;
 #endif

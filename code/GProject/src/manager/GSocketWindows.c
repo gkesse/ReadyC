@@ -19,13 +19,13 @@ GDEFINE_MAP(GCHAR_PTR, GSOCKADDR_IN_PTR, GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_P
 //===============================================
 static GSocketO* m_GSocketWindowsO = 0;
 //===============================================
-static void GSocketWindows_WsaData(char* wsaDataName);
-static void GSocketWindows_Start(char* wsaDataName, int major, int minor);
-static void GSocketWindows_Status(char* wsaDataName);
-static void GSocketWindows_Major(char* wsaDataName);
-static void GSocketWindows_Minor(char* wsaDataName);
-static void GSocketWindows_MajorMax(char* wsaDataName);
-static void GSocketWindows_MinorMax(char* wsaDataName);
+static void GSocketWindows_Data(char* dataName);
+static void GSocketWindows_Start(char* dataName, int major, int minor);
+static void GSocketWindows_Status(char* dataName);
+static void GSocketWindows_Major(char* dataName);
+static void GSocketWindows_Minor(char* dataName);
+static void GSocketWindows_MajorMax(char* dataName);
+static void GSocketWindows_MinorMax(char* dataName);
 static void GSocketWindows_Address(char* addressName);
 static void GSocketWindows_Address2(char* addressName, int family, int address, int port);
 static void GSocketWindows_Socket(char* socketName);
@@ -49,13 +49,13 @@ GSocketO* GSocketWindows_New() {
 	GSocketWindowsO* lChild = (GSocketWindowsO*)malloc(sizeof(GSocketWindowsO));
 
 	lChild->m_parent = lParent;
-	lChild->m_wsaDataMap = GMap_New_GSocketWindows_GCHAR_PTR_GWSADATA_PTR();
+	lChild->m_dataMap = GMap_New_GSocketWindows_GCHAR_PTR_GWSADATA_PTR();
 	lChild->m_socketMap = GMap_New_GSocketWindows_GCHAR_PTR_GSOCKET_PTR();
 	lChild->m_addressMap = GMap_New_GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR();
 
 	lParent->m_child = lChild;
 	lParent->Delete = GSocketWindows_Delete;
-	lParent->WsaData = GSocketWindows_WsaData;
+	lParent->Data = GSocketWindows_Data;
 	lParent->Start = GSocketWindows_Start;
 	lParent->Status = GSocketWindows_Status;
 	lParent->Major = GSocketWindows_Major;
@@ -92,71 +92,72 @@ GSocketO* GSocketWindows() {
 	return m_GSocketWindowsO;
 }
 //===============================================
-static void GSocketWindows_WsaData(char* wsaDataName) {
+static void GSocketWindows_Data(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = (WSADATA*)malloc(sizeof(WSADATA));
-	lWsaDataMap->SetData(lWsaDataMap, wsaDataName, lWsaData, GSocketWindows_MapEqual);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = (WSADATA*)malloc(sizeof(WSADATA));
+	lDataMap->SetData(lDataMap, dataName, lData, GSocketWindows_MapEqual);
 #endif
 }
 //===============================================
-static void GSocketWindows_Start(char* wsaDataName, int major, int minor) {
+static void GSocketWindows_Start(char* dataName, int major, int minor) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, wsaDataName, GSocketWindows_MapEqual);
-	int lOk = WSAStartup(MAKEWORD(major, minor), lWsaData);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = (WSADATA*)malloc(sizeof(WSADATA));
+	int lOk = WSAStartup(MAKEWORD(major, minor), lData);
 	if(lOk != 0) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Start: %d\n", WSAGetLastError()); exit(0);}
+	lDataMap->SetData(lDataMap, dataName, lData, GSocketWindows_MapEqual);
 #endif
 }
 //===============================================
-static void GSocketWindows_Status(char* wsaDataName) {
+static void GSocketWindows_Status(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, wsaDataName, GSocketWindows_MapEqual);
-	char* lStatus = lWsaData->szSystemStatus;
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	char* lStatus = lData->szSystemStatus;
 	GConsole()->Print("[ GSocketWindows ] Status: %s\n", lStatus);
 #endif
 }
 //===============================================
-static void GSocketWindows_Major(char* wsaDataName) {
+static void GSocketWindows_Major(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, wsaDataName, GSocketWindows_MapEqual);
-	int lMajor = LOBYTE(lWsaData->wVersion);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMajor = LOBYTE(lData->wVersion);
 	GConsole()->Print("[ GSocketWindows ] Version Major: %s\n", lMajor);
 #endif
 }
 //===============================================
-static void GSocketWindows_Minor(char* wsaDataName) {
+static void GSocketWindows_Minor(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, wsaDataName, GSocketWindows_MapEqual);
-	int lMinor = HIBYTE(lWsaData->wVersion);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMinor = HIBYTE(lData->wVersion);
 	GConsole()->Print("[ GSocketWindows ] Version Minor: %s\n", lMinor);
 #endif
 }
 //===============================================
-static void GSocketWindows_MajorMax(char* wsaDataName) {
+static void GSocketWindows_MajorMax(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, wsaDataName, GSocketWindows_MapEqual);
-	int lMajor = LOBYTE(lWsaData->wHighVersion);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMajor = LOBYTE(lData->wHighVersion);
 	GConsole()->Print("[ GSocketWindows ] Version Major Max: %s\n", lMajor);
 #endif
 }
 //===============================================
-static void GSocketWindows_MinorMax(char* wsaDataName) {
+static void GSocketWindows_MinorMax(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, wsaDataName, GSocketWindows_MapEqual);
-	int lMinor = HIBYTE(lWsaData->wHighVersion);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMinor = HIBYTE(lData->wHighVersion);
 	GConsole()->Print("[ GSocketWindows ] Version Minor Max: %s\n", lMinor);
 #endif
 }
@@ -325,10 +326,10 @@ static void GSocketWindows_Close(char* socketName) {
 static void GSocketWindows_Clean(char* socketName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, socketName, GSocketWindows_MapEqual);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, socketName, GSocketWindows_MapEqual);
 	WSACleanup();
-	free(lWsaData);
+	free(lData);
 #endif
 }
 //===============================================

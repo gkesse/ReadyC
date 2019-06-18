@@ -32,11 +32,11 @@ GProcessO* GProcessSocketServer() {
 }
 //===============================================
 static void GProcessSocketServer_Run(int argc, char** argv) {
-    GConsole()->Print("[ SERVER ] Start\n");
+    GConsole()->Print("[ SERVER ] Start Ok\n");
 
 	GSocket()->Socket("SERVER");
     GSocket()->Address("SERVER");
-    GSocket()->WsaData("SERVER");
+    //GSocket()->Data("SERVER");
 
     GSocket()->Start("SERVER", 2, 0);
     GSocket()->Status("SERVER");
@@ -44,7 +44,7 @@ static void GProcessSocketServer_Run(int argc, char** argv) {
     GSocket()->Minor("SERVER");
     GSocket()->MajorMax("SERVER");
     GSocket()->MinorMax("SERVER");
-    GSocket()->Socket2("SERVER", AF_INET, SOCK_STREAM, 0);
+    /*GSocket()->Socket2("SERVER", AF_INET, SOCK_STREAM, 0);
     GSocket()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
     GSocket()->Bind("SERVER", "SERVER");
     GSocket()->Listen("SERVER", 5);
@@ -58,6 +58,6 @@ static void GProcessSocketServer_Run(int argc, char** argv) {
     	GSocket()->Close("CLIENT");
     }
     GSocket()->Close("SERVER");
-    GSocket()->Clean("SERVER");
+    GSocket()->Clean("SERVER");*/
 }
 //===============================================
