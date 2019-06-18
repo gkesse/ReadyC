@@ -1,0 +1,13 @@
+//===============================================
+#include <stdio.h>
+//===============================================
+void hello(int argc, char** argv) {
+	printf("[ FRENCH ] Bonjour tout le monde\n");
+	return 0;
+}
+//===============================================
+int main(int argc, char** argv) {
+	printf("[ FRENCH ] Bonjour tout le monde\n");
+	return 0;
+}
+//===============================================

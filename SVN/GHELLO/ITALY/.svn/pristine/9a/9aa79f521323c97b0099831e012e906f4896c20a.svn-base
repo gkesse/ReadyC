@@ -1,0 +1,7 @@
+export PATH=/opt/jdk-12/bin/:$PATH
+export PATH=/opt/eclipse/:$PATH
+
+echo 
+../code/GHello/Release/GHello
+echo 
+

@@ -8,15 +8,15 @@ typedef struct _GStringO GStringO;
 //===============================================
 struct _GStringO {
     void (*Delete)();
-    int (*Size)(const char* str);
-    int (*IsEqual)(const char* str1, const char* str2);
-    char* (*Copy)(const char* str);
-    char* (*Trim)(const char* str);
-    char** (*Split)(const char* str, const char* sep, int* count);
+    int (*Size)(char* str);
+    int (*IsEqual)(char* str1, char* str2);
+    char* (*Copy)(char* str);
+    char* (*Trim)(char* str);
+    char** (*Split)(char* str, char* sep, int* count);
     int (*ToInt)(const char* str);
     double (*ToFloat)(const char* str);
     void (*Free)(char* ptr);
-    void (*Free2)(char** ptr, const int size);
+    void (*Free2)(char** ptr, int size);
 };
 //===============================================
 GStringO* GString_New();
