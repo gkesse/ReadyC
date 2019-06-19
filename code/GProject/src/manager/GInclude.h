@@ -10,15 +10,18 @@
 //===============================================
 /* Socket */
 #if defined(__WIN32)
-#include <winsock2.h>
 #define G_PLATEFORM_OS "WINDOWS"
+#include <winsock2.h>
 #elif defined(__unix)
 #define G_PLATEFORM_OS "UNIX"
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <errno.h>
+#include <strings.h>
 #endif
 //===============================================
 /* SQLite */
