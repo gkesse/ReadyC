@@ -33,16 +33,10 @@ GProcessO* GProcessSocketClient() {
 //===============================================
 static void GProcessSocketClient_Run(int argc, char** argv) {
 	GConsole()->Print("[ CLIENT ] Start\n");
-	char lMessage[255];
+	//char lMessage[255];
 
 #if defined(__WIN32)
-    GSocket()->Start(2, 0);
-    GSocket()->Socket(AF_INET, SOCK_STREAM, 0);
-    GSocket()->Address(AF_INET, "127.0.0.1", 5566);
-    GSocket()->Connect();
-    GSocket()->Recv();
-    GSocket()->Close();
-    GSocket()->Clean();
+    GSocket()->Start("SERVER", 2, 0);
 #elif defined(__unix)
 	// allouer une socket
 	GSocket()->Socket("CLIENT");
