@@ -2,9 +2,8 @@
 # Eclipse
 #================================================
 /**/.cproject
-/**/.metadata/*
+/**/.metadata
 /**/.project
-/**/.settings/*
-/**/Release/**/*.o
+/**/.settings
 /**/unix/**/cmd*
 /**/win/**/cmd*
