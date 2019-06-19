@@ -41,8 +41,10 @@ GSocketO* GSocketUnix_New() {
 	GSocketUnixO* lChild = (GSocketUnixO*)malloc(sizeof(GSocketUnixO));
 
 	lChild->m_parent = lParent;
+#if defined(__unix)
 	lChild->m_socketMap = GMap_New_GSocketUnix_GCHAR_PTR_GINT_PTR();
 	lChild->m_addressMap = GMap_New_GSocketUnix_GCHAR_PTR_GSOCKADDR_IN_PTR();
+#endif
 
 	lParent->m_child = lChild;
 	lParent->Delete = GSocketUnix_Delete;
