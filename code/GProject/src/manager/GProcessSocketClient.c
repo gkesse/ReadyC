@@ -33,24 +33,34 @@ GProcessO* GProcessSocketClient() {
 //===============================================
 static void GProcessSocketClient_Run(int argc, char** argv) {
 	GConsole()->Print("[ CLIENT ] Start\n");
-	//char lMessage[255];
+	char lMessage[256];
 
 #if defined(__WIN32)
-    //GSocket()->Start(2, 0);
-	//GSocket()->Socket(AF_INET, SOCK_STREAM, 0);
-    //GSocket()->Address(AF_INET, "127.0.0.1", 5566);
-	//GSocket()->Connect();
-	//GSocket()->Recv();
-	//GSocket()->Close();
-	//GSocket()->Clean();
+	GSocket()->Data("CLIENT");
+	GSocket()->Socket("CLIENT");
+	GSocket()->Address("SERVER");
+
+	GSocket()->Start("CLIENT", 2, 0);
+
+	GSocket()->Socket2("CLIENT", AF_INET, SOCK_STREAM, 0);
+    GSocket()->Address3("SERVER", AF_INET, "127.0.0.1", 5566);
+	GSocket()->Connect("CLIENT", "SERVER");
+	GSocket()->Recv("CLIENT", lMessage, 255);
+	GConsole()->Print("[ CLIENT ] Recv: %s\n", lMessage);
+	GSocket()->Send("CLIENT", "Je veux communiquer", 0);
+
+	GSocket()->Close("CLIENT");
+	GSocket()->Clean("CLIENT");
+	GSocket()->Clean2("CLIENT");
+	GSocket()->Clean3("SERVER");
 #elif defined(__unix)
 	// allouer une socket
 	GSocket()->Socket("CLIENT");
 	// allouer une adresse
 	GSocket()->Address("SERVER");
-	// crÃ©er une socket
+	// créer une socket
 	GSocket()->Socket2("CLIENT", AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	// crÃ©er une adresse
+	// créer une adresse
 	GSocket()->Address3("SERVER", AF_INET, "127.0.0.1", 5566);
 	// connecter la socket Ã  l'adresse
 	GSocket()->Connect("CLIENT", "SERVER");
@@ -61,9 +71,9 @@ static void GProcessSocketClient_Run(int argc, char** argv) {
 	GSocket()->Write("CLIENT", "Je communique avec le serveur", 0);
 	// Fermer une socket
 	GSocket()->Close("CLIENT");
-	// LibÃ©rer une socket
+	// Libérer une socket
 	GSocket()->Clean2("CLIENT");
-	// LibÃ©ree une adresse
+	// Libérer une adresse
 	GSocket()->Clean3("SERVER");
 #endif
 }

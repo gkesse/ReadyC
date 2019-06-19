@@ -6,10 +6,12 @@
 //===============================================
 typedef struct _GSocketO GSocketO;
 //===============================================
+// ADATPER A LA CONNEXION MULTIPLE
+//===============================================
 struct _GSocketO {
 	void* m_child;
 	void (*Delete)(GSocketO* obj);
-	void (*WsaData)(char* dataName);
+	void (*Data)(char* dataName);
 	void (*Start)(char* dataName, int major, int minor);
 	void (*Status)(char* dataName);
 	void (*Major)(char* dataName);

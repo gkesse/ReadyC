@@ -21,7 +21,7 @@ GDEFINE_MAP(GCHAR_PTR, GSOCKADDR_IN_PTR, GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_P
 //===============================================
 static GSocketO* m_GSocketWindowsO = 0;
 //===============================================
-static void GSocketWindows_WsaData(char* dataName);
+static void GSocketWindows_Data(char* dataName);
 static void GSocketWindows_Start(char* dataName, int major, int minor);
 static void GSocketWindows_Status(char* dataName);
 static void GSocketWindows_Major(char* dataName);
@@ -30,6 +30,7 @@ static void GSocketWindows_MajorMax(char* dataName);
 static void GSocketWindows_MinorMax(char* dataName);
 static void GSocketWindows_Address(char* addressName);
 static void GSocketWindows_Address2(char* addressName, int family, int address, int port);
+static void GSocketWindows_Address3(char* addressName, int family, char* address, int port);
 static void GSocketWindows_Socket(char* socketName);
 static void GSocketWindows_Socket2(char* socketName, int family, int type, int protocol);
 static void GSocketWindows_SocketName(char* socketName, char* addressName);
@@ -56,14 +57,14 @@ GSocketO* GSocketWindows_New() {
 
 	lChild->m_parent = lParent;
 #if defined(__WIN32)
-	lChild->m_wsaDataMap = GMap_New_GSocketWindows_GCHAR_PTR_GWSADATA_PTR();
+	lChild->m_dataMap = GMap_New_GSocketWindows_GCHAR_PTR_GWSADATA_PTR();
 	lChild->m_socketMap = GMap_New_GSocketWindows_GCHAR_PTR_GSOCKET_PTR();
 	lChild->m_addressMap = GMap_New_GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR();
 #endif
 
 	lParent->m_child = lChild;
 	lParent->Delete = GSocketWindows_Delete;
-	lParent->WsaData = GSocketWindows_WsaData;
+	lParent->Data = GSocketWindows_Data;
 	lParent->Start = GSocketWindows_Start;
 	lParent->Status = GSocketWindows_Status;
 	lParent->Major = GSocketWindows_Major;
@@ -77,6 +78,7 @@ GSocketO* GSocketWindows_New() {
 	lParent->Port = GSocketWindows_Port;
 	lParent->Address = GSocketWindows_Address;
 	lParent->Address2 = GSocketWindows_Address2;
+	lParent->Address3 = GSocketWindows_Address3;
 	lParent->Bind = GSocketWindows_Bind;
 	lParent->Listen = GSocketWindows_Listen;
 	lParent->Accept = GSocketWindows_Accept;
@@ -102,31 +104,31 @@ GSocketO* GSocketWindows() {
 	return m_GSocketWindowsO;
 }
 //===============================================
-static void GSocketWindows_WsaData(char* dataName) {
+static void GSocketWindows_Data(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = (WSADATA*)malloc(sizeof(WSADATA));
-	lWsaDataMap->SetData(lWsaDataMap, dataName, lWsaData, GSocketWindows_MapEqual);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = (WSADATA*)malloc(sizeof(WSADATA));
+	lDataMap->SetData(lDataMap, dataName, lData, GSocketWindows_MapEqual);
 #endif
 }
 //===============================================
 static void GSocketWindows_Start(char* dataName, int major, int minor) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, dataName, GSocketWindows_MapEqual);
-	int lOk = WSAStartup(MAKEWORD(major, minor), lWsaData);
-	if(lOk != 0) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Start: %d\n", WSAGetLastError()); exit(0);}
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lOk = WSAStartup(MAKEWORD(major, minor), lData);
+	if(lOk != 0) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Start: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
 static void GSocketWindows_Status(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, dataName, GSocketWindows_MapEqual);
-	char* lStatus = lWsaData->szSystemStatus;
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	char* lStatus = lData->szSystemStatus;
 	GConsole()->Print("[ GSocketWindows ] Status: %s\n", lStatus);
 #endif
 }
@@ -134,40 +136,40 @@ static void GSocketWindows_Status(char* dataName) {
 static void GSocketWindows_Major(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, dataName, GSocketWindows_MapEqual);
-	int lMajor = LOBYTE(lWsaData->wVersion);
-	GConsole()->Print("[ GSocketWindows ] Version Major: %s\n", lMajor);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMajor = LOBYTE(lData->wVersion);
+	GConsole()->Print("[ GSocketWindows ] Version Major: %d\n", lMajor);
 #endif
 }
 //===============================================
 static void GSocketWindows_Minor(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, dataName, GSocketWindows_MapEqual);
-	int lMinor = HIBYTE(lWsaData->wVersion);
-	GConsole()->Print("[ GSocketWindows ] Version Minor: %s\n", lMinor);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMinor = HIBYTE(lData->wVersion);
+	GConsole()->Print("[ GSocketWindows ] Version Minor: %d\n", lMinor);
 #endif
 }
 //===============================================
 static void GSocketWindows_MajorMax(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, dataName, GSocketWindows_MapEqual);
-	int lMajor = LOBYTE(lWsaData->wHighVersion);
-	GConsole()->Print("[ GSocketWindows ] Version Major Max: %s\n", lMajor);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMajor = LOBYTE(lData->wHighVersion);
+	GConsole()->Print("[ GSocketWindows ] Version Major Max: %d\n", lMajor);
 #endif
 }
 //===============================================
 static void GSocketWindows_MinorMax(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, dataName, GSocketWindows_MapEqual);
-	int lMinor = HIBYTE(lWsaData->wHighVersion);
-	GConsole()->Print("[ GSocketWindows ] Version Minor Max: %s\n", lMinor);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
+	int lMinor = HIBYTE(lData->wHighVersion);
+	GConsole()->Print("[ GSocketWindows ] Version Minor Max: %d\n", lMinor);
 #endif
 }
 //===============================================
@@ -185,8 +187,19 @@ static void GSocketWindows_Address2(char* addressName, int family, int address, 
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
 	GMapO(GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
 	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocketWindows_MapEqual);
-	lAddress->sin_addr.s_addr = htonl(address);
 	lAddress->sin_family = family;
+	lAddress->sin_addr.s_addr = htonl(address);
+	lAddress->sin_port = htons(port);
+#endif
+}
+//===============================================
+static void GSocketWindows_Address3(char* addressName, int family, char* address, int port) {
+#if defined(__WIN32)
+	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
+	GMapO(GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
+	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocketWindows_MapEqual);
+	lAddress->sin_family = family;
+	lAddress->sin_addr.s_addr = inet_addr(address);
 	lAddress->sin_port = htons(port);
 #endif
 }
@@ -206,7 +219,7 @@ static void GSocketWindows_Socket2(char* socketName, int family, int type, int p
 	GMapO(GSocketWindows_GCHAR_PTR_GSOCKET_PTR)* lSocketMap = lSocketWindows->m_socketMap;
 	SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketWindows_MapEqual);
 	*lSocket = socket(family, type, protocol);
-	if(*lSocket == INVALID_SOCKET) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Socket2: %d\n", WSAGetLastError()); exit(0);}
+	if(*lSocket == INVALID_SOCKET) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Socket2: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
@@ -219,7 +232,7 @@ static void GSocketWindows_SocketName(char* socketName, char* addressName) {
 	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocketWindows_MapEqual);
 	int lSize = sizeof(*lAddress);
 	int lOk = getsockname(*lSocket, (SOCKADDR*)lAddress, &lSize);
-	if(lOk == SOCKET_ERROR) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_SocketName: %d\n", WSAGetLastError()); exit(0);}
+	if(lOk == SOCKET_ERROR) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_SocketName: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
@@ -229,7 +242,7 @@ static void GSocketWindows_AddressIp(char* addressName) {
 	GMapO(GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
 	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocketWindows_MapEqual);
 	char* lIpAddress = inet_ntoa(lAddress->sin_addr);
-	GConsole()->Print(" [ GSocketWindows ] Address IP: %s\n", lIpAddress);
+	GConsole()->Print("[ GSocketWindows ] Address IP: %s\n", lIpAddress);
 #endif
 }
 //===============================================
@@ -239,7 +252,7 @@ static void GSocketWindows_Port(char* addressName) {
 	GMapO(GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
 	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocketWindows_MapEqual);
 	int lPort = htons(lAddress->sin_port);
-	GConsole()->Print(" [ GSocketWindows ] Port: %s\n", lPort);
+	GConsole()->Print("[ GSocketWindows ] Port: %d\n", lPort);
 #endif
 }
 //===============================================
@@ -252,7 +265,7 @@ static void GSocketWindows_Bind(char* socketName, char* addressName) {
 	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocketWindows_MapEqual);
 	int lSize = sizeof(*lAddress);
 	int lOk = bind(*lSocket, (SOCKADDR*)lAddress, lSize);
-	if(lOk == SOCKET_ERROR) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Bind: %d\n", WSAGetLastError()); exit(0);}
+	if(lOk == SOCKET_ERROR) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Bind: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
@@ -262,7 +275,7 @@ static void GSocketWindows_Listen(char* socketName, int backlog) {
 	GMapO(GSocketWindows_GCHAR_PTR_GSOCKET_PTR)* lSocketMap = lSocketWindows->m_socketMap;
 	SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketWindows_MapEqual);
 	int lOk = listen(*lSocket, backlog);
-	if(lOk == SOCKET_ERROR) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Listen: %d\n", WSAGetLastError()); exit(0);}
+	if(lOk == SOCKET_ERROR) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Listen: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
@@ -276,7 +289,7 @@ static void GSocketWindows_Accept(char* socketName, char* clientName) {
 	SOCKADDR_IN* lAddress2 = lAddressMap->GetData(lAddressMap, clientName, GSocketWindows_MapEqual);
 	int lSize2 = sizeof(*lAddress2);
 	*lSocket2 = accept(*lSocket, (SOCKADDR*)lAddress2, &lSize2);
-	if(*lSocket2 == INVALID_SOCKET) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Accept: %d\n", WSAGetLastError()); exit(0);}
+	if(*lSocket2 == INVALID_SOCKET) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Accept: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
@@ -289,7 +302,7 @@ static void GSocketWindows_Connect(char* socketName, char* addressName) {
 	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocketWindows_MapEqual);
 	int lSize = sizeof(*lAddress);
 	int lOk = connect(*lSocket, (SOCKADDR*)lAddress, lSize);
-	if(lOk == SOCKET_ERROR) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Connect: %d\n", WSAGetLastError()); exit(0);}
+	if(lOk == SOCKET_ERROR) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Connect: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
@@ -301,7 +314,7 @@ static void GSocketWindows_Send(char* socketName, char* message, int size) {
 	int lSize = size;
 	if(lSize <= 0) lSize = strlen(message);
 	int lBytes = send(*lSocket, message, lSize, 0);
-	if(lBytes == SOCKET_ERROR) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Send: %d\n", WSAGetLastError()); exit(0);}
+	if(lBytes == SOCKET_ERROR) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Send: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
@@ -313,7 +326,7 @@ static void GSocketWindows_Recv(char* socketName, char* message, int size) {
 	int lSize = size;
 	if(lSize <= 0) lSize = strlen(message);
 	int lBytes = recv(*lSocket, message, lSize, 0);
-	if(lBytes == SOCKET_ERROR) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Recv: %d\n", WSAGetLastError()); exit(0);}
+	if(lBytes == SOCKET_ERROR) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Recv: %d\n", WSAGetLastError()); exit(0);}
 	message[lBytes] = 0;
 #endif
 }
@@ -322,21 +335,19 @@ static void GSocketWindows_Close(char* socketName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
 	GMapO(GSocketWindows_GCHAR_PTR_GSOCKET_PTR)* lSocketMap = lSocketWindows->m_socketMap;
-	GMapO(GSocketWindows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
 	SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocketWindows_MapEqual);
-	SOCKADDR_IN* lAddress = lAddressMap->GetData(lAddressMap, socketName, GSocketWindows_MapEqual);
 	int lOk = closesocket(*lSocket);
-	if(lOk == SOCKET_ERROR) {GConsole()->Print(" [ GSocketWindows ] Error GSocketWindows_Close: %d\n", WSAGetLastError()); exit(0);}
+	if(lOk == SOCKET_ERROR) {GConsole()->Print("[ GSocketWindows ] Error GSocketWindows_Close: %d\n", WSAGetLastError()); exit(0);}
 #endif
 }
 //===============================================
 static void GSocketWindows_Clean(char* dataName) {
 #if defined(__WIN32)
 	GSocketWindowsO* lSocketWindows = m_GSocketWindowsO->m_child;
-	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lWsaDataMap = lSocketWindows->m_wsaDataMap;
-	WSADATA* lWsaData = lWsaDataMap->GetData(lWsaDataMap, dataName, GSocketWindows_MapEqual);
+	GMapO(GSocketWindows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
+	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocketWindows_MapEqual);
 	WSACleanup();
-	free(lWsaData);
+	free(lData);
 #endif
 }
 //===============================================
