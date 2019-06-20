@@ -1,0 +1,14 @@
+# Commentaire
+PROCESS = TIRELIRE
+             DB = SYBASE
+OS = LINUX
+
+
+
+
+
+
+
+
+
+
