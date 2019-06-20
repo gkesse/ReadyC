@@ -6,5 +6,7 @@
 /**/.project
 /**/.settings/
 /**/Release/
-/**/unix/**/cmd*
-/**/win/**/cmd*
+/**/unix/
+/**/win/
+unix/
+win/
