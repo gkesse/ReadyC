@@ -25,6 +25,7 @@ function GSetting_Load() {
 		# Sauvegarder la paire key/value
 		GConfig_SetData $lKey $lValue
 	done < $lFile
+	# Afficher la matrice des configs
 	GConfig_ShowData
 }
 #================================================
