@@ -1,14 +1,4 @@
 # Commentaire
-PROCESS = TIRELIRE
-             DB = SYBASE
-OS = LINUX
-
-
-
-
-
-
-
-
-
-
+PROCESS = DATABASE      
+CONFIG_SHOW = FALSE      
+DATABASE = SYBASE      
