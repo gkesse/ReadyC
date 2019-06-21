@@ -1,20 +1,25 @@
 #!/bin/bash
 #================================================
-declare -A m_dataMap
+declare -A m_GConfigDataMap
 #================================================
 function GConfig_SetData() {
 	local lKey=$1
 	local lValue=$2
-	m_dataMap[$lKey]=$lValue
+	m_GConfigDataMap[$lKey]=$lValue
 }
 #================================================
 function GConfig_GetData() {
-	GConfig_GetData_RET=${m_dataMap[$1]}
+    local lKey=$1
+	local lValue=${m_GConfigDataMap[PROCESS]}
+    GConfig_GetData_RET=$lValue
 }
 #================================================
 function GConfig_ShowData() {
-	for key in ${!m_dataMap[@]}; do
-		echo $key = ${m_dataMap[$key]}
+	for lKey in ${!m_GConfigDataMap[@]}
+    do
+        local lValue=${m_GConfigDataMap[$lKey]}
+		echo $lKey = $lValue
 	done
+    echo
 }
 #================================================
