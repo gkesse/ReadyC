@@ -1,14 +1,14 @@
 #!/bin/bash
 #================================================
-source ./GProcess.sh
 source ./GSetting.sh
+source ./GProcess.sh
 #================================================
 function GMain() {
 	GSetting_Load data/config/config.txt
-    GProcess_Run
-    GConfig_GetData PROCESS
-    echo $GConfig_GetData_RET
+    GProcess_Run 
 }
 #================================================
+echo
 GMain
+echo
 #================================================

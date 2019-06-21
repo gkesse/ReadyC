@@ -1,6 +1,6 @@
 #!/bin/bash
 #================================================
-function GProcessPrint_Run() {
-	echo "[ GPrint ] Start..."
+function GDatabaseSQLite_Open() {
+	echo GDatabaseSQLite_Open
 }
 #================================================

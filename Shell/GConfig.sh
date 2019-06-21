@@ -10,11 +10,12 @@ function GConfig_SetData() {
 #================================================
 function GConfig_GetData() {
     local lKey=$1
-	local lValue=${m_GConfigDataMap[PROCESS]}
-    GConfig_GetData_RET=$lValue
+	local lValue=${m_GConfigDataMap[$lKey]}
+    echo $lValue
 }
 #================================================
 function GConfig_ShowData() {
+	local lKey
 	for lKey in ${!m_GConfigDataMap[@]}
     do
         local lValue=${m_GConfigDataMap[$lKey]}

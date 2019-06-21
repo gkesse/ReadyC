@@ -1,8 +1,6 @@
 #!/bin/bash
 #================================================
-source ./GSetting.sh
-#================================================
-function GProcess_Run() {
-	echo "HELLO"
+function GDatabaseSybase_Open() {
+	echo GDatabaseSybase_Open
 }
 #================================================
