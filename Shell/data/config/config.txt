@@ -1,4 +1,0 @@
-# Commentaire
-PROCESS = DATABASE      
-CONFIG_SHOW = FALSE      
-DATABASE = SYBASE      
