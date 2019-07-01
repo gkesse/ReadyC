@@ -1,18 +1,18 @@
 //===============================================
-#ifndef _GProcessSQLite_
-#define _GProcessSQLite_
+#ifndef _GProcessSoap_
+#define _GProcessSoap_
 //===============================================
 #include "GProcess.h"
 //===============================================
-typedef struct _GProcessSQLiteO GProcessSQLiteO;
+typedef struct _GProcessSoapO GProcessSoapO;
 //===============================================
-struct _GProcessSQLiteO {
+struct _GProcessSoapO {
     GProcessO* m_parent;
 };
 //===============================================
-GProcessO* GProcessSQLite_New();
-void GProcessSQLite_Delete(GProcessO* obj);
-GProcessO* GProcessSQLite();
+GProcessO* GProcessSoap_New();
+void GProcessSoap_Delete();
+GProcessO* GProcessSoap();
 //===============================================
 #endif
 //===============================================

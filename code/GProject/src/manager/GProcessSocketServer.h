@@ -11,7 +11,7 @@ struct _GProcessSocketServerO {
 };
 //===============================================
 GProcessO* GProcessSocketServer_New();
-void GProcessSocketServer_Delete(GProcessO* obj);
+void GProcessSocketServer_Delete();
 GProcessO* GProcessSocketServer();
 //===============================================
 #endif

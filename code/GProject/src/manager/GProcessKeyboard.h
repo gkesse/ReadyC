@@ -11,7 +11,7 @@ struct _GProcessKeyboardO {
 };
 //===============================================
 GProcessO* GProcessKeyboard_New();
-void GProcessKeyboard_Delete(GProcessO* obj);
+void GProcessKeyboard_Delete();
 GProcessO* GProcessKeyboard();
 //===============================================
 #endif

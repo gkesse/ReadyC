@@ -33,9 +33,10 @@ GProcessO* GProcessMap_New() {
     return lParent;
 }
 //===============================================
-void GProcessMap_Delete(GProcessO* obj) {
-    GProcess_Delete(obj);
-    m_GProcessMapO = 0;
+void GProcessMap_Delete() {
+	// Delete All Attributes Before
+	GProcess_Delete(m_GProcessMapO);
+	m_GProcessMapO = 0;
 }
 //===============================================
 GProcessO* GProcessMap() {

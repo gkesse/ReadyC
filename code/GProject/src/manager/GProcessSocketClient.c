@@ -19,9 +19,10 @@ GProcessO* GProcessSocketClient_New() {
     return lParent;
 }
 //===============================================
-void GProcessSocketClient_Delete(GProcessO* obj) {
-    GProcess_Delete(obj);
-    m_GProcessSocketClientO = 0;
+void GProcessSocketClient_Delete() {
+	// Delete All Attributes Before
+	GProcess_Delete(m_GProcessSocketClientO);
+	m_GProcessSocketClientO = 0;
 }
 //===============================================
 GProcessO* GProcessSocketClient() {
@@ -58,9 +59,9 @@ static void GProcessSocketClient_Run(int argc, char** argv) {
 	GSocket()->Socket("CLIENT");
 	// allouer une adresse
 	GSocket()->Address("SERVER");
-	// créer une socket
+	// crï¿½er une socket
 	GSocket()->Socket2("CLIENT", AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	// créer une adresse
+	// crï¿½er une adresse
 	GSocket()->Address3("SERVER", AF_INET, "127.0.0.1", 5566);
 	// connecter la socket Ã  l'adresse
 	GSocket()->Connect("CLIENT", "SERVER");
@@ -71,9 +72,9 @@ static void GProcessSocketClient_Run(int argc, char** argv) {
 	GSocket()->Write("CLIENT", "Je communique avec le serveur", 0);
 	// Fermer une socket
 	GSocket()->Close("CLIENT");
-	// Libérer une socket
+	// Libï¿½rer une socket
 	GSocket()->Clean2("CLIENT");
-	// Libérer une adresse
+	// Libï¿½rer une adresse
 	GSocket()->Clean3("SERVER");
 #endif
 }

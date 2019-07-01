@@ -11,7 +11,7 @@ struct _GProcessMapO {
 };
 //===============================================
 GProcessO* GProcessMap_New();
-void GProcessMap_Delete(GProcessO* obj);
+void GProcessMap_Delete();
 GProcessO* GProcessMap();
 //===============================================
 #endif

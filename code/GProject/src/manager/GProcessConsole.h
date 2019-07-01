@@ -11,7 +11,7 @@ struct _GProcessConsoleO {
 };
 //===============================================
 GProcessO* GProcessConsole_New();
-void GProcessConsole_Delete(GProcessO* obj);
+void GProcessConsole_Delete();
 GProcessO* GProcessConsole();
 //===============================================
 #endif

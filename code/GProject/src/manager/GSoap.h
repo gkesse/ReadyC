@@ -1,20 +1,22 @@
 //===============================================
-#ifndef _GProcess_
-#define _GProcess_
+#ifndef _GSoap_
+#define _GSoap_
 //===============================================
 #include "GInclude.h"
+#include "GMap.h"
 //===============================================
-typedef struct _GProcessO GProcessO;
+typedef struct _GSoapO GSoapO;
+typedef struct _GMapO_GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR GMapO_GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR;
 //===============================================
-struct _GProcessO {
-    void* m_child;
+struct _GSoapO {
     void (*Delete)();
-    void (*Run)(int argc, char** argv);
+    void Socket(char* socketName);
+    GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* m_socketMap;
 };
 //===============================================
-GProcessO* GProcess_New();
-void GProcess_Delete(GProcessO* obj);
-GProcessO* GProcess();
+GSoapO* GSoap_New();
+void GSoap_Delete();
+GSoapO* GSoap();
 //===============================================
 #endif
 //===============================================

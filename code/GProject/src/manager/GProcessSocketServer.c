@@ -19,8 +19,9 @@ GProcessO* GProcessSocketServer_New() {
 	return lParent;
 }
 //===============================================
-void GProcessSocketServer_Delete(GProcessO* obj) {
-	GProcess_Delete(obj);
+void GProcessSocketServer_Delete() {
+	// Delete All Attributes Before
+	GProcess_Delete(m_GProcessSocketServerO);
 	m_GProcessSocketServerO = 0;
 }
 //===============================================

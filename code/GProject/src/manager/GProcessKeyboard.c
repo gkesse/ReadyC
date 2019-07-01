@@ -20,8 +20,10 @@ GProcessO* GProcessKeyboard_New() {
     return lParent;
 }
 //===============================================
-void GProcessKeyboard_Delete(GProcessO* obj) {
-    GProcess_Delete(obj);
+void GProcessKeyboard_Delete() {
+	// Delete All Attributes Before
+	GProcess_Delete(m_GProcessKeyboardO);
+	m_GProcessKeyboardO = 0;
 }
 //===============================================
 GProcessO* GProcessKeyboard() {

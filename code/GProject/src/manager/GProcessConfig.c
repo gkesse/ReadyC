@@ -18,8 +18,10 @@ GProcessO* GProcessConfig_New() {
     return lParent;
 }
 //===============================================
-void GProcessConfig_Delete(GProcessO* obj) {
-    GProcess_Delete(obj);
+void GProcessConfig_Delete() {
+	// Delete All Attributes Before
+	GProcess_Delete(m_GProcessConfigO);
+	m_GProcessConfigO = 0;
 }
 //===============================================
 GProcessO* GProcessConfig() {

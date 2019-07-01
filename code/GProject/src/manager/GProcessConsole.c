@@ -18,8 +18,10 @@ GProcessO* GProcessConsole_New() {
     return lParent;
 }
 //===============================================
-void GProcessConsole_Delete(GProcessO* obj) {
-    GProcess_Delete(obj);
+void GProcessConsole_Delete() {
+	// Delete All Attributes Before
+	GProcess_Delete(m_GProcessConsoleO);
+    m_GProcessConsoleO = 0;
 }
 //===============================================
 GProcessO* GProcessConsole() {

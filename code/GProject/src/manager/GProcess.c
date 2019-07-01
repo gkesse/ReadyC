@@ -6,7 +6,8 @@
 #include "GProcessConfig.h"
 #include "GProcessSocketServer.h"
 #include "GProcessSocketClient.h"
-#include "GProcessSQLite.h"
+#include "GProcessDatabase.h"
+#include "GProcessSoap.h"
 #include "GString.h"
 #include "GConfig.h"
 //===============================================
@@ -33,7 +34,8 @@ GProcessO* GProcess() {
     if(GString()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
     if(GString()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();
     if(GString()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
-    if(GString()->IsEqual(lKey, "SQLITE")) return GProcessSQLite();
+    if(GString()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
+    if(GString()->IsEqual(lKey, "SOAP")) return GProcessSoap();
     return GProcessConsole();
 }
 //===============================================

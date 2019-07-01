@@ -1,18 +1,18 @@
 //===============================================
-#ifndef _GProcessConfig_
-#define _GProcessConfig_
+#ifndef _GProcessDatabase_
+#define _GProcessDatabase_
 //===============================================
 #include "GProcess.h"
 //===============================================
-typedef struct _GProcessConfigO GProcessConfigO;
+typedef struct _GProcessDatabaseO GProcessDatabaseO;
 //===============================================
-struct _GProcessConfigO {
+struct _GProcessDatabaseO {
     GProcessO* m_parent;
 };
 //===============================================
-GProcessO* GProcessConfig_New();
-void GProcessConfig_Delete();
-GProcessO* GProcessConfig();
+GProcessO* GProcessDatabase_New();
+void GProcessDatabase_Delete();
+GProcessO* GProcessDatabase();
 //===============================================
 #endif
 //===============================================
