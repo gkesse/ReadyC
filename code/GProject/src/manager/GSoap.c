@@ -9,7 +9,7 @@ GDEFINE_MAP(GCHAR_PTR, GSOAP_SOCKET_PTR, GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)
 //===============================================
 static GSoapO* m_GSoapO = 0;
 //===============================================
-static void GSoap_Socket(char* socketName);
+void GSoap_Socket(char* socketName);
 //===============================================
 GSoapO* GSoap_New() {
     GSoapO* lObj = (GSoapO*)malloc(sizeof(GSoapO));
@@ -34,7 +34,7 @@ GSoapO* GSoap() {
     return m_GSoapO;
 }
 //===============================================
-static void GSoap_Socket(char* socketName) {
+void GSoap_Socket(char* socketName) {
 
 }
 //===============================================

@@ -28,6 +28,7 @@
 #include <sqlite3.h>
 /* Soap */
 #include <stdsoap2.h>
+//#include "soapH.h"
 //===============================================
 /* Define */
 #if !defined(TRUE)
