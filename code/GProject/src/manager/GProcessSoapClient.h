@@ -1,18 +1,18 @@
 //===============================================
-#ifndef _GProcessSoap_
-#define _GProcessSoap_
+#ifndef _GProcessSoapClient_
+#define _GProcessSoapClient_
 //===============================================
 #include "GProcess.h"
 //===============================================
-typedef struct _GProcessSoapO GProcessSoapO;
+typedef struct _GProcessSoapClientO GProcessSoapClientO;
 //===============================================
-struct _GProcessSoapO {
+struct _GProcessSoapClientO {
     GProcessO* m_parent;
 };
 //===============================================
-GProcessO* GProcessSoap_New();
-void GProcessSoap_Delete();
-GProcessO* GProcessSoap();
+GProcessO* GProcessSoapClient_New();
+void GProcessSoapClient_Delete();
+GProcessO* GProcessSoapClient();
 //===============================================
 #endif
 //===============================================

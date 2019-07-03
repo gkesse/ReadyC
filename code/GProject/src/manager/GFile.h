@@ -1,22 +1,19 @@
 //===============================================
-#ifndef _GSoap_
-#define _GSoap_
+#ifndef _GFile_
+#define _GFile_
 //===============================================
 #include "GInclude.h"
-#include "GMap.h"
 //===============================================
-typedef struct _GSoapO GSoapO;
-typedef struct _GMapO_GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR GMapO_GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR;
+typedef struct _GFileO GFileO;
 //===============================================
-struct _GSoapO {
+struct _GFileO {
     void (*Delete)();
-    void (*Socket)(char* socketName);
-    GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* m_socketMap;
+    void (*Exist)(char* file);
 };
 //===============================================
-GSoapO* GSoap_New();
-void GSoap_Delete();
-GSoapO* GSoap();
+GFileO* GFile_New();
+void GFile_Delete();
+GFileO* GFile();
 //===============================================
 #endif
 //===============================================
