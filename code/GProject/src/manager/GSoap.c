@@ -13,7 +13,9 @@ static void GSoap_Socket(char* socketName);
 //===============================================
 GSoapO* GSoap_New() {
     GSoapO* lObj = (GSoapO*)malloc(sizeof(GSoapO));
+
     lObj->Delete = GSoap_Delete;
+    lObj->Socket = GSoap_Socket;
     return lObj;
 }
 //===============================================
