@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessSoapClient.h"
 #include "GConsole.h"
+#include "soapH.h"
 //===============================================
 static GProcessO* m_GProcessSoapClientO = 0;
 //===============================================
@@ -34,7 +35,7 @@ GProcessO* GProcessSoapClient() {
 static void GProcessSoapClient_Run(int argc, char** argv) {
 	GConsole()->Print("[ GSoap ] Client Start...\n");
 	struct soap *soap = soap_new();
-	int a, b, result;
+	/*int a, b, result;
 	if(argc > 3 )
 	{ a = atoi(argv[1]);
 	b = atoi(argv[3]);
@@ -66,6 +67,6 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 		else
 			soap_print_fault(soap, stderr);
 		break;
-	}
+	}*/
 }
 //===============================================
