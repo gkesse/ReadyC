@@ -38,7 +38,7 @@ GConfigO* GConfigTemplate_New() {
 //===============================================
 void GConfigTemplate_Delete() {
     GConfigTemplate_Clear();
-    GConfig_Delete();
+    GConfig_Delete(m_GConfigTemplateO);
     m_GConfigTemplateO = 0;
 }
 //===============================================

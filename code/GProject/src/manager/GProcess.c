@@ -9,7 +9,8 @@
 #include "GProcessSoapClient.h"
 #include "GProcessSoapServer.h"
 #include "GProcessDatabase.h"
-#include "GString.h"
+#include "GProcessGtk.h"
+#include "GString2.h"
 #include "GConfig.h"
 //===============================================
 GProcessO* GProcess_New() {
@@ -29,15 +30,16 @@ void GProcess_Delete(GProcessO* obj) {
 //===============================================
 GProcessO* GProcess() {
     char* lKey = GConfig()->GetData("PROCESS");
-    if(GString()->IsEqual(lKey, "CONSOLE")) return GProcessConsole();
-    if(GString()->IsEqual(lKey, "KEYBOARD")) return GProcessKeyboard();
-    if(GString()->IsEqual(lKey, "MAP")) return GProcessMap();
-    if(GString()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
-    if(GString()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();
-    if(GString()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
-    if(GString()->IsEqual(lKey, "SOAP_CLIENT")) return GProcessSoapClient();
-    if(GString()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
-   if(GString()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
+    if(GString2()->IsEqual(lKey, "CONSOLE")) return GProcessConsole();
+    if(GString2()->IsEqual(lKey, "KEYBOARD")) return GProcessKeyboard();
+    if(GString2()->IsEqual(lKey, "MAP")) return GProcessMap();
+    if(GString2()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
+    if(GString2()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();
+    if(GString2()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
+    if(GString2()->IsEqual(lKey, "SOAP_CLIENT")) return GProcessSoapClient();
+    if(GString2()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
+    if(GString2()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
+    if(GString2()->IsEqual(lKey, "GTK")) return GProcessGtk();
     return GProcessConsole();
 }
 //===============================================

@@ -1,55 +1,55 @@
 //===============================================
-#include "GString.h"
+#include "GString2.h"
 //===============================================
-static GStringO* m_GStringO = 0;
+static GString2O* m_GString2O = 0;
 //===============================================
-static int GString_Size(char* str);
-static int GString_IsEqual(char* str1, char* str2);
-static char* GString_Copy(char* str);
-static char* GString_Trim(char* str);
-static char** GString_Split(char* str, char* sep, int* count);
-static void GString_Free(char* ptr);
-static void GString_Free2(char** ptr, int size);
+static int GString2_Size(char* str);
+static int GString2_IsEqual(char* str1, char* str2);
+static char* GString2_Copy(char* str);
+static char* GString2_Trim(char* str);
+static char** GString2_Split(char* str, char* sep, int* count);
+static void GString2_Free(char* ptr);
+static void GString2_Free2(char** ptr, int size);
 //===============================================
-GStringO* GString_New() {
-    GStringO* lObj = (GStringO*)malloc(sizeof(GStringO));
-    lObj->Delete = GString_Delete;
-    lObj->Size = GString_Size;
-    lObj->IsEqual = GString_IsEqual;
-    lObj->Copy = GString_Copy;
-    lObj->Trim = GString_Trim;
-    lObj->Split = GString_Split;
+GString2O* GString2_New() {
+    GString2O* lObj = (GString2O*)malloc(sizeof(GString2O));
+    lObj->Delete = GString2_Delete;
+    lObj->Size = GString2_Size;
+    lObj->IsEqual = GString2_IsEqual;
+    lObj->Copy = GString2_Copy;
+    lObj->Trim = GString2_Trim;
+    lObj->Split = GString2_Split;
     lObj->ToInt = atoi;
     lObj->ToFloat = atof;
-    lObj->Free = GString_Free;
-    lObj->Free2 = GString_Free2;
+    lObj->Free = GString2_Free;
+    lObj->Free2 = GString2_Free2;
     return lObj; 
 }
 //===============================================
-void GString_Delete() {
-    GStringO* lObj = GString();
+void GString2_Delete() {
+    GString2O* lObj = GString2();
     if(lObj != 0) {
         free(lObj);
     }
-    m_GStringO = 0;
+    m_GString2O = 0;
 }
 //===============================================
-GStringO* GString() {
-    if(m_GStringO == 0) {
-        m_GStringO = GString_New();
+GString2O* GString2() {
+    if(m_GString2O == 0) {
+        m_GString2O = GString2_New();
     }
-    return m_GStringO;
+    return m_GString2O;
 }
 //===============================================
-static int GString_Size(char* str) {
+static int GString2_Size(char* str) {
     int i = 0;
     while(str[i] != 0) {i += 1;}
     return i;
 }
 //===============================================
-static int GString_IsEqual(char* str1, char* str2) {
-    int lSize1 = GString_Size(str1);
-    int lSize2 = GString_Size(str2);
+static int GString2_IsEqual(char* str1, char* str2) {
+    int lSize1 = GString2_Size(str1);
+    int lSize2 = GString2_Size(str2);
     if(lSize1 != lSize2) {return FALSE;}
     int i = 0;
     while(str1[i] != 0) {
@@ -59,8 +59,8 @@ static int GString_IsEqual(char* str1, char* str2) {
     return TRUE;
 }
 //===============================================
-static char* GString_Copy(char* str) {
-    int lLength = GString_Size(str) + 1;
+static char* GString2_Copy(char* str) {
+    int lLength = GString2_Size(str) + 1;
     char* lCopy = (char*)malloc(sizeof(char)*lLength);
     int i = 0;
     while(str[i] != 0) {
@@ -71,10 +71,10 @@ static char* GString_Copy(char* str) {
     return lCopy;
 }
 //===============================================
-static char* GString_Trim(char* str) {
+static char* GString2_Trim(char* str) {
     if(str[0] == 0) return 0;
     int lStart = 0;
-    int lEnd = GString()->Size(str) - 1;
+    int lEnd = GString2()->Size(str) - 1;
     while(isspace(str[lStart]) != 0 && lStart < lEnd) lStart++;
     while(isspace(str[lEnd]) != 0 && lEnd > lStart) lEnd--;
     if(lStart == lEnd) {if(isspace(str[lStart]) != 0) {return 0;}}
@@ -92,7 +92,7 @@ static char* GString_Trim(char* str) {
     return lTrim;
 }
 //===============================================
-static char** GString_Split(char* str, char* sep, int* count) {
+static char** GString2_Split(char* str, char* sep, int* count) {
     int lPos = 0;
     int lCount = 0;
     while(str[lPos] != 0) {
@@ -104,11 +104,11 @@ static char** GString_Split(char* str, char* sep, int* count) {
     lCount += 1;
     *count = lCount;
     char** lSplit = (char**)malloc(sizeof(char*)*lCount);
-    char* lStr = GString()->Copy(str);
+    char* lStr = GString2()->Copy(str);
     char* lToken = strtok(lStr, sep);
     int lTok = 0;
     while(lToken != 0) {
-        lSplit[lTok] = GString()->Copy(lToken);
+        lSplit[lTok] = GString2()->Copy(lToken);
         lToken = strtok(0, sep);
         lTok++;
     }
@@ -116,14 +116,14 @@ static char** GString_Split(char* str, char* sep, int* count) {
     return lSplit;
 }
 //===============================================
-static void GString_Free(char* ptr) {
+static void GString2_Free(char* ptr) {
     if(ptr != 0) {
         free(ptr);
         ptr = 0;
     }
 }
 //===============================================
-static void GString_Free2(char** ptr, int size) {
+static void GString2_Free2(char** ptr, int size) {
     if(ptr != 0) {
         for(int i = 0; i < size; i++) {
             if(ptr[i] != 0) {

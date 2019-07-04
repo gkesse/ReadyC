@@ -1,7 +1,7 @@
 //===============================================
 #include "GSetting.h"
-#include "GFile.h"
-#include "GString.h"
+#include "GFile2.h"
+#include "GString2.h"
 #include "GConfig.h"
 //===============================================
 static GSettingO* m_GSettingO = 0;
@@ -31,22 +31,22 @@ GSettingO* GSetting() {
 }
 //===============================================
 static void GSetting_Load(char* file) {
-	GFile()->Exist(file);
+	GFile2()->Exist(file);
     FILE* lFile = fopen(file, "r");
     char lBuffer[100];
 
     while(fgets(lBuffer, sizeof(lBuffer), lFile) != NULL) {
-       char* lTrim = GString()->Trim(lBuffer);
+       char* lTrim = GString2()->Trim(lBuffer);
         if(lTrim == 0) {continue;}
         char lFirst = lTrim[0];
-        if(lFirst == '#') {GString()->Free(lTrim); continue;}
+        if(lFirst == '#') {GString2()->Free(lTrim); continue;}
         int lCount;
-        char** lSplit = GString()->Split(lTrim, "=", &lCount);
-        char* lKey = GString()->Trim(lSplit[0]);
-        char* lValue = GString()->Trim(lSplit[1]);
+        char** lSplit = GString2()->Split(lTrim, "=", &lCount);
+        char* lKey = GString2()->Trim(lSplit[0]);
+        char* lValue = GString2()->Trim(lSplit[1]);
         GConfig()->SetData(lKey, lValue);
-        GString()->Free(lTrim);
-        GString()->Free2(lSplit, lCount);
+        GString2()->Free(lTrim);
+        GString2()->Free2(lSplit, lCount);
     }
     GConfig()->Show();
     printf("\n");

@@ -18,7 +18,7 @@ struct _GConfigO {
 };
 //===============================================
 GConfigO* GConfig_New();
-void GConfig_Delete();
+void GConfig_Delete(GConfigO* obj);
 GConfigO* GConfig();
 //===============================================
 #endif

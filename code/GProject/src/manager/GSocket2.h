@@ -1,16 +1,16 @@
 //===============================================
-#ifndef _GSocket_
-#define _GSocket_
+#ifndef _GSocket2_
+#define _GSocket2_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GSocketO GSocketO;
+typedef struct _GSocket2O GSocket2O;
 //===============================================
 // ADATPER A LA CONNEXION MULTIPLE
 //===============================================
-struct _GSocketO {
+struct _GSocket2O {
 	void* m_child;
-	void (*Delete)(GSocketO* obj);
+	void (*Delete)(GSocket2O* obj);
 	void (*Data)(char* dataName);
 	void (*Start)(char* dataName, int major, int minor);
 	void (*Status)(char* dataName);
@@ -40,9 +40,9 @@ struct _GSocketO {
 	void (*Clean3)(char* addressName);
 };
 //===============================================
-GSocketO* GSocket_New();
-void GSocket_Delete(GSocketO* obj);
-GSocketO* GSocket();
+GSocket2O* GSocket2_New();
+void GSocket2_Delete(GSocket2O* obj);
+GSocket2O* GSocket2();
 //===============================================
 #endif
 //===============================================

@@ -1,6 +1,6 @@
 //===============================================
 #include "GProcessSocketServer.h"
-#include "GSocket.h"
+#include "GSocket2.h"
 #include "GConsole.h"
 //===============================================
 static GProcessO* m_GProcessSocketServerO = 0;
@@ -37,56 +37,56 @@ static void GProcessSocketServer_Run(int argc, char** argv) {
 	char lMessage[256];
 
 #if defined(__WIN32)
-	GSocket()->Data("SERVER");
-	GSocket()->Socket("SERVER");
-	GSocket()->Socket("CLIENT");
-	GSocket()->Address("SERVER");
-	GSocket()->Address("CLIENT");
+	GSocket2()->Data("SERVER");
+	GSocket2()->Socket("SERVER");
+	GSocket2()->Socket("CLIENT");
+	GSocket2()->Address("SERVER");
+	GSocket2()->Address("CLIENT");
 
-	GSocket()->Start("SERVER", 2, 0);
-	GSocket()->Socket2("SERVER", AF_INET, SOCK_STREAM, 0);
-	GSocket()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
-	GSocket()->Bind("SERVER", "SERVER");
-	GSocket()->Listen("SERVER", 5);
+	GSocket2()->Start("SERVER", 2, 0);
+	GSocket2()->Socket2("SERVER", AF_INET, SOCK_STREAM, 0);
+	GSocket2()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
+	GSocket2()->Bind("SERVER", "SERVER");
+	GSocket2()->Listen("SERVER", 5);
 
 	while(1) {
-		GSocket()->Accept("SERVER", "CLIENT");
-		GSocket()->Send("CLIENT", "Bonjour tout le monde", 0);
-		GSocket()->Recv("CLIENT", lMessage, 255);
+		GSocket2()->Accept("SERVER", "CLIENT");
+		GSocket2()->Send("CLIENT", "Bonjour tout le monde", 0);
+		GSocket2()->Recv("CLIENT", lMessage, 255);
 		GConsole()->Print("[ SERVER ] Recv: %s\n", lMessage);
-		GSocket()->Close("CLIENT");
+		GSocket2()->Close("CLIENT");
 	}
 
-	GSocket()->Close("SERVER");
-	GSocket()->Clean("SERVER");
-	GSocket()->Clean2("SERVER");
-	GSocket()->Clean2("CLIENT");
-	GSocket()->Clean3("SERVER");
-	GSocket()->Clean3("CLIENT");
+	GSocket2()->Close("SERVER");
+	GSocket2()->Clean("SERVER");
+	GSocket2()->Clean2("SERVER");
+	GSocket2()->Clean2("CLIENT");
+	GSocket2()->Clean3("SERVER");
+	GSocket2()->Clean3("CLIENT");
 #elif defined(__unix)
-	GSocket()->Socket("SERVER");
-	GSocket()->Socket("CLIENT");
-	GSocket()->Address("SERVER");
-	GSocket()->Address("CLIENT");
+	GSocket2()->Socket("SERVER");
+	GSocket2()->Socket("CLIENT");
+	GSocket2()->Address("SERVER");
+	GSocket2()->Address("CLIENT");
 
-	GSocket()->Socket2("SERVER", AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	GSocket()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
-	GSocket()->Bind("SERVER", "SERVER");
-	GSocket()->Listen("SERVER", 5);
+	GSocket2()->Socket2("SERVER", AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	GSocket2()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
+	GSocket2()->Bind("SERVER", "SERVER");
+	GSocket2()->Listen("SERVER", 5);
 
 	while(1) {
-		GSocket()->Accept("SERVER", "CLIENT");
-		GSocket()->Write("CLIENT", "Bonjour tout le monde", 0);
-		GSocket()->Read("CLIENT", lMessage, 255);
+		GSocket2()->Accept("SERVER", "CLIENT");
+		GSocket2()->Write("CLIENT", "Bonjour tout le monde", 0);
+		GSocket2()->Read("CLIENT", lMessage, 255);
 		GConsole()->Print("[ SERVER ] Read: %s\n", lMessage);
-		GSocket()->Close("CLIENT");
+		GSocket2()->Close("CLIENT");
 	}
 
-	GSocket()->Close("SERVER");
-	GSocket()->Clean2("SERVER");
-	GSocket()->Clean2("CLIENT");
-	GSocket()->Clean3("SERVER");
-	GSocket()->Clean3("CLIENT");
+	GSocket2()->Close("SERVER");
+	GSocket2()->Clean2("SERVER");
+	GSocket2()->Clean2("CLIENT");
+	GSocket2()->Clean3("SERVER");
+	GSocket2()->Clean3("CLIENT");
 #endif
 }
 //===============================================

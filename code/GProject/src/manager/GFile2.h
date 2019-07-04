@@ -1,19 +1,19 @@
 //===============================================
-#ifndef _GFile_
-#define _GFile_
+#ifndef _GFile2_
+#define _GFile2_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GFileO GFileO;
+typedef struct _GFile2O GFile2O;
 //===============================================
-struct _GFileO {
+struct _GFile2O {
     void (*Delete)();
     void (*Exist)(char* file);
 };
 //===============================================
-GFileO* GFile_New();
-void GFile_Delete();
-GFileO* GFile();
+GFile2O* GFile2_New();
+void GFile2_Delete();
+GFile2O* GFile2();
 //===============================================
 #endif
 //===============================================

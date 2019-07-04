@@ -2,7 +2,8 @@
 #include "GSoap.h"
 //===============================================
 typedef char* GCHAR_PTR;
-typedef SOAP_SOCKET* GSOAP_SOCKET_PTR;
+//typedef SOAP_SOCKET* GSOAP_SOCKET_PTR;
+typedef char* GSOAP_SOCKET_PTR;
 //===============================================
 GDECLARE_MAP(GCHAR_PTR, GSOAP_SOCKET_PTR, GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)
 GDEFINE_MAP(GCHAR_PTR, GSOAP_SOCKET_PTR, GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)

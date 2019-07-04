@@ -1,7 +1,7 @@
 //===============================================
 #include "GConfig.h"
 #include "GConfigTemplate.h"
-#include "GString.h"
+#include "GString2.h"
 //===============================================
 GConfigO* GConfig_New() {
     GConfigO* lObj = (GConfigO*)malloc(sizeof(GConfigO));
@@ -9,19 +9,18 @@ GConfigO* GConfig_New() {
     return lObj;
 }
 //===============================================
-void GConfig_Delete() {
-    GConfigO* lObj = GConfig();
-    if(lObj != 0) {
-        if(lObj->m_child != 0) {
-            free(lObj->m_child);
+void GConfig_Delete(GConfigO* obj) {
+    if(obj != 0) {
+        if(obj->m_child != 0) {
+            free(obj->m_child);
         }
-        free(lObj);
+        free(obj);
     }
 }
 //===============================================
 GConfigO* GConfig() {
     char* lKey = "TEMPLATE";
-    if(GString()->IsEqual(lKey, "TEMPLATE")) return GConfigTemplate();
+    if(GString2()->IsEqual(lKey, "TEMPLATE")) return GConfigTemplate();
     return GConfigTemplate();
 }
 //===============================================
