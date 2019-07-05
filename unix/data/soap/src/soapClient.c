@@ -17,13 +17,15 @@ compiling, linking, and/or using OpenSSL is allowed.
 extern "C" {
 #endif
 
-SOAP_SOURCE_STAMP("@(#) soapClient.c ver 2.8.14 2019-07-03 20:43:58 GMT")
+SOAP_SOURCE_STAMP("@(#) soapClient.c ver 2.8.14 2019-07-05 11:58:29 GMT")
 
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result)
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
 {	struct ns__add soap_tmp_ns__add;
 	struct ns__addResponse *soap_tmp_ns__addResponse;
-	soap->encodingStyle = NULL;
+	if (soap_endpoint == NULL)
+		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
+	soap->encodingStyle = "";
 	soap_tmp_ns__add.a = a;
 	soap_tmp_ns__add.b = b;
 	soap_begin(soap);
@@ -53,7 +55,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_
 		return soap_closesock(soap);
 	if (!result)
 		return soap_closesock(soap);
-	soap_default_int(soap, result);
+	soap_default_double(soap, result);
 	if (soap_begin_recv(soap)
 	 || soap_envelope_begin_in(soap)
 	 || soap_recv_header(soap)
@@ -73,22 +75,24 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_
 	return soap_closesock(soap);
 }
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__subtract(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result)
-{	struct ns__subtract soap_tmp_ns__subtract;
-	struct ns__subtractResponse *soap_tmp_ns__subtractResponse;
-	soap->encodingStyle = NULL;
-	soap_tmp_ns__subtract.a = a;
-	soap_tmp_ns__subtract.b = b;
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__sub(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
+{	struct ns__sub soap_tmp_ns__sub;
+	struct ns__subResponse *soap_tmp_ns__subResponse;
+	if (soap_endpoint == NULL)
+		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
+	soap->encodingStyle = "";
+	soap_tmp_ns__sub.a = a;
+	soap_tmp_ns__sub.b = b;
 	soap_begin(soap);
 	soap_serializeheader(soap);
-	soap_serialize_ns__subtract(soap, &soap_tmp_ns__subtract);
+	soap_serialize_ns__sub(soap, &soap_tmp_ns__sub);
 	if (soap_begin_count(soap))
 		return soap->error;
 	if (soap->mode & SOAP_IO_LENGTH)
 	{	if (soap_envelope_begin_out(soap)
 		 || soap_putheader(soap)
 		 || soap_body_begin_out(soap)
-		 || soap_put_ns__subtract(soap, &soap_tmp_ns__subtract, "ns:subtract", NULL)
+		 || soap_put_ns__sub(soap, &soap_tmp_ns__sub, "ns:sub", NULL)
 		 || soap_body_end_out(soap)
 		 || soap_envelope_end_out(soap))
 			 return soap->error;
@@ -99,14 +103,14 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__subtract(struct soap *soap, const char *
 	 || soap_envelope_begin_out(soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
-	 || soap_put_ns__subtract(soap, &soap_tmp_ns__subtract, "ns:subtract", NULL)
+	 || soap_put_ns__sub(soap, &soap_tmp_ns__sub, "ns:sub", NULL)
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))
 		return soap_closesock(soap);
 	if (!result)
 		return soap_closesock(soap);
-	soap_default_int(soap, result);
+	soap_default_double(soap, result);
 	if (soap_begin_recv(soap)
 	 || soap_envelope_begin_in(soap)
 	 || soap_recv_header(soap)
@@ -114,34 +118,36 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__subtract(struct soap *soap, const char *
 		return soap_closesock(soap);
 	if (soap_recv_fault(soap, 1))
 		return soap->error;
-	soap_tmp_ns__subtractResponse = soap_get_ns__subtractResponse(soap, NULL, "", "");
+	soap_tmp_ns__subResponse = soap_get_ns__subResponse(soap, NULL, "", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)
 	 || soap_envelope_end_in(soap)
 	 || soap_end_recv(soap))
 		return soap_closesock(soap);
-	if (result && soap_tmp_ns__subtractResponse->result)
-		*result = *soap_tmp_ns__subtractResponse->result;
+	if (result && soap_tmp_ns__subResponse->result)
+		*result = *soap_tmp_ns__subResponse->result;
 	return soap_closesock(soap);
 }
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__multiply(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result)
-{	struct ns__multiply soap_tmp_ns__multiply;
-	struct ns__multiplyResponse *soap_tmp_ns__multiplyResponse;
-	soap->encodingStyle = NULL;
-	soap_tmp_ns__multiply.a = a;
-	soap_tmp_ns__multiply.b = b;
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__mul(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
+{	struct ns__mul soap_tmp_ns__mul;
+	struct ns__mulResponse *soap_tmp_ns__mulResponse;
+	if (soap_endpoint == NULL)
+		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
+	soap->encodingStyle = "";
+	soap_tmp_ns__mul.a = a;
+	soap_tmp_ns__mul.b = b;
 	soap_begin(soap);
 	soap_serializeheader(soap);
-	soap_serialize_ns__multiply(soap, &soap_tmp_ns__multiply);
+	soap_serialize_ns__mul(soap, &soap_tmp_ns__mul);
 	if (soap_begin_count(soap))
 		return soap->error;
 	if (soap->mode & SOAP_IO_LENGTH)
 	{	if (soap_envelope_begin_out(soap)
 		 || soap_putheader(soap)
 		 || soap_body_begin_out(soap)
-		 || soap_put_ns__multiply(soap, &soap_tmp_ns__multiply, "ns:multiply", NULL)
+		 || soap_put_ns__mul(soap, &soap_tmp_ns__mul, "ns:mul", NULL)
 		 || soap_body_end_out(soap)
 		 || soap_envelope_end_out(soap))
 			 return soap->error;
@@ -152,14 +158,14 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__multiply(struct soap *soap, const char *
 	 || soap_envelope_begin_out(soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
-	 || soap_put_ns__multiply(soap, &soap_tmp_ns__multiply, "ns:multiply", NULL)
+	 || soap_put_ns__mul(soap, &soap_tmp_ns__mul, "ns:mul", NULL)
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))
 		return soap_closesock(soap);
 	if (!result)
 		return soap_closesock(soap);
-	soap_default_int(soap, result);
+	soap_default_double(soap, result);
 	if (soap_begin_recv(soap)
 	 || soap_envelope_begin_in(soap)
 	 || soap_recv_header(soap)
@@ -167,34 +173,36 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__multiply(struct soap *soap, const char *
 		return soap_closesock(soap);
 	if (soap_recv_fault(soap, 1))
 		return soap->error;
-	soap_tmp_ns__multiplyResponse = soap_get_ns__multiplyResponse(soap, NULL, "", "");
+	soap_tmp_ns__mulResponse = soap_get_ns__mulResponse(soap, NULL, "", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)
 	 || soap_envelope_end_in(soap)
 	 || soap_end_recv(soap))
 		return soap_closesock(soap);
-	if (result && soap_tmp_ns__multiplyResponse->result)
-		*result = *soap_tmp_ns__multiplyResponse->result;
+	if (result && soap_tmp_ns__mulResponse->result)
+		*result = *soap_tmp_ns__mulResponse->result;
 	return soap_closesock(soap);
 }
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__divide(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result)
-{	struct ns__divide soap_tmp_ns__divide;
-	struct ns__divideResponse *soap_tmp_ns__divideResponse;
-	soap->encodingStyle = NULL;
-	soap_tmp_ns__divide.a = a;
-	soap_tmp_ns__divide.b = b;
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__div(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
+{	struct ns__div soap_tmp_ns__div;
+	struct ns__divResponse *soap_tmp_ns__divResponse;
+	if (soap_endpoint == NULL)
+		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
+	soap->encodingStyle = "";
+	soap_tmp_ns__div.a = a;
+	soap_tmp_ns__div.b = b;
 	soap_begin(soap);
 	soap_serializeheader(soap);
-	soap_serialize_ns__divide(soap, &soap_tmp_ns__divide);
+	soap_serialize_ns__div(soap, &soap_tmp_ns__div);
 	if (soap_begin_count(soap))
 		return soap->error;
 	if (soap->mode & SOAP_IO_LENGTH)
 	{	if (soap_envelope_begin_out(soap)
 		 || soap_putheader(soap)
 		 || soap_body_begin_out(soap)
-		 || soap_put_ns__divide(soap, &soap_tmp_ns__divide, "ns:divide", NULL)
+		 || soap_put_ns__div(soap, &soap_tmp_ns__div, "ns:div", NULL)
 		 || soap_body_end_out(soap)
 		 || soap_envelope_end_out(soap))
 			 return soap->error;
@@ -205,14 +213,14 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__divide(struct soap *soap, const char *so
 	 || soap_envelope_begin_out(soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
-	 || soap_put_ns__divide(soap, &soap_tmp_ns__divide, "ns:divide", NULL)
+	 || soap_put_ns__div(soap, &soap_tmp_ns__div, "ns:div", NULL)
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))
 		return soap_closesock(soap);
 	if (!result)
 		return soap_closesock(soap);
-	soap_default_int(soap, result);
+	soap_default_double(soap, result);
 	if (soap_begin_recv(soap)
 	 || soap_envelope_begin_in(soap)
 	 || soap_recv_header(soap)
@@ -220,15 +228,70 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__divide(struct soap *soap, const char *so
 		return soap_closesock(soap);
 	if (soap_recv_fault(soap, 1))
 		return soap->error;
-	soap_tmp_ns__divideResponse = soap_get_ns__divideResponse(soap, NULL, "", "");
+	soap_tmp_ns__divResponse = soap_get_ns__divResponse(soap, NULL, "", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)
 	 || soap_envelope_end_in(soap)
 	 || soap_end_recv(soap))
 		return soap_closesock(soap);
-	if (result && soap_tmp_ns__divideResponse->result)
-		*result = *soap_tmp_ns__divideResponse->result;
+	if (result && soap_tmp_ns__divResponse->result)
+		*result = *soap_tmp_ns__divResponse->result;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__pow(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
+{	struct ns__pow soap_tmp_ns__pow;
+	struct ns__powResponse *soap_tmp_ns__powResponse;
+	if (soap_endpoint == NULL)
+		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
+	soap->encodingStyle = "";
+	soap_tmp_ns__pow.a = a;
+	soap_tmp_ns__pow.b = b;
+	soap_begin(soap);
+	soap_serializeheader(soap);
+	soap_serialize_ns__pow(soap, &soap_tmp_ns__pow);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if (soap->mode & SOAP_IO_LENGTH)
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || soap_put_ns__pow(soap, &soap_tmp_ns__pow, "ns:pow", NULL)
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	}
+	if (soap_end_count(soap))
+		return soap->error;
+	if (soap_connect(soap, soap_endpoint, soap_action)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || soap_put_ns__pow(soap, &soap_tmp_ns__pow, "ns:pow", NULL)
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap_closesock(soap);
+	if (!result)
+		return soap_closesock(soap);
+	soap_default_double(soap, result);
+	if (soap_begin_recv(soap)
+	 || soap_envelope_begin_in(soap)
+	 || soap_recv_header(soap)
+	 || soap_body_begin_in(soap))
+		return soap_closesock(soap);
+	if (soap_recv_fault(soap, 1))
+		return soap->error;
+	soap_tmp_ns__powResponse = soap_get_ns__powResponse(soap, NULL, "", "");
+	if (soap->error)
+		return soap_recv_fault(soap, 0);
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap_closesock(soap);
+	if (result && soap_tmp_ns__powResponse->result)
+		*result = *soap_tmp_ns__powResponse->result;
 	return soap_closesock(soap);
 }
 

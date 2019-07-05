@@ -4,10 +4,10 @@
  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
- xmlns:ns="http://tempuri.org/ns.xsd">
+ xmlns:ns="urn:calc">
  <SOAP-ENV:Body SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-  <ns:divideResponse>
-   <result>0</result>
-  </ns:divideResponse>
+  <ns:mulResponse>
+   <result>0.0</result>
+  </ns:mulResponse>
  </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

@@ -17,7 +17,7 @@ compiling, linking, and/or using OpenSSL is allowed.
 extern "C" {
 #endif
 
-SOAP_SOURCE_STAMP("@(#) soapServer.c ver 2.8.14 2019-07-03 20:43:58 GMT")
+SOAP_SOURCE_STAMP("@(#) soapServer.c ver 2.8.14 2019-07-05 11:58:29 GMT")
 
 
 SOAP_FMAC5 int SOAP_FMAC6 soap_serve(struct soap *soap)
@@ -61,12 +61,14 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap *soap)
 	soap_peek_element(soap);
 	if (!soap_match_tag(soap, soap->tag, "ns:add"))
 		return soap_serve_ns__add(soap);
-	if (!soap_match_tag(soap, soap->tag, "ns:subtract"))
-		return soap_serve_ns__subtract(soap);
-	if (!soap_match_tag(soap, soap->tag, "ns:multiply"))
-		return soap_serve_ns__multiply(soap);
-	if (!soap_match_tag(soap, soap->tag, "ns:divide"))
-		return soap_serve_ns__divide(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns:sub"))
+		return soap_serve_ns__sub(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns:mul"))
+		return soap_serve_ns__mul(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns:div"))
+		return soap_serve_ns__div(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns:pow"))
+		return soap_serve_ns__pow(soap);
 	return soap->error = SOAP_NO_METHOD;
 }
 #endif
@@ -74,12 +76,12 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap *soap)
 SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__add(struct soap *soap)
 {	struct ns__add soap_tmp_ns__add;
 	struct ns__addResponse soap_tmp_ns__addResponse;
-	int soap_tmp_int;
+	double soap_tmp_double;
 	soap_default_ns__addResponse(soap, &soap_tmp_ns__addResponse);
-	soap_default_int(soap, &soap_tmp_int);
-	soap_tmp_ns__addResponse.result = &soap_tmp_int;
+	soap_default_double(soap, &soap_tmp_double);
+	soap_tmp_ns__addResponse.result = &soap_tmp_double;
 	soap_default_ns__add(soap, &soap_tmp_ns__add);
-	soap->encodingStyle = NULL;
+	soap->encodingStyle = "";
 	if (!soap_get_ns__add(soap, &soap_tmp_ns__add, "ns:add", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
@@ -115,33 +117,33 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__add(struct soap *soap)
 	return soap_closesock(soap);
 }
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__subtract(struct soap *soap)
-{	struct ns__subtract soap_tmp_ns__subtract;
-	struct ns__subtractResponse soap_tmp_ns__subtractResponse;
-	int soap_tmp_int;
-	soap_default_ns__subtractResponse(soap, &soap_tmp_ns__subtractResponse);
-	soap_default_int(soap, &soap_tmp_int);
-	soap_tmp_ns__subtractResponse.result = &soap_tmp_int;
-	soap_default_ns__subtract(soap, &soap_tmp_ns__subtract);
-	soap->encodingStyle = NULL;
-	if (!soap_get_ns__subtract(soap, &soap_tmp_ns__subtract, "ns:subtract", NULL))
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__sub(struct soap *soap)
+{	struct ns__sub soap_tmp_ns__sub;
+	struct ns__subResponse soap_tmp_ns__subResponse;
+	double soap_tmp_double;
+	soap_default_ns__subResponse(soap, &soap_tmp_ns__subResponse);
+	soap_default_double(soap, &soap_tmp_double);
+	soap_tmp_ns__subResponse.result = &soap_tmp_double;
+	soap_default_ns__sub(soap, &soap_tmp_ns__sub);
+	soap->encodingStyle = "";
+	if (!soap_get_ns__sub(soap, &soap_tmp_ns__sub, "ns:sub", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
 	 || soap_envelope_end_in(soap)
 	 || soap_end_recv(soap))
 		return soap->error;
-	soap->error = ns__subtract(soap, soap_tmp_ns__subtract.a, soap_tmp_ns__subtract.b, soap_tmp_ns__subtractResponse.result);
+	soap->error = ns__sub(soap, soap_tmp_ns__sub.a, soap_tmp_ns__sub.b, soap_tmp_ns__subResponse.result);
 	if (soap->error)
 		return soap->error;
 	soap_serializeheader(soap);
-	soap_serialize_ns__subtractResponse(soap, &soap_tmp_ns__subtractResponse);
+	soap_serialize_ns__subResponse(soap, &soap_tmp_ns__subResponse);
 	if (soap_begin_count(soap))
 		return soap->error;
 	if (soap->mode & SOAP_IO_LENGTH)
 	{	if (soap_envelope_begin_out(soap)
 		 || soap_putheader(soap)
 		 || soap_body_begin_out(soap)
-		 || soap_put_ns__subtractResponse(soap, &soap_tmp_ns__subtractResponse, "ns:subtractResponse", NULL)
+		 || soap_put_ns__subResponse(soap, &soap_tmp_ns__subResponse, "ns:subResponse", NULL)
 		 || soap_body_end_out(soap)
 		 || soap_envelope_end_out(soap))
 			 return soap->error;
@@ -151,7 +153,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__subtract(struct soap *soap)
 	 || soap_envelope_begin_out(soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
-	 || soap_put_ns__subtractResponse(soap, &soap_tmp_ns__subtractResponse, "ns:subtractResponse", NULL)
+	 || soap_put_ns__subResponse(soap, &soap_tmp_ns__subResponse, "ns:subResponse", NULL)
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))
@@ -159,33 +161,33 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__subtract(struct soap *soap)
 	return soap_closesock(soap);
 }
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__multiply(struct soap *soap)
-{	struct ns__multiply soap_tmp_ns__multiply;
-	struct ns__multiplyResponse soap_tmp_ns__multiplyResponse;
-	int soap_tmp_int;
-	soap_default_ns__multiplyResponse(soap, &soap_tmp_ns__multiplyResponse);
-	soap_default_int(soap, &soap_tmp_int);
-	soap_tmp_ns__multiplyResponse.result = &soap_tmp_int;
-	soap_default_ns__multiply(soap, &soap_tmp_ns__multiply);
-	soap->encodingStyle = NULL;
-	if (!soap_get_ns__multiply(soap, &soap_tmp_ns__multiply, "ns:multiply", NULL))
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__mul(struct soap *soap)
+{	struct ns__mul soap_tmp_ns__mul;
+	struct ns__mulResponse soap_tmp_ns__mulResponse;
+	double soap_tmp_double;
+	soap_default_ns__mulResponse(soap, &soap_tmp_ns__mulResponse);
+	soap_default_double(soap, &soap_tmp_double);
+	soap_tmp_ns__mulResponse.result = &soap_tmp_double;
+	soap_default_ns__mul(soap, &soap_tmp_ns__mul);
+	soap->encodingStyle = "";
+	if (!soap_get_ns__mul(soap, &soap_tmp_ns__mul, "ns:mul", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
 	 || soap_envelope_end_in(soap)
 	 || soap_end_recv(soap))
 		return soap->error;
-	soap->error = ns__multiply(soap, soap_tmp_ns__multiply.a, soap_tmp_ns__multiply.b, soap_tmp_ns__multiplyResponse.result);
+	soap->error = ns__mul(soap, soap_tmp_ns__mul.a, soap_tmp_ns__mul.b, soap_tmp_ns__mulResponse.result);
 	if (soap->error)
 		return soap->error;
 	soap_serializeheader(soap);
-	soap_serialize_ns__multiplyResponse(soap, &soap_tmp_ns__multiplyResponse);
+	soap_serialize_ns__mulResponse(soap, &soap_tmp_ns__mulResponse);
 	if (soap_begin_count(soap))
 		return soap->error;
 	if (soap->mode & SOAP_IO_LENGTH)
 	{	if (soap_envelope_begin_out(soap)
 		 || soap_putheader(soap)
 		 || soap_body_begin_out(soap)
-		 || soap_put_ns__multiplyResponse(soap, &soap_tmp_ns__multiplyResponse, "ns:multiplyResponse", NULL)
+		 || soap_put_ns__mulResponse(soap, &soap_tmp_ns__mulResponse, "ns:mulResponse", NULL)
 		 || soap_body_end_out(soap)
 		 || soap_envelope_end_out(soap))
 			 return soap->error;
@@ -195,7 +197,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__multiply(struct soap *soap)
 	 || soap_envelope_begin_out(soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
-	 || soap_put_ns__multiplyResponse(soap, &soap_tmp_ns__multiplyResponse, "ns:multiplyResponse", NULL)
+	 || soap_put_ns__mulResponse(soap, &soap_tmp_ns__mulResponse, "ns:mulResponse", NULL)
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))
@@ -203,33 +205,33 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__multiply(struct soap *soap)
 	return soap_closesock(soap);
 }
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__divide(struct soap *soap)
-{	struct ns__divide soap_tmp_ns__divide;
-	struct ns__divideResponse soap_tmp_ns__divideResponse;
-	int soap_tmp_int;
-	soap_default_ns__divideResponse(soap, &soap_tmp_ns__divideResponse);
-	soap_default_int(soap, &soap_tmp_int);
-	soap_tmp_ns__divideResponse.result = &soap_tmp_int;
-	soap_default_ns__divide(soap, &soap_tmp_ns__divide);
-	soap->encodingStyle = NULL;
-	if (!soap_get_ns__divide(soap, &soap_tmp_ns__divide, "ns:divide", NULL))
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__div(struct soap *soap)
+{	struct ns__div soap_tmp_ns__div;
+	struct ns__divResponse soap_tmp_ns__divResponse;
+	double soap_tmp_double;
+	soap_default_ns__divResponse(soap, &soap_tmp_ns__divResponse);
+	soap_default_double(soap, &soap_tmp_double);
+	soap_tmp_ns__divResponse.result = &soap_tmp_double;
+	soap_default_ns__div(soap, &soap_tmp_ns__div);
+	soap->encodingStyle = "";
+	if (!soap_get_ns__div(soap, &soap_tmp_ns__div, "ns:div", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
 	 || soap_envelope_end_in(soap)
 	 || soap_end_recv(soap))
 		return soap->error;
-	soap->error = ns__divide(soap, soap_tmp_ns__divide.a, soap_tmp_ns__divide.b, soap_tmp_ns__divideResponse.result);
+	soap->error = ns__div(soap, soap_tmp_ns__div.a, soap_tmp_ns__div.b, soap_tmp_ns__divResponse.result);
 	if (soap->error)
 		return soap->error;
 	soap_serializeheader(soap);
-	soap_serialize_ns__divideResponse(soap, &soap_tmp_ns__divideResponse);
+	soap_serialize_ns__divResponse(soap, &soap_tmp_ns__divResponse);
 	if (soap_begin_count(soap))
 		return soap->error;
 	if (soap->mode & SOAP_IO_LENGTH)
 	{	if (soap_envelope_begin_out(soap)
 		 || soap_putheader(soap)
 		 || soap_body_begin_out(soap)
-		 || soap_put_ns__divideResponse(soap, &soap_tmp_ns__divideResponse, "ns:divideResponse", NULL)
+		 || soap_put_ns__divResponse(soap, &soap_tmp_ns__divResponse, "ns:divResponse", NULL)
 		 || soap_body_end_out(soap)
 		 || soap_envelope_end_out(soap))
 			 return soap->error;
@@ -239,7 +241,51 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__divide(struct soap *soap)
 	 || soap_envelope_begin_out(soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
-	 || soap_put_ns__divideResponse(soap, &soap_tmp_ns__divideResponse, "ns:divideResponse", NULL)
+	 || soap_put_ns__divResponse(soap, &soap_tmp_ns__divResponse, "ns:divResponse", NULL)
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__pow(struct soap *soap)
+{	struct ns__pow soap_tmp_ns__pow;
+	struct ns__powResponse soap_tmp_ns__powResponse;
+	double soap_tmp_double;
+	soap_default_ns__powResponse(soap, &soap_tmp_ns__powResponse);
+	soap_default_double(soap, &soap_tmp_double);
+	soap_tmp_ns__powResponse.result = &soap_tmp_double;
+	soap_default_ns__pow(soap, &soap_tmp_ns__pow);
+	soap->encodingStyle = "";
+	if (!soap_get_ns__pow(soap, &soap_tmp_ns__pow, "ns:pow", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = ns__pow(soap, soap_tmp_ns__pow.a, soap_tmp_ns__pow.b, soap_tmp_ns__powResponse.result);
+	if (soap->error)
+		return soap->error;
+	soap_serializeheader(soap);
+	soap_serialize_ns__powResponse(soap, &soap_tmp_ns__powResponse);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if (soap->mode & SOAP_IO_LENGTH)
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || soap_put_ns__powResponse(soap, &soap_tmp_ns__powResponse, "ns:powResponse", NULL)
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || soap_put_ns__powResponse(soap, &soap_tmp_ns__powResponse, "ns:powResponse", NULL)
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))

@@ -65,10 +65,30 @@ SOAP_FMAC3 int * SOAP_FMAC4 soap_get_int(struct soap*, int *, const char*, const
 #endif
 
 
+#ifndef SOAP_TYPE_double
+#define SOAP_TYPE_double (7)
+#endif
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_double(struct soap*, double *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_double(struct soap*, const char*, int, const double *, const char*);
+SOAP_FMAC3 double * SOAP_FMAC4 soap_in_double(struct soap*, const char*, double *, const char*);
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_double(struct soap*, const double *, const char*, const char*);
+
+#ifndef soap_write_double
+#define soap_write_double(soap, data) ( soap_begin(soap), soap_serialize_double(soap, data), soap_begin_send(soap) || soap_put_double(soap, data, "double", NULL) || soap_end_send(soap), soap->error )
+#endif
+
+SOAP_FMAC3 double * SOAP_FMAC4 soap_get_double(struct soap*, double *, const char*, const char*);
+
+#ifndef soap_read_double
+#define soap_read_double(soap, data) ( soap_begin_recv(soap) || !soap_get_double(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#endif
+
+
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Fault
-#define SOAP_TYPE_SOAP_ENV__Fault (27)
+#define SOAP_TYPE_SOAP_ENV__Fault (31)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Fault(struct soap*, struct SOAP_ENV__Fault *);
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Fault(struct soap*, const struct SOAP_ENV__Fault *);
@@ -93,7 +113,7 @@ SOAP_FMAC3 struct SOAP_ENV__Fault * SOAP_FMAC4 soap_get_SOAP_ENV__Fault(struct s
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Reason
-#define SOAP_TYPE_SOAP_ENV__Reason (26)
+#define SOAP_TYPE_SOAP_ENV__Reason (30)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason *);
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Reason(struct soap*, const struct SOAP_ENV__Reason *);
@@ -118,7 +138,7 @@ SOAP_FMAC3 struct SOAP_ENV__Reason * SOAP_FMAC4 soap_get_SOAP_ENV__Reason(struct
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Detail
-#define SOAP_TYPE_SOAP_ENV__Detail (23)
+#define SOAP_TYPE_SOAP_ENV__Detail (27)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail *);
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Detail(struct soap*, const struct SOAP_ENV__Detail *);
@@ -143,7 +163,7 @@ SOAP_FMAC3 struct SOAP_ENV__Detail * SOAP_FMAC4 soap_get_SOAP_ENV__Detail(struct
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Code
-#define SOAP_TYPE_SOAP_ENV__Code (21)
+#define SOAP_TYPE_SOAP_ENV__Code (25)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code *);
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Code(struct soap*, const struct SOAP_ENV__Code *);
@@ -168,7 +188,7 @@ SOAP_FMAC3 struct SOAP_ENV__Code * SOAP_FMAC4 soap_get_SOAP_ENV__Code(struct soa
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Header
-#define SOAP_TYPE_SOAP_ENV__Header (20)
+#define SOAP_TYPE_SOAP_ENV__Header (24)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Header(struct soap*, struct SOAP_ENV__Header *);
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Header(struct soap*, const struct SOAP_ENV__Header *);
@@ -190,134 +210,176 @@ SOAP_FMAC3 struct SOAP_ENV__Header * SOAP_FMAC4 soap_get_SOAP_ENV__Header(struct
 
 #endif
 
-#ifndef SOAP_TYPE_ns__divide
-#define SOAP_TYPE_ns__divide (19)
+#ifndef SOAP_TYPE_ns__pow
+#define SOAP_TYPE_ns__pow (23)
 #endif
-SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__divide(struct soap*, struct ns__divide *);
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__divide(struct soap*, const struct ns__divide *);
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__divide(struct soap*, const char*, int, const struct ns__divide *, const char*);
-SOAP_FMAC3 struct ns__divide * SOAP_FMAC4 soap_in_ns__divide(struct soap*, const char*, struct ns__divide *, const char*);
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__pow(struct soap*, struct ns__pow *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__pow(struct soap*, const struct ns__pow *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__pow(struct soap*, const char*, int, const struct ns__pow *, const char*);
+SOAP_FMAC3 struct ns__pow * SOAP_FMAC4 soap_in_ns__pow(struct soap*, const char*, struct ns__pow *, const char*);
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__divide(struct soap*, const struct ns__divide *, const char*, const char*);
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__pow(struct soap*, const struct ns__pow *, const char*, const char*);
 
-#ifndef soap_write_ns__divide
-#define soap_write_ns__divide(soap, data) ( soap_begin(soap), soap_serialize_ns__divide(soap, data), soap_begin_send(soap) || soap_put_ns__divide(soap, data, "ns:divide", NULL) || soap_end_send(soap), soap->error )
-#endif
-
-SOAP_FMAC3 struct ns__divide * SOAP_FMAC4 soap_get_ns__divide(struct soap*, struct ns__divide *, const char*, const char*);
-
-#ifndef soap_read_ns__divide
-#define soap_read_ns__divide(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__divide(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#ifndef soap_write_ns__pow
+#define soap_write_ns__pow(soap, data) ( soap_begin(soap), soap_serialize_ns__pow(soap, data), soap_begin_send(soap) || soap_put_ns__pow(soap, data, "ns:pow", NULL) || soap_end_send(soap), soap->error )
 #endif
 
+SOAP_FMAC3 struct ns__pow * SOAP_FMAC4 soap_get_ns__pow(struct soap*, struct ns__pow *, const char*, const char*);
 
-#ifndef SOAP_TYPE_ns__divideResponse
-#define SOAP_TYPE_ns__divideResponse (18)
-#endif
-SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__divideResponse(struct soap*, struct ns__divideResponse *);
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__divideResponse(struct soap*, const struct ns__divideResponse *);
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__divideResponse(struct soap*, const char*, int, const struct ns__divideResponse *, const char*);
-SOAP_FMAC3 struct ns__divideResponse * SOAP_FMAC4 soap_in_ns__divideResponse(struct soap*, const char*, struct ns__divideResponse *, const char*);
-
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__divideResponse(struct soap*, const struct ns__divideResponse *, const char*, const char*);
-
-#ifndef soap_write_ns__divideResponse
-#define soap_write_ns__divideResponse(soap, data) ( soap_begin(soap), soap_serialize_ns__divideResponse(soap, data), soap_begin_send(soap) || soap_put_ns__divideResponse(soap, data, "ns:divideResponse", NULL) || soap_end_send(soap), soap->error )
-#endif
-
-SOAP_FMAC3 struct ns__divideResponse * SOAP_FMAC4 soap_get_ns__divideResponse(struct soap*, struct ns__divideResponse *, const char*, const char*);
-
-#ifndef soap_read_ns__divideResponse
-#define soap_read_ns__divideResponse(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__divideResponse(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#ifndef soap_read_ns__pow
+#define soap_read_ns__pow(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__pow(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
 #endif
 
 
-#ifndef SOAP_TYPE_ns__multiply
-#define SOAP_TYPE_ns__multiply (16)
+#ifndef SOAP_TYPE_ns__powResponse
+#define SOAP_TYPE_ns__powResponse (22)
 #endif
-SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__multiply(struct soap*, struct ns__multiply *);
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__multiply(struct soap*, const struct ns__multiply *);
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__multiply(struct soap*, const char*, int, const struct ns__multiply *, const char*);
-SOAP_FMAC3 struct ns__multiply * SOAP_FMAC4 soap_in_ns__multiply(struct soap*, const char*, struct ns__multiply *, const char*);
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__powResponse(struct soap*, struct ns__powResponse *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__powResponse(struct soap*, const struct ns__powResponse *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__powResponse(struct soap*, const char*, int, const struct ns__powResponse *, const char*);
+SOAP_FMAC3 struct ns__powResponse * SOAP_FMAC4 soap_in_ns__powResponse(struct soap*, const char*, struct ns__powResponse *, const char*);
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__multiply(struct soap*, const struct ns__multiply *, const char*, const char*);
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__powResponse(struct soap*, const struct ns__powResponse *, const char*, const char*);
 
-#ifndef soap_write_ns__multiply
-#define soap_write_ns__multiply(soap, data) ( soap_begin(soap), soap_serialize_ns__multiply(soap, data), soap_begin_send(soap) || soap_put_ns__multiply(soap, data, "ns:multiply", NULL) || soap_end_send(soap), soap->error )
-#endif
-
-SOAP_FMAC3 struct ns__multiply * SOAP_FMAC4 soap_get_ns__multiply(struct soap*, struct ns__multiply *, const char*, const char*);
-
-#ifndef soap_read_ns__multiply
-#define soap_read_ns__multiply(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__multiply(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#ifndef soap_write_ns__powResponse
+#define soap_write_ns__powResponse(soap, data) ( soap_begin(soap), soap_serialize_ns__powResponse(soap, data), soap_begin_send(soap) || soap_put_ns__powResponse(soap, data, "ns:powResponse", NULL) || soap_end_send(soap), soap->error )
 #endif
 
+SOAP_FMAC3 struct ns__powResponse * SOAP_FMAC4 soap_get_ns__powResponse(struct soap*, struct ns__powResponse *, const char*, const char*);
 
-#ifndef SOAP_TYPE_ns__multiplyResponse
-#define SOAP_TYPE_ns__multiplyResponse (15)
-#endif
-SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__multiplyResponse(struct soap*, struct ns__multiplyResponse *);
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__multiplyResponse(struct soap*, const struct ns__multiplyResponse *);
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__multiplyResponse(struct soap*, const char*, int, const struct ns__multiplyResponse *, const char*);
-SOAP_FMAC3 struct ns__multiplyResponse * SOAP_FMAC4 soap_in_ns__multiplyResponse(struct soap*, const char*, struct ns__multiplyResponse *, const char*);
-
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__multiplyResponse(struct soap*, const struct ns__multiplyResponse *, const char*, const char*);
-
-#ifndef soap_write_ns__multiplyResponse
-#define soap_write_ns__multiplyResponse(soap, data) ( soap_begin(soap), soap_serialize_ns__multiplyResponse(soap, data), soap_begin_send(soap) || soap_put_ns__multiplyResponse(soap, data, "ns:multiplyResponse", NULL) || soap_end_send(soap), soap->error )
-#endif
-
-SOAP_FMAC3 struct ns__multiplyResponse * SOAP_FMAC4 soap_get_ns__multiplyResponse(struct soap*, struct ns__multiplyResponse *, const char*, const char*);
-
-#ifndef soap_read_ns__multiplyResponse
-#define soap_read_ns__multiplyResponse(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__multiplyResponse(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#ifndef soap_read_ns__powResponse
+#define soap_read_ns__powResponse(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__powResponse(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
 #endif
 
 
-#ifndef SOAP_TYPE_ns__subtract
-#define SOAP_TYPE_ns__subtract (13)
+#ifndef SOAP_TYPE_ns__div
+#define SOAP_TYPE_ns__div (20)
 #endif
-SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__subtract(struct soap*, struct ns__subtract *);
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__subtract(struct soap*, const struct ns__subtract *);
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__subtract(struct soap*, const char*, int, const struct ns__subtract *, const char*);
-SOAP_FMAC3 struct ns__subtract * SOAP_FMAC4 soap_in_ns__subtract(struct soap*, const char*, struct ns__subtract *, const char*);
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__div(struct soap*, struct ns__div *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__div(struct soap*, const struct ns__div *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__div(struct soap*, const char*, int, const struct ns__div *, const char*);
+SOAP_FMAC3 struct ns__div * SOAP_FMAC4 soap_in_ns__div(struct soap*, const char*, struct ns__div *, const char*);
 
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__subtract(struct soap*, const struct ns__subtract *, const char*, const char*);
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__div(struct soap*, const struct ns__div *, const char*, const char*);
 
-#ifndef soap_write_ns__subtract
-#define soap_write_ns__subtract(soap, data) ( soap_begin(soap), soap_serialize_ns__subtract(soap, data), soap_begin_send(soap) || soap_put_ns__subtract(soap, data, "ns:subtract", NULL) || soap_end_send(soap), soap->error )
-#endif
-
-SOAP_FMAC3 struct ns__subtract * SOAP_FMAC4 soap_get_ns__subtract(struct soap*, struct ns__subtract *, const char*, const char*);
-
-#ifndef soap_read_ns__subtract
-#define soap_read_ns__subtract(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__subtract(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#ifndef soap_write_ns__div
+#define soap_write_ns__div(soap, data) ( soap_begin(soap), soap_serialize_ns__div(soap, data), soap_begin_send(soap) || soap_put_ns__div(soap, data, "ns:div", NULL) || soap_end_send(soap), soap->error )
 #endif
 
+SOAP_FMAC3 struct ns__div * SOAP_FMAC4 soap_get_ns__div(struct soap*, struct ns__div *, const char*, const char*);
 
-#ifndef SOAP_TYPE_ns__subtractResponse
-#define SOAP_TYPE_ns__subtractResponse (12)
-#endif
-SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__subtractResponse(struct soap*, struct ns__subtractResponse *);
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__subtractResponse(struct soap*, const struct ns__subtractResponse *);
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__subtractResponse(struct soap*, const char*, int, const struct ns__subtractResponse *, const char*);
-SOAP_FMAC3 struct ns__subtractResponse * SOAP_FMAC4 soap_in_ns__subtractResponse(struct soap*, const char*, struct ns__subtractResponse *, const char*);
-
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__subtractResponse(struct soap*, const struct ns__subtractResponse *, const char*, const char*);
-
-#ifndef soap_write_ns__subtractResponse
-#define soap_write_ns__subtractResponse(soap, data) ( soap_begin(soap), soap_serialize_ns__subtractResponse(soap, data), soap_begin_send(soap) || soap_put_ns__subtractResponse(soap, data, "ns:subtractResponse", NULL) || soap_end_send(soap), soap->error )
+#ifndef soap_read_ns__div
+#define soap_read_ns__div(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__div(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
 #endif
 
-SOAP_FMAC3 struct ns__subtractResponse * SOAP_FMAC4 soap_get_ns__subtractResponse(struct soap*, struct ns__subtractResponse *, const char*, const char*);
 
-#ifndef soap_read_ns__subtractResponse
-#define soap_read_ns__subtractResponse(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__subtractResponse(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#ifndef SOAP_TYPE_ns__divResponse
+#define SOAP_TYPE_ns__divResponse (19)
+#endif
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__divResponse(struct soap*, struct ns__divResponse *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__divResponse(struct soap*, const struct ns__divResponse *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__divResponse(struct soap*, const char*, int, const struct ns__divResponse *, const char*);
+SOAP_FMAC3 struct ns__divResponse * SOAP_FMAC4 soap_in_ns__divResponse(struct soap*, const char*, struct ns__divResponse *, const char*);
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__divResponse(struct soap*, const struct ns__divResponse *, const char*, const char*);
+
+#ifndef soap_write_ns__divResponse
+#define soap_write_ns__divResponse(soap, data) ( soap_begin(soap), soap_serialize_ns__divResponse(soap, data), soap_begin_send(soap) || soap_put_ns__divResponse(soap, data, "ns:divResponse", NULL) || soap_end_send(soap), soap->error )
+#endif
+
+SOAP_FMAC3 struct ns__divResponse * SOAP_FMAC4 soap_get_ns__divResponse(struct soap*, struct ns__divResponse *, const char*, const char*);
+
+#ifndef soap_read_ns__divResponse
+#define soap_read_ns__divResponse(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__divResponse(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#endif
+
+
+#ifndef SOAP_TYPE_ns__mul
+#define SOAP_TYPE_ns__mul (17)
+#endif
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__mul(struct soap*, struct ns__mul *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__mul(struct soap*, const struct ns__mul *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__mul(struct soap*, const char*, int, const struct ns__mul *, const char*);
+SOAP_FMAC3 struct ns__mul * SOAP_FMAC4 soap_in_ns__mul(struct soap*, const char*, struct ns__mul *, const char*);
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__mul(struct soap*, const struct ns__mul *, const char*, const char*);
+
+#ifndef soap_write_ns__mul
+#define soap_write_ns__mul(soap, data) ( soap_begin(soap), soap_serialize_ns__mul(soap, data), soap_begin_send(soap) || soap_put_ns__mul(soap, data, "ns:mul", NULL) || soap_end_send(soap), soap->error )
+#endif
+
+SOAP_FMAC3 struct ns__mul * SOAP_FMAC4 soap_get_ns__mul(struct soap*, struct ns__mul *, const char*, const char*);
+
+#ifndef soap_read_ns__mul
+#define soap_read_ns__mul(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__mul(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#endif
+
+
+#ifndef SOAP_TYPE_ns__mulResponse
+#define SOAP_TYPE_ns__mulResponse (16)
+#endif
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__mulResponse(struct soap*, struct ns__mulResponse *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__mulResponse(struct soap*, const struct ns__mulResponse *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__mulResponse(struct soap*, const char*, int, const struct ns__mulResponse *, const char*);
+SOAP_FMAC3 struct ns__mulResponse * SOAP_FMAC4 soap_in_ns__mulResponse(struct soap*, const char*, struct ns__mulResponse *, const char*);
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__mulResponse(struct soap*, const struct ns__mulResponse *, const char*, const char*);
+
+#ifndef soap_write_ns__mulResponse
+#define soap_write_ns__mulResponse(soap, data) ( soap_begin(soap), soap_serialize_ns__mulResponse(soap, data), soap_begin_send(soap) || soap_put_ns__mulResponse(soap, data, "ns:mulResponse", NULL) || soap_end_send(soap), soap->error )
+#endif
+
+SOAP_FMAC3 struct ns__mulResponse * SOAP_FMAC4 soap_get_ns__mulResponse(struct soap*, struct ns__mulResponse *, const char*, const char*);
+
+#ifndef soap_read_ns__mulResponse
+#define soap_read_ns__mulResponse(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__mulResponse(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#endif
+
+
+#ifndef SOAP_TYPE_ns__sub
+#define SOAP_TYPE_ns__sub (14)
+#endif
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__sub(struct soap*, struct ns__sub *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__sub(struct soap*, const struct ns__sub *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__sub(struct soap*, const char*, int, const struct ns__sub *, const char*);
+SOAP_FMAC3 struct ns__sub * SOAP_FMAC4 soap_in_ns__sub(struct soap*, const char*, struct ns__sub *, const char*);
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__sub(struct soap*, const struct ns__sub *, const char*, const char*);
+
+#ifndef soap_write_ns__sub
+#define soap_write_ns__sub(soap, data) ( soap_begin(soap), soap_serialize_ns__sub(soap, data), soap_begin_send(soap) || soap_put_ns__sub(soap, data, "ns:sub", NULL) || soap_end_send(soap), soap->error )
+#endif
+
+SOAP_FMAC3 struct ns__sub * SOAP_FMAC4 soap_get_ns__sub(struct soap*, struct ns__sub *, const char*, const char*);
+
+#ifndef soap_read_ns__sub
+#define soap_read_ns__sub(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__sub(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#endif
+
+
+#ifndef SOAP_TYPE_ns__subResponse
+#define SOAP_TYPE_ns__subResponse (13)
+#endif
+SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__subResponse(struct soap*, struct ns__subResponse *);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__subResponse(struct soap*, const struct ns__subResponse *);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_ns__subResponse(struct soap*, const char*, int, const struct ns__subResponse *, const char*);
+SOAP_FMAC3 struct ns__subResponse * SOAP_FMAC4 soap_in_ns__subResponse(struct soap*, const char*, struct ns__subResponse *, const char*);
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_ns__subResponse(struct soap*, const struct ns__subResponse *, const char*, const char*);
+
+#ifndef soap_write_ns__subResponse
+#define soap_write_ns__subResponse(soap, data) ( soap_begin(soap), soap_serialize_ns__subResponse(soap, data), soap_begin_send(soap) || soap_put_ns__subResponse(soap, data, "ns:subResponse", NULL) || soap_end_send(soap), soap->error )
+#endif
+
+SOAP_FMAC3 struct ns__subResponse * SOAP_FMAC4 soap_get_ns__subResponse(struct soap*, struct ns__subResponse *, const char*, const char*);
+
+#ifndef soap_read_ns__subResponse
+#define soap_read_ns__subResponse(soap, data) ( soap_begin_recv(soap) || !soap_get_ns__subResponse(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
 #endif
 
 
 #ifndef SOAP_TYPE_ns__add
-#define SOAP_TYPE_ns__add (10)
+#define SOAP_TYPE_ns__add (11)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__add(struct soap*, struct ns__add *);
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__add(struct soap*, const struct ns__add *);
@@ -338,7 +400,7 @@ SOAP_FMAC3 struct ns__add * SOAP_FMAC4 soap_get_ns__add(struct soap*, struct ns_
 
 
 #ifndef SOAP_TYPE_ns__addResponse
-#define SOAP_TYPE_ns__addResponse (9)
+#define SOAP_TYPE_ns__addResponse (10)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_ns__addResponse(struct soap*, struct ns__addResponse *);
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_ns__addResponse(struct soap*, const struct ns__addResponse *);
@@ -361,7 +423,7 @@ SOAP_FMAC3 struct ns__addResponse * SOAP_FMAC4 soap_get_ns__addResponse(struct s
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Reason
-#define SOAP_TYPE_PointerToSOAP_ENV__Reason (29)
+#define SOAP_TYPE_PointerToSOAP_ENV__Reason (33)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToSOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToSOAP_ENV__Reason(struct soap*, const char *, int, struct SOAP_ENV__Reason *const*, const char *);
@@ -384,7 +446,7 @@ SOAP_FMAC3 struct SOAP_ENV__Reason ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Rea
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Detail
-#define SOAP_TYPE_PointerToSOAP_ENV__Detail (28)
+#define SOAP_TYPE_PointerToSOAP_ENV__Detail (32)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToSOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToSOAP_ENV__Detail(struct soap*, const char *, int, struct SOAP_ENV__Detail *const*, const char *);
@@ -407,7 +469,7 @@ SOAP_FMAC3 struct SOAP_ENV__Detail ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Det
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Code
-#define SOAP_TYPE_PointerToSOAP_ENV__Code (22)
+#define SOAP_TYPE_PointerToSOAP_ENV__Code (26)
 #endif
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToSOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToSOAP_ENV__Code(struct soap*, const char *, int, struct SOAP_ENV__Code *const*, const char *);
@@ -427,22 +489,22 @@ SOAP_FMAC3 struct SOAP_ENV__Code ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Code(
 
 #endif
 
-#ifndef SOAP_TYPE_PointerToint
-#define SOAP_TYPE_PointerToint (7)
+#ifndef SOAP_TYPE_PointerTodouble
+#define SOAP_TYPE_PointerTodouble (8)
 #endif
-SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToint(struct soap*, int *const*);
-SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToint(struct soap*, const char *, int, int *const*, const char *);
-SOAP_FMAC3 int ** SOAP_FMAC4 soap_in_PointerToint(struct soap*, const char*, int **, const char*);
-SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToint(struct soap*, int *const*, const char*, const char*);
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTodouble(struct soap*, double *const*);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTodouble(struct soap*, const char *, int, double *const*, const char *);
+SOAP_FMAC3 double ** SOAP_FMAC4 soap_in_PointerTodouble(struct soap*, const char*, double **, const char*);
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTodouble(struct soap*, double *const*, const char*, const char*);
 
-#ifndef soap_write_PointerToint
-#define soap_write_PointerToint(soap, data) ( soap_begin(soap), soap_serialize_PointerToint(soap, data), soap_begin_send(soap) || soap_put_PointerToint(soap, data, "int", NULL) || soap_end_send(soap), soap->error )
+#ifndef soap_write_PointerTodouble
+#define soap_write_PointerTodouble(soap, data) ( soap_begin(soap), soap_serialize_PointerTodouble(soap, data), soap_begin_send(soap) || soap_put_PointerTodouble(soap, data, "double", NULL) || soap_end_send(soap), soap->error )
 #endif
 
-SOAP_FMAC3 int ** SOAP_FMAC4 soap_get_PointerToint(struct soap*, int **, const char*, const char*);
+SOAP_FMAC3 double ** SOAP_FMAC4 soap_get_PointerTodouble(struct soap*, double **, const char*, const char*);
 
-#ifndef soap_read_PointerToint
-#define soap_read_PointerToint(soap, data) ( soap_begin_recv(soap) || !soap_get_PointerToint(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
+#ifndef soap_read_PointerTodouble
+#define soap_read_PointerTodouble(soap, data) ( soap_begin_recv(soap) || !soap_get_PointerTodouble(soap, data, NULL, NULL) || soap_end_recv(soap), soap->error )
 #endif
 
 

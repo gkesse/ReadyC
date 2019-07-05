@@ -1,7 +1,13 @@
 //===============================================
 #include "GProcessSoapClient.h"
 #include "GConsole.h"
-//#include "soapH.h"
+#include "soapH.h"
+//===============================================
+#if defined(G_SOAP_CLIENT)
+#include "calc.nsmap"
+#endif
+//===============================================
+const char server[] = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
 //===============================================
 static GProcessO* m_GProcessSoapClientO = 0;
 //===============================================
@@ -34,39 +40,43 @@ GProcessO* GProcessSoapClient() {
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv) {
 	GConsole()->Print("[ GSoap ] Client Start...\n");
-	/*struct soap *soap = soap_new();
-	int a, b, result;
-	if(argc > 3 )
-	{ a = atoi(argv[1]);
-	b = atoi(argv[3]);
+	struct soap soap;
+	double a, b, result;
+	if (argc < 4)
+	{ fprintf(stderr, "Usage: [add|sub|mul|div|pow] num num\n");
+	exit(0);
+	}
+	soap_init1(&soap, SOAP_XML_INDENT);
+	a = strtod(argv[2], NULL);
+	b = strtod(argv[3], NULL);
+	switch (*argv[1])
+	{ case 'a':
+		soap_call_ns__add(&soap, server, "", a, b, &result);
+		break;
+	case 's':
+		soap_call_ns__sub(&soap, server, "", a, b, &result);
+		break;
+	case 'm':
+		soap_call_ns__mul(&soap, server, "", a, b, &result);
+		break;
+	case 'd':
+		soap_call_ns__div(&soap, server, "", a, b, &result);
+		break;
+	case 'p':
+		soap_call_ns__pow(&soap, server, "", a, b, &result);
+		break;
+	default:
+		fprintf(stderr, "Unknown command\n");
+		exit(0);
+	}
+	if (soap.error)
+	{ soap_print_fault(&soap, stderr);
+	exit(1);
 	}
 	else
-		return;
-	switch (*argv[2]) {
-	case '+':
-	if(soap_call_ns__add(soap, "xmlcomponents.com/CalcBin/Calc.dll", NULL, a, b, &result) == 0)
-		printf("%d+%d=%d\n", a, b, result);
-	else
-		soap_print_fault(soap, stderr);
-	break;
-	case '-':
-		if(soap_call_ns__subtract(soap, "xmlcomponents.com/CalcBin/Calc.dll", NULL, a, b, &result) == 0)
-			printf("%d-%d=%d\n", a, b, result);
-		else
-			soap_print_fault(soap, stderr);
-		break;
-	case '*':
-		if(soap_call_ns__multiply(soap, "xmlcomponents.com/CalcBin/Calc.dll", NULL, a, b, &result) == 0)
-			printf("%d*%d=%d\n", a, b, result);
-		else
-			soap_print_fault(soap, stderr);
-		break;
-	case '/':
-		if(soap_call_ns__divide(soap, "xmlcomponents.com/CalcBin/Calc.dll", NULL, a, b, &result) == 0)
-			printf("%d/%d=%d\n", a, b, result);
-		else
-			soap_print_fault(soap, stderr);
-		break;
-	}*/
+		printf("result = %g\n", result);
+	soap_destroy(&soap);
+	soap_end(&soap);
+	soap_done(&soap);
 }
 //===============================================

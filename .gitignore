@@ -6,5 +6,7 @@
 /**/.project
 /**/.settings/
 /**/Release/
+/**/build/
+/**/bin/
 #/**/unix/
 /**/win/
