@@ -8,6 +8,7 @@
 #include "GProcessSocketClient.h"
 #include "GProcessSoapClient.h"
 #include "GProcessSoapServer.h"
+#include "GProcessCgi.h"
 #include "GProcessDatabase.h"
 #include "GString.h"
 #include "GConfig.h"
@@ -37,6 +38,7 @@ GProcessO* GProcess() {
     if(GString()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
     if(GString()->IsEqual(lKey, "SOAP_CLIENT")) return GProcessSoapClient();
     if(GString()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
+    if(GString()->IsEqual(lKey, "CGI")) return GProcessCgi();
    if(GString()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
     return GProcessConsole();
 }

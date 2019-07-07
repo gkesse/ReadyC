@@ -35,7 +35,7 @@ GProcessO* GProcessSoapClient() {
 static void GProcessSoapClient_Run(int argc, char** argv) {
 	GConsole()->Print("[ GSoap ] Client Start...\n");
 	struct soap *soap = soap_new();
-	/*int a, b, result;
+	int a, b, result;
 	if(argc > 3 )
 	{ a = atoi(argv[1]);
 	b = atoi(argv[3]);
@@ -67,6 +67,15 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 		else
 			soap_print_fault(soap, stderr);
 		break;
-	}*/
+	}
 }
+//===============================================
+struct Namespace namespaces[] = {
+		{ "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" },
+		{ "SOAP-ENC","http://schemas.xmlsoap.org/soap/encoding/"},
+		{ "xsi", "http://www.w3.org/1999/XMLSchema-instance" },
+		{ "xsd", "http://www.w3.org/1999/XMLSchema" },
+		{ "ns", "urn:Calc"},
+		{ NULL, NULL }
+};
 //===============================================

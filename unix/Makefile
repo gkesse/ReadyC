@@ -4,21 +4,25 @@ GBUILD = build
 GTARGET = $(GBIN)/GProject.exe
 
 GINCS = \
-    #-I../src/manager \
+    -I$(GSRC)/manager \
+    -I/opt/gSOAP/gsoap \
+    -I/home/centos/Programs/ReadyC/unix/data/soap/src \
+
 
 GLIBS = \
-    #-Llib/Hello/bin -lHello
+    -L/home/centos/Programs/ReadyC/unix/data/soap/bin \
+    -lGSoap -lsqlite3 \
             
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c))
     
 all: $(GOBJS)
-	g++ -o $(GTARGET) $(GOBJS) $(GLIBS)
+	gcc -o $(GTARGET) $(GOBJS) $(GLIBS)
 $(GBUILD)/%.o: $(GSRC)/%.c
-	g++ -c $< -o $@ $(GINCS)
+	gcc -std=c11 -c $< -o $@ $(GINCS)
 $(GBUILD)/%.o: $(GSRC)/manager/%.c
-	g++ -c $< -o $@ $(GINCS)
+	gcc -std=c11 -c $< -o $@ $(GINCS)
 clean:
 	rm -f $(GBUILD)/*.o $(GBIN)/*.exe
     
