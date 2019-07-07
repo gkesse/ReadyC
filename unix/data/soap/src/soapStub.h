@@ -45,85 +45,104 @@ extern "C" {
 #endif
 
 #ifndef SOAP_TYPE_ns__addResponse
-#define SOAP_TYPE_ns__addResponse (9)
+#define SOAP_TYPE_ns__addResponse (10)
 /* ns:addResponse */
 struct ns__addResponse
 {
-	int *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:int */
+	double *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:double */
 };
 #endif
 
 #ifndef SOAP_TYPE_ns__add
-#define SOAP_TYPE_ns__add (10)
+#define SOAP_TYPE_ns__add (11)
 /* ns:add */
 struct ns__add
 {
-	int a;	/* required element of type xsd:int */
-	int b;	/* required element of type xsd:int */
+	double a;	/* required element of type xsd:double */
+	double b;	/* required element of type xsd:double */
 };
 #endif
 
-#ifndef SOAP_TYPE_ns__subtractResponse
-#define SOAP_TYPE_ns__subtractResponse (12)
-/* ns:subtractResponse */
-struct ns__subtractResponse
+#ifndef SOAP_TYPE_ns__subResponse
+#define SOAP_TYPE_ns__subResponse (13)
+/* ns:subResponse */
+struct ns__subResponse
 {
-	int *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:int */
+	double *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:double */
 };
 #endif
 
-#ifndef SOAP_TYPE_ns__subtract
-#define SOAP_TYPE_ns__subtract (13)
-/* ns:subtract */
-struct ns__subtract
+#ifndef SOAP_TYPE_ns__sub
+#define SOAP_TYPE_ns__sub (14)
+/* ns:sub */
+struct ns__sub
 {
-	int a;	/* required element of type xsd:int */
-	int b;	/* required element of type xsd:int */
+	double a;	/* required element of type xsd:double */
+	double b;	/* required element of type xsd:double */
 };
 #endif
 
-#ifndef SOAP_TYPE_ns__multiplyResponse
-#define SOAP_TYPE_ns__multiplyResponse (15)
-/* ns:multiplyResponse */
-struct ns__multiplyResponse
+#ifndef SOAP_TYPE_ns__mulResponse
+#define SOAP_TYPE_ns__mulResponse (16)
+/* ns:mulResponse */
+struct ns__mulResponse
 {
-	int *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:int */
+	double *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:double */
 };
 #endif
 
-#ifndef SOAP_TYPE_ns__multiply
-#define SOAP_TYPE_ns__multiply (16)
-/* ns:multiply */
-struct ns__multiply
+#ifndef SOAP_TYPE_ns__mul
+#define SOAP_TYPE_ns__mul (17)
+/* ns:mul */
+struct ns__mul
 {
-	int a;	/* required element of type xsd:int */
-	int b;	/* required element of type xsd:int */
+	double a;	/* required element of type xsd:double */
+	double b;	/* required element of type xsd:double */
 };
 #endif
 
-#ifndef SOAP_TYPE_ns__divideResponse
-#define SOAP_TYPE_ns__divideResponse (18)
-/* ns:divideResponse */
-struct ns__divideResponse
+#ifndef SOAP_TYPE_ns__divResponse
+#define SOAP_TYPE_ns__divResponse (19)
+/* ns:divResponse */
+struct ns__divResponse
 {
-	int *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:int */
+	double *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:double */
 };
 #endif
 
-#ifndef SOAP_TYPE_ns__divide
-#define SOAP_TYPE_ns__divide (19)
-/* ns:divide */
-struct ns__divide
+#ifndef SOAP_TYPE_ns__div
+#define SOAP_TYPE_ns__div (20)
+/* ns:div */
+struct ns__div
 {
-	int a;	/* required element of type xsd:int */
-	int b;	/* required element of type xsd:int */
+	double a;	/* required element of type xsd:double */
+	double b;	/* required element of type xsd:double */
+};
+#endif
+
+#ifndef SOAP_TYPE_ns__powResponse
+#define SOAP_TYPE_ns__powResponse (22)
+/* ns:powResponse */
+struct ns__powResponse
+{
+	double *result;	/* SOAP 1.2 RPC return element (when namespace qualified) */	/* optional element of type xsd:double */
+};
+#endif
+
+#ifndef SOAP_TYPE_ns__pow
+#define SOAP_TYPE_ns__pow (23)
+/* ns:pow */
+struct ns__pow
+{
+	double a;	/* required element of type xsd:double */
+	double b;	/* required element of type xsd:double */
 };
 #endif
 
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Header
-#define SOAP_TYPE_SOAP_ENV__Header (20)
+#define SOAP_TYPE_SOAP_ENV__Header (24)
 /* SOAP Header: */
 struct SOAP_ENV__Header
 {
@@ -138,7 +157,7 @@ struct SOAP_ENV__Header
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Code
-#define SOAP_TYPE_SOAP_ENV__Code (21)
+#define SOAP_TYPE_SOAP_ENV__Code (25)
 /* SOAP Fault Code: */
 struct SOAP_ENV__Code
 {
@@ -152,7 +171,7 @@ struct SOAP_ENV__Code
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Detail
-#define SOAP_TYPE_SOAP_ENV__Detail (23)
+#define SOAP_TYPE_SOAP_ENV__Detail (27)
 /* SOAP-ENV:Detail */
 struct SOAP_ENV__Detail
 {
@@ -167,7 +186,7 @@ struct SOAP_ENV__Detail
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Reason
-#define SOAP_TYPE_SOAP_ENV__Reason (26)
+#define SOAP_TYPE_SOAP_ENV__Reason (30)
 /* SOAP-ENV:Reason */
 struct SOAP_ENV__Reason
 {
@@ -180,7 +199,7 @@ struct SOAP_ENV__Reason
 #ifndef WITH_NOGLOBAL
 
 #ifndef SOAP_TYPE_SOAP_ENV__Fault
-#define SOAP_TYPE_SOAP_ENV__Fault (27)
+#define SOAP_TYPE_SOAP_ENV__Fault (31)
 /* SOAP Fault: */
 struct SOAP_ENV__Fault
 {
@@ -229,13 +248,15 @@ typedef char *_XML;
 \******************************************************************************/
 
 
-SOAP_FMAC5 int SOAP_FMAC6 ns__add(struct soap*, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 ns__add(struct soap*, double a, double b, double *result);
 
-SOAP_FMAC5 int SOAP_FMAC6 ns__subtract(struct soap*, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 ns__sub(struct soap*, double a, double b, double *result);
 
-SOAP_FMAC5 int SOAP_FMAC6 ns__multiply(struct soap*, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 ns__mul(struct soap*, double a, double b, double *result);
 
-SOAP_FMAC5 int SOAP_FMAC6 ns__divide(struct soap*, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 ns__div(struct soap*, double a, double b, double *result);
+
+SOAP_FMAC5 int SOAP_FMAC6 ns__pow(struct soap*, double a, double b, double *result);
 
 /******************************************************************************\
  *                                                                            *
@@ -249,11 +270,13 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap*);
 
 SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__add(struct soap*);
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__subtract(struct soap*);
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__sub(struct soap*);
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__multiply(struct soap*);
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__mul(struct soap*);
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__divide(struct soap*);
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__div(struct soap*);
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__pow(struct soap*);
 
 /******************************************************************************\
  *                                                                            *
@@ -262,13 +285,15 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__divide(struct soap*);
 \******************************************************************************/
 
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result);
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__subtract(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__sub(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result);
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__multiply(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__mul(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result);
 
-SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__divide(struct soap *soap, const char *soap_endpoint, const char *soap_action, int a, int b, int *result);
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__div(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result);
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__pow(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result);
 
 #ifdef __cplusplus
 }

@@ -1,6 +1,6 @@
 //===============================================
 #include "GProcessSocketClient.h"
-#include "GSocket.h"
+#include "GSocket2.h"
 #include "GConsole.h"
 //===============================================
 static GProcessO* m_GProcessSocketClientO = 0;
@@ -37,45 +37,45 @@ static void GProcessSocketClient_Run(int argc, char** argv) {
 	char lMessage[256];
 
 #if defined(__WIN32)
-	GSocket()->Data("CLIENT");
-	GSocket()->Socket("CLIENT");
-	GSocket()->Address("SERVER");
+	GSocket2()->Data("CLIENT");
+	GSocket2()->Socket("CLIENT");
+	GSocket2()->Address("SERVER");
 
-	GSocket()->Start("CLIENT", 2, 0);
+	GSocket2()->Start("CLIENT", 2, 0);
 
-	GSocket()->Socket2("CLIENT", AF_INET, SOCK_STREAM, 0);
-    GSocket()->Address3("SERVER", AF_INET, "127.0.0.1", 5566);
-	GSocket()->Connect("CLIENT", "SERVER");
-	GSocket()->Recv("CLIENT", lMessage, 255);
+	GSocket2()->Socket2("CLIENT", AF_INET, SOCK_STREAM, 0);
+    GSocket2()->Address3("SERVER", AF_INET, "127.0.0.1", 5566);
+	GSocket2()->Connect("CLIENT", "SERVER");
+	GSocket2()->Recv("CLIENT", lMessage, 255);
 	GConsole()->Print("[ CLIENT ] Recv: %s\n", lMessage);
-	GSocket()->Send("CLIENT", "Je veux communiquer", 0);
+	GSocket2()->Send("CLIENT", "Je veux communiquer", 0);
 
-	GSocket()->Close("CLIENT");
-	GSocket()->Clean("CLIENT");
-	GSocket()->Clean2("CLIENT");
-	GSocket()->Clean3("SERVER");
+	GSocket2()->Close("CLIENT");
+	GSocket2()->Clean("CLIENT");
+	GSocket2()->Clean2("CLIENT");
+	GSocket2()->Clean3("SERVER");
 #elif defined(__unix)
 	// allouer une socket
-	GSocket()->Socket("CLIENT");
+	GSocket2()->Socket("CLIENT");
 	// allouer une adresse
-	GSocket()->Address("SERVER");
+	GSocket2()->Address("SERVER");
 	// cr�er une socket
-	GSocket()->Socket2("CLIENT", AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	GSocket2()->Socket2("CLIENT", AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	// cr�er une adresse
-	GSocket()->Address3("SERVER", AF_INET, "127.0.0.1", 5566);
+	GSocket2()->Address3("SERVER", AF_INET, "127.0.0.1", 5566);
 	// connecter la socket à l'adresse
-	GSocket()->Connect("CLIENT", "SERVER");
+	GSocket2()->Connect("CLIENT", "SERVER");
 	// Lire un message du serveur
-	GSocket()->Read("CLIENT", lMessage, 255);
+	GSocket2()->Read("CLIENT", lMessage, 255);
 	GConsole()->Print("[ SERVER ] Read: %s\n", lMessage);
 	// Envoyer un message au serveur
-	GSocket()->Write("CLIENT", "Je communique avec le serveur", 0);
+	GSocket2()->Write("CLIENT", "Je communique avec le serveur", 0);
 	// Fermer une socket
-	GSocket()->Close("CLIENT");
+	GSocket2()->Close("CLIENT");
 	// Lib�rer une socket
-	GSocket()->Clean2("CLIENT");
+	GSocket2()->Clean2("CLIENT");
 	// Lib�rer une adresse
-	GSocket()->Clean3("SERVER");
+	GSocket2()->Clean3("SERVER");
 #endif
 }
 //===============================================

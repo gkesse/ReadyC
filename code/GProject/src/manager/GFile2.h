@@ -1,25 +1,19 @@
 //===============================================
-#ifndef _GConfig_
-#define _GConfig_
+#ifndef _GFile2_
+#define _GFile2_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GConfigO GConfigO;
+typedef struct _GFile2O GFile2O;
 //===============================================
-struct _GConfigO {
-    void* m_child;
+struct _GFile2O {
     void (*Delete)();
-    void (*Clear)();
-    void (*Remove)(char* key);
-    void (*SetData)(char* key, char* value);
-    char* (*GetData)(char* key);
-    int (*Size)();
-    void (*Show)();
+    void (*Exist)(char* file);
 };
 //===============================================
-GConfigO* GConfig_New();
-void GConfig_Delete(GConfigO* obj);
-GConfigO* GConfig();
+GFile2O* GFile2_New();
+void GFile2_Delete();
+GFile2O* GFile2();
 //===============================================
 #endif
 //===============================================

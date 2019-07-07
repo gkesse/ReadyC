@@ -39,6 +39,6 @@ static void GProcessConfig_Run(int argc, char** argv) {
     GConfig()->SetData("Formation", "Informatique Industrielle");
     GConfig()->SetData("Ecole", "Polytech'Montpellier");
     GConfig()->Show();
-    GConfig()->Delete();
+    //GConfig()->Delete();
 }
 //===============================================
