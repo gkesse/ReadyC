@@ -31,18 +31,6 @@ void GProcess_Delete(GProcessO* obj) {
 //===============================================
 GProcessO* GProcess() {
     char* lKey = GConfig()->GetData("PROCESS");
-<<<<<<< HEAD
-    if(GString()->IsEqual(lKey, "CONSOLE")) return GProcessConsole();
-    if(GString()->IsEqual(lKey, "KEYBOARD")) return GProcessKeyboard();
-    if(GString()->IsEqual(lKey, "MAP")) return GProcessMap();
-    if(GString()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
-    if(GString()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();
-    if(GString()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
-    if(GString()->IsEqual(lKey, "SOAP_CLIENT")) return GProcessSoapClient();
-    if(GString()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
-    if(GString()->IsEqual(lKey, "CGI")) return GProcessCgi();
-   if(GString()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
-=======
     if(GString2()->IsEqual(lKey, "CONSOLE")) return GProcessConsole();
     if(GString2()->IsEqual(lKey, "KEYBOARD")) return GProcessKeyboard();
     if(GString2()->IsEqual(lKey, "MAP")) return GProcessMap();
@@ -53,7 +41,6 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
     if(GString2()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
     if(GString2()->IsEqual(lKey, "GTK")) return GProcessGtk();
->>>>>>> e856714f5bde9182b2f094384f4252baeff32698
     return GProcessConsole();
 }
 //===============================================

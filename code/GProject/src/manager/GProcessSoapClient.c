@@ -40,19 +40,11 @@ GProcessO* GProcessSoapClient() {
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv) {
 	GConsole()->Print("[ GSoap ] Client Start...\n");
-<<<<<<< HEAD
-	struct soap *soap = soap_new();
-	int a, b, result;
-	if(argc > 3 )
-	{ a = atoi(argv[1]);
-	b = atoi(argv[3]);
-=======
 	struct soap soap;
 	double a, b, result;
 	if (argc < 4)
 	{ fprintf(stderr, "Usage: [add|sub|mul|div|pow] num num\n");
 	exit(0);
->>>>>>> e856714f5bde9182b2f094384f4252baeff32698
 	}
 	soap_init1(&soap, SOAP_XML_INDENT);
 	a = strtod(argv[2], NULL);
@@ -70,9 +62,6 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 	case 'd':
 		soap_call_ns__div(&soap, server, "", a, b, &result);
 		break;
-<<<<<<< HEAD
-	}
-=======
 	case 'p':
 		soap_call_ns__pow(&soap, server, "", a, b, &result);
 		break;
@@ -89,7 +78,6 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 	soap_destroy(&soap);
 	soap_end(&soap);
 	soap_done(&soap);
->>>>>>> e856714f5bde9182b2f094384f4252baeff32698
 }
 //===============================================
 struct Namespace namespaces[] = {
