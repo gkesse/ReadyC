@@ -1,5 +1,6 @@
 //===============================================
 #include "GConfigTemplate.h"
+#include "GConsole.h"
 //===============================================
 typedef char* GCHAR_PTR;
 //===============================================
@@ -70,7 +71,9 @@ static void GConfigTemplate_SetData(char* key, char* value) {
 static char* GConfigTemplate_GetData(char* key) {
     GConfigTemplateO* lConfigTemplate = m_GConfigTemplateO->m_child;
     GMapO(GConfigTemplate_GCHAR_PTR_GCHAR_PTR)* lDataMap = lConfigTemplate->m_dataMap;
-    return lDataMap->GetData(lDataMap, key, GConfigTemplate_MapEqual);
+    char* lValue = lDataMap->GetData(lDataMap, key, GConfigTemplate_MapEqual);
+    if(lValue == 0) {GConsole()->Print("[ GConfig ] Error GConfigTemplate_GetData: %s\n", key); exit(0);}
+    return lValue;
 }
 //===============================================
 static int GConfigTemplate_Size() {
