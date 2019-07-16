@@ -17,15 +17,13 @@ compiling, linking, and/or using OpenSSL is allowed.
 extern "C" {
 #endif
 
-SOAP_SOURCE_STAMP("@(#) soapClient.c ver 2.8.14 2019-07-11 06:04:42 GMT")
+SOAP_SOURCE_STAMP("@(#) soapClient.c ver 2.8.14 2019-07-15 12:10:06 GMT")
 
 
 SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
 {	struct ns__add soap_tmp_ns__add;
 	struct ns__addResponse *soap_tmp_ns__addResponse;
-	if (soap_endpoint == NULL)
-		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	soap_tmp_ns__add.a = a;
 	soap_tmp_ns__add.b = b;
 	soap_begin(soap);
@@ -61,9 +59,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_
 	 || soap_recv_header(soap)
 	 || soap_body_begin_in(soap))
 		return soap_closesock(soap);
-	if (soap_recv_fault(soap, 1))
-		return soap->error;
-	soap_tmp_ns__addResponse = soap_get_ns__addResponse(soap, NULL, "", "");
+	soap_tmp_ns__addResponse = soap_get_ns__addResponse(soap, NULL, "ns:addResponse", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)
@@ -78,9 +74,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__add(struct soap *soap, const char *soap_
 SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__sub(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
 {	struct ns__sub soap_tmp_ns__sub;
 	struct ns__subResponse *soap_tmp_ns__subResponse;
-	if (soap_endpoint == NULL)
-		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	soap_tmp_ns__sub.a = a;
 	soap_tmp_ns__sub.b = b;
 	soap_begin(soap);
@@ -116,9 +110,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__sub(struct soap *soap, const char *soap_
 	 || soap_recv_header(soap)
 	 || soap_body_begin_in(soap))
 		return soap_closesock(soap);
-	if (soap_recv_fault(soap, 1))
-		return soap->error;
-	soap_tmp_ns__subResponse = soap_get_ns__subResponse(soap, NULL, "", "");
+	soap_tmp_ns__subResponse = soap_get_ns__subResponse(soap, NULL, "ns:subResponse", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)
@@ -133,9 +125,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__sub(struct soap *soap, const char *soap_
 SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__mul(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
 {	struct ns__mul soap_tmp_ns__mul;
 	struct ns__mulResponse *soap_tmp_ns__mulResponse;
-	if (soap_endpoint == NULL)
-		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	soap_tmp_ns__mul.a = a;
 	soap_tmp_ns__mul.b = b;
 	soap_begin(soap);
@@ -171,9 +161,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__mul(struct soap *soap, const char *soap_
 	 || soap_recv_header(soap)
 	 || soap_body_begin_in(soap))
 		return soap_closesock(soap);
-	if (soap_recv_fault(soap, 1))
-		return soap->error;
-	soap_tmp_ns__mulResponse = soap_get_ns__mulResponse(soap, NULL, "", "");
+	soap_tmp_ns__mulResponse = soap_get_ns__mulResponse(soap, NULL, "ns:mulResponse", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)
@@ -188,9 +176,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__mul(struct soap *soap, const char *soap_
 SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__div(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
 {	struct ns__div soap_tmp_ns__div;
 	struct ns__divResponse *soap_tmp_ns__divResponse;
-	if (soap_endpoint == NULL)
-		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	soap_tmp_ns__div.a = a;
 	soap_tmp_ns__div.b = b;
 	soap_begin(soap);
@@ -226,9 +212,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__div(struct soap *soap, const char *soap_
 	 || soap_recv_header(soap)
 	 || soap_body_begin_in(soap))
 		return soap_closesock(soap);
-	if (soap_recv_fault(soap, 1))
-		return soap->error;
-	soap_tmp_ns__divResponse = soap_get_ns__divResponse(soap, NULL, "", "");
+	soap_tmp_ns__divResponse = soap_get_ns__divResponse(soap, NULL, "ns:divResponse", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)
@@ -243,9 +227,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__div(struct soap *soap, const char *soap_
 SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__pow(struct soap *soap, const char *soap_endpoint, const char *soap_action, double a, double b, double *result)
 {	struct ns__pow soap_tmp_ns__pow;
 	struct ns__powResponse *soap_tmp_ns__powResponse;
-	if (soap_endpoint == NULL)
-		soap_endpoint = "http://websrv.cs.fsu.edu/~engelen/calcserver.cgi";
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	soap_tmp_ns__pow.a = a;
 	soap_tmp_ns__pow.b = b;
 	soap_begin(soap);
@@ -281,9 +263,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_call_ns__pow(struct soap *soap, const char *soap_
 	 || soap_recv_header(soap)
 	 || soap_body_begin_in(soap))
 		return soap_closesock(soap);
-	if (soap_recv_fault(soap, 1))
-		return soap->error;
-	soap_tmp_ns__powResponse = soap_get_ns__powResponse(soap, NULL, "", "");
+	soap_tmp_ns__powResponse = soap_get_ns__powResponse(soap, NULL, "ns:powResponse", "");
 	if (soap->error)
 		return soap_recv_fault(soap, 0);
 	if (soap_body_end_in(soap)

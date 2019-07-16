@@ -48,7 +48,10 @@ static void GSetting_Load(char* file) {
         GString2()->Free(lTrim);
         GString2()->Free2(lSplit, lCount);
     }
-    GConfig()->Show();
+    char* lConfigShow = GConfig()->GetData("CONFIG_SHOW");
+    if(GString2()->IsEqual(lConfigShow, "TRUE")) {
+        GConfig()->Show();
+    }
     printf("\n");
     fclose(lFile);
 }

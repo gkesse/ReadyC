@@ -17,7 +17,7 @@ compiling, linking, and/or using OpenSSL is allowed.
 extern "C" {
 #endif
 
-SOAP_SOURCE_STAMP("@(#) soapServer.c ver 2.8.14 2019-07-11 06:04:42 GMT")
+SOAP_SOURCE_STAMP("@(#) soapServer.c ver 2.8.14 2019-07-15 12:10:06 GMT")
 
 
 SOAP_FMAC5 int SOAP_FMAC6 soap_serve(struct soap *soap)
@@ -81,7 +81,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__add(struct soap *soap)
 	soap_default_double(soap, &soap_tmp_double);
 	soap_tmp_ns__addResponse.result = &soap_tmp_double;
 	soap_default_ns__add(soap, &soap_tmp_ns__add);
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	if (!soap_get_ns__add(soap, &soap_tmp_ns__add, "ns:add", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
@@ -125,7 +125,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__sub(struct soap *soap)
 	soap_default_double(soap, &soap_tmp_double);
 	soap_tmp_ns__subResponse.result = &soap_tmp_double;
 	soap_default_ns__sub(soap, &soap_tmp_ns__sub);
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	if (!soap_get_ns__sub(soap, &soap_tmp_ns__sub, "ns:sub", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
@@ -169,7 +169,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__mul(struct soap *soap)
 	soap_default_double(soap, &soap_tmp_double);
 	soap_tmp_ns__mulResponse.result = &soap_tmp_double;
 	soap_default_ns__mul(soap, &soap_tmp_ns__mul);
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	if (!soap_get_ns__mul(soap, &soap_tmp_ns__mul, "ns:mul", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
@@ -213,7 +213,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__div(struct soap *soap)
 	soap_default_double(soap, &soap_tmp_double);
 	soap_tmp_ns__divResponse.result = &soap_tmp_double;
 	soap_default_ns__div(soap, &soap_tmp_ns__div);
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	if (!soap_get_ns__div(soap, &soap_tmp_ns__div, "ns:div", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
@@ -257,7 +257,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_ns__pow(struct soap *soap)
 	soap_default_double(soap, &soap_tmp_double);
 	soap_tmp_ns__powResponse.result = &soap_tmp_double;
 	soap_default_ns__pow(soap, &soap_tmp_ns__pow);
-	soap->encodingStyle = "";
+	soap->encodingStyle = NULL;
 	if (!soap_get_ns__pow(soap, &soap_tmp_ns__pow, "ns:pow", NULL))
 		return soap->error;
 	if (soap_body_end_in(soap)
