@@ -7,10 +7,10 @@ GINCS = \
 	-I/usr/include/gtk-2.0 -I/usr/lib64/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/libpng15 -I/usr/include/uuid -I/usr/include/pixman-1 -I/usr/include/libdrm \
     -I$(GSRC)/manager \
     -I/opt/gSOAP/gsoap \
-    -I/home/centos/Programs/ReadyC/unix/data/soap/src \
+    -I/home/centos/LOCAL/unix/data/soap/src/ \
 
 GLIBS = \
-    -L/home/centos/Programs/ReadyC/unix/data/soap/bin \
+    -L/home/centos/LOCAL/unix/data/soap/bin/ \
     -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgio-2.0 -lpangoft2-1.0 -lpangocairo-1.0 -lgdk_pixbuf-2.0 -lcairo -lpango-1.0 -lfontconfig -lgobject-2.0 -lglib-2.0 -lfreetype -lm \
     -lsqlite3 -lGSoap2 \
 
@@ -19,7 +19,7 @@ GOBJS = \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c))
     	
 all: $(GOBJS)
-	gcc -o $(GTARGET) $(GOBJS) $(GLIBS)
+	gcc -o $(GTARGET) $(GOBJS) $(GLIBS) 
 $(GBUILD)/%.o: $(GSRC)/%.c
 	gcc -std=c11 -c $< -o $@ $(GINCS)
 $(GBUILD)/%.o: $(GSRC)/manager/%.c

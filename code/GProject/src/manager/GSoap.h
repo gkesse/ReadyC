@@ -14,6 +14,7 @@ struct _GSoapO {
     void (*Soap)(char* socketName);
     void (*Socket)(char* socketName);
     void* (*Malloc)(char* soapName, int size);
+    void (*Init1)(char* soapName, int mode);
     void (*Serve)(char* socketName);
     void (*Bind)(char* soapName, char* socketName, char* host, int port, int backlog);
     void (*Accept)(char* soapName, char* socketName);

@@ -17,6 +17,7 @@ static GSoapO* m_GSoapO = 0;
 static void GSoap_Soap(char* soapName);
 static void GSoap_Socket(char* socketName);
 static void* GSoap_Malloc(char* soapName, int size);
+static void GSoap_Init1(char* soapName, int mode);
 static void GSoap_Serve(char* soapName);
 static void GSoap_Bind(char* soapName, char* socketName, char* host, int port, int backlog);
 static void GSoap_Accept(char* soapName, char* socketName);
@@ -32,6 +33,7 @@ GSoapO* GSoap_New() {
     lObj->Soap = GSoap_Soap;
     lObj->Socket = GSoap_Socket;
     lObj->Malloc = GSoap_Malloc;
+    lObj->Init1 = GSoap_Init1;
     lObj->Serve = GSoap_Serve;
     lObj->Bind = GSoap_Bind;
     lObj->Accept = GSoap_Accept;
@@ -73,6 +75,12 @@ static void* GSoap_Malloc(char* soapName, int size) {
 	return soap_malloc(lSoap, size);
 }
 //===============================================
+static void GSoap_Init1(char* soapName, int mode) {
+	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	soap_init1(lSoap, mode);
+}
+//===============================================
 static void GSoap_Serve(char* soapName) {
 	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
 	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
@@ -95,6 +103,12 @@ static void GSoap_Accept(char* soapName, char* socketName) {
 	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSoap_MapEqual);
 	*lSocket = soap_accept(lSoap);
 	if(soap_valid_socket(*lSocket) == 0) {GConsole()->Print("[ GSoap ] Error GSoap_Accept\n"); soap_print_fault(lSoap, stderr); exit(0);}
+}
+//===============================================
+static void GSoap_Done(char* soapName) {
+	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	soap_done(lSoap);
 }
 //===============================================
 static void GSoap_End(char* soapName) {
