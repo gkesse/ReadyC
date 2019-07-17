@@ -22,7 +22,7 @@ static void GSoap_Init(char* soapName);
 static void GSoap_Init1(char* soapName, int mode);
 static void GSoap_PrintFault(char* soapName, FILE* stream);
 static void GSoap_Done(char* soapName);
-static void GSoap_Call(char* soapName, const char* server, const char* action, double a, double b, double* result);
+static void GSoap_CallFunc(char* soapName, const char* server, const char* action, GSOAP_CALL_FUNC callFunc, void* params);
 static void GSoap_Destroy(char* soapName);
 static void GSoap_Serve(char* soapName);
 static void GSoap_Bind(char* soapName, char* socketName, char* host, int port, int backlog);
@@ -50,7 +50,7 @@ GSoapO* GSoap_New() {
     lObj->Init1 = GSoap_Init1;
     lObj->PrintFault = GSoap_PrintFault;
     lObj->Done = GSoap_Done;
-    lObj->Call = GSoap_Call;
+    lObj->CallFunc = GSoap_CallFunc;
     lObj->Destroy = GSoap_Destroy;
     lObj->Serve = GSoap_Serve;
     lObj->Bind = GSoap_Bind;
@@ -121,12 +121,10 @@ static void GSoap_Done(char* soapName) {
 	soap_done(lSoap);
 }
 //===============================================
-static void GSoap_Call(char* soapName, const char* server, const char* action, double a, double b, double* result) {
+static void GSoap_CallFunc(char* soapName, const char* server, const char* action, GSOAP_CALL_FUNC callFunc, void* params) {
 	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
 	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
-	soap_call_ns__add(lSoap, server, action, a, b, result);
-	int lOk = lSoap->error;
-	if(lOk != 0) {GConsole()->Print("[ GSoap ] Error GSoap_Call\n"); soap_print_fault(lSoap, stderr); exit(0);}
+	callFunc(lSoap, server, action, params);
 }
 //===============================================
 static void GSoap_Destroy(char* soapName) {
