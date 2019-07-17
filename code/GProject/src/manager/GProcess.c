@@ -39,6 +39,7 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
     if(GString2()->IsEqual(lKey, "SOAP_CLIENT")) return GProcessSoapClient();
     if(GString2()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
+    if(GString2()->IsEqual(lKey, "CGI")) return GProcessCgi();
     if(GString2()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
     if(GString2()->IsEqual(lKey, "GTK")) return GProcessGtk();
     return GProcessConsole();

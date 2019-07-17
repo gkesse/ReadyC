@@ -51,8 +51,8 @@ static void GSetting_Load(char* file) {
     char* lConfigShow = GConfig()->GetData("CONFIG_SHOW");
     if(GString2()->IsEqual(lConfigShow, "TRUE")) {
         GConfig()->Show();
+        printf("\n");
     }
-    printf("\n");
     fclose(lFile);
 }
 //===============================================
