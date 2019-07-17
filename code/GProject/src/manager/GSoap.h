@@ -27,6 +27,9 @@ struct _GSoapO {
     void (*Accept)(char* soapName, char* socketName);
     int (*SenderFault)(char* soapName, char* faultString, char* faultDetail);
     void (*End)(char* soapName);
+    void (*FreeSoap)(char* soapName);
+    void (*FreeSocket)(char* socketName);
+    void (*Clean)();
     GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* m_soapMap;
     GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* m_socketMap;
 };

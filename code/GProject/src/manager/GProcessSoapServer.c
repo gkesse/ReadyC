@@ -36,15 +36,20 @@ static void GProcessSoapServer_Run(int argc, char** argv) {
 	GSoap()->Soap("SERVER");
 	GSoap()->Socket("SERVER");
 	GSoap()->Socket("CLIENT");
+
 	GSoap()->Init("SERVER");
-	GSoap()->Serve("SERVER");
-	GSoap()->Bind("SERVER", "SERVER", 0, 8228, 10);
+	GSoap()->Bind("SERVER", "SERVER", 0, 8338, 10);
 
 	while(1) {
 		GSoap()->Accept("SERVER", "CLIENT");
 		GSoap()->Serve("SERVER");
 		GSoap()->End("SERVER");
 	}
+
+	GSoap()->FreeSoap("SERVER");
+	GSoap()->FreeSocket("SERVER");
+	GSoap()->FreeSocket("CLIENT");
+	GSoap()->Clean();
 }
 //===============================================
 int ns__add(struct soap *soap, double a, double b, double *result) {

@@ -3,7 +3,7 @@
 #include "GConsole.h"
 #include "GSoap.h"
 //===============================================
-const char* G_SERVER = "http://192.168.43.120:8228/cgi-bin/";
+const char* G_SERVER_URL = "http://192.168.43.120:8338/";
 //===============================================
 static GProcessO* m_GProcessSoapClientO = 0;
 //===============================================
@@ -36,17 +36,20 @@ GProcessO* GProcessSoapClient() {
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv) {
 	GSoap()->Soap("CLIENT");
+
 	GSoap()->Init1("CLIENT", SOAP_XML_INDENT);
-	GSoap()->Soap("CLIENT");
-	GSoap()->Soap("CLIENT");
 
 	double lResult = 0;
-	GSoap()->Call("CLIENT", G_SERVER, "", 10, 20, &lResult);
+	GSoap()->Call("CLIENT", G_SERVER_URL, "", 10, 20, &lResult);
 
 	GConsole()->Print("[ GSoap ] result = %g\n", lResult);
+
 	GSoap()->Destroy("CLIENT");
 	GSoap()->End("CLIENT");
 	GSoap()->Done("CLIENT");
+
+	GSoap()->FreeSoap("CLIENT");
+	GSoap()->Clean();
 }
 //===============================================
 struct Namespace namespaces[] = {
