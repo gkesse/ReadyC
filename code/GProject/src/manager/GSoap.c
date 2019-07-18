@@ -168,17 +168,11 @@ static void GSoap_Accept(char* soapName, char* socketName) {
 	if(soap_valid_socket(*lSocket) == 0) {GConsole()->Print("[ GSoap ] Error GSoap_Accept\n"); soap_print_fault(lSoap, stderr); exit(0);}
 }
 //===============================================
-static void GSoap_Done(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
-	soap_done(lSoap);
-}
-//===============================================
 static void GSoap_End(char* soapName) {
 	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
 	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
 	soap_end(lSoap);
-}
+} 
 //===============================================
 static int GSoap_SenderFault(char* soapName, char* faultString, char* faultDetail) {
 	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;

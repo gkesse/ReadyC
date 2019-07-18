@@ -19,7 +19,6 @@ struct _GSoapO {
     void (*Init)(char* soapName);
     void (*Init1)(char* soapName, int mode);
     void (*PrintFault)(char* soapName, FILE* stream);
-    void (*Done)(char* soapName);
     void (*CallFunc)(char* soapName, const char* server, const char* action, GSOAP_CALL_FUNC callFunc, void* params);
     void (*Destroy)(char* soapName);
     void (*Serve)(char* socketName);

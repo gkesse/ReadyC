@@ -38,7 +38,7 @@ static void GProcessSoapServer_Run(int argc, char** argv) {
 	GSoap()->Socket("CLIENT");
 
 	GSoap()->Init("SERVER");
-	GSoap()->Bind("SERVER", "SERVER", 0, 8338, 10);
+	GSoap()->Bind("SERVER", "SERVER", 0, 8448, 10);
 
 	while(1) {
 		GSoap()->Accept("SERVER", "CLIENT");

@@ -12,7 +12,7 @@ struct _GSoapMath {
 	double r;
 };
 //===============================================
-const char* G_SERVER_URL = "http://192.168.43.120:8338/";
+const char* G_SERVER_URL = "http://10.7.4.104:8448/";
 //===============================================
 static GProcessO* m_GProcessSoapClientO = 0;
 //===============================================
@@ -58,22 +58,22 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 	lSoapMath.a = 50;
 	lSoapMath.b = 30;
 	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_AddFunc, &lSoapMath);
-	GConsole()->Print("[ GSoap ] add(a, b) = %g\n", lSoapMath.r);
+	GConsole()->Print("[ GSoap ] add(50, 30) = %g\n", lSoapMath.r);
 
 	lSoapMath.a = 50;
-	lSoapMath.b = 20;
+	lSoapMath.b = 30;
 	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_SubFunc, &lSoapMath);
-	GConsole()->Print("[ GSoap ] Sub(a, b) = %g\n", lSoapMath.r);
+	GConsole()->Print("[ GSoap ] Sub(50, 30) = %g\n", lSoapMath.r);
 
 	lSoapMath.a = 50;
-	lSoapMath.b = 20;
+	lSoapMath.b = 30;
 	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_MulFunc, &lSoapMath);
-	GConsole()->Print("[ GSoap ] mul(a, b) = %g\n", lSoapMath.r);
+	GConsole()->Print("[ GSoap ] mul(50, 30) = %g\n", lSoapMath.r);
 
 	lSoapMath.a = 50;
-	lSoapMath.b = 20;
+	lSoapMath.b = 30;
 	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_DivFunc, &lSoapMath);
-	GConsole()->Print("[ GSoap ] div(a, b) = %g\n", lSoapMath.r);
+	GConsole()->Print("[ GSoap ] div(50, 30) = %g\n", lSoapMath.r);
 
 	GSoap()->Destroy("CLIENT");
 	GSoap()->End("CLIENT");
