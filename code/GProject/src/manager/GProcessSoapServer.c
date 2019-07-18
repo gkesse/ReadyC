@@ -36,15 +36,20 @@ static void GProcessSoapServer_Run(int argc, char** argv) {
 	GSoap()->Soap("SERVER");
 	GSoap()->Socket("SERVER");
 	GSoap()->Socket("CLIENT");
+
 	GSoap()->Init("SERVER");
-	GSoap()->Serve("SERVER");
-	GSoap()->Bind("SERVER", "SERVER", 0, 8228, 10);
+	GSoap()->Bind("SERVER", "SERVER", 0, 8338, 10);
 
 	while(1) {
 		GSoap()->Accept("SERVER", "CLIENT");
 		GSoap()->Serve("SERVER");
 		GSoap()->End("SERVER");
 	}
+
+	GSoap()->FreeSoap("SERVER");
+	GSoap()->FreeSocket("SERVER");
+	GSoap()->FreeSocket("CLIENT");
+	GSoap()->Clean();
 }
 //===============================================
 int ns__add(struct soap *soap, double a, double b, double *result) {
@@ -63,12 +68,13 @@ int ns__mul(struct soap *soap, double a, double b, double *result) {
 }
 //===============================================
 int ns__div(struct soap *soap, double a, double b, double *result) {
-	if (b)
+	if(b != 0) {
 		*result = a / b;
+	}
 	else {
-		char *s = (char*)soap_malloc(soap, 1024);
-		sprintf(s, "<error xmlns=\"http://tempuri.org/\">Can't divide %f by %f</error>", a, b);
-		return soap_sender_fault(soap, "Division by zero", s);
+		char* lMsg = (char*)soap_malloc(soap, 1024);
+		sprintf(lMsg, "<error xmlns=\"http://tempuri.org/\">Can't divide %f by %f</error>", a, b);
+		return soap_sender_fault(soap, "Division by zero", lMsg);
 	}
 	return SOAP_OK;
 }

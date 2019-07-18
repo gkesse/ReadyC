@@ -8,7 +8,8 @@
 typedef struct _GSoapO GSoapO;
 typedef struct _GMapO_GSoap_GCHAR_PTR_GSOAP_PTR GMapO_GSoap_GCHAR_PTR_GSOAP_PTR;
 typedef struct _GMapO_GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR GMapO_GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR;
-//typedef int (*GSOAP_CALL_FUNC)();
+//===============================================
+typedef void (*GSOAP_CALL_FUNC)(struct soap* soap, const char* server, const char* action, void* params);
 //===============================================
 struct _GSoapO {
     void (*Delete)();
@@ -19,7 +20,7 @@ struct _GSoapO {
     void (*Init1)(char* soapName, int mode);
     void (*PrintFault)(char* soapName, FILE* stream);
     void (*Done)(char* soapName);
-    void (*Call)(char* soapName, const char* server, const char* action, double a, double b, double* result);
+    void (*CallFunc)(char* soapName, const char* server, const char* action, GSOAP_CALL_FUNC callFunc, void* params);
     void (*Destroy)(char* soapName);
     void (*Serve)(char* socketName);
     void (*Bind)(char* soapName, char* socketName, char* host, int port, int backlog);
@@ -28,6 +29,9 @@ struct _GSoapO {
     void (*Done)(char* soapName);
     int (*SenderFault)(char* soapName, char* faultString, char* faultDetail);
     void (*End)(char* soapName);
+    void (*FreeSoap)(char* soapName);
+    void (*FreeSocket)(char* socketName);
+    void (*Clean)();
     GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* m_soapMap;
     GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* m_socketMap;
 };
