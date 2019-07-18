@@ -32,7 +32,7 @@ GProcessO* GProcessCgi() {
 }
 //===============================================
 static void GProcessCgi_Run(int argc, char** argv) {
-	printf("Content-Type: text/plain;charset=us-ascii\n\n");
-	printf("Hello world\n\n");
+	printf("Content-Type: text/html;charset=utf-8\n\n");
+	printf("<h1 style='color: red;'>[ GCgi ] Bonjour tout le monde</h1>\n\n");
 }
 //===============================================

@@ -19,7 +19,11 @@ compiling, linking, and/or using OpenSSL is allowed.
 extern "C" {
 #endif
 
+<<<<<<< HEAD
 SOAP_SOURCE_STAMP("@(#) soapC.c ver 2.8.14 2019-07-16 09:40:43 GMT")
+=======
+SOAP_SOURCE_STAMP("@(#) soapC.c ver 2.8.14 2019-07-15 12:10:06 GMT")
+>>>>>>> eda2362343cd72c08ce67a3d0c5c729c75aa5e3f
 
 
 #ifndef WITH_NOGLOBAL
