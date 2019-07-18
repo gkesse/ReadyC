@@ -19,6 +19,8 @@ static GProcessO* m_GProcessSoapClientO = 0;
 static void GProcessSoapClient_Run(int argc, char** argv);
 //===============================================
 static void GProcessSoapClient_AddFunc(struct soap* soap, const char* server, const char* action, void* params);
+static void GProcessSoapClient_SubFunc(struct soap* soap, const char* server, const char* action, void* params);
+static void GProcessSoapClient_MulFunc(struct soap* soap, const char* server, const char* action, void* params);
 static void GProcessSoapClient_DivFunc(struct soap* soap, const char* server, const char* action, void* params);
 //===============================================
 GProcessO* GProcessSoapClient_New() {
@@ -59,7 +61,17 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 	GConsole()->Print("[ GSoap ] add(a, b) = %g\n", lSoapMath.r);
 
 	lSoapMath.a = 50;
-	lSoapMath.b = 0;
+	lSoapMath.b = 20;
+	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_SubFunc, &lSoapMath);
+	GConsole()->Print("[ GSoap ] Sub(a, b) = %g\n", lSoapMath.r);
+
+	lSoapMath.a = 50;
+	lSoapMath.b = 20;
+	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_MulFunc, &lSoapMath);
+	GConsole()->Print("[ GSoap ] mul(a, b) = %g\n", lSoapMath.r);
+
+	lSoapMath.a = 50;
+	lSoapMath.b = 20;
 	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_DivFunc, &lSoapMath);
 	GConsole()->Print("[ GSoap ] div(a, b) = %g\n", lSoapMath.r);
 
@@ -82,6 +94,28 @@ static void GProcessSoapClient_AddFunc(struct soap* soap, const char* server, co
 	lSoapMath->r = lResult;
 }
 //===============================================
+static void GProcessSoapClient_SubFunc(struct soap* soap, const char* server, const char* action, void* params) {
+	GSoapMath* lSoapMath = (GSoapMath*)params;
+	double lA = lSoapMath->a;
+	double lB = lSoapMath->b;
+	double lResult;
+	soap_call_ns__sub(soap, server, action, lA, lB, &lResult);
+	int lOk = soap->error;
+	if(lOk != 0) {GConsole()->Print("[ GSoap ] Error GProcessSoapClient_SubFunc\n"); soap_print_fault(soap, stderr); exit(0);}
+	lSoapMath->r = lResult;
+}
+//===============================================
+static void GProcessSoapClient_MulFunc(struct soap* soap, const char* server, const char* action, void* params) {
+	GSoapMath* lSoapMath = (GSoapMath*)params;
+	double lA = lSoapMath->a;
+	double lB = lSoapMath->b;
+	double lResult;
+	soap_call_ns__mul(soap, server, action, lA, lB, &lResult);
+	int lOk = soap->error;
+	if(lOk != 0) {GConsole()->Print("[ GSoap ] Error GProcessSoapClient_MulFunc\n"); soap_print_fault(soap, stderr); exit(0);}
+	lSoapMath->r = lResult;
+}
+//===============================================
 static void GProcessSoapClient_DivFunc(struct soap* soap, const char* server, const char* action, void* params) {
 	GSoapMath* lSoapMath = (GSoapMath*)params;
 	double lA = lSoapMath->a;
@@ -89,7 +123,7 @@ static void GProcessSoapClient_DivFunc(struct soap* soap, const char* server, co
 	double lResult;
 	soap_call_ns__div(soap, server, action, lA, lB, &lResult);
 	int lOk = soap->error;
-	if(lOk != 0) {GConsole()->Print("[ GSoap ] Error GProcessSoapClient_AddFunc\n"); soap_print_fault(soap, stderr); exit(0);}
+	if(lOk != 0) {GConsole()->Print("[ GSoap ] Error GProcessSoapClient_DivFunc\n"); soap_print_fault(soap, stderr); exit(0);}
 	lSoapMath->r = lResult;
 }
 //===============================================
