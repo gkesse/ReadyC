@@ -7,6 +7,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#if defined(__unix)
+#include <stdbool.h>
+#include <unistd.h>
+#include <errno.h>
+#include <strings.h>
+#endif
 //===============================================
 /* Socket */
 #if defined(__WIN32)
@@ -19,9 +25,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-#include <unistd.h>
-#include <errno.h>
-#include <strings.h>
 #endif
 //===============================================
 /* SQLite */
@@ -32,6 +35,9 @@
 //===============================================
 /* Soap */
 #include <stdsoap2.h>
+//===============================================
+/* DBus */
+#include <dbus/dbus.h>
 //===============================================
 /* Define */
 #if !defined(TRUE)
