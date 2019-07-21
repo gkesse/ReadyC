@@ -32,6 +32,6 @@ GProcessO* GProcessDbusServer() {
 }
 //===============================================
 static void GProcessDbusServer_Run(int argc, char** argv) {
-
+	printf("hello\n");
 }
 //===============================================
