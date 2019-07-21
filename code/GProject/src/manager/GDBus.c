@@ -35,9 +35,12 @@ static void GDBus_GetArgs(char* messageName, char* errorName, int type, char** m
 static void GDBus_NewMethodReturn(char* messageName, char* replyName);
 static void GDBus_IterInitAppend(char* replyName, int type, char** message);
 static void GDBus_Send(char* connName, char* sendName);
+static void GDBus_SendWithReply(char* connName, char* sendName, char* pendingName, int timeout);
 static void GDBus_FFlush(char* connName);
 static void GDBus_UnrefMessage(char* replyName);
+static void GDBus_UnrefPendingCall(char* pendingName);
 static void GDBus_NewError(char* messageName, char* message);
+static void GDBus_ReleaseBus(char* connName, char* busName, char* errorName);
 static void GDBus_FreeError(char* errorName);
 //===============================================
 static int GDBus_MapEqual(char* key1, char* key2);
@@ -62,9 +65,12 @@ GDBusO* GDBus_New() {
     lObj->NewMethodReturn = GDBus_NewMethodReturn;
     lObj->IterInitAppend = GDBus_IterInitAppend;
     lObj->Send = GDBus_Send;
+    lObj->SendWithReply = GDBus_SendWithReply;
     lObj->FFlush = GDBus_FFlush;
     lObj->UnrefMessage = GDBus_UnrefMessage;
+    lObj->UnrefPendingCall = GDBus_UnrefPendingCall;
     lObj->NewError = GDBus_NewError;
+    lObj->ReleaseBus= GDBus_ReleaseBus;
     lObj->FreeError = GDBus_FreeError;
     return lObj;
 }
