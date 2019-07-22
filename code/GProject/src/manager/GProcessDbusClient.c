@@ -62,6 +62,6 @@ static void GProcessDbusClient_Run(int argc, char** argv) {
 	GDBus()->PendingCallStealReply("CLIENT");
 	GDBus()->GetMessageArgs("CLIENT", "CLIENT", DBUS_TYPE_STRING, &lReply);
 	GDBus()->UnrefMessage("CLIENT");
-	GDBus()->ReleaseName("CLIENT", G_CLIENT_BUS_NAME, "CLIENT");
+	//GDBus()->ReleaseName("CLIENT", G_CLIENT_BUS_NAME, "CLIENT");
 }
 //===============================================

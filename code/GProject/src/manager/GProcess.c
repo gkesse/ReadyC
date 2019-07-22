@@ -10,6 +10,7 @@
 #include "GProcessSoapServer.h"
 #include "GProcessCgi.h"
 #include "GProcessDatabase.h"
+#include "GProcessMySQL.h"
 #include "GProcessGtk.h"
 #include "GString2.h"
 #include "GConfig.h"
@@ -41,6 +42,7 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
     if(GString2()->IsEqual(lKey, "CGI")) return GProcessCgi();
     if(GString2()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
+    if(GString2()->IsEqual(lKey, "MYSQL")) return GProcessMySQL();
     if(GString2()->IsEqual(lKey, "GTK")) return GProcessGtk();
     return GProcessConsole();
 }

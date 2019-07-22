@@ -1,6 +1,7 @@
 //===============================================
 #include "GDatabase.h"
 #include "GSQLite.h"
+//#include "GMySQL.h"
 #include "GString2.h"
 #include "GConfig.h"
 //===============================================
@@ -22,6 +23,7 @@ void GDatabase_Delete(GDatabaseO* obj) {
 GDatabaseO* GDatabase() {
     char* lKey = GConfig()->GetData("DATABASE");
     if(GString2()->IsEqual(lKey, "SQLITE")) return GSQLite();
+    //if(GString2()->IsEqual(lKey, "MYSQL")) return GMySQL();
     return GSQLite();
 }
 //===============================================
