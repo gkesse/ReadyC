@@ -10,31 +10,36 @@ typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR GMapO_GDBus_GCHAR_PTR_
 typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR;
 typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSERROR_PTR GMapO_GDBus_GCHAR_PTR_GDBUSERROR_PTR;
 typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR GMapO_GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR;
+typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR;
 //===============================================
 struct _GDBusO {
 	void (*Delete)();
 	void (*MallocError)(char* errorName);
+	void (*MallocIterator)(char* iteratorName);
 	void (*Init)(char* errorName);
 	void (*Connection)(char* connName, char* errorName, int type);
-	void (*RequestName)(char* connName, char* errorName, char* serverName, int flags);
+	int (*RequestName)(char* connName, char* errorName, const char* serverName, int flags);
 	void (*ReadWriteDispatch)(char* connName, int timeout);
 	int (*PopMessage)(char* connName, char* messageName);
-	int (*IsMathodCall)(char* messageName, char* interface, char* method);
-	void (*GetArgs)(char* messageName, char* errorName, int type, char** message);
+	int (*IsMethodCall)(char* messageName, const char* interface, const char* method);
+	void (*NewMethodCall)(char* requestName, const char* serverName, const char* objectName, const char* interfaceName, const char* methodName);
+	void (*GetMessageArgs)(char* messageName, char* errorName, int type, char** message);
 	void (*NewMethodReturn)(char* messageName, char* replyName);
-	void (*IterInitAppend)(char* replyName, int type, char** message);
-	void (*Send)(char* connName, char* sendName);
+	void (*IterInitAppend)(char* replyName, char* iteratorName);
+	void (*IterInitAppendBasic)(char* iteratorName, int type, char** message);
+	void (*SendConnection)(char* connName, char* sendName);
 	void (*SendWithReply)(char* connName, char* sendName, char* pendingName, int timeout);
-	void (*FFlush)(char* connName);
+	void (*FFlushConnection)(char* connName);
 	void (*UnrefMessage)(char* replyName);
 	void (*UnrefPendingCall)(char* pendingName);
-	void (*NewError)(char* messageName, char* message);
+	void (*NewError)(char* messageName, char* errorName, char* type, char* message);
 	void (*ReleaseBus)(char* connName, char* busName, char* errorName);
 	void (*FreeError)(char* errorName);
 	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* m_connMap;
 	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* m_messageMap;
 	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* m_errorMap;
 	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* m_pendingMap;
+	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR)* m_iteratorMap;
 };
 //===============================================
 GDBusO* GDBus_New();
