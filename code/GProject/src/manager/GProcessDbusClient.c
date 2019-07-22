@@ -49,10 +49,10 @@ static void GProcessDbusClient_Run(int argc, char** argv) {
 		if (lRes == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) break;
 		if (lRes == DBUS_REQUEST_NAME_REPLY_IN_QUEUE) continue;
 	}
-	GDBus()->NewMethodCall("CLIENT", G_SERVER_BUS_NAME, G_SERVER_OBJECT_PATH_NAME, G_INTERFACE_NAME_2, G_METHOD_NAME_2);
-	GDBus()->IterInitAppend("CLIENT", "CLIENT");
 
 	char* lAnswer;
+	GDBus()->NewMethodCall("CLIENT", G_SERVER_BUS_NAME, G_SERVER_OBJECT_PATH_NAME, G_INTERFACE_NAME_2, G_METHOD_NAME_2);
+	GDBus()->IterInitAppend("CLIENT", "CLIENT");
 	GDBus()->IterInitAppendBasic("CLIENT", DBUS_TYPE_STRING, &lAnswer);
 	GDBus()->SendWithReply("CLIENT", "CLIENT", "CLIENT", -1);
 }

@@ -231,6 +231,19 @@ static void GDBus_SendWithReply(char* connName, char* sendName, char* pendingNam
 	lPendingMap->SetData(lPendingMap, pendingName, lPendingCall, GDBus_MapEqual);
 }
 //===============================================
+static void GDBus_PendingCallBlock(char* pendingName) {
+	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
+	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GDBus_MapEqual);
+    dbus_pending_call_block (lPendingCall);
+}
+//===============================================
+static void GDBus_PendingCallStealReply(char* pendingName) {
+	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
+	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GDBus_MapEqual);
+    DBusMessage* lReply = dbus_pending_call_steal_reply (lPendingCall);
+	if(lReply == 0) {GConsole()->Print("[ GDBus ] Error GDBus_PendingCallStealReply\n"); exit(0);}
+}
+//===============================================
 static void GDBus_FFlushConnection(char* connName) {
 	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
 	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
