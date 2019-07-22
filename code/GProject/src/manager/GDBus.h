@@ -29,11 +29,13 @@ struct _GDBusO {
 	void (*IterInitAppendBasic)(char* iteratorName, int type, char** message);
 	void (*SendConnection)(char* connName, char* sendName);
 	void (*SendWithReply)(char* connName, char* sendName, char* pendingName, int timeout);
+	void (*PendingCallBlock)(char* pendingName);
+	void (*PendingCallStealReply)(char* pendingName);
 	void (*FFlushConnection)(char* connName);
 	void (*UnrefMessage)(char* replyName);
 	void (*UnrefPendingCall)(char* pendingName);
 	void (*NewError)(char* messageName, char* errorName, char* type, char* message);
-	void (*ReleaseBus)(char* connName, char* busName, char* errorName);
+	void (*ReleaseName)(char* connName, char* busName, char* errorName);
 	void (*FreeError)(char* errorName);
 	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* m_connMap;
 	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* m_messageMap;

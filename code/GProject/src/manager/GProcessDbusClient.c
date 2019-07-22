@@ -51,9 +51,17 @@ static void GProcessDbusClient_Run(int argc, char** argv) {
 	}
 
 	char* lAnswer;
+	char* lReply;
 	GDBus()->NewMethodCall("CLIENT", G_SERVER_BUS_NAME, G_SERVER_OBJECT_PATH_NAME, G_INTERFACE_NAME_2, G_METHOD_NAME_2);
 	GDBus()->IterInitAppend("CLIENT", "CLIENT");
 	GDBus()->IterInitAppendBasic("CLIENT", DBUS_TYPE_STRING, &lAnswer);
 	GDBus()->SendWithReply("CLIENT", "CLIENT", "CLIENT", -1);
+	GDBus()->FFlushConnection("CLIENT");
+	GDBus()->UnrefMessage("CLIENT");
+	GDBus()->PendingCallBlock("CLIENT");
+	GDBus()->PendingCallStealReply("CLIENT");
+	GDBus()->GetMessageArgs("CLIENT", "CLIENT", DBUS_TYPE_STRING, &lReply);
+	GDBus()->UnrefMessage("CLIENT");
+	GDBus()->ReleaseName("CLIENT", G_CLIENT_BUS_NAME, "CLIENT");
 }
 //===============================================

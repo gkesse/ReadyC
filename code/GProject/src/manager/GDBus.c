@@ -43,11 +43,13 @@ static void GDBus_IterInitAppend(char* replyName, char* iteratorName);
 static void GDBus_IterInitAppendBasic(char* iteratorName, int type, char** message);
 static void GDBus_SendConnection(char* connName, char* sendName);
 static void GDBus_SendWithReply(char* connName, char* sendName, char* pendingName, int timeout);
+static void GDBus_PendingCallBlock(char* pendingName);
+static void GDBus_PendingCallStealReply(char* pendingName);
 static void GDBus_FFlushConnection(char* connName);
 static void GDBus_UnrefMessage(char* replyName);
 static void GDBus_UnrefPendingCall(char* pendingName);
 static void GDBus_NewError(char* messageName, char* errorName, char* type, char* message);
-static void GDBus_ReleaseBus(char* connName, char* busName, char* errorName);
+static void GDBus_ReleaseName(char* connName, char* busName, char* errorName);
 static void GDBus_FreeError(char* errorName);
 //===============================================
 static int GDBus_MapEqual(char* key1, char* key2);
@@ -76,11 +78,13 @@ GDBusO* GDBus_New() {
 	lObj->IterInitAppendBasic = GDBus_IterInitAppendBasic;
 	lObj->SendConnection = GDBus_SendConnection;
 	lObj->SendWithReply = GDBus_SendWithReply;
+	lObj->PendingCallBlock = GDBus_PendingCallBlock;
+	lObj->PendingCallStealReply = GDBus_PendingCallStealReply;
 	lObj->FFlushConnection = GDBus_FFlushConnection;
 	lObj->UnrefMessage = GDBus_UnrefMessage;
 	lObj->UnrefPendingCall = GDBus_UnrefPendingCall;
 	lObj->NewError = GDBus_NewError;
-	lObj->ReleaseBus= GDBus_ReleaseBus;
+	lObj->ReleaseName= GDBus_ReleaseName;
 	lObj->FreeError = GDBus_FreeError;
 	return lObj;
 }
@@ -270,15 +274,15 @@ static void GDBus_NewError(char* messageName, char* errorName, char* type, char*
 	lMessageMap->SetData(lMessageMap, errorName, lError, GDBus_MapEqual);
 }
 //===============================================
-static void GDBus_ReleaseBus(char* connName, char* busName, char* errorName) {
+static void GDBus_ReleaseName(char* connName, char* busName, char* errorName) {
 	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
 	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
 	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
 	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GDBus_MapEqual);
 	int lRes = dbus_bus_release_name(lConn, busName, lError);
 	int lOk = dbus_error_is_set (lError);
-	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_ReleaseBus: %s\n", lError->message); GDBus_FreeError(errorName); exit(0);}
-	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_ReleaseBus\n"); exit(0);}
+	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_ReleaseName: %s\n", lError->message); GDBus_FreeError(errorName); exit(0);}
+	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_ReleaseName\n"); exit(0);}
 }
 //===============================================
 static void GDBus_FreeError(char* errorName) {
