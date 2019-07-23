@@ -62,7 +62,8 @@ static void GProcessDbusServer_Run(int argc, char** argv) {
 
 			char *lAnswerPtr = lAnswer;
 
-			//GDBus()->IterInitAppend("CLIENT", DBUS_TYPE_STRING, &lAnswerPtr);
+			GDBus()->IterInitAppend("CLIENT", "CLIENT");
+			GDBus()->IterInitAppendBasic("CLIENT", DBUS_TYPE_STRING, &lAnswerPtr);
 			GDBus()->SendConnection("SERVER", "CLIENT");
 
 			GDBus()->FFlushConnection("SERVER");
