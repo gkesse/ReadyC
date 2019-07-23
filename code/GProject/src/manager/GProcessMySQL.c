@@ -33,5 +33,17 @@ GProcessO* GProcessMySQL() {
 //===============================================
 static void GProcessMySQL_Run(int argc, char** argv) {
 	GMySQL()->Version();
+	GMySQL()->MallocRow("CLIENT");
+	GMySQL()->RealConnect("CLIENT", "localhost", "root", "test", 0);
+	GMySQL()->Query();
+	/*while(1) {
+		int lFetchRow = GMySQL()->FetchRow();
+		if(lFetchRow == 0) break;
+		GMySQL()->Version();
+		GMySQL()->Version();
+		GMySQL()->Version();
+	}*/
+	GMySQL()->Close("CLIENT");
+	GMySQL()->FetchRow("CLIENT");
 }
 //===============================================
