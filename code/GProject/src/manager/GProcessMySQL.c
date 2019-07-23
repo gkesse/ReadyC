@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessMySQL.h"
 #include "GMySQL.h"
+#include "GConfig.h"
 //===============================================
 static GProcessO* m_GProcessMySQLO = 0;
 //===============================================
@@ -32,6 +33,39 @@ GProcessO* GProcessMySQL() {
 }
 //===============================================
 static void GProcessMySQL_Run(int argc, char** argv) {
-	GMySQL()->Version();
+	// CONNEXION MULTIPLE
+	GMySQL()->MallocRow("MYSQL");
+	GMySQL()->MallocRow("SQLITE");
+
+	GMySQL()->Init("MYSQL");
+	GMySQL()->Init("SQLITE");
+
+
+	GMySQL()->RealConnect("MYSQL", "localhost", "gkesse", "admin", "pmcdev", 0);
+	GMySQL()->RealConnect("SQLITE", "localhost", "root", "super", "dbmysql", 0);
+
+	GMySQL()->Query("MYSQL", ""
+			"CREATE TABLE sqlite_pers ("
+			"Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
+			"Name varchar(255),"
+			"Address varchar(255),"
+			"Email varchar(255)"
+			");"
+	);
+
+	GMySQL()->Query("SQLITE", ""
+			"CREATE TABLE mysql_pers ("
+			"Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
+			"Name varchar(255),"
+			"Address varchar(255),"
+			"Email varchar(255)"
+			");"
+	);
+
+	GMySQL()->Close("MYSQL");
+	GMySQL()->FreeRow("MYSQL");
+
+	GMySQL()->Close("SQLITE");
+	GMySQL()->FreeRow("SQLITE");
 }
 //===============================================
