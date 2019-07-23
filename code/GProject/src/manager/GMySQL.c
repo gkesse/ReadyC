@@ -55,7 +55,17 @@ GMySQLO* GMySQL_New() {
 	lObj->Init = GMySQL_Init;
 	lObj->Options = GMySQL_Options;
 	lObj->RealConnect = GMySQL_RealConnect;
-	lObj->Version = GMySQL_Version;
+	lObj->Query = GMySQL_Query;
+	lObj->UseResult = GMySQL_UseResult;
+	lObj->NumFields = GMySQL_NumFields;
+	lObj->FetchRow = GMySQL_FetchRow;
+	lObj->FetchLengths = GMySQL_FetchLengths;
+	lObj->GetRow = GMySQL_GetRow;
+	lObj->GetLength = GMySQL_GetLength;
+	lObj->Close = GMySQL_Close;
+	lObj->FreeResult = GMySQL_FreeResult;
+	lObj->FreeRow = GMySQL_FreeRow;
+	lObj->DeleteRowMap = GMySQL_DeleteRowMap;
 	return lObj;
 }
 //===============================================
