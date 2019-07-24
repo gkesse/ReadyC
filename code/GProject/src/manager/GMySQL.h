@@ -29,6 +29,7 @@ struct _GMySQLO {
     void (*FreeResult)(char* resultName);
     void (*FreeRow)(char* rowName);
     void (*DeleteRowMap)(char* rowName);
+    void (*QueryPrint)(char* mysqlName, char* resultName, char* rowName, char* lengthName, char* sqlQuery);
     GMapO(GMySQL_GCHAR_PTR_GMYSQL_PTR)* m_mysqlMap;
     GMapO(GMySQL_GCHAR_PTR_GMYSQLRES_PTR)* m_resultMap;
     GMapO(GMySQL_GCHAR_PTR_GMYSQLROW_PTR)* m_rowMap;

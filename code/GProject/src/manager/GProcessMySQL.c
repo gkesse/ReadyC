@@ -1,6 +1,8 @@
 //===============================================
 #include "GProcessMySQL.h"
 #include "GMySQL.h"
+#include "GConfig.h"
+#include "GConsole.h"
 //===============================================
 static GProcessO* m_GProcessMySQLO = 0;
 //===============================================
@@ -32,18 +34,41 @@ GProcessO* GProcessMySQL() {
 }
 //===============================================
 static void GProcessMySQL_Run(int argc, char** argv) {
-	GMySQL()->Version();
-	GMySQL()->MallocRow("CLIENT");
-	GMySQL()->RealConnect("CLIENT", "localhost", "root", "test", 0);
-	GMySQL()->Query();
-	/*while(1) {
-		int lFetchRow = GMySQL()->FetchRow();
-		if(lFetchRow == 0) break;
-		GMySQL()->Version();
-		GMySQL()->Version();
-		GMySQL()->Version();
-	}*/
-	GMySQL()->Close("CLIENT");
-	GMySQL()->FetchRow("CLIENT");
+	// CONNEXION MULTIPLE
+	GMySQL()->MallocRow("MYSQL");
+
+	GMySQL()->Init("MYSQL");
+
+	GMySQL()->RealConnect("MYSQL", "localhost", "root", "", "hellodb", 0);
+
+	GMySQL()->Query("MYSQL", ""
+			"DROP TABLE Persons;"
+	);
+	GMySQL()->Query("MYSQL", ""
+			"CREATE TABLE Persons ("
+			"Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
+			"Name VARCHAR(255),"
+			"Address VARCHAR(255),"
+			"Email VARCHAR(255),"
+			"Phone VARCHAR(255)"
+			");"
+	);
+	GMySQL()->Query("MYSQL", ""
+			"INSERT INTO Persons (Name, Address, Email, Phone) VALUES "
+			"('NAME_1', 'ADDRESS_1', 'tiakagerard@hotmail.com', '06.07.08.08.10'),"
+			"('NAME_2', 'ADDRESS_2', 'EMAIL_2', 'PHONE_2'),"
+			"('NAME_3', 'ADDRESS_3', 'EMAIL_3', 'PHONE_3'),"
+			"('NAME_4', 'ADDRESS_4', 'EMAIL_4', 'PHONE_4'),"
+			"('NAME_5', 'ADDRESS_5', 'EMAIL_5', 'PHONE_5');"
+	);
+	GMySQL()->QueryPrint("MYSQL", "MYSQL", "MYSQL", "MYSQL", ""
+			"SELECT * FROM Persons;"
+	);
+
+	GMySQL()->Close("MYSQL");
+	GMySQL()->FreeRow("MYSQL");
+
+	GMySQL()->Close("SQLITE");
+	GMySQL()->FreeRow("SQLITE");
 }
 //===============================================

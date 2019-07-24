@@ -39,6 +39,8 @@ static void GMySQL_FreeResult(char* resultName);
 static void GMySQL_FreeRow(char* rowName);
 static void GMySQL_DeleteRowMap(char* rowName);
 //===============================================
+static void GMySQL_QueryPrint(char* mysqlName, char* resultName, char* rowName, char* lengthName, char* sqlQuery);
+//===============================================
 static int GMySQL_MapEqual(char* key1, char* key2);
 //===============================================
 GMySQLO* GMySQL_New() {
@@ -66,6 +68,7 @@ GMySQLO* GMySQL_New() {
 	lObj->FreeResult = GMySQL_FreeResult;
 	lObj->FreeRow = GMySQL_FreeRow;
 	lObj->DeleteRowMap = GMySQL_DeleteRowMap;
+	lObj->QueryPrint = GMySQL_QueryPrint;
 	return lObj;
 }
 //===============================================
@@ -147,7 +150,7 @@ static int GMySQL_FetchRow(char* resultName, char* rowName) {
 	MYSQL_ROW* lRow = lRowMap->GetData(lRowMap, rowName, GMySQL_MapEqual);
 	*lRow = mysql_fetch_row(lResult);
 	lRowMap->SetData(lRowMap, rowName, lRow, GMySQL_MapEqual);
-	if(lRow == 0) return 0;
+	if(*lRow == 0) return 0;
 	return 1;
 }
 //===============================================
@@ -196,6 +199,23 @@ static void GMySQL_DeleteRowMap(char* rowName) {
 	lRowMap->Delete(lRowMap);
 }
 //===============================================
+static void GMySQL_QueryPrint(char* mysqlName, char* resultName, char* rowName, char* lengthName, char* sqlQuery) {
+	GMySQL_Query(mysqlName, sqlQuery);
+	GMySQL_UseResult(mysqlName, resultName);
+	int lNumFields = GMySQL_NumFields(resultName);
+	while(1) {
+		int lFetchRow = GMySQL_FetchRow(resultName, rowName);
+		if(lFetchRow == 0) break;
+		GMySQL_FetchLengths(resultName, lengthName);
+		for(int i = 0; i < lNumFields; i++) {
+			char* lRowIndex = GMySQL_GetRow(rowName, i) ? GMySQL_GetRow(rowName, i) : "NULL";
+			int lLengthIndex = (int)GMySQL_GetLength(rowName, i);
+			GConsole()->Print("[%.*s] ", 10, lRowIndex);
+		}
+		GConsole()->Print("\n");
+	}
+}
+///===============================================
 static int GMySQL_MapEqual(char* key1, char* key2) {
 	int lStrcmp = strcmp(key1, key2);
 	if(lStrcmp == 0) return TRUE;
