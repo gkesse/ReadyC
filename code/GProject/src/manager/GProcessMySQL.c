@@ -39,10 +39,10 @@ static void GProcessMySQL_Run(int argc, char** argv) {
 
 	GMySQL()->Init("MYSQL");
 
-	GMySQL()->RealConnect("MYSQL", "localhost", "root", "", "hellodb", 0);
+	GMySQL()->RealConnect("MYSQL", "localhost", "gkesse", "admin", "hellodb", 0);
 
 	GMySQL()->Query("MYSQL", ""
-			"DROP TABLE Persons;"
+			"DROP TABLE IF EXISTS Persons;"
 	);
 	GMySQL()->Query("MYSQL", ""
 			"CREATE TABLE Persons ("
@@ -62,7 +62,7 @@ static void GProcessMySQL_Run(int argc, char** argv) {
 			"('NAME_5', 'ADDRESS_5', 'EMAIL_5', 'PHONE_5');"
 	);
 	GMySQL()->QueryPrint("MYSQL", "MYSQL", "MYSQL", "MYSQL", ""
-			"SELECT * FROM Persons;"
+			"CALL GProcSelectPersons()"
 	);
 
 	GMySQL()->Close("MYSQL");

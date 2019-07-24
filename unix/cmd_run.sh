@@ -1,3 +1,3 @@
 echo
-../code/GProject/Release/GProject
+./bin/GProject.exe
 echo
