@@ -63,30 +63,6 @@ static void GProcessSocketServer_Run(int argc, char** argv) {
 	GSocket2()->Clean2("CLIENT");
 	GSocket2()->Clean3("SERVER");
 	GSocket2()->Clean3("CLIENT");
-#elif defined(__unix)
-	GSocket2()->Socket("SERVER");
-	GSocket2()->Socket("CLIENT");
-	GSocket2()->Address("SERVER");
-	GSocket2()->Address("CLIENT");
-
-	GSocket2()->Socket2("SERVER", AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	GSocket2()->Address2("SERVER", AF_INET, INADDR_ANY, 5566);
-	GSocket2()->Bind("SERVER", "SERVER");
-	GSocket2()->Listen("SERVER", 5);
-
-	while(1) {
-		GSocket2()->Accept("SERVER", "CLIENT");
-		GSocket2()->Write("CLIENT", "Bonjour tout le monde", 0);
-		GSocket2()->Read("CLIENT", lMessage, 255);
-		GConsole()->Print("[ SERVER ] Read: %s\n", lMessage);
-		GSocket2()->Close("CLIENT");
-	}
-
-	GSocket2()->Close("SERVER");
-	GSocket2()->Clean2("SERVER");
-	GSocket2()->Clean2("CLIENT");
-	GSocket2()->Clean3("SERVER");
-	GSocket2()->Clean3("CLIENT");
 #endif
 }
 //===============================================

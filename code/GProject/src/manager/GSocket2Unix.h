@@ -6,13 +6,13 @@
 //===============================================
 typedef struct _GSocket2UnixO GSocket2UnixO;
 typedef struct _GMapO_GSocket2Unix_GCHAR_PTR_GINT_PTR GMapO_GSocket2Unix_GCHAR_PTR_GINT_PTR;
-typedef struct _GMapO_GSocket2Unix_GCHAR_PTR_GSOCKADDR_IN_PTR GMapO_GSocket2Unix_GCHAR_PTR_GSOCKADDR_IN_PTR;
+typedef struct _GMapO_GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR GMapO_GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR;
 //===============================================
 struct _GSocket2UnixO {
     GSocket2O* m_parent;
 #if defined(__unix)
     GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* m_socketMap;
-    GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDR_IN_PTR)* m_addressMap;
+    GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* m_addressMap;
 #endif
 };
 //===============================================

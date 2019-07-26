@@ -6,6 +6,8 @@
 #include "GProcessConfig.h"
 #include "GProcessSocketServer.h"
 #include "GProcessSocketClient.h"
+#include "GProcessSocketUnixServer.h"
+#include "GProcessSocketUnixClient.h"
 #include "GProcessSoapClient.h"
 #include "GProcessSoapServer.h"
 #include "GProcessCgi.h"
@@ -38,6 +40,8 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
     if(GString2()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();
     if(GString2()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
+    if(GString2()->IsEqual(lKey, "SOCKET_UNIX_SERVER")) return GProcessSocketUnixServer();
+    if(GString2()->IsEqual(lKey, "SOCKET_UNIX_CLIENT")) return GProcessSocketUnixClient();
     if(GString2()->IsEqual(lKey, "SOAP_CLIENT")) return GProcessSoapClient();
     if(GString2()->IsEqual(lKey, "SOAP_SERVER")) return GProcessSoapServer();
     if(GString2()->IsEqual(lKey, "CGI")) return GProcessCgi();

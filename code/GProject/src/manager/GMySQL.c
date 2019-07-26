@@ -210,7 +210,7 @@ static void GMySQL_QueryPrint(char* mysqlName, char* resultName, char* rowName, 
 		for(int i = 0; i < lNumFields; i++) {
 			char* lRowIndex = GMySQL_GetRow(rowName, i) ? GMySQL_GetRow(rowName, i) : "NULL";
 			int lLengthIndex = (int)GMySQL_GetLength(rowName, i);
-			GConsole()->Print("[%.*s] ", 10, lRowIndex);
+			GConsole()->Print("[%.*s] ", lLengthIndex, lRowIndex);
 		}
 		GConsole()->Print("\n");
 	}
