@@ -32,12 +32,15 @@ GProcessO* GProcessDbusServer() {
 	return m_GProcessDbusServerO;
 }
 //===============================================
+#if defined(__unix)
 const char* G_INTERFACE_NAME = "in.readydev.dbus_service";
 const char* G_SERVER_NAME = "in.readydev.add_server";
 const char* G_OBJECT_PATH_NAME = "/in/readydev/adder";
 const char* G_METHOD_NAME = "add_numbers";
+#endif
 //===============================================
 static void GProcessDbusServer_Run(int argc, char** argv) {
+#if defined(__unix)
 	GDBus()->MallocError("SERVER");
 
 	GDBus()->Init("SERVER");
@@ -78,6 +81,6 @@ static void GProcessDbusServer_Run(int argc, char** argv) {
 			GDBus()->UnrefMessage("CLIENT");
 		}
 	}
-
+#endif
 }
 //===============================================

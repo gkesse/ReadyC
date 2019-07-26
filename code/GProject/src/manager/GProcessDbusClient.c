@@ -32,14 +32,17 @@ GProcessO* GProcessDbusClient() {
 	return m_GProcessDbusClientO;
 }
 //===============================================
+#if defined(__unix)
 const char* G_INTERFACE_NAME_2 = "in.readydev.dbus_service";
 const char* G_SERVER_BUS_NAME = "in.readydev.add_server";
 const char* G_CLIENT_BUS_NAME = "in.readydev.add_client";
 const char* G_SERVER_OBJECT_PATH_NAME = "/in/readydev/adder";
 const char* G_CLIENT_OBJECT_PATH_NAME = "/in/readydev/add_client";
 const char* G_METHOD_NAME_2 = "add_numbers";
+#endif
 //===============================================
 static void GProcessDbusClient_Run(int argc, char** argv) {
+#if defined(__unix)
 	GDBus()->MallocError("CLIENT");
 	GDBus()->Init("CLIENT");
 	GDBus()->Connection("CLIENT", "CLIENT", DBUS_BUS_SESSION);
@@ -63,5 +66,6 @@ static void GProcessDbusClient_Run(int argc, char** argv) {
 	GDBus()->GetMessageArgs("CLIENT", "CLIENT", DBUS_TYPE_STRING, &lReply);
 	GDBus()->UnrefMessage("CLIENT");
 	//GDBus()->ReleaseName("CLIENT", G_CLIENT_BUS_NAME, "CLIENT");
+#endif
 }
 //===============================================

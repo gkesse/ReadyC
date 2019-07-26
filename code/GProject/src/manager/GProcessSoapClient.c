@@ -2,7 +2,9 @@
 #include "GProcessSoapClient.h"
 #include "GConsole.h"
 #include "GSoap.h"
+#if defined(__unix)
 #include "soapStub.h"
+#endif
 //===============================================
 typedef struct _GSoapMath GSoapMath ;
 //===============================================
@@ -18,10 +20,12 @@ static GProcessO* m_GProcessSoapClientO = 0;
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv);
 //===============================================
+#if defined(__unix)
 static void GProcessSoapClient_AddFunc(struct soap* soap, const char* server, const char* action, void* params);
 static void GProcessSoapClient_SubFunc(struct soap* soap, const char* server, const char* action, void* params);
 static void GProcessSoapClient_MulFunc(struct soap* soap, const char* server, const char* action, void* params);
 static void GProcessSoapClient_DivFunc(struct soap* soap, const char* server, const char* action, void* params);
+#endif
 //===============================================
 GProcessO* GProcessSoapClient_New() {
 	GProcessO* lParent = GProcess_New();
@@ -49,6 +53,7 @@ GProcessO* GProcessSoapClient() {
 }
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv) {
+#if defined(__unix)
 	GSoap()->Soap("CLIENT");
 
 	GSoap()->Init1("CLIENT", SOAP_XML_INDENT);
@@ -81,8 +86,10 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 
 	GSoap()->FreeSoap("CLIENT");
 	GSoap()->Clean();
+#endif
 }
 //===============================================
+#if defined(__unix)
 static void GProcessSoapClient_AddFunc(struct soap* soap, const char* server, const char* action, void* params) {
 	GSoapMath* lSoapMath = (GSoapMath*)params;
 	double lA = lSoapMath->a;
@@ -135,4 +142,5 @@ struct Namespace namespaces[] = {
 		{ "ns", "urn:Calc"},
 		{ NULL, NULL }
 };
+#endif
 //===============================================

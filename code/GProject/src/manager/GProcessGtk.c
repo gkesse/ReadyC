@@ -30,10 +30,12 @@ GProcessO* GProcessGtk() {
     }
     return m_GProcessGtkO;
 }
-
+#if defined(__unix)
 static void destroy (GtkWidget*, gpointer);
+#endif
 //===============================================
 static void GProcessGtk_Run(int argc, char** argv) {
+#if defined(__unix)
 	GtkWidget *window, *button;
 
 	  gtk_init (&argc, &argv);
@@ -61,11 +63,15 @@ static void GProcessGtk_Run(int argc, char** argv) {
 
 	  gtk_main ();
 
+#endif
 }
 //===============================================
+#if defined(__unix)
 static void
 destroy (GtkWidget *window,
          gpointer data)
 {
   gtk_main_quit ();
 }
+#endif
+//===============================================

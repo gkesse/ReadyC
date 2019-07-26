@@ -14,6 +14,13 @@ struct _GSocket2O {
 	//===============================================
 	void (*MallocSocket)(char* socketName);
 	void (*MallocAddress)(char* addressName);
+	void (*MallocData)(char* dataName);
+	void (*Start)(char* dataName, int major, int minor);
+	void (*Status)(char* dataName);
+	void (*Major)(char* dataName);
+	void (*Minor)(char* dataName);
+	void (*MajorMax)(char* dataName);
+	void (*MinorMax)(char* dataName);
 	void (*Socket)(char* socketName, int family, int type, int protocol);
 	void (*AddressInt)(char* addressName, int family, int address, int port);
 	void (*AddressChar)(char* addressName, int family, char* address, int port);
@@ -27,14 +34,6 @@ struct _GSocket2O {
 	void (*FreeSocket)(char* socketName);
 	void (*FreeAddress)(char* socketName);
 	//===============================================
-	void (*Data)(char* dataName);
-	void (*Start)(char* dataName, int major, int minor);
-	void (*Status)(char* dataName);
-	void (*Major)(char* dataName);
-	void (*Minor)(char* dataName);
-	void (*MajorMax)(char* dataName);
-	void (*MinorMax)(char* dataName);
-	void (*Address)(char* addressName);
 	void (*Address2)(char* addressName, int family, int address, int port);
 	void (*Address3)(char* addressName, int family, char* address, int port);
 	void (*Socket2)(char* socketName, int family, int type, int protocol);

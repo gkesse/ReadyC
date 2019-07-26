@@ -33,6 +33,7 @@ GProcessO* GProcessSoapServer() {
 }
 //===============================================
 static void GProcessSoapServer_Run(int argc, char** argv) {
+#if defined(__unix)
 	GSoap()->Soap("SERVER");
 	GSoap()->Socket("SERVER");
 	GSoap()->Socket("CLIENT");
@@ -50,8 +51,10 @@ static void GProcessSoapServer_Run(int argc, char** argv) {
 	GSoap()->FreeSocket("SERVER");
 	GSoap()->FreeSocket("CLIENT");
 	GSoap()->Clean();
+#endif
 }
 //===============================================
+#if defined(__unix)
 int ns__add(struct soap *soap, double a, double b, double *result) {
 	*result = a + b;
 	return SOAP_OK;
@@ -89,4 +92,5 @@ int ns__pow(struct soap *soap, double a, double b, double *result) {
 	}
 	return SOAP_OK;
 }
+#endif
 //===============================================

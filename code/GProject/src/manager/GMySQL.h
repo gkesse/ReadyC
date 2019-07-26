@@ -30,10 +30,12 @@ struct _GMySQLO {
     void (*FreeRow)(char* rowName);
     void (*DeleteRowMap)(char* rowName);
     void (*QueryPrint)(char* mysqlName, char* resultName, char* rowName, char* lengthName, char* sqlQuery);
+#if defined(__unix)
     GMapO(GMySQL_GCHAR_PTR_GMYSQL_PTR)* m_mysqlMap;
     GMapO(GMySQL_GCHAR_PTR_GMYSQLRES_PTR)* m_resultMap;
     GMapO(GMySQL_GCHAR_PTR_GMYSQLROW_PTR)* m_rowMap;
     GMapO(GMySQL_GCHAR_PTR_GULINT_PTR)* m_lengthMap;
+#endif
 };
 //===============================================
 GMySQLO* GMySQL_New();

@@ -22,15 +22,15 @@ GDEFINE_MAP(GCHAR_PTR, GSOCKADDR_IN_PTR, GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_
 static GSocket2O* m_GSocket2WindowsO = 0;
 //===============================================
 static void GSocket2Windows_MallocData(char* dataName);
+static void GSocket2Windows_MallocAddress(char* addressName);
 static void GSocket2Windows_Start(char* dataName, int major, int minor);
 static void GSocket2Windows_Status(char* dataName);
 static void GSocket2Windows_Major(char* dataName);
 static void GSocket2Windows_Minor(char* dataName);
 static void GSocket2Windows_MajorMax(char* dataName);
 static void GSocket2Windows_MinorMax(char* dataName);
-static void GSocket2Windows_Address(char* addressName);
-static void GSocket2Windows_Address2(char* addressName, int family, int address, int port);
-static void GSocket2Windows_Address3(char* addressName, int family, char* address, int port);
+static void GSocket2Windows_AddressInt(char* addressName, int family, int address, int port);
+static void GSocket2Windows_AddressChar(char* addressName, int family, char* address, int port);
 static void GSocket2Windows_Socket(char* socketName);
 static void GSocket2Windows_Socket2(char* socketName, int family, int type, int protocol);
 static void GSocket2Windows_SocketName(char* socketName, char* addressName);
@@ -57,14 +57,15 @@ GSocket2O* GSocket2Windows_New() {
 
 	lChild->m_parent = lParent;
 #if defined(__WIN32)
-	lChild->m_MallocDataMap = GMap_New_GSocket2Windows_GCHAR_PTR_GWSADATA_PTR();
+	lChild->m_dataMap = GMap_New_GSocket2Windows_GCHAR_PTR_GWSADATA_PTR();
 	lChild->m_socketMap = GMap_New_GSocket2Windows_GCHAR_PTR_GSocket2_PTR();
 	lChild->m_addressMap = GMap_New_GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR();
 #endif
 
 	lParent->m_child = lChild;
 	lParent->Delete = GSocket2Windows_Delete;
-	lParent->Data = GSocket2Windows_MallocData;
+	lParent->MallocData = GSocket2Windows_MallocData;
+	lParent->MallocAddress = GSocket2Windows_MallocAddress;
 	lParent->Start = GSocket2Windows_Start;
 	lParent->Status = GSocket2Windows_Status;
 	lParent->Major = GSocket2Windows_Major;
@@ -76,9 +77,8 @@ GSocket2O* GSocket2Windows_New() {
 	lParent->SocketName = GSocket2Windows_SocketName;
 	lParent->AddressIp = GSocket2Windows_AddressIp;
 	lParent->Port = GSocket2Windows_Port;
-	lParent->Address = GSocket2Windows_Address;
-	lParent->Address2 = GSocket2Windows_Address2;
-	lParent->Address3 = GSocket2Windows_Address3;
+	lParent->AddressInt = GSocket2Windows_AddressInt;
+	lParent->AddressChar = GSocket2Windows_AddressChar;
 	lParent->Bind = GSocket2Windows_Bind;
 	lParent->Listen = GSocket2Windows_Listen;
 	lParent->Accept = GSocket2Windows_Accept;
@@ -107,16 +107,26 @@ GSocket2O* GSocket2Windows() {
 static void GSocket2Windows_MallocData(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = (WSADATA*)malloc(sizeof(WSADATA));
+	if(lData == 0) {GConsole()->Print("[ GSocket2Windows ] Error GSocket2Windows_MallocData\n"); exit(0);}
 	lDataMap->SetData(lDataMap, dataName, lData, GSocket2Windows_MapEqual);
+#endif
+}
+//===============================================
+static void GSocket2Windows_MallocAddress(char* addressName) {
+#if defined(__WIN32)
+	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
+	GMapO(GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
+	SOCKADDR_IN* lAddress = (SOCKADDR_IN*)malloc(sizeof(SOCKADDR_IN));
+	lAddressMap->SetData(lAddressMap, addressName, lAddress, GSocket2Windows_MapEqual);
 #endif
 }
 //===============================================
 static void GSocket2Windows_Start(char* dataName, int major, int minor) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
 	int lOk = WSAStartup(MAKEWORD(major, minor), lData);
 	if(lOk != 0) {GConsole()->Print("[ GSocket2Windows ] Error GSocket2Windows_Start: %d\n", WSAGetLastError()); exit(0);}
@@ -126,7 +136,7 @@ static void GSocket2Windows_Start(char* dataName, int major, int minor) {
 static void GSocket2Windows_Status(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
 	char* lStatus = lData->szSystemStatus;
 	GConsole()->Print("[ GSocket2Windows ] Status: %s\n", lStatus);
@@ -136,7 +146,7 @@ static void GSocket2Windows_Status(char* dataName) {
 static void GSocket2Windows_Major(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
 	int lMajor = LOBYTE(lData->wVersion);
 	GConsole()->Print("[ GSocket2Windows ] Version Major: %d\n", lMajor);
@@ -146,7 +156,7 @@ static void GSocket2Windows_Major(char* dataName) {
 static void GSocket2Windows_Minor(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
 	int lMinor = HIBYTE(lData->wVersion);
 	GConsole()->Print("[ GSocket2Windows ] Version Minor: %d\n", lMinor);
@@ -156,7 +166,7 @@ static void GSocket2Windows_Minor(char* dataName) {
 static void GSocket2Windows_MajorMax(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
 	int lMajor = LOBYTE(lData->wHighVersion);
 	GConsole()->Print("[ GSocket2Windows ] Version Major Max: %d\n", lMajor);
@@ -166,23 +176,14 @@ static void GSocket2Windows_MajorMax(char* dataName) {
 static void GSocket2Windows_MinorMax(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
 	int lMinor = HIBYTE(lData->wHighVersion);
 	GConsole()->Print("[ GSocket2Windows ] Version Minor Max: %d\n", lMinor);
 #endif
 }
 //===============================================
-static void GSocket2Windows_Address(char* addressName) {
-#if defined(__WIN32)
-	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
-	SOCKADDR_IN* lAddress = (SOCKADDR_IN*)malloc(sizeof(SOCKADDR_IN));
-	lAddressMap->SetData(lAddressMap, addressName, lAddress, GSocket2Windows_MapEqual);
-#endif
-}
-//===============================================
-static void GSocket2Windows_Address2(char* addressName, int family, int address, int port) {
+static void GSocket2Windows_AddressInt(char* addressName, int family, int address, int port) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
 	GMapO(GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
@@ -193,7 +194,7 @@ static void GSocket2Windows_Address2(char* addressName, int family, int address,
 #endif
 }
 //===============================================
-static void GSocket2Windows_Address3(char* addressName, int family, char* address, int port) {
+static void GSocket2Windows_AddressChar(char* addressName, int family, char* address, int port) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
 	GMapO(GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
@@ -344,7 +345,7 @@ static void GSocket2Windows_Close(char* socketName) {
 static void GSocket2Windows_Clean(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
-	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_MallocDataMap;
+	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
 	WSACleanup();
 	free(lData);
