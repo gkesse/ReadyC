@@ -32,11 +32,6 @@ GProcessO* GProcessThread() {
 }
 //===============================================
 static void GProcessThread_Run(int argc, char** argv) {
-	int lInt = 567;
-	char* lString = "Bonjour tout le monde";
-	GConsole()->Print("Entier decimal: [ %d ]\n", lInt);
-	GConsole()->Print("Entier octal: [ %o ]\n", lInt);
-	GConsole()->Print("Entier hexadecimal: [ %X ]\n", lInt);
-	GConsole()->Print("Chaine: [ %s ]\n", lString);
+
 }
 //===============================================

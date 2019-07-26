@@ -14,6 +14,9 @@
 #include "GProcessDatabase.h"
 #include "GProcessMySQL.h"
 #include "GProcessGtk.h"
+#include "GProcessThread.h"
+#include "GProcessMutex.h"
+#include "GProcessSemaphore.h"
 #include "GString2.h"
 #include "GConfig.h"
 //===============================================
@@ -48,6 +51,9 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "DATABASE")) return GProcessDatabase();
     if(GString2()->IsEqual(lKey, "MYSQL")) return GProcessMySQL();
     if(GString2()->IsEqual(lKey, "GTK")) return GProcessGtk();
+    if(GString2()->IsEqual(lKey, "THREAD")) return GProcessThread();
+    if(GString2()->IsEqual(lKey, "MUTEX")) return GProcessMutex();
+    if(GString2()->IsEqual(lKey, "SEMAPHORE")) return GProcessSemaphore();
     return GProcessConsole();
 }
 //===============================================
