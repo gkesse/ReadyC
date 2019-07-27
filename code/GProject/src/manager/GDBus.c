@@ -160,6 +160,7 @@ static int GDBus_RequestName(char* connName, char* errorName, const char* server
 	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_RequestName: %s\n", lError->message); GDBus_FreeError(errorName);}
 	return lRes;
 #endif
+	return 0;
 }
 //===============================================
 static void GDBus_ReadWriteDispatch(char* connName, int timeout) {
@@ -181,6 +182,7 @@ static int GDBus_PopMessage(char* connName, char* messageName) {
 	lMessageMap->SetData(lMessageMap, messageName, lMessage, GDBus_MapEqual);
 	return 1;
 #endif
+	return 0;
 }
 //===============================================
 static int GDBus_IsMethodCall(char* messageName, const char* interfaceName, const char* methodName) {
@@ -190,6 +192,7 @@ static int GDBus_IsMethodCall(char* messageName, const char* interfaceName, cons
 	int lRes = dbus_message_is_method_call (lMessage, interfaceName, methodName);
 	return lRes;
 #endif
+	return 0;
 }
 //===============================================
 static void GDBus_NewMethodCall(char* requestName, const char* serverName, const char* objectName, const char* interfaceName, const char* methodName) {

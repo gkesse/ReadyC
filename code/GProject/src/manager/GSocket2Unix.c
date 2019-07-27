@@ -191,6 +191,7 @@ static int GSocket2Unix_Write(char* socketName, char* data, int size) {
 	if(lBytes == -1) {GConsole()->Print("[ GSocket2Unix ] Error GSocket2Unix_Write\n"); exit(0);}
 	return lBytes;
 #endif
+	return 0;
 }
 //===============================================
 static int GSocket2Unix_Read(char* socketName, char* data, int size) {
@@ -203,6 +204,7 @@ static int GSocket2Unix_Read(char* socketName, char* data, int size) {
 	data[lBytes] = 0;
 	return lBytes;
 #endif
+	return 0;
 }
 //===============================================
 static void GSocket2Unix_Close(char* socketName) {

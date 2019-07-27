@@ -6,14 +6,14 @@
 //===============================================
 typedef struct _GSocket2WindowsO GSocket2WindowsO;
 typedef struct _GMapO_GSocket2Windows_GCHAR_PTR_GWSADATA_PTR GMapO_GSocket2Windows_GCHAR_PTR_GWSADATA_PTR;
-typedef struct _GMapO_GSocket2Windows_GCHAR_PTR_GSocket2_PTR GMapO_GSocket2Windows_GCHAR_PTR_GSocket2_PTR;
+typedef struct _GMapO_GSocket2Windows_GCHAR_PTR_GSOCKET_PTR GMapO_GSocket2Windows_GCHAR_PTR_GSOCKET_PTR;
 typedef struct _GMapO_GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR GMapO_GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR;
 //===============================================
 struct _GSocket2WindowsO {
     GSocket2O* m_parent;
 #if defined(__WIN32)
     GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* m_dataMap;
-    GMapO(GSocket2Windows_GCHAR_PTR_GSocket2_PTR)* m_socketMap;
+    GMapO(GSocket2Windows_GCHAR_PTR_GSOCKET_PTR)* m_socketMap;
     GMapO(GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR)* m_addressMap;
 #endif
 };

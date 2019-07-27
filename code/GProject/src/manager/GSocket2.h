@@ -24,6 +24,9 @@ struct _GSocket2O {
 	void (*Socket)(char* socketName, int family, int type, int protocol);
 	void (*AddressInt)(char* addressName, int family, int address, int port);
 	void (*AddressChar)(char* addressName, int family, char* address, int port);
+	void (*SocketName)(char* socketName, char* addressName);
+	void (*AddressIp)(char* addressName);
+	void (*Port)(char* addressName);
 	void (*Bind)(char* socketName, char* addressName);
 	void (*Listen)(char* socketName, int backlog);
 	void (*Accept)(char* serverSocket, char* clientSocket, char* clientAddress);
@@ -34,12 +37,6 @@ struct _GSocket2O {
 	void (*FreeSocket)(char* socketName);
 	void (*FreeAddress)(char* socketName);
 	//===============================================
-	void (*Address2)(char* addressName, int family, int address, int port);
-	void (*Address3)(char* addressName, int family, char* address, int port);
-	void (*Socket2)(char* socketName, int family, int type, int protocol);
-	void (*SocketName)(char* socketName, char* addressName);
-	void (*AddressIp)(char* addressName);
-	void (*Port)(char* addressName);
 	void (*Send)(char* socketName, char* message, int size);
 	void (*Recv)(char* socketName, char* message, int size);
 	void (*Clean)(char* dataName);

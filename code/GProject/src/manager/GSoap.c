@@ -114,6 +114,7 @@ static void* GSoap_Malloc(char* soapName, int size) {
 	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
 	return soap_malloc(lSoap, size);
 #endif
+	return 0;
 }
 //===============================================
 static void GSoap_Init(char* soapName) {
@@ -219,6 +220,7 @@ static int GSoap_SenderFault(char* soapName, char* faultString, char* faultDetai
 	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
 	return soap_sender_fault(lSoap, faultString, faultDetail);
 #endif
+	return 0;
 }
 //===============================================
 static void GSoap_FreeSoap(char* soapName) {
