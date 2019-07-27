@@ -19,7 +19,6 @@ GProcessO* GProcessRpcServer_New() {
 }
 //===============================================
 void GProcessRpcServer_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessRpcServerO);
     m_GProcessRpcServerO = 0;
 }

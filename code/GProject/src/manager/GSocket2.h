@@ -11,7 +11,6 @@ typedef struct _GSocket2O GSocket2O;
 struct _GSocket2O {
 	void* m_child;
 	void (*Delete)(GSocket2O* obj);
-	//===============================================
 	void (*MallocSocket)(char* socketName);
 	void (*MallocAddress)(char* addressName);
 	void (*MallocData)(char* dataName);
@@ -33,15 +32,13 @@ struct _GSocket2O {
 	void (*Connect)(char* clientSocket, char* serverAddress);
 	int (*Write)(char* socketName, char* data, int size);
 	int (*Read)(char* socketName, char* data, int size);
-	void (*Close)(char* socketName);
-	void (*FreeSocket)(char* socketName);
-	void (*FreeAddress)(char* socketName);
-	//===============================================
 	void (*Send)(char* socketName, char* message, int size);
 	void (*Recv)(char* socketName, char* message, int size);
-	void (*Clean)(char* dataName);
-	void (*Clean2)(char* socketName);
-	void (*Clean3)(char* addressName);
+	void (*Close)(char* socketName);
+	void (*Clean)();
+	void (*FreeSocket)(char* socketName);
+	void (*FreeAddress)(char* socketName);
+	void (*FreeData)(char* dataName);
 };
 //===============================================
 GSocket2O* GSocket2_New();

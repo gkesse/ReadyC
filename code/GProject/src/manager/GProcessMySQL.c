@@ -21,7 +21,6 @@ GProcessO* GProcessMySQL_New() {
 }
 //===============================================
 void GProcessMySQL_Delete(GProcessO* obj) {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessMySQLO);
 	m_GProcessMySQLO = 0;
 }

@@ -34,7 +34,6 @@ GProcessO* GProcessMap_New() {
 }
 //===============================================
 void GProcessMap_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessMapO);
 	m_GProcessMapO = 0;
 }

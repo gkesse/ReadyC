@@ -19,7 +19,6 @@ GProcessO* GProcessConsole_New() {
 }
 //===============================================
 void GProcessConsole_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessConsoleO);
     m_GProcessConsoleO = 0;
 }

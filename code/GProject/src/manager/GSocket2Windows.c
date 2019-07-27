@@ -43,9 +43,10 @@ static void GSocket2Windows_Connect(char* socketName, char* addressName);
 static void GSocket2Windows_Send(char* socketName, char* message, int size);
 static void GSocket2Windows_Recv(char* socketName, char* message, int size);
 static void GSocket2Windows_Close(char* socketName);
-static void GSocket2Windows_Clean(char* datatName);
-static void GSocket2Windows_Clean2(char* socketName);
-static void GSocket2Windows_Clean3(char* addressName);
+static void GSocket2Windows_Clean();
+static void GSocket2Windows_FreeData(char* datatName);
+static void GSocket2Windows_FreeSocket(char* socketName);
+static void GSocket2Windows_FreeAddress(char* addressName);
 //===============================================
 #if defined(__WIN32)
 static int GSocket2Windows_MapEqual(char* key1, char* key2);
@@ -87,8 +88,9 @@ GSocket2O* GSocket2Windows_New() {
 	lParent->Recv = GSocket2Windows_Recv;
 	lParent->Close = GSocket2Windows_Close;
 	lParent->Clean = GSocket2Windows_Clean;
-	lParent->Clean2 = GSocket2Windows_Clean2;
-	lParent->Clean3 = GSocket2Windows_Clean3;
+	lParent->FreeData = GSocket2Windows_FreeData;
+	lParent->FreeSocket = GSocket2Windows_FreeSocket;
+	lParent->FreeAddress = GSocket2Windows_FreeAddress;
 	return lParent;
 }
 //===============================================
@@ -343,17 +345,22 @@ static void GSocket2Windows_Close(char* socketName) {
 #endif
 }
 //===============================================
-static void GSocket2Windows_Clean(char* dataName) {
+static void GSocket2Windows_Clean() {
+#if defined(__WIN32)
+	WSACleanup();
+#endif
+}
+//===============================================
+static void GSocket2Windows_FreeData(char* dataName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
 	GMapO(GSocket2Windows_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
 	WSADATA* lData = lDataMap->GetData(lDataMap, dataName, GSocket2Windows_MapEqual);
-	WSACleanup();
 	free(lData);
 #endif
 }
 //===============================================
-static void GSocket2Windows_Clean2(char* socketName) {
+static void GSocket2Windows_FreeSocket(char* socketName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
 	GMapO(GSocket2Windows_GCHAR_PTR_GSOCKET_PTR)* lSocketMap = lSocketWindows->m_socketMap;
@@ -362,7 +369,7 @@ static void GSocket2Windows_Clean2(char* socketName) {
 #endif
 }
 //===============================================
-static void GSocket2Windows_Clean3(char* addressName) {
+static void GSocket2Windows_FreeAddress(char* addressName) {
 #if defined(__WIN32)
 	GSocket2WindowsO* lSocketWindows = m_GSocket2WindowsO->m_child;
 	GMapO(GSocket2Windows_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;

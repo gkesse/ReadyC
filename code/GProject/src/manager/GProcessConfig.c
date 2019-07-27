@@ -19,7 +19,6 @@ GProcessO* GProcessConfig_New() {
 }
 //===============================================
 void GProcessConfig_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessConfigO);
 	m_GProcessConfigO = 0;
 }
@@ -39,6 +38,5 @@ static void GProcessConfig_Run(int argc, char** argv) {
     GConfig()->SetData("Formation", "Informatique Industrielle");
     GConfig()->SetData("Ecole", "Polytech'Montpellier");
     GConfig()->Show();
-    //GConfig()->Delete();
 }
 //===============================================

@@ -19,7 +19,6 @@ GProcessO* GProcessSemaphore_New() {
 }
 //===============================================
 void GProcessSemaphore_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessSemaphoreO);
     m_GProcessSemaphoreO = 0;
 }

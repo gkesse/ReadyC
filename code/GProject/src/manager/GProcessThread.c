@@ -19,7 +19,6 @@ GProcessO* GProcessThread_New() {
 }
 //===============================================
 void GProcessThread_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessThreadO);
     m_GProcessThreadO = 0;
 }

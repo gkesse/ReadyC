@@ -20,7 +20,6 @@ GProcessO* GProcessDbusClient_New() {
 }
 //===============================================
 void GProcessDbusClient_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessDbusClientO);
 	m_GProcessDbusClientO = 0;
 }

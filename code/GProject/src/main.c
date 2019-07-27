@@ -1,7 +1,6 @@
 //===============================================
 #include "GSetting.h"
 #include "GProcess.h"
-#include "GConfig.h"
 //===============================================
 int main(int argc, char** argv) {
     GSetting()->Load("data/config/config.txt");

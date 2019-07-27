@@ -20,7 +20,6 @@ GProcessO* GProcessSoapServer_New() {
 }
 //===============================================
 void GProcessSoapServer_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessSoapServerO);
 	m_GProcessSoapServerO = 0;
 }

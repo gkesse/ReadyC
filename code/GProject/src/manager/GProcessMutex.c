@@ -19,7 +19,6 @@ GProcessO* GProcessMutex_New() {
 }
 //===============================================
 void GProcessMutex_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessMutexO);
     m_GProcessMutexO = 0;
 }

@@ -20,7 +20,6 @@ GProcessO* GProcessSocketUnixServer_New() {
 }
 //===============================================
 void GProcessSocketUnixServer_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessSocketUnixServerO);
 	m_GProcessSocketUnixServerO = 0;
 }

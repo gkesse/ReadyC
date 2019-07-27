@@ -19,7 +19,6 @@ GProcessO* GProcessCgi_New() {
 }
 //===============================================
 void GProcessCgi_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessCgiO);
 	m_GProcessCgiO = 0;
 }

@@ -20,7 +20,6 @@ GProcessO* GProcessDbusServer_New() {
 }
 //===============================================
 void GProcessDbusServer_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessDbusServerO);
 	m_GProcessDbusServerO = 0;
 }

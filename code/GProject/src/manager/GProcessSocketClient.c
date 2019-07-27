@@ -20,7 +20,6 @@ GProcessO* GProcessSocketClient_New() {
 }
 //===============================================
 void GProcessSocketClient_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessSocketClientO);
 	m_GProcessSocketClientO = 0;
 }

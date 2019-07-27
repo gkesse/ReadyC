@@ -19,7 +19,6 @@ GProcessO* GProcessDatabase_New() {
 }
 //===============================================
 void GProcessDatabase_Delete(GProcessO* obj) {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessDatabaseO);
 	m_GProcessDatabaseO = 0;
 }
@@ -33,10 +32,10 @@ GProcessO* GProcessDatabase() {
 //===============================================
 static void GProcessDatabase_Run(int argc, char** argv) {
 	GDatabase()->Version();
-	GDatabase()->Open("ELEPHANT", "data/data/elephant.db");
+	GDatabase()->Open("ELEPHANT", "data/sqlite/elephant.db");
 
 	GDatabase()->Exec("ELEPHANT", 0,
-			"DROP TABLE Persons");
+			"DROP TABLE IF EXISTS Persons");
 
 	GDatabase()->Exec("ELEPHANT", 0,
 			"CREATE TABLE Persons ("

@@ -19,7 +19,6 @@ GProcessO* GProcessGtk_New() {
 }
 //===============================================
 void GProcessGtk_Delete() {
-	// Delete All Attributes Before
 	GProcess_Delete(m_GProcessGtkO);
 	m_GProcessGtkO = 0;
 }

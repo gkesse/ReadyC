@@ -71,7 +71,6 @@ GDatabaseO* GSQLite_New() {
 }
 //===============================================
 void GSQLite_Delete() {
-	// Delete All Attributes Before
 	GDatabase_Delete(m_GSQLiteO);
 	m_GSQLiteO = 0;
 }
