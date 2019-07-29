@@ -15,17 +15,20 @@ GLIBS = \
     -L/home/centos/LOCAL/unix/data/soap/bin/ \
     -L /usr/lib64/mysql \
     -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgio-2.0 -lpangoft2-1.0 -lpangocairo-1.0 -lgdk_pixbuf-2.0 -lcairo -lpango-1.0 -lfontconfig -lgobject-2.0 -lglib-2.0 -lfreetype -lm \
-    -lsqlite3 -lGSoap2 -ldbus-1 -lmysqlclient \
+    -lsqlite3 -lGSoap2 -ldbus-1 -lmysqlclient -lpthread \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c))
     	
 all: $(GOBJS)
+	@mkdir -p $(GBIN)
 	gcc -o $(GTARGET) $(GOBJS) $(GLIBS) 
 $(GBUILD)/%.o: $(GSRC)/%.c
+	@mkdir -p $(GBUILD)
 	gcc -Wall -std=c11 -c $< -o $@ $(GINCS)
 $(GBUILD)/%.o: $(GSRC)/manager/%.c
+	@mkdir -p $(GBUILD)
 	gcc -Wall -std=c11 -c $< -o $@ $(GINCS)
 clean:
 	rm -f $(GBUILD)/*.o $(GBIN)/*.exe
