@@ -98,6 +98,7 @@
 		} \
 		\
 		static void GMap_SetData_##GTYPE(GMapO_##GTYPE* obj, GKEY key, GVALUE value, GEQUAL_##GTYPE equal) { \
+			if(obj == 0) {printf("[ GMap ] Error Map None\n");  exit(0);} \
 			GMapNodeO_##GTYPE* lNext = obj->m_head; \
 			GMapNodeO_##GTYPE* lPrevious = 0; \
 			\

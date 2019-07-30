@@ -13,6 +13,9 @@ struct _GThread2O {
     void (*Delete)();
     void (*MallocThread)(char* threadName);
     void (*Create)(char* threadName, GTHREAD2_CALLBACK callback, void* params);
+    void (*Join)(char* threadName);
+    void (*Exit)(char* threadName);
+    void (*FreeThread)(char* threadName);
 #if defined(__unix)
 	GMapO(GThread2_GCHAR_PTR_GPTHREADT_PTR)* m_threadMap;
 #endif
