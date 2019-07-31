@@ -2,6 +2,9 @@
 #ifndef _GInclude_
 #define _GInclude_
 //===============================================
+/* Define */
+#define _POSIX_C_SOURCE 200809L
+//===============================================
 /* C Standard */
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,11 +39,17 @@
 /* Thread */
 #include <pthread.h>
 //===============================================
+/* Timer */
+//#include <time.h>
+//===============================================
+/* Signal */
+//#include <signal.h>
+//===============================================
 /* MySQL */
 #include <mysql.h>
 //===============================================
 /* Gtk */
-#include <gtk/gtk.h>
+#include <gtk/gtk.h> 
 //===============================================
 /* Soap */
 #include <stdsoap2.h>

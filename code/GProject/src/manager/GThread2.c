@@ -1,7 +1,7 @@
 //===============================================
 #include "GThread2.h"
 #include "GConsole.h"
-///===============================================
+//===============================================
 #if defined(__unix)
 typedef char* GCHAR_PTR;
 typedef pthread_t* GPTHREADT_PTR;
