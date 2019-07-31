@@ -32,6 +32,15 @@ GProcessO* GProcessTimer() {
 //===============================================
 static void GProcessTimer_Run(int argc, char** argv) {
 	GTimer2()->MallocTimer("TIMER");
+	GTimer2()->MallocSignal("TIMER");
+	GTimer2()->MallocItimer("TIMER");
+    
+	GTimer2()->Signal("TIMER", SIGEV_SIGNAL, SIGUSR1);
+	GTimer2()->Itimer("TIMER", 0, 1000);
+	GTimer2()->Timer("TIMER", "TIMER", CLOCK_REALTIME);
+
 	GTimer2()->FreeTimer("TIMER");
+	GTimer2()->FreeSignal("TIMER");
+	GTimer2()->FreeItimer("TIMER");
 }
 //===============================================

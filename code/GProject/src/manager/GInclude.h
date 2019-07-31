@@ -3,6 +3,7 @@
 #define _GInclude_
 //===============================================
 /* Define */
+#define _USE_MATH_DEFINES
 #define _POSIX_C_SOURCE 200809L
 //===============================================
 /* C Standard */
