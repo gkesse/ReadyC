@@ -10,7 +10,7 @@ typedef struct _GMapO_GTimer2_GCHAR_PTR_GTIMERT_PTR GMapO_GTimer2_GCHAR_PTR_GTIM
 typedef struct _GMapO_GTimer2_GCHAR_PTR_GSIGEVENT_PTR GMapO_GTimer2_GCHAR_PTR_GSIGEVENT_PTR;
 typedef struct _GMapO_GTimer2_GCHAR_PTR_GITIMERSPEEC_PTR GMapO_GTimer2_GCHAR_PTR_GITIMERSPEEC_PTR;
 //===============================================
-typedef void (*GTIMER2_SIGNAL_HANDLER)(int);
+typedef void (*GTIMER2_SIGNAL_HANDLER)(int params);
 //===============================================
 struct _GTimer2O {
     void (*Delete)();
@@ -19,7 +19,7 @@ struct _GTimer2O {
     void (*MallocItimer)(char* itimerName);
     void (*Timer)(char* timerName, char* signalName, int clockId);
     void (*SetTime)(char* timerName, char* itimerName);
-    void (*Signal)(char* signalName, int notify, int signo);
+    void (*Signal)(char* signalName, int notify, int signo, GTIMER2_SIGNAL_HANDLER callback);
     void (*Itimer)(char* itimerName, long timeT, long freq);
     void (*FreeTimer)(char* timerName);
     void (*FreeSignal)(char* signalName);
