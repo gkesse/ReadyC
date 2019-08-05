@@ -45,8 +45,8 @@ static void GProcessTimerInterval_Run(int argc, char** argv) {
     */
     //===============================================
     struct itimerval tval;
-	timerclear(& tval.it_interval);	/* zero interval means no reset of timer */
-	timerclear(& tval.it_value);
+	//timerclear(& tval.it_interval);	/* zero interval means no reset of timer */
+	//timerclear(& tval.it_value);
 	tval.it_value.tv_sec = 1;	/* 10 second timeout */
 	signal(SIGALRM, GProcessTimerInterval_Handler);
 	int lRes = setitimer(ITIMER_REAL, &tval, NULL);
