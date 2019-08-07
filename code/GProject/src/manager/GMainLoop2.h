@@ -1,21 +1,19 @@
 //===============================================
-#ifndef _GAlarm_
-#define _GAlarm_
+#ifndef _GMainLoop2_
+#define _GMainLoop2_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GAlarmO GAlarmO;
+typedef struct _GMainLoop2O GMainLoop2O;
 //===============================================
-struct _GAlarmO {
+struct _GMainLoop2O {
     void (*Delete)();
-    void (*Alarm)(int sec);
     void (*Exec)();
-    int m_sec;
 };
 //===============================================
-GAlarmO* GAlarm_New();
-void GAlarm_Delete();
-GAlarmO* GAlarm();
+GMainLoop2O* GMainLoop2_New();
+void GMainLoop2_Delete();
+GMainLoop2O* GMainLoop2();
 //===============================================
 #endif
 //===============================================

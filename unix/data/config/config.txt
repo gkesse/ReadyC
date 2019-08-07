@@ -1,4 +1,4 @@
 #================================================
-PROCESS = CLOCK
-CONFIG_SHOW = TRUE
+PROCESS = TEST
+CONFIG_SHOW = FALSE
 #================================================

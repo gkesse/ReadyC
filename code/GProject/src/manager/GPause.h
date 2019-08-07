@@ -1,21 +1,19 @@
 //===============================================
-#ifndef _GAlarm_
-#define _GAlarm_
+#ifndef _GPause_
+#define _GPause_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GAlarmO GAlarmO;
+typedef struct _GPauseO GPauseO;
 //===============================================
-struct _GAlarmO {
+struct _GPauseO {
     void (*Delete)();
-    void (*Alarm)(int sec);
-    void (*Exec)();
-    int m_sec;
+    void (*Pause)();
 };
 //===============================================
-GAlarmO* GAlarm_New();
-void GAlarm_Delete();
-GAlarmO* GAlarm();
+GPauseO* GPause_New();
+void GPause_Delete();
+GPauseO* GPause();
 //===============================================
 #endif
 //===============================================

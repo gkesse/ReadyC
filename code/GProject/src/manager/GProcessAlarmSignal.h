@@ -1,21 +1,18 @@
 //===============================================
-#ifndef _GAlarm_
-#define _GAlarm_
+#ifndef _GProcessAlarmSignal_
+#define _GProcessAlarmSignal_
 //===============================================
-#include "GInclude.h"
+#include "GProcess.h"
 //===============================================
-typedef struct _GAlarmO GAlarmO;
+typedef struct _GProcessAlarmSignalO GProcessAlarmSignalO;
 //===============================================
-struct _GAlarmO {
-    void (*Delete)();
-    void (*Alarm)(int sec);
-    void (*Exec)();
-    int m_sec;
+struct _GProcessAlarmSignalO {
+    GProcessO* m_parent;
 };
 //===============================================
-GAlarmO* GAlarm_New();
-void GAlarm_Delete();
-GAlarmO* GAlarm();
+GProcessO* GProcessAlarmSignal_New();
+void GProcessAlarmSignal_Delete();
+GProcessO* GProcessAlarmSignal();
 //===============================================
 #endif
 //===============================================

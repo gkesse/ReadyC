@@ -3,12 +3,17 @@
 //===============================================
 static GAlarmO* m_GAlarmO = 0;
 //===============================================
-static void GAlarm_SetAlarm(int delay);
+static void GAlarm_Alarm(int sec);
+static void GAlarm_Exec();
 //===============================================
 GAlarmO* GAlarm_New() {
     GAlarmO* lObj = (GAlarmO*)malloc(sizeof(GAlarmO));
+    
+    lObj->m_sec = 0;
+    
     lObj->Delete = GAlarm_Delete;
-    lObj->SetAlarm = GAlarm_SetAlarm;
+    lObj->Alarm = GAlarm_Alarm;
+    lObj->Exec = GAlarm_Exec;
     return lObj;
 }
 //===============================================
@@ -27,7 +32,14 @@ GAlarmO* GAlarm() {
     return m_GAlarmO;
 }
 //===============================================
-static void GAlarm_SetAlarm(int delay) {
-	alarm(delay);
+static void GAlarm_Alarm(int sec) {
+    m_GAlarmO->m_sec = sec;
+	alarm(sec);
+}
+//===============================================
+static void GAlarm_Exec() {
+    if(m_GAlarmO->m_sec > 0) {
+        alarm(m_GAlarmO->m_sec);
+    }
 }
 //===============================================

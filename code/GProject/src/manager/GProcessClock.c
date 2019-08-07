@@ -40,7 +40,7 @@ static void GProcessClock_Run(int argc, char** argv) {
     long lClockT1 = GClock()->GetClock();
     
     long lCompute = 0;
-    for(int i = 0; i < 100000000; i++) {lCompute++;}
+    for(long i = 0; i < 1000000000; i++) {lCompute++;}
     printf("%-20s : %ld\n", "lCompute", lCompute);
     
     long lClockT2 = GClock()->GetClock();
