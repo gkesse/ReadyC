@@ -30,6 +30,9 @@
 #include <errno.h>
 #include <strings.h>
 //===============================================
+/* Signal */
+#include <signal.h>
+//===============================================
 /* Socket */
 #include <sys/socket.h>
 #include <netinet/in.h>

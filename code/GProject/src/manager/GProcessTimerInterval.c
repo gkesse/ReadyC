@@ -1,10 +1,5 @@
 //===============================================
 #include "GProcessTimerInterval.h"
-#define _DEFAULT_SOURCE
-#include <stdio.h>
-#include <assert.h>
-#include <signal.h>
-#include <sys/time.h>
 //===============================================
 static GProcessO* m_GProcessTimerIntervalO = 0;
 //===============================================
@@ -34,27 +29,7 @@ GProcessO* GProcessTimerInterval() {
 	return m_GProcessTimerIntervalO;
 }
 //===============================================
-static void GProcessTimerInterval_Handler(int signo);
-//===============================================
 static void GProcessTimerInterval_Run(int argc, char** argv) {
-    //===============================================
-	/*
-    alarm(5);
-    signal(SIGALRM, GProcessTimerInterval_Handler);
-    pause();
-    */
-    //===============================================
-    struct itimerval tval;
-	timerclear(& tval.it_interval);	/* zero interval means no reset of timer */
-	timerclear(& tval.it_value);
-	tval.it_value.tv_sec = 1;	/* 10 second timeout */
-	signal(SIGALRM, GProcessTimerInterval_Handler);
-	int lRes = setitimer(ITIMER_REAL, &tval, NULL);
-    if(lRes == -1) {printf("Error...........\n"); exit(0);}
-    pause();
-}
-//===============================================
-static void GProcessTimerInterval_Handler(int signo) {
-    printf("hellllllllllllllo\n");
+
 }
 //===============================================
