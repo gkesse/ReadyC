@@ -1,9 +1,17 @@
 //===============================================
 #include "GProcessTest.h"
-#include "GSignal.h"
-#include "GMainLoop2.h"
-#include "GAlarm.h"
 #include "GConsole.h"
+//===============================================
+#if defined(__unix)
+typedef int* GINT_PTR;
+typedef char* GCHAR_PTR;
+//===============================================
+GDECLARE_LIST(GINT_PTR, GProcessTest_GINT_PTR)
+GDEFINE_LIST(GINT_PTR, GProcessTest_GINT_PTR)
+//===============================================
+GDECLARE_LIST(GCHAR_PTR, GProcessTest_GCHAR_PTR)
+GDEFINE_LIST(GCHAR_PTR, GProcessTest_GCHAR_PTR)
+#endif
 //===============================================
 static GProcessO* m_GProcessTestO = 0;
 //===============================================
@@ -33,25 +41,11 @@ GProcessO* GProcessTest() {
 	return m_GProcessTestO;
 }
 //===============================================
-static void GProcessTest_Callback(int signo) {
-    GConsole()->Print("Je suis la fonction de rappel...\n");
-}
-//===============================================
 static void GProcessTest_Run(int argc, char** argv) {
     GConsole()->Print("=================================================\n");
-    GConsole()->Print("Je suis un timer\n");
+    GConsole()->Print("Je suis une liste\n");
     GConsole()->Print("=================================================\n");
-    GSignal()->MallocSigAction("SIGNAL");
-    GSignal()->MallocSigJmpBuf("SIGNAL");
-    //GSignal()->SigFillSet("SIGNAL");
-    GSignal()->InitSigAction("SIGNAL", GProcessTest_Callback, 0);
-    //GSignal()->SigLongJmp("SIGNAL", 1);
-    //GSignal()->SigSetJmp("SIGNAL", 1);
-    GSignal()->SigAction("SIGNAL", SIGALRM);
-    GAlarm()->Alarm(1);
-    GMainLoop2()->Exec();
-    GSignal()->FreeSigAction("SIGNAL");
-    GSignal()->FreeSigJmpBuf("SIGNAL");
+
     GConsole()->Print("=================================================\n");
 }
 //===============================================
