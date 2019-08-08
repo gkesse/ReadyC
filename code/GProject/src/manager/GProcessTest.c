@@ -48,9 +48,6 @@ GProcessO* GProcessTest() {
 }
 //===============================================
 static void GProcessTest_Run(int argc, char** argv) {
-    int* lIntIdx1 = 0;
-    char* lCharIdx1 = 0;
-    //===============================================
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je suis une liste generique\n");
     GConsole()->Print("=================================================\n");
@@ -61,7 +58,6 @@ static void GProcessTest_Run(int argc, char** argv) {
         int* lInt = (int*)malloc(sizeof(int));
         *lInt = i*10;
         lListInt->AddData(lListInt, lInt);
-        if(i == 1) lIntIdx1 = lInt;
     }
     //===============================================
     GConsole()->Print("J'ai une longueur de:\n");
@@ -99,9 +95,6 @@ static void GProcessTest_Run(int argc, char** argv) {
     lListInt->RemoveIndex(lListInt, 1, 0);
     lListInt->Show(lListInt, GProcessTest_ListShowInt);
     //===============================================
-    GConsole()->Print("Je verifie le contenu du pointeur du nombre d'indice 1:\n");
-    GConsole()->Print("%d\n", *lIntIdx1); 
-    //===============================================
     GConsole()->Print("Je supprime la premiere occurence du nombre 20:\n");
     lListInt->RemoveData(lListInt, "20", GProcessTest_ListEqualInt, 0);
     lListInt->Show(lListInt, GProcessTest_ListShowInt);
@@ -128,7 +121,6 @@ static void GProcessTest_Run(int argc, char** argv) {
         char* lChar = (char*)malloc(sizeof(char)*lLength);
         sprintf(lChar, "Je suis la chaine %d", i*10);
         lListChar->AddData(lListChar, lChar);
-        if(i == 1) lCharIdx1 = lChar;
     }
     //===============================================
     GConsole()->Print("J'ai une longueur de: %d\n", lListChar->Size(lListChar));
@@ -158,9 +150,6 @@ static void GProcessTest_Run(int argc, char** argv) {
     GConsole()->Print("Je supprime la chaine d'indice 1:\n");
     lListChar->RemoveIndex(lListChar, 1, 0);
     lListChar->Show(lListChar, GProcessTest_ListShowChar);
-    //===============================================
-    GConsole()->Print("Je verifie le contenu du pointeur de la chaine d'indice 1:\n");
-    GConsole()->Print("%s\n", *lCharIdx1); 
     //===============================================
     GConsole()->Print("Je supprime la liste:\n");
     lListChar->Delete(lListChar, 0);
