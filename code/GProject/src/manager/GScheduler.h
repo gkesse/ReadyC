@@ -7,7 +7,7 @@
 //===============================================
 typedef struct _GSchedulerO GSchedulerO;
 typedef struct _GSchedulerTaskO GSchedulerTaskO;
-typedef void (*GSCHEDULER_TASK)(void* params);
+typedef void (*GSCHEDULER_TASK)();
 //===============================================
 typedef struct _GListO_GScheduler_GSCHEDULERTASK_PTR GListO_GScheduler_GSCHEDULERTASK_PTR;
 //===============================================
@@ -15,11 +15,11 @@ struct _GSchedulerO {
     void (*Delete)();
     void (*Init)(int tickTime);
     void (*Start)();
-    void (*AddTask)(GSCHEDULER_TASK task, int delay, int period, void* params);
-    void (*GoToSleep)();
-    int m_tickTime;
+    void (*AddTask)(GSCHEDULER_TASK task, int delay, int period);
+    void (*MainLoop)();
     GListO(GScheduler_GSCHEDULERTASK_PTR)* m_taskMap;
-};
+   int m_tickTime;
+ };
 //===============================================
 struct _GSchedulerTaskO {
 	int m_runMe;

@@ -2,7 +2,7 @@
 #include "GScheduler.h"
 #include "GSignal.h"
 #include "GAlarm.h"
-#include "GMainLoop2.h"
+#include "GPause.h"
 #include "GConsole.h"
 //===============================================
 #if defined(__unix)
@@ -16,10 +16,13 @@ static GSchedulerO* m_GSchedulerO = 0;
 //===============================================
 static void GScheduler_Init(int tickTime);
 static void GScheduler_Start();
-static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period, void* params);
-static void GScheduler_GoToSleep();
+static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period);
+static void GScheduler_MainLoop();
 //===============================================
 static void GScheduler_Update(int signo);
+static void GScheduler_DispatchTasks();
+static void GScheduler_GoToSleep();
+static void GScheduler_DeleteTask(int index);
 //===============================================
 GSchedulerO* GScheduler_New() {
 	GSchedulerO* lObj = (GSchedulerO*)malloc(sizeof(GSchedulerO));
@@ -30,7 +33,7 @@ GSchedulerO* GScheduler_New() {
 	lObj->Init = GScheduler_Init;
 	lObj->Start = GScheduler_Start;
 	lObj->AddTask = GScheduler_AddTask;
-	lObj->GoToSleep = GScheduler_GoToSleep;
+	lObj->MainLoop = GScheduler_MainLoop;
 	return lObj;
 }
 //===============================================
@@ -50,38 +53,74 @@ GSchedulerO* GScheduler() {
 }
 //===============================================
 static void GScheduler_Init(int tickTime) {
-    GConsole()->Print("Je suis la fonction d'initialisation\n");
-    GSignal()->MallocSigAction("SCHEDULER");
-    GSignal()->MallocSigJmpBuf("SCHEDULER");
-    GSignal()->InitSigAction("SCHEDULER", GScheduler_Update, 0);
-    GSignal()->SigAction("SCHEDULER", SIGALRM);
+    GSignal()->MallocSigAction("_SCHEDULER_");
+    GSignal()->MallocSigJmpBuf("_SCHEDULER_");
+    GSignal()->InitSigAction("_SCHEDULER_", GScheduler_Update, 0);
+    GSignal()->SigAction("_SCHEDULER_", SIGALRM);
     m_GSchedulerO->m_tickTime = tickTime;
 }
 //===============================================
 static void GScheduler_Start() {
-    GConsole()->Print("Je suis la fonction d'initialisation\n");
     GAlarm()->Alarm(m_GSchedulerO->m_tickTime);
 }
 //===============================================
-static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period, void* params) {
-    GConsole()->Print("Je suis la fonction d'initialisation\n");
+static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period) {
+    GListO(GScheduler_GSCHEDULERTASK_PTR)* lTaskMap = m_GSchedulerO->m_taskMap;
     GSchedulerTaskO* lTask = (GSchedulerTaskO*)malloc(sizeof(GSchedulerTaskO));
     lTask->m_runMe = 0;
     lTask->m_delay = delay;
     lTask->m_period = period;
-    lTask->m_pTask = 0;
-	int m_runMe;
-	int m_delay;
-	int m_period;
-    GSCHEDULER_TASK pTask;    
+    lTask->pTask = task;
+    lTaskMap->AddData(lTaskMap, lTask);    
 }
 //===============================================
-static void GScheduler_GoToSleep() {
-    GConsole()->Print("Je passe en mode IDLE\n");
-    GMainLoop2()->Exec();
+static void GScheduler_MainLoop() {
+    while(1) {
+        GScheduler_DispatchTasks();
+        GScheduler_GoToSleep();
+    }
 }
 //===============================================
 static void GScheduler_Update(int signo) {
-    GConsole()->Print("Je suis la fonction de mise a jour\n");
+    GListO(GScheduler_GSCHEDULERTASK_PTR)* lTaskMap = m_GSchedulerO->m_taskMap;
+    int lTaskCount = lTaskMap->Size(lTaskMap);
+    for(int lIndex = 0; lIndex < lTaskCount; lIndex++) {
+        GSchedulerTaskO* lTask = lTaskMap->GetData(lTaskMap, lIndex);
+        if(lTask->m_delay == 0) {
+            lTask->m_runMe += 1;
+            if(lTask->m_period != 0) {
+                lTask->m_delay = lTask->m_period;
+            }
+        }
+        else {
+            lTask->m_delay -= 1;
+        }
+    }
+}
+//===============================================
+static void GScheduler_DispatchTasks() {
+    GListO(GScheduler_GSCHEDULERTASK_PTR)* lTaskMap = m_GSchedulerO->m_taskMap;
+    int lTaskCount = lTaskMap->Size(lTaskMap);
+    for(int lIndex = 0; lIndex < lTaskCount; lIndex++) {
+        GSchedulerTaskO* lTask = lTaskMap->GetData(lTaskMap, lIndex);
+        if(lTask->m_runMe > 0) {
+            lTask->pTask();
+            lTask->m_runMe -= 1;
+            if(lTask->m_period == 0) {
+                GScheduler_DeleteTask(lIndex);    
+            }
+        }
+    }
+    
+}
+//===============================================
+static void GScheduler_GoToSleep() {
+    GPause()->Pause();
+    GAlarm()->Exec();
+}
+//===============================================
+static void GScheduler_DeleteTask(int index) {
+    GListO(GScheduler_GSCHEDULERTASK_PTR)* lTaskMap = m_GSchedulerO->m_taskMap;
+    lTaskMap->RemoveIndex(lTaskMap, index, 0);    
 }
 //===============================================

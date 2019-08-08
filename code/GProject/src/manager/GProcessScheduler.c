@@ -7,7 +7,7 @@ static GProcessO* m_GProcessSchedulerO = 0;
 //===============================================
 static void GProcessScheduler_Run(int argc, char** argv);
 //===============================================
-static void GProcessScheduler_Task(void* params);
+static void GProcessScheduler_Task();
 //===============================================
 GProcessO* GProcessScheduler_New() {
 	GProcessO* lParent = GProcess_New();
@@ -35,38 +35,20 @@ GProcessO* GProcessScheduler() {
 //===============================================
 static void GProcessScheduler_Run(int argc, char** argv) {
 	GConsole()->Print("=================================================\n");
-	GConsole()->Print("Je suis un ordonnanceur cooperatif\n");
-	GConsole()->Print("Je peux fonctionner comme un ordinateur cooperatif (#hybride)\n");
-	GConsole()->Print("Pour ceux qui ne comprennent pas le terme\n");
+	GConsole()->Print("Je suis un ordonnanceur cooperatif [ Scheduler ]\n");
 	GConsole()->Print("=================================================\n");
-	GScheduler()->Init(1);
-	GScheduler()->Start(1);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
-	GScheduler()->GoToSleep();
+	GConsole()->Print("J'initialise le scheduler\n");
+	GScheduler()->Init(0.1);
+	GConsole()->Print("Je demarre le scheduler\n");
+	GScheduler()->Start();
+	GConsole()->Print("J'ajoute une tache au scheduler\n");
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1);
+	GConsole()->Print("Je passe le scheduler en mode IDLE\n");
+	GScheduler()->MainLoop();
     GConsole()->Print("=================================================\n");
 }
 //===============================================
-static void GProcessScheduler_Task(void* params) {
+static void GProcessScheduler_Task() {
 	GConsole()->Print("Je suis une tache\n");
 }
 //===============================================

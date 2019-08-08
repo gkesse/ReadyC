@@ -178,7 +178,7 @@ static void GProcessTest_Run(int argc, char** argv) {
 }
 //===============================================
 static void GProcessTest_ListShowInt(int index, int* data) {
-    GConsole()->Print("[ %2d ] : [ %5d ]\n", index, *data);
+    GConsole()->Print("[ %2d ] : [ %5d ]\n", index, *data); 
 }
 //===============================================
 static void GProcessTest_ListShowChar(int index, char* data) {
