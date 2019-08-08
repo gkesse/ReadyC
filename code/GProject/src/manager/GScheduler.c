@@ -5,7 +5,7 @@
 static GSchedulerO* m_GSchedulerO = 0;
 //===============================================
 static void GScheduler_Init(int tickTime);
-static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period);
+static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period, void* params);
 //===============================================
 GSchedulerO* GScheduler_New() {
 	GSchedulerO* lObj = (GSchedulerO*)malloc(sizeof(GSchedulerO));
@@ -34,7 +34,7 @@ static void GScheduler_Init(int tickTime) {
     GConsole()->Print("Je suis la fonction d'initialisation\n");
 }
 //===============================================
-static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period) {
+static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period, void* params) {
     GConsole()->Print("Je suis la fonction d'initialisation\n");
 }
 //===============================================
