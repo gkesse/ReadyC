@@ -166,6 +166,11 @@ static void GProcessTest_Run(int argc, char** argv) {
     lListChar->RemoveDataAll(lListChar, "Je suis la chaine 40", GProcessTest_ListEqualChar, 0);
     lListChar->Show(lListChar, GProcessTest_ListShowChar);
     //===============================================
+    GConsole()->Print("Je vide la liste:\n");
+    lListChar->Clear(lListChar, 0);
+    lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    GConsole()->Print("%d\n", lListChar->Size(lListChar));
+    //===============================================
     GConsole()->Print("Je supprime la liste:\n");
     lListChar->Delete(lListChar, 0);
     GConsole()->Print("%d\n", lListChar->Size(lListChar));
