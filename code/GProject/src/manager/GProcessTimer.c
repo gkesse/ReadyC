@@ -1,6 +1,9 @@
 //===============================================
 #include "GProcessTimer.h"
-#include "GProcessTimer.h"
+#include "GSignal.h"
+#include "GMainLoop2.h"
+#include "GAlarm.h"
+#include "GConsole.h"
 //===============================================
 static GProcessO* m_GProcessTimerO = 0;
 //===============================================
@@ -30,7 +33,22 @@ GProcessO* GProcessTimer() {
 	return m_GProcessTimerO;
 }
 //===============================================
+static void GProcessTimer_Callback(int signo) {
+    GConsole()->Print("Je suis la fonction de rappel...\n");
+}
+//===============================================
 static void GProcessTimer_Run(int argc, char** argv) {
-
+    GConsole()->Print("=================================================\n");
+    GConsole()->Print("Je suis un timer\n");
+    GConsole()->Print("=================================================\n");
+    GSignal()->MallocSigAction("SIGNAL");
+    GSignal()->MallocSigJmpBuf("SIGNAL");
+    GSignal()->InitSigAction("SIGNAL", GProcessTimer_Callback, 0);
+    GSignal()->SigAction("SIGNAL", SIGALRM);
+    GAlarm()->Alarm(1);
+    GMainLoop2()->Exec();
+    GSignal()->FreeSigAction("SIGNAL");
+    GSignal()->FreeSigJmpBuf("SIGNAL");
+    GConsole()->Print("=================================================\n");
 }
 //===============================================

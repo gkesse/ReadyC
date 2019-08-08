@@ -12,7 +12,10 @@ typedef void (*GSCHEDULER_TASK)(void* params);
 struct _GSchedulerO {
     void (*Delete)();
     void (*Init)(int tickTime);
-    void (*AddTask)(GSCHEDULER_TASK task, int delay, int period);
+    void (*Start)();
+    void (*AddTask)(GSCHEDULER_TASK task, int delay, int period, void* params);
+    void (*GoToSleep)();
+    int m_tickTime;
 };
 //===============================================
 struct _GSchedulerTaskO {

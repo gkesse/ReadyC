@@ -36,13 +36,37 @@ GProcessO* GProcessScheduler() {
 static void GProcessScheduler_Run(int argc, char** argv) {
 	GConsole()->Print("=================================================\n");
 	GConsole()->Print("Je suis un ordonnanceur cooperatif\n");
+	GConsole()->Print("Je peux fonctionner comme un ordinateur cooperatif (#hybride)\n");
+	GConsole()->Print("Pour ceux qui ne comprennent pas le terme\n");
 	GConsole()->Print("=================================================\n");
-	GScheduler()->Init(10);
-	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000);
+	GScheduler()->Init(1);
+	GScheduler()->Start(1);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000, 0);
+	GScheduler()->GoToSleep();
     GConsole()->Print("=================================================\n");
 }
 //===============================================
-static void GProcessScheduler_Task() {
+static void GProcessScheduler_Task(void* params) {
 	GConsole()->Print("Je suis une tache\n");
 }
 //===============================================
