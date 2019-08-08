@@ -10,6 +10,5 @@ cd $GSOAP
 # GProject
 #================================================
 cd $GPWD
-#./cmd_clean.sh
-./cmd_compile.sh
-./cmd_run.sh
+./cmd_clean.sh
+./cmd_compile.sh |& grep "warning"

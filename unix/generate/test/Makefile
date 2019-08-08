@@ -1,7 +1,5 @@
-GSRC = ../code/GProject/src
-GBIN = bin
-GBUILD = build
-GTARGET = $(GBIN)/GProject.exe
+GSRC = ../../../code/GProject/src
+GBUILD = ../../build
 
 GINCS = \
     -I$(GSRC)/manager \
@@ -18,20 +16,15 @@ GLIBS = \
     -lsqlite3 -lGSoap2 -ldbus-1 -lmysqlclient -lpthread -lrt -ldl \
 
 GOBJS = \
-    $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
-    $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c))
+    $(GBUILD)/GProcessTest.o \
 
 CFLAGS = \
-    -std=c11
+    -std=c11 \
     
 all: $(GOBJS)
-	@mkdir -p $(GBIN)
-	gcc $(CFLAGS) -o $(GTARGET) $(GOBJS) $(GLIBS) 
-$(GBUILD)/%.o: $(GSRC)/%.c
-	@mkdir -p $(GBUILD)
-	gcc $(CFLAGS) -Wall -c $< -o $@ $(GINCS)
+
 $(GBUILD)/%.o: $(GSRC)/manager/%.c
 	@mkdir -p $(GBUILD)
 	gcc $(CFLAGS) -Wall -c $< -o $@ $(GINCS)
 clean:
-	rm -f $(GBUILD)/*.o $(GBIN)/*.exe
+	rm -f $(GOBJS)

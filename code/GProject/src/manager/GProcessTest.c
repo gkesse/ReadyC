@@ -49,11 +49,13 @@ GProcessO* GProcessTest() {
 //===============================================
 static void GProcessTest_Run(int argc, char** argv) {
     int* lIntIdx1 = 0;
+    char* lCharIdx1 = 0;
     //===============================================
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je suis une liste generique\n");
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je suis une liste d'entier\n");
+    GConsole()->Print("=================================================\n");
     GListO(GProcessTest_GINT_PTR)* lListInt = GList_New_GProcessTest_GINT_PTR();
     for(int i = 0; i < 5; i++) {
         int* lInt = (int*)malloc(sizeof(int));
@@ -61,42 +63,109 @@ static void GProcessTest_Run(int argc, char** argv) {
         lListInt->AddData(lListInt, lInt);
         if(i == 1) lIntIdx1 = lInt;
     }
-    GConsole()->Print("J'ai une longueur de: %d\n", lListInt->Size(lListInt));
-    GConsole()->Print("Je contiens les nombres suivants\n");
+    //===============================================
+    GConsole()->Print("J'ai une longueur de:\n");
+    GConsole()->Print("%d\n", lListInt->Size(lListInt));
+    //===============================================
+    GConsole()->Print("Je contiens les nombres suivants:\n");
     lListInt->Show(lListInt, GProcessTest_ListShowInt);
     //===============================================
-    GConsole()->Print("J'ajoute le nombre 20\n");
-    int* lInt = (int*)malloc(sizeof(int));
+    GConsole()->Print("J'ajoute le nombre 20, 40, 60, 40:\n");
+    int* lInt = 0;
+    lInt = (int*)malloc(sizeof(int));
     *lInt = 20;
+    lListInt->AddData(lListInt, lInt);
+    lInt = (int*)malloc(sizeof(int));
+    *lInt = 40;
+    lListInt->AddData(lListInt, lInt);
+    lInt = (int*)malloc(sizeof(int));
+    *lInt = 60;
+    lListInt->AddData(lListInt, lInt);
+    lInt = (int*)malloc(sizeof(int));
+    *lInt = 40;
     lListInt->AddData(lListInt, lInt);
     lListInt->Show(lListInt, GProcessTest_ListShowInt);
     //===============================================
-    GConsole()->Print("Je supprime le nombre d'indice 1\n");
-    lListInt->RemoveIndex(lListInt, 1);
+    GConsole()->Print("Je compte les occurences du nombre 40:\n");
+    GConsole()->Print("%d\n", lListInt->CountData(lListInt, "40", GProcessTest_ListEqualInt));
+    //===============================================
+    GConsole()->Print("Je modifie le nombre d'indice 0:\n");
+    int* lIntIdx0 = (int*)malloc(sizeof(int));
+    *lIntIdx0 = 1000;
+    lListInt->SetData(lListInt, 0, lIntIdx0, 0);
     lListInt->Show(lListInt, GProcessTest_ListShowInt);
     //===============================================
-    GConsole()->Print("Par contre le pointeur de donnee du nombre d'indice 1 est toujours vivant\n");
-    GConsole()->Print("Je suis le pointeur de donnee du nombre d'indice 1: %d\n", *lIntIdx1);
-    //===============================================
-    GConsole()->Print("Je supprime la premiere occurence du nombres 20\n");
-    lListInt->RemoveData(lListInt, "20", GProcessTest_ListEqualInt);
+    GConsole()->Print("Je supprime le nombre d'indice 1:\n");
+    lListInt->RemoveIndex(lListInt, 1, 0);
     lListInt->Show(lListInt, GProcessTest_ListShowInt);
+    //===============================================
+    GConsole()->Print("Je verifie le contenu du pointeur du nombre d'indice 1:\n");
+    GConsole()->Print("%d\n", *lIntIdx1); 
+    //===============================================
+    GConsole()->Print("Je supprime la premiere occurence du nombre 20:\n");
+    lListInt->RemoveData(lListInt, "20", GProcessTest_ListEqualInt, 0);
+    lListInt->Show(lListInt, GProcessTest_ListShowInt);
+    //===============================================
+    GConsole()->Print("Je supprime toutes les occurences du nombre 40:\n");
+    lListInt->RemoveDataAll(lListInt, "40", GProcessTest_ListEqualInt, 0);
+    lListInt->Show(lListInt, GProcessTest_ListShowInt);
+    //===============================================
+    GConsole()->Print("Je vide la liste:\n");
+    lListInt->Clear(lListInt, 0);
+    lListInt->Show(lListInt, GProcessTest_ListShowInt);
+    GConsole()->Print("%d\n", lListInt->Size(lListInt));
+    //===============================================
+    GConsole()->Print("Je supprime la liste:\n");
+    lListInt->Delete(lListInt, 0);
+    GConsole()->Print("%d\n", lListInt->Size(lListInt));
     //===============================================
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je suis une liste de chaine\n");
+    GConsole()->Print("=================================================\n");
     GListO(GProcessTest_GCHAR_PTR)* lListChar = GList_New_GProcessTest_GCHAR_PTR();
     for(int i = 0; i < 5; i++) {
         int lLength = 32;
         char* lChar = (char*)malloc(sizeof(char)*lLength);
-        sprintf(lChar, "Je suis la chaine %d", i + 1);
+        sprintf(lChar, "Je suis la chaine %d", i*10);
         lListChar->AddData(lListChar, lChar);
+        if(i == 1) lCharIdx1 = lChar;
     }
+    //===============================================
     GConsole()->Print("J'ai une longueur de: %d\n", lListChar->Size(lListChar));
-    GConsole()->Print("Je contiens les chaines suivantes\n");
+    GConsole()->Print("Je contiens les chaines suivantes:\n");
     lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    //===============================================
+    GConsole()->Print("J'ajoute les chaines 20, 40 60:\n");
+    int lLength = 32;
+    char* lChar;
+    lChar = (char*)malloc(sizeof(char)*lLength);
+    sprintf(lChar, "Je suis la chaine %d", 20);
+    lListChar->AddData(lListChar, lChar);
+    lChar = (char*)malloc(sizeof(char)*lLength);
+    sprintf(lChar, "Je suis la chaine %d", 40);
+    lListChar->AddData(lListChar, lChar);
+    lChar = (char*)malloc(sizeof(char)*lLength);
+    sprintf(lChar, "Je suis la chaine %d", 60);
+    lListChar->AddData(lListChar, lChar);
+    lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    //===============================================
+    GConsole()->Print("Je modifie la chaine d'indice 0:\n");
+    char* lCharIdx0 = (char*)malloc(sizeof(char)*lLength);
+    sprintf(lCharIdx0, "Je suis la chaine %d", 1000);
+    lListChar->SetData(lListChar, 0, lCharIdx0, 0);
+    lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    //===============================================
+    GConsole()->Print("Je supprime la chaine d'indice 1:\n");
+    lListChar->RemoveIndex(lListChar, 1, 0);
+    lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    //===============================================
+    GConsole()->Print("Je verifie le contenu du pointeur de la chaine d'indice 1:\n");
+    GConsole()->Print("%s\n", *lCharIdx1); 
+    //===============================================
+    GConsole()->Print("Je supprime la liste:\n");
+    lListChar->Delete(lListChar, 0);
+    GConsole()->Print("%d\n", lListChar->Size(lListChar));
     GConsole()->Print("=================================================\n");
-    lListInt->Delete(lListInt);
-    lListChar->Delete(lListChar);
 }
 //===============================================
 static void GProcessTest_ListShowInt(int index, int* data) {
@@ -104,7 +173,7 @@ static void GProcessTest_ListShowInt(int index, int* data) {
 }
 //===============================================
 static void GProcessTest_ListShowChar(int index, char* data) {
-    GConsole()->Print("[ %2d ] : [ %16s ]\n", index, data);
+    GConsole()->Print("[ %2d ] : [ %-22s ]\n", index, data);
 }
 //===============================================
 static int GProcessTest_ListEqualInt(int* data1, char* data2) {
