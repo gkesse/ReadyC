@@ -1,11 +1,13 @@
 //===============================================
 #include "GProcessScheduler.h"
-#include "GConsole.h"
 #include "GScheduler.h"
+#include "GConsole.h"
 //===============================================
 static GProcessO* m_GProcessSchedulerO = 0;
 //===============================================
 static void GProcessScheduler_Run(int argc, char** argv);
+//===============================================
+static void GProcessScheduler_Task(void* params);
 //===============================================
 GProcessO* GProcessScheduler_New() {
 	GProcessO* lParent = GProcess_New();
@@ -32,6 +34,15 @@ GProcessO* GProcessScheduler() {
 }
 //===============================================
 static void GProcessScheduler_Run(int argc, char** argv) {
-	GConsole()->Print("[ GScheduler ] Start...\n ");
+	GConsole()->Print("=================================================\n");
+	GConsole()->Print("Je suis un ordonnanceur cooperatif\n");
+	GConsole()->Print("=================================================\n");
+	GScheduler()->Init(10);
+	GScheduler()->AddTask(GProcessScheduler_Task, 0, 1000);
+    GConsole()->Print("=================================================\n");
+}
+//===============================================
+static void GProcessScheduler_Task() {
+	GConsole()->Print("Je suis une tache\n");
 }
 //===============================================

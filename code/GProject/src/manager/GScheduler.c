@@ -1,27 +1,17 @@
 //===============================================
 #include "GScheduler.h"
 #include "GConsole.h"
-///===============================================
-#if defined(__unix)
-typedef char* GCHAR_PTR;
-typedef pthread_t* GPTHREADT_PTR;
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GPTHREADT_PTR, GScheduler_GCHAR_PTR_GPTHREADT_PTR)
-GDEFINE_MAP(GCHAR_PTR, GPTHREADT_PTR, GScheduler_GCHAR_PTR_GPTHREADT_PTR)
-#endif
 //===============================================
 static GSchedulerO* m_GSchedulerO = 0;
 //===============================================
-#if defined(__unix)
-static int GScheduler_MapEqual(char* key1, char* key2);
-#endif
+static void GScheduler_Init(int tickTime);
+static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period);
 //===============================================
 GSchedulerO* GScheduler_New() {
 	GSchedulerO* lObj = (GSchedulerO*)malloc(sizeof(GSchedulerO));
-
-	//lObj->m_threadMap = GMap_New_GScheduler_GCHAR_PTR_GPTHREADT_PTR();
-
 	lObj->Delete = GScheduler_Delete;
+	lObj->Init = GScheduler_Init;
+	lObj->AddTask = GScheduler_AddTask;
 	return lObj;
 }
 //===============================================
@@ -40,15 +30,11 @@ GSchedulerO* GScheduler() {
 	return m_GSchedulerO;
 }
 //===============================================
-static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period) {
-
+static void GScheduler_Init(int tickTime) {
+    GConsole()->Print("Je suis la fonction d'initialisation\n");
 }
 //===============================================
-#if defined(__unix)
-static int GScheduler_MapEqual(char* key1, char* key2) {
-	int lStrcmp = strcmp(key1, key2);
-	if(lStrcmp == 0) return TRUE;
-	return FALSE;
+static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period) {
+    GConsole()->Print("Je suis la fonction d'initialisation\n");
 }
-#endif
 //===============================================

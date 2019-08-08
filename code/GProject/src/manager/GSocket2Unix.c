@@ -111,7 +111,7 @@ static void GSocket2Unix_AddressInt(char* addressName, int family, int address, 
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
 	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
-	bzero(lAddress, sizeof(*lAddress));
+	memset(lAddress, 0, sizeof(*lAddress));
 	lAddress->sin_family = family;
 	lAddress->sin_addr.s_addr = htonl(address);
 	lAddress->sin_port = htons(port);
@@ -123,7 +123,7 @@ static void GSocket2Unix_AddressChar(char* addressName, int family, char* addres
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
 	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
-	bzero(lAddress, sizeof(*lAddress));
+	memset(lAddress, 0, sizeof(*lAddress));
 	lAddress->sin_family = family;
 	lAddress->sin_addr.s_addr = inet_addr(address);
 	lAddress->sin_port = htons(port);
