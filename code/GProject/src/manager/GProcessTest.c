@@ -22,6 +22,7 @@ static void GProcessTest_Run(int argc, char** argv);
 static void GProcessTest_ListShowInt(int index, int* data);
 static void GProcessTest_ListShowChar(int index, char* data);
 static int GProcessTest_ListEqualInt(int* data1, char* data2);
+static int GProcessTest_ListEqualChar(char* data1, char* data2);
 //===============================================
 GProcessO* GProcessTest_New() {
 	GProcessO* lParent = GProcess_New();
@@ -127,7 +128,7 @@ static void GProcessTest_Run(int argc, char** argv) {
     GConsole()->Print("Je contiens les chaines suivantes:\n");
     lListChar->Show(lListChar, GProcessTest_ListShowChar);
     //===============================================
-    GConsole()->Print("J'ajoute les chaines 20, 40 60:\n");
+    GConsole()->Print("J'ajoute les chaines 20, 40, 60, 40:\n");
     int lLength = 32;
     char* lChar;
     lChar = (char*)malloc(sizeof(char)*lLength);
@@ -139,7 +140,13 @@ static void GProcessTest_Run(int argc, char** argv) {
     lChar = (char*)malloc(sizeof(char)*lLength);
     sprintf(lChar, "Je suis la chaine %d", 60);
     lListChar->AddData(lListChar, lChar);
+    lChar = (char*)malloc(sizeof(char)*lLength);
+    sprintf(lChar, "Je suis la chaine %d", 40);
+    lListChar->AddData(lListChar, lChar);
     lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    //===============================================
+    GConsole()->Print("Je compte les occurences de la chaine 40:\n");
+    GConsole()->Print("%d\n", lListChar->CountData(lListChar, "Je suis la chaine 40", GProcessTest_ListEqualChar));
     //===============================================
     GConsole()->Print("Je modifie la chaine d'indice 0:\n");
     char* lCharIdx0 = (char*)malloc(sizeof(char)*lLength);
@@ -149,6 +156,14 @@ static void GProcessTest_Run(int argc, char** argv) {
     //===============================================
     GConsole()->Print("Je supprime la chaine d'indice 1:\n");
     lListChar->RemoveIndex(lListChar, 1, 0);
+    lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    //===============================================
+    GConsole()->Print("Je supprime la premiere occurence de la chaine 20:\n");
+    lListChar->RemoveData(lListChar, "Je suis la chaine 20", GProcessTest_ListEqualChar, 0);
+    lListChar->Show(lListChar, GProcessTest_ListShowChar);
+    //===============================================
+    GConsole()->Print("Je supprime toutes les occurences de la chaine 40:\n");
+    lListChar->RemoveDataAll(lListChar, "Je suis la chaine 40", GProcessTest_ListEqualChar, 0);
     lListChar->Show(lListChar, GProcessTest_ListShowChar);
     //===============================================
     GConsole()->Print("Je supprime la liste:\n");
@@ -168,6 +183,12 @@ static void GProcessTest_ListShowChar(int index, char* data) {
 static int GProcessTest_ListEqualInt(int* data1, char* data2) {
     int lData2 = GString2()->ToInt(data2);
 	if(lData2 == *data1) return TRUE;
+	return FALSE;
+}
+//===============================================
+static int GProcessTest_ListEqualChar(char* data1, char* data2) {
+    int lStrcmp = strcmp(data1, data2);
+	if(lStrcmp == 0) return TRUE;
 	return FALSE;
 }
 //===============================================
