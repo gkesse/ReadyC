@@ -22,6 +22,7 @@
 #include "GProcessMutex.h"
 #include "GProcessSemaphore.h"
 #include "GProcessScheduler.h"
+#include "GProcessKernel.h"
 #include "GProcessTimer.h"
 #include "GProcessTimerInterval.h"
 #include "GProcessClock.h"
@@ -68,6 +69,7 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "MUTEX")) return GProcessMutex();
     if(GString2()->IsEqual(lKey, "SEMAPHORE")) return GProcessSemaphore();
     if(GString2()->IsEqual(lKey, "SCHEDULER")) return GProcessScheduler();
+    if(GString2()->IsEqual(lKey, "KERNEL")) return GProcessKernel();
     if(GString2()->IsEqual(lKey, "TIMER")) return GProcessTimer();
     if(GString2()->IsEqual(lKey, "TIMER_INTERVAL")) return GProcessTimerInterval();
     if(GString2()->IsEqual(lKey, "CLOCK")) return GProcessClock();

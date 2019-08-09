@@ -1,7 +1,7 @@
 //===============================================
 #include "GScheduler.h"
 #include "GSignal.h"
-#include "GAlarm.h"
+#include "GTimer2.h"
 #include "GPause.h"
 #include "GConsole.h"
 //===============================================
@@ -14,7 +14,7 @@ GDEFINE_LIST(GSCHEDULERTASK_PTR, GScheduler_GSCHEDULERTASK_PTR)
 //===============================================
 static GSchedulerO* m_GSchedulerO = 0;
 //===============================================
-static void GScheduler_Init(int tickTime);
+static void GScheduler_Init(long tickTimeUsec);
 static void GScheduler_Start();
 static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period);
 static void GScheduler_MainLoop();
@@ -52,16 +52,20 @@ GSchedulerO* GScheduler() {
 	return m_GSchedulerO;
 }
 //===============================================
-static void GScheduler_Init(int tickTime) {
+static void GScheduler_Init(long tickTimeUsec) {
     GSignal()->MallocSigAction("_SCHEDULER_");
+    GTimer2()->MallocItimerVal("_SCHEDULER_");
     GSignal()->MallocSigJmpBuf("_SCHEDULER_");
     GSignal()->InitSigAction("_SCHEDULER_", GScheduler_Update, 0);
+    GTimer2()->InitItimerVal("_SCHEDULER_", 0, tickTimeUsec);
+    GSignal()->SigFillSet("_SCHEDULER_");
+    GSignal()->SigDelSet("_SCHEDULER_", SIGALRM);
+    GSignal()->SigDelSet("_SCHEDULER_", SIGINT);
     GSignal()->SigAction("_SCHEDULER_", SIGALRM);
-    m_GSchedulerO->m_tickTime = tickTime;
 }
 //===============================================
 static void GScheduler_Start() {
-    GAlarm()->Alarm(m_GSchedulerO->m_tickTime);
+    GTimer2()->SetItimer("_SCHEDULER_", ITIMER_REAL);
 }
 //===============================================
 static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period) {
@@ -116,7 +120,6 @@ static void GScheduler_DispatchTasks() {
 //===============================================
 static void GScheduler_GoToSleep() {
     GPause()->Pause();
-    GAlarm()->Exec();
 }
 //===============================================
 static void GScheduler_DeleteTask(int index) {
