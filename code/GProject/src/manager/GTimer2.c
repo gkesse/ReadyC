@@ -25,8 +25,8 @@ GDEFINE_MAP(GCHAR_PTR, GITIMERVAL_PTR, GTimer2_GCHAR_PTR_GITIMERVAL_PTR)
 static GTimer2O* m_GTimer2O = 0;
 //===============================================
 static void GTimer2_MallocTimer(char* timerName);
-static void GTimer2_MallocSignal(char* signalName);
-static void GTimer2_MallocItimer(char* itimerSpecName);
+static void GTimer2_MallocSigEvent(char* signalName);
+static void GTimer2_MallocItimerSpec(char* itimerSpecName);
 static void GTimer2_MallocItimerVal(char* itimerValName);
 static void GTimer2_Timer(char* timerName, char* signalName, int clockId);
 static void GTimer2_SetTime(char* timerName, char* itimerSpecName);
@@ -48,14 +48,14 @@ GTimer2O* GTimer2_New() {
     
 #if defined(__unix)
 	lObj->m_timerMap = GMap_New_GTimer2_GCHAR_PTR_GTIMERT_PTR();
-	lObj->m_signalMap = GMap_New_GTimer2_GCHAR_PTR_GSIGEVENT_PTR();
+	lObj->m_sigEventMap = GMap_New_GTimer2_GCHAR_PTR_GSIGEVENT_PTR();
 	lObj->m_itimerSpecMap = GMap_New_GTimer2_GCHAR_PTR_GITIMERSPEC_PTR();
 	lObj->m_itimerValMap = GMap_New_GTimer2_GCHAR_PTR_GITIMERVAL_PTR();
 #endif
     
     lObj->Delete = GTimer2_Delete;
     lObj->MallocTimer = GTimer2_MallocTimer;
-    lObj->MallocSignal = GTimer2_MallocSignal;
+    lObj->MallocSigEvent = GTimer2_MallocSigEvent;
     lObj->MallocItimer = GTimer2_MallocItimer;
     lObj->MallocItimerVal = GTimer2_MallocItimerVal;
     lObj->Timer = GTimer2_Timer;
@@ -96,20 +96,20 @@ static void GTimer2_MallocTimer(char* timerName) {
 #endif
 }
 //===============================================
-static void GTimer2_MallocSignal(char* signalName) {
+static void GTimer2_MallocSigEvent(char* signalName) {
 #if defined(__unix)
-	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_signalMap;
+	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_sigEventMap;
 	struct sigevent* lSignal = (struct sigevent*)malloc(sizeof(struct sigevent));
-	if(lSignal == 0) {GConsole()->Print("[ GTimer2 ] Error GTimer2_MallocSignal\n");  exit(0);}
+	if(lSignal == 0) {GConsole()->Print("[ GTimer2 ] Error GTimer2_MallocSigEvent\n");  exit(0);}
 	lSignalMap->SetData(lSignalMap, signalName, lSignal, GTimer2_MapEqual);
 #endif
 }
 //===============================================
-static void GTimer2_MallocItimer(char* itimerSpecName) {
+static void GTimer2_MallocItimerSpec(char* itimerSpecName) {
 #if defined(__unix)
 	GMapO(GTimer2_GCHAR_PTR_GITIMERSPEC_PTR)* lItimerSpecMap = m_GTimer2O->m_itimerSpecMap;
 	struct itimerspec* lItimerSpec = (struct itimerspec*)malloc(sizeof(struct itimerspec));
-	if(lItimerSpec == 0) {GConsole()->Print("[ GTimer2 ] Error GTimer2_MallocSignal\n");  exit(0);}
+	if(lItimerSpec == 0) {GConsole()->Print("[ GTimer2 ] Error GTimer2_MallocItimerSpec\n");  exit(0);}
 	lItimerSpecMap->SetData(lItimerSpecMap, itimerSpecName, lItimerSpec, GTimer2_MapEqual);
 #endif
 }
@@ -126,7 +126,7 @@ static void GTimer2_MallocItimerVal(char* itimerValName) {
 static void GTimer2_Timer(char* timerName, char* signalName, int clockId) {
 #if defined(__unix)
 	GMapO(GTimer2_GCHAR_PTR_GTIMERT_PTR)* lTimerMap = m_GTimer2O->m_timerMap;
-	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_signalMap;
+	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_sigEventMap;
 	timer_t* lTimer = lTimerMap->GetData(lTimerMap, timerName, GTimer2_MapEqual);
 	struct sigevent* lSignal = lSignalMap->GetData(lSignalMap, signalName, GTimer2_MapEqual);
 	int lRes = timer_create(clockId, lSignal, lTimer);
@@ -147,7 +147,7 @@ static void GTimer2_SetTime(char* timerName, char* itimerSpecName) {
 //===============================================
 static void GTimer2_Signal(char* signalName, int notify, int signo, GTIMER2_SIGNAL_HANDLER callback) {
 #if defined(__unix)
-	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_signalMap;
+	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_sigEventMap;
 	struct sigevent* lSignal = lSignalMap->GetData(lSignalMap, signalName, GTimer2_MapEqual);
 	lSignal->sigev_notify = notify;
 	lSignal->sigev_signo  = signo;
@@ -196,7 +196,7 @@ static void GTimer2_FreeTimer(char* timerName) {
 //===============================================
 static void GTimer2_FreeSignal(char* signalName) {
 #if defined(__unix)
-	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_signalMap;
+	GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* lSignalMap = m_GTimer2O->m_sigEventMap;
 	struct sigevent* lSignal = lSignalMap->GetData(lSignalMap, signalName, GTimer2_MapEqual);
     free(lSignal);
 #endif
