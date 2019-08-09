@@ -14,8 +14,9 @@ struct _GSignalO {
     void (*Delete)();
     void (*MallocSigAction)(char* sigActionName);
     void (*MallocSigJmpBuf)(char* sigJmpBufName);
-    void (*SigFillSet)(char* sigActionName);
     void (*InitSigAction)(char* sigActionName, GSIGNAL_CALLBACK callback, int flags);
+    void (*SigFillSet)(char* sigActionName);
+    void (*SigDelSet)(char* sigActionName, int signalId);
     void (*SigLongJmp)(char* sigJmpBufName, int val);
     int (*SigSetJmp)(char* sigJmpBufName, int saveSigs);
     void (*SigAction)(char* sigActionName, int signalId);

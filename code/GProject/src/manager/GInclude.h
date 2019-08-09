@@ -45,7 +45,7 @@
 #include <pthread.h>
 //===============================================
 /* Timer */
-//#include <time.h>
+#include <sys/time.h>
 //===============================================
 /* MySQL */
 #include <mysql.h>

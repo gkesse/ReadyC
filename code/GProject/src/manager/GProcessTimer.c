@@ -42,13 +42,11 @@ static void GProcessTimer_Run(int argc, char** argv) {
     GConsole()->Print("Je suis un timer\n");
     GConsole()->Print("=================================================\n");
     GSignal()->MallocSigAction("SIGNAL");
-    GSignal()->MallocSigJmpBuf("SIGNAL");
     GSignal()->InitSigAction("SIGNAL", GProcessTimer_Callback, 0);
     GSignal()->SigAction("SIGNAL", SIGALRM);
     GAlarm()->Alarm(1);
     GMainLoop2()->Exec();
     GSignal()->FreeSigAction("SIGNAL");
-    GSignal()->FreeSigJmpBuf("SIGNAL");
     GConsole()->Print("=================================================\n");
 }
 //===============================================

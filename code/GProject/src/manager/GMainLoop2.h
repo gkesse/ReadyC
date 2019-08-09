@@ -9,6 +9,7 @@ typedef struct _GMainLoop2O GMainLoop2O;
 struct _GMainLoop2O {
     void (*Delete)();
     void (*Exec)();
+    void (*Run)();
 };
 //===============================================
 GMainLoop2O* GMainLoop2_New();

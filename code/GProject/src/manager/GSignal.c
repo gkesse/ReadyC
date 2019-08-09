@@ -20,6 +20,7 @@ static void GSignal_MallocSigAction(char* sigActionName);
 static void GSignal_MallocSigJmpBuf(char* sigJmpBufName);
 static void GSignal_InitSigAction(char* sigActionName, GSIGNAL_CALLBACK callback, int flags);
 static void GSignal_SigFillSet(char* sigActionName);
+static void GSignal_SigDelSet(char* sigActionName, int signalId);
 static void GSignal_SigLongJmp(char* sigJmpBufName, int val);
 static int GSignal_SigSetJmp(char* sigJmpBufName, int saveSigs);
 static void GSignal_SigAction(char* sigActionName, int signalId);
@@ -42,6 +43,7 @@ GSignalO* GSignal_New() {
     lObj->MallocSigAction = GSignal_MallocSigAction;
     lObj->MallocSigJmpBuf = GSignal_MallocSigJmpBuf;
     lObj->SigFillSet = GSignal_SigFillSet;
+    lObj->SigDelSet = GSignal_SigDelSet;
     lObj->InitSigAction = GSignal_InitSigAction;
     lObj->SigLongJmp = GSignal_SigLongJmp;
     lObj->SigSetJmp = GSignal_SigSetJmp;
@@ -88,6 +90,7 @@ static void GSignal_InitSigAction(char* sigActionName, GSIGNAL_CALLBACK callback
 #if defined(__unix)
 	GMapO(GSignal_GCHAR_PTR_GSIGACTION_PTR)* lSigActionMap = m_GSignalO->m_sigActionMap;
 	struct sigaction* lSigAction  = lSigActionMap->GetData(lSigActionMap, sigActionName, GSignal_MapEqual);
+    memset(lSigAction, 0, sizeof(*lSigAction));
     lSigAction->sa_handler = callback;
     lSigAction->sa_flags = flags;
 #endif
@@ -99,6 +102,15 @@ static void GSignal_SigFillSet(char* sigActionName) {
 	struct sigaction* lSigAction  = lSigActionMap->GetData(lSigActionMap, sigActionName, GSignal_MapEqual);
     int lRes = sigfillset(&lSigAction->sa_mask); 
 	if(lRes == -1) {GConsole()->Print("[ GSignal ] Error GSignal_SigFillSet\n"); exit(0);}
+#endif
+}
+//===============================================
+static void GSignal_SigDelSet(char* sigActionName, int signalId) {
+#if defined(__unix)
+	GMapO(GSignal_GCHAR_PTR_GSIGACTION_PTR)* lSigActionMap = m_GSignalO->m_sigActionMap;
+	struct sigaction* lSigAction  = lSigActionMap->GetData(lSigActionMap, sigActionName, GSignal_MapEqual);
+    int lRes = sigdelset(&lSigAction->sa_mask, signalId); 
+	if(lRes == -1) {GConsole()->Print("[ GSignal ] Error GSignal_SigDelSet\n"); exit(0);}
 #endif
 }
 //===============================================

@@ -6,11 +6,13 @@
 static GMainLoop2O* m_GMainLoop2O = 0;
 //===============================================
 static void GMainLoop2_Exec();
+static void GMainLoop2_Run();
 //===============================================
 GMainLoop2O* GMainLoop2_New() {
     GMainLoop2O* lObj = (GMainLoop2O*)malloc(sizeof(GMainLoop2O));
     lObj->Delete = GMainLoop2_Delete;
     lObj->Exec = GMainLoop2_Exec;
+    lObj->Run = GMainLoop2_Run;
     return lObj;
 }
 //===============================================
@@ -33,6 +35,12 @@ static void GMainLoop2_Exec() {
 	while(1) {
         GPause()->Pause();
         GAlarm()->Exec();
+    }
+}
+//===============================================
+static void GMainLoop2_Run() {
+	while(1) {
+        GPause()->Pause();
     }
 }
 //===============================================
