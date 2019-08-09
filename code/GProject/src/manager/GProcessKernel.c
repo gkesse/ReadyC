@@ -1,5 +1,6 @@
 //===============================================
 #include "GProcessKernel.h"
+#include "GKernelConnect.h"
 #include "GKernelMenu.h"
 #include "GKernelDashboard.h"
 #include "GScheduler.h"
@@ -36,8 +37,9 @@ GProcessO* GProcessKernel() {
 static void GProcessKernel_Run(int argc, char** argv) {
 	GScheduler()->Init(1000);
 	GScheduler()->Start();
-	GScheduler()->AddTask(GKernelMenu_Update, 0, 200);
-	GScheduler()->AddTask(GKernelDashboard_Update, 1, 1000);
+	GScheduler()->AddTask(GKernelConnect()->Update, 0, 200);
+	GScheduler()->AddTask(GKernelMenu()->Update, 1, 200);
+	GScheduler()->AddTask(GKernelDashboard()->Update, 3, 1000);
 	GScheduler()->MainLoop();
 }
 //===============================================
