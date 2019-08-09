@@ -7,7 +7,7 @@
 #define GDECLARE_LIST(GDATA, GTYPE) \
 		typedef struct _GListNodeO_##GTYPE GListNodeO_##GTYPE; \
 		typedef struct _GListO_##GTYPE GListO_##GTYPE; \
-        typedef int (*GLIST_EQUAL_DATA_##GTYPE)(GDATA data1, GDATA data2); \
+        typedef int (*GLIST_EQUAL_DATA_##GTYPE)(GDATA data1, char* data2); \
 		typedef void (*GLIST_SHOWL_##GTYPE)(int index, GDATA data); \
 		\
 		struct _GListNodeO_##GTYPE { \
@@ -19,22 +19,24 @@
 		struct _GListO_##GTYPE { \
 			void (*Delete)(GListO_##GTYPE* obj); \
 			void (*AddData)(GListO_##GTYPE* obj, GDATA data); \
+			void (*SetData)(GListO_##GTYPE* obj, int index, GDATA data); \
 			GDATA (*GetData)(GListO_##GTYPE* obj, int index); \
 			void (*Clear)(GListO_##GTYPE* obj); \
 			void (*RemoveIndex)(GListO_##GTYPE* obj, int index); \
-			void (*RemoveData)(GListO_##GTYPE* obj, GDATA data); \
+			void (*RemoveData)(GListO_##GTYPE* obj, char* data, GLIST_EQUAL_DATA_##GTYPE equal); \
 			int (*Size)(GListO_##GTYPE* obj); \
 			void (*Show)(GListO_##GTYPE* obj, GLIST_SHOWL_##GTYPE show); \
 			GListNodeO_##GTYPE* m_head; \
-		}; \ 
-		\
+		}; \
+        \
 		GListO_##GTYPE* GList_New_##GTYPE(); \
 		static void GList_Delete_##GTYPE(GListO_##GTYPE* obj); \
 		static void GList_Clear_##GTYPE(GListO_##GTYPE* obj); \
 		static void GList_RemoveIndex_##GTYPE(GListO_##GTYPE* obj, int index); \
-		static void GList_RemoveData_##GTYPE(GListO_##GTYPE* obj, GDATA data); \
+		static void GList_RemoveData_##GTYPE(GListO_##GTYPE* obj, char* data, GLIST_EQUAL_DATA_##GTYPE equal); \
 		static void GList_RemoveNode_##GTYPE(GListNodeO_##GTYPE* node); \
 		static void GList_AddData_##GTYPE(GListO_##GTYPE* obj, GDATA data); \
+		static void GList_SetData_##GTYPE(GListO_##GTYPE* obj, int index, GDATA data); \
 		static GDATA GList_GetData_##GTYPE(GListO_##GTYPE* obj, int index); \
 		static int GList_Size_##GTYPE(GListO_##GTYPE* obj); \
 		static void GList_Show_##GTYPE(GListO_##GTYPE* obj, GLIST_SHOWL_##GTYPE show);
@@ -49,6 +51,7 @@
 			lObj->RemoveIndex = GList_RemoveIndex_##GTYPE; \
 			lObj->RemoveData = GList_RemoveData_##GTYPE; \
 			lObj->AddData = GList_AddData_##GTYPE; \
+			lObj->SetData = GList_SetData_##GTYPE; \
 			lObj->GetData = GList_GetData_##GTYPE; \
 			lObj->Size = GList_Size_##GTYPE; \
 			lObj->Show = GList_Show_##GTYPE; \
@@ -91,15 +94,31 @@
 			} \
 		} \
         \
-		static void GList_RemoveData_##GTYPE(GListO_##GTYPE* obj, GDATA data, GLIST_EQUAL_DATA_##GTYPE equal) { \
+		static void GList_RemoveData_##GTYPE(GListO_##GTYPE* obj, char* data, GLIST_EQUAL_DATA_##GTYPE equal) { \
 			GListNodeO_##GTYPE* lNext = obj->m_head; \
 			GListNodeO_##GTYPE* lPrevious = 0; \
 			\
 			while(lNext != 0) { \
 				GDATA lData = lNext->m_data; \
-				int lEqual = FALSE; \
-				if(equal == 0) lEqual = (lData == data) ? TRUE : FALSE; \
-				else lEqual = equal(lData, data); \
+				int lEqual = equal(lData, data); \
+				if(lEqual == TRUE) { \
+					if(lPrevious == 0) obj->m_head = lNext->m_next; \
+					else lPrevious->m_next = lNext->m_next; \
+					GList_RemoveNode_##GTYPE(lNext); \
+					return; \
+				} \
+				lPrevious = lNext; \
+				lNext = lNext->m_next; \
+			} \
+		} \
+        \
+		static void GList_RemoveDataAll_##GTYPE(GListO_##GTYPE* obj, char* data, GLIST_EQUAL_DATA_##GTYPE equal) { \
+			GListNodeO_##GTYPE* lNext = obj->m_head; \
+			GListNodeO_##GTYPE* lPrevious = 0; \
+			\
+			while(lNext != 0) { \
+				GDATA lData = lNext->m_data; \
+				int lEqual = equal(lData, data); \
 				if(lEqual == TRUE) { \
 					if(lPrevious == 0) obj->m_head = lNext->m_next; \
 					else lPrevious->m_next = lNext->m_next; \
@@ -137,7 +156,6 @@
 		\
 		static void GList_SetData_##GTYPE(GListO_##GTYPE* obj, int index, GDATA data) { \
 			GListNodeO_##GTYPE* lNext = obj->m_head; \
-			GListNodeO_##GTYPE* lPrevious = 0; \
 			\
 			while(lNext != 0) { \
 				int lIndex = lNext->m_index; \
@@ -145,7 +163,6 @@
 					lNext->m_data = data; \
 					return; \
 				} \
-				lPrevious = lNext; \
 				lNext = lNext->m_next; \
 			} \
 			\
