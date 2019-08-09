@@ -17,7 +17,7 @@ struct _GTimer2O {
     void (*Delete)();
     void (*MallocTimer)(char* timerName);
     void (*MallocSigEvent)(char* sigEventName);
-    void (*MallocItimerSpec)(char* itimerName);
+    void (*MallocItimerSpec)(char* itimerSpecName);
     void (*MallocItimerVal)(char* itimerValName);
     void (*Timer)(char* timerName, char* sigEventName, int clockId);
     void (*SetTime)(char* timerName, char* itimerName);
@@ -26,8 +26,8 @@ struct _GTimer2O {
     void (*InitItimerVal)(char* itimerValName, long sec, long usec);
     void (*SetItimer)(char* itimerValName, int timerId);
     void (*FreeTimer)(char* timerName);
-    void (*FreeSignal)(char* sigEventName);
-    void (*FreeItimer)(char* itimerName);
+    void (*FreeSigEvent)(char* sigEventName);
+    void (*FreeItimerSpec)(char* itimerSpecName);
     void (*FreeItimerVal)(char* itimerValName);
 #if defined(__unix)
     GMapO(GTimer2_GCHAR_PTR_GTIMERT_PTR)* m_timerMap;
