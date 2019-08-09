@@ -32,7 +32,7 @@ struct _GTimer2O {
 #if defined(__unix)
     GMapO(GTimer2_GCHAR_PTR_GTIMERT_PTR)* m_timerMap;
     GMapO(GTimer2_GCHAR_PTR_GSIGEVENT_PTR)* m_signalMap;
-    GMapO(GTimer2_GCHAR_PTR_GITIMERSPEC_PTR)* m_itimerMap;
+    GMapO(GTimer2_GCHAR_PTR_GITIMERSPEC_PTR)* m_itimerSpecMap;
     GMapO(GTimer2_GCHAR_PTR_GITIMERVAL_PTR)* m_itimerValMap;
 #endif
 };

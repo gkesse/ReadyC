@@ -45,7 +45,7 @@ static void GProcessTimerInterval_Run(int argc, char** argv) {
     GTimer2()->MallocItimerVal("TIMER");
     
     GSignal()->InitSigAction("TIMER", GProcessTimerInterval_Callback, 0);
-    GTimer2()->InitItimerVal("TIMER", 0, 200);
+    GTimer2()->InitItimerVal("TIMER", 0, 200000);
     
     GSignal()->SigFillSet("TIMER");
     GSignal()->SigDelSet("TIMER", SIGALRM);
