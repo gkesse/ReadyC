@@ -8,5 +8,4 @@
 /**/Release/
 /**/build/
 /**/bin/
-#/**/unix/
-/**/win/
+/**/RemoteSystemsTempFiles/
