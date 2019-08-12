@@ -3,6 +3,7 @@
 #include "GProcessTest.h"
 #include "GProcessConsole.h"
 #include "GProcessKeyboard.h"
+#include "GProcessList.h"
 #include "GProcessMap.h"
 #include "GProcessConfig.h"
 #include "GProcessSocketServer.h"
@@ -48,6 +49,7 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "TEST")) return GProcessTest();
     if(GString2()->IsEqual(lKey, "CONSOLE")) return GProcessConsole();
     if(GString2()->IsEqual(lKey, "KEYBOARD")) return GProcessKeyboard();
+    if(GString2()->IsEqual(lKey, "LIST")) return GProcessList();
     if(GString2()->IsEqual(lKey, "MAP")) return GProcessMap();
     if(GString2()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
     if(GString2()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();

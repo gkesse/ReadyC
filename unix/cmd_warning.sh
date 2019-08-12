@@ -11,4 +11,4 @@ cd $GSOAP
 #================================================
 cd $GPWD
 ./cmd_clean.sh
-./cmd_compile.sh |& grep "warning"
+./cmd_compile.sh |& grep "attention"

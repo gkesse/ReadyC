@@ -5,6 +5,13 @@
 #include "GMainLoop2.h"
 #include "GConsole.h"
 //===============================================
+#if defined(__unix)
+typedef GSchedulerTaskO* GSCHEDULERTASK_PTR;
+//===============================================
+GDECLARE_LIST(GSCHEDULERTASK_PTR, GScheduler_GSCHEDULERTASK_PTR)
+GDEFINE_LIST(GSCHEDULERTASK_PTR, GScheduler_GSCHEDULERTASK_PTR)
+#endif
+//===============================================
 static GSchedulerO* m_GSchedulerO = 0;
 //===============================================
 static void GScheduler_Init(int tickTime);
@@ -16,6 +23,9 @@ static void GScheduler_Update(int signo);
 //===============================================
 GSchedulerO* GScheduler_New() {
 	GSchedulerO* lObj = (GSchedulerO*)malloc(sizeof(GSchedulerO));
+    
+	lObj->m_taskMap = GList_New_GScheduler_GSCHEDULERTASK_PTR();
+
 	lObj->Delete = GScheduler_Delete;
 	lObj->Init = GScheduler_Init;
 	lObj->Start = GScheduler_Start;
@@ -55,6 +65,15 @@ static void GScheduler_Start() {
 //===============================================
 static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period, void* params) {
     GConsole()->Print("Je suis la fonction d'initialisation\n");
+    GSchedulerTaskO* lTask = (GSchedulerTaskO*)malloc(sizeof(GSchedulerTaskO));
+    lTask->m_runMe = 0;
+    lTask->m_delay = delay;
+    lTask->m_period = period;
+    lTask->m_pTask = 0;
+	int m_runMe;
+	int m_delay;
+	int m_period;
+    GSCHEDULER_TASK pTask;    
 }
 //===============================================
 static void GScheduler_GoToSleep() {
