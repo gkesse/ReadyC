@@ -1,4 +1,4 @@
-export PATH=/opt/eclipse/
-export PATH=/opt/jdk1.8.0_202/bin/:$PATH
+export PATH=/opt/eclipse/:$PATH
+export PATH=/opt/jdk-12/bin/:$PATH
 
 eclipse
