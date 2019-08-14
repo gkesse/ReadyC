@@ -56,7 +56,7 @@ GTimer2O* GTimer2_New() {
     lObj->Delete = GTimer2_Delete;
     lObj->MallocTimer = GTimer2_MallocTimer;
     lObj->MallocSigEvent = GTimer2_MallocSigEvent;
-    lObj->MallocItimer = GTimer2_MallocItimer;
+    lObj->MallocItimerSpec = GTimer2_MallocItimerSpec;
     lObj->MallocItimerVal = GTimer2_MallocItimerVal;
     lObj->Timer = GTimer2_Timer;
     lObj->SetTime = GTimer2_SetTime;

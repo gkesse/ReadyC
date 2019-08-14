@@ -13,12 +13,11 @@ typedef struct _GListO_GScheduler_GSCHEDULERTASK_PTR GListO_GScheduler_GSCHEDULE
 //===============================================
 struct _GSchedulerO {
     void (*Delete)();
-    void (*Init)(int tickTime);
+    void (*Init)(long tickTimeUsec);
     void (*Start)();
     void (*AddTask)(GSCHEDULER_TASK task, int delay, int period);
     void (*MainLoop)();
     GListO(GScheduler_GSCHEDULERTASK_PTR)* m_taskMap;
-   int m_tickTime;
  };
 //===============================================
 struct _GSchedulerTaskO {
