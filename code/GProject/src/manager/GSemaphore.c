@@ -1,16 +1,35 @@
 //===============================================
 #include "GSemaphore.h"
+#include "GConsole.h"
+//===============================================
+#if defined(__unix)
+typedef char* GCHAR_PTR;
+typedef sem_t* GSEM_PTR;
+//===============================================
+GDECLARE_MAP(GCHAR_PTR, GSEM_PTR, GSemaphore_GCHAR_PTR_GSEM_PTR)
+GDEFINE_MAP(GCHAR_PTR, GSEM_PTR, GSemaphore_GCHAR_PTR_GSEM_PTR)
+#endif
 //===============================================
 static GSemaphoreO* m_GSemaphoreO = 0;
 //===============================================
-static int GSemaphore_FromBinary(char* binary);
-static void GSemaphore_ToBinary(const int decimal, char* binary);
+static void GSemaphore_MallocSem(char* semName);
+static void GSemaphore_SemOpen(char* semName, char* name, int flags);
+static void GSemaphore_SemWait(char* semName);
+static void GSemaphore_SemPost(char* semName);
+static void GSemaphore_FreeSem(char* semName);
+//===============================================
+#if defined(__unix)
+static int GSemaphore_MapEqual(char* key1, char* key2);
+#endif
 //===============================================
 GSemaphoreO* GSemaphore_New() {
     GSemaphoreO* lObj = (GSemaphoreO*)malloc(sizeof(GSemaphoreO));
     lObj->Delete = GSemaphore_Delete;
-    lObj->FromBinary = GSemaphore_FromBinary;
-    lObj->ToBinary = GSemaphore_ToBinary;
+    lObj->MallocSem = GSemaphore_MallocSem;
+    lObj->SemOpen = GSemaphore_SemOpen;
+    lObj->SemWait = GSemaphore_SemWait;
+    lObj->SemPost = GSemaphore_SemPost;
+    lObj->FreeSem = GSemaphore_FreeSem;
     return lObj;
 }
 //===============================================
@@ -29,42 +48,43 @@ GSemaphoreO* GSemaphore() {
     return m_GSemaphoreO;
 }
 //===============================================
-static int GSemaphore_FromBinary(char* binary) {
-	int i = strlen(binary) - 1;
-	int lBinary = 0;
-	double lPow = 1;
-	int lBase = 2;
-	while(i >= 0) {
-		char lDigit = binary[i];
-		int lValue = 0;
-		if(lDigit == '1') lValue = 1;
-		lBinary += lValue * lPow;
-		lPow *= lBase;
-		i--;
-	}
-	return lBinary;
+static void GSemaphore_MallocSem(char* semName) {
+	GMapO(GSemaphore_GCHAR_PTR_GSEM_PTR)* lSemMap = m_GSemaphoreO->m_semMap;
+	sem_t* lSem = (sem_t*)malloc(sizeof(sem_t));
+	if(lSem == 0) {GConsole()->Print("[ GMutex2 ] Error GSemaphore_MallocSem\n"); exit(0);}
+	lSemMap->SetData(lSemMap, semName, lSem, GSemaphore_MapEqual);
 }
 //===============================================
-static void GSemaphore_ToBinary(const int decimal, char* binary) {
-	char lBinary[16];
-	int lBase = 2;
-	int lQuotient = decimal;
-	int lRemainder = 0;
-	int i = 0;
-	const char lBinaryMap[] = {'0', '1'};
-	while(1) {
-		lRemainder = lQuotient % lBase;
-		lQuotient = lQuotient / lBase;
-		lBinary[i] = lBinaryMap[lRemainder];
-		i++;
-		if(lQuotient == 0) break;
-	}
-	lBinary[i] = 0;
-	int lSize = strlen(lBinary);
-	for(i = 0; i < lSize; i++) {
-		int j = lSize - i - 1;
-		binary[i] = lBinary[j];
-	}
-	binary[i] = 0;
+static void GSemaphore_SemOpen(char* semName, char* name, int flags) {
+	GMapO(GSemaphore_GCHAR_PTR_GSEM_PTR)* lSemMap = m_GSemaphoreO->m_semMap;
+	sem_t* lSem = sem_open(name, flags);
+	if(lSem == SEM_FAILED) {GConsole()->Print("[ GMutex2 ] Error GSemaphore_SemOpen\n"); exit(0);}
+	lSemMap->SetData(lSemMap, semName, lSem, GSemaphore_MapEqual);
 }
+//===============================================
+static void GSemaphore_SemWait(char* semName) {
+	GMapO(GSemaphore_GCHAR_PTR_GSEM_PTR)* lSemMap = m_GSemaphoreO->m_semMap;
+	sem_t* lSem = lSemMap->GetData(lSemMap, semName, GSemaphore_MapEqual);
+	sem_wait(lSem);
+}
+//===============================================
+static void GSemaphore_SemPost(char* semName) {
+	GMapO(GSemaphore_GCHAR_PTR_GSEM_PTR)* lSemMap = m_GSemaphoreO->m_semMap;
+	sem_t* lSem = lSemMap->GetData(lSemMap, semName, GSemaphore_MapEqual);
+	sem_post(lSem);
+}
+//===============================================
+static void GSemaphore_FreeSem(char* semName) {
+	GMapO(GSemaphore_GCHAR_PTR_GSEM_PTR)* lSemMap = m_GSemaphoreO->m_semMap;
+	sem_t* lSem = lSemMap->GetData(lSemMap, semName, GSemaphore_MapEqual);
+	free(lSem);
+}
+//===============================================
+#if defined(__unix)
+static int GSemaphore_MapEqual(char* key1, char* key2) {
+	int lStrcmp = strcmp(key1, key2);
+	if(lStrcmp == 0) return TRUE;
+	return FALSE;
+}
+#endif
 //===============================================
