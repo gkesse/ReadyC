@@ -26,5 +26,8 @@ GMutex2O* GMutex2_New();
 void GMutex2_Delete();
 GMutex2O* GMutex2();
 //===============================================
+#define GMUTEX_INIT(GVALUE) \
+		(pthread_mutex_t)GVALUE
+//===============================================
 #endif
 //===============================================

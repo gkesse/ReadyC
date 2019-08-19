@@ -6,6 +6,7 @@
 static GProcessO* m_GProcessThreadO = 0;
 //===============================================
 static void GProcessThread_Run(int argc, char** argv);
+//===============================================
 static void* GProcessThread_ThreadA(void* params);
 static void* GProcessThread_ThreadB(void* params);
 //===============================================
@@ -34,35 +35,36 @@ GProcessO* GProcessThread() {
 }
 //===============================================
 static void GProcessThread_Run(int argc, char** argv) {
+    GConsole()->Print("=================================================\n");
+    GConsole()->Print("Je suis un thread\n");
+    GConsole()->Print("=================================================\n");
 	GThread2()->MallocThread("THREAD_A");
 	GThread2()->MallocThread("THREAD_B");
-	GConsole()->Print("PASS\n");
 
-	GThread2()->Create("THREAD_A", GProcessThread_ThreadA, "LED_A");
-	GThread2()->Create("THREAD_B", GProcessThread_ThreadB, "LED_B");
+	GThread2()->Create("THREAD_A", GProcessThread_ThreadA, 0);
+	GThread2()->Create("THREAD_B", GProcessThread_ThreadB, 0);
 
 	GThread2()->Join("THREAD_A");
 	GThread2()->Join("THREAD_B");
 
 	GThread2()->FreeThread("THREAD_A");
 	GThread2()->FreeThread("THREAD_B");
+    GConsole()->Print("=================================================\n");
 }
 //===============================================
 static void* GProcessThread_ThreadA(void* params) {
-	char* lParams = (char*)params;
-	for(int i = 0; i < 20; i++) {
-		GConsole()->Print("ThreadA : GConsole Thread-Safe ??? : %s\n", lParams);
-		sleep(5);
-	}
+    while(1) {
+        GConsole()->Print("Je suis le thread Thread_A\n");
+        sleep(1);
+    }
 	return 0;
 }
 //===============================================
 static void* GProcessThread_ThreadB(void* params) {
-	char* lParams = (char*)params;
-	for(int i = 0; i < 20; i++) {
-		GConsole()->Print("ThreadB : GConsole Thread-Safe ??? : %s\n", lParams);
-		sleep(5);
-	}
+    while(1) {
+        GConsole()->Print("Je suis le thread Thread_B\n");
+        sleep(3);
+    }
 	return 0;
 }
 //===============================================

@@ -23,7 +23,9 @@ static int GThread2_MapEqual(char* key1, char* key2);
 GThread2O* GThread2_New() {
 	GThread2O* lObj = (GThread2O*)malloc(sizeof(GThread2O));
 
-	//lObj->m_threadMap = GMap_New_GThread2_GCHAR_PTR_GPTHREADT_PTR();
+#if defined(__unix)
+	lObj->m_threadMap = GMap_New_GThread2_GCHAR_PTR_GPTHREADT_PTR();
+#endif
 
 	lObj->Delete = GThread2_Delete;
 	lObj->MallocThread = GThread2_MallocThread;
@@ -54,7 +56,6 @@ static void GThread2_MallocThread(char* threadName) {
 	pthread_t* lThread = (pthread_t*)malloc(sizeof(pthread_t));
 	if(lThread == 0) {GConsole()->Print("[ GThread2 ] Error GThread2_MallocThread\n");  exit(0);}
 	lThreadMap->SetData(lThreadMap, threadName, lThread, GThread2_MapEqual);
-	printf("GThread2_MallocThread : %p\n", lThread);
 }
 //===============================================
 static void GThread2_Create(char* threadName, GTHREAD2_CALLBACK callback, void* params) {
