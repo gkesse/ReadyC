@@ -1,18 +1,18 @@
 //===============================================
-#ifndef _GProcessRaceCondition_
-#define _GProcessRaceCondition_
+#ifndef _GProcessArgTable_
+#define _GProcessArgTable_
 //===============================================
 #include "GProcess.h"
 //===============================================
-typedef struct _GProcessRaceConditionO GProcessRaceConditionO;
+typedef struct _GProcessArgTableO GProcessArgTableO;
 //===============================================
-struct _GProcessRaceConditionO {
+struct _GProcessArgTableO {
     GProcessO* m_parent;
 };
 //===============================================
-GProcessO* GProcessRaceCondition_New();
-void GProcessRaceCondition_Delete();
-GProcessO* GProcessRaceCondition();
+GProcessO* GProcessArgTable_New();
+void GProcessArgTable_Delete();
+GProcessO* GProcessArgTable();
 //===============================================
 #endif
 //===============================================
