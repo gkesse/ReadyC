@@ -21,6 +21,7 @@
 #include "GProcessThread.h"
 #include "GProcessMutex.h"
 #include "GProcessSemaphore.h"
+#include "GProcessRaceCondition.h"
 #include "GProcessScheduler.h"
 #include "GProcessKernel.h"
 #include "GProcessTimer.h"
@@ -68,6 +69,7 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "THREAD")) return GProcessThread();
     if(GString2()->IsEqual(lKey, "MUTEX")) return GProcessMutex();
     if(GString2()->IsEqual(lKey, "SEMAPHORE")) return GProcessSemaphore();
+    if(GString2()->IsEqual(lKey, "RACE_CONDITION")) return GProcessRaceCondition();
     if(GString2()->IsEqual(lKey, "SCHEDULER")) return GProcessScheduler();
     if(GString2()->IsEqual(lKey, "KERNEL")) return GProcessKernel();
     if(GString2()->IsEqual(lKey, "TIMER")) return GProcessTimer();

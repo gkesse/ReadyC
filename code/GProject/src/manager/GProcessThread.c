@@ -55,7 +55,7 @@ static void GProcessThread_Run(int argc, char** argv) {
 static void* GProcessThread_ThreadA(void* params) {
     while(1) {
         GConsole()->Print("Je suis le thread Thread_A\n");
-        sleep(1);
+        sleep(3);
     }
 	return 0;
 }

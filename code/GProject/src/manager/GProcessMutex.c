@@ -38,7 +38,7 @@ static void GProcessMutex_Run(int argc, char** argv) {
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je suis un mutex\n");
     GConsole()->Print("=================================================\n");
-    GMutex2()->MallocThreadMutex("MUTEX");
+    GMutex2()->MallocThreadMutex("MUTEX"); 
     GThread2()->MallocThread("THREAD_A");
 	GThread2()->MallocThread("THREAD_B");
 
@@ -55,6 +55,14 @@ static void GProcessMutex_Run(int argc, char** argv) {
 }
 //===============================================
 static void* GProcessMutex_Callback(void* params) {
-    return 0;
+    char* lThread = (char*)params;
+    while(1) {
+        sleep(1);
+        GMutex2()->MutexLock("MUTEX");
+        GConsole()->Print("Je suis le thread : %s\n", lThread);
+        sleep(1);
+        GMutex2()->MutexUnlock("MUTEX");
+    }
+	return 0;
 }
 //===============================================
