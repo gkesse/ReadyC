@@ -1,6 +1,6 @@
 //===============================================
 #include "GProcessClock.h"
-#include "GConfig.h"
+#include "GClock.h"
 //===============================================
 static GProcessO* m_GProcessClockO = 0;
 //===============================================
@@ -32,24 +32,24 @@ GProcessO* GProcessClock() {
 //===============================================
 static void GProcessClock_Run(int argc, char** argv) {
 	printf("=================================================\n");
-	struct timespec     clock_resolution;
-	int stat;
-
-	stat = clock_getres(CLOCK_REALTIME, &clock_resolution);
-
-	printf("Clock resolution is %ld seconds, %ld nanoseconds : %d\n",
-			clock_resolution.tv_sec, clock_resolution.tv_nsec, stat);
-
+    long lClock = GClock()->GetClock();
+    long lClockPerSec = GClock()->GetClockPerSec();
+    printf("%-20s : %ld\n", "lClock", lClock);
+    printf("%-20s : %ld\n", "lClockPerSec", lClockPerSec);
 	printf("=================================================\n");
-	struct timespec ts;
-
-	/* Call time */
-	printf("time returns %ld seconds\n", time(NULL));
-	/* Call clock_gettime */
-
-	clock_gettime(CLOCK_REALTIME, &ts);
-	printf("clock_gettime returns:\n");
-	printf("%ld seconds and %ld nanoseconds\n", ts.tv_sec, ts.tv_nsec);
+    long lClockT1 = GClock()->GetClock();
+    
+    long lCompute = 0;
+    for(long i = 0; i < 1000000000; i++) {lCompute++;}
+    printf("%-20s : %ld\n", "lCompute", lCompute);
+    
+    long lClockT2 = GClock()->GetClock();
+    long lClockDT = lClockT2 - lClockT1;
+    double lSecond = GClock()->GetSecond(lClockDT);
+    printf("%-20s : %ld\n", "lClockT1", lClockT1);
+    printf("%-20s : %ld\n", "lClockT2", lClockT2);
+    printf("%-20s : %ld\n", "lClockDT", lClockDT);
+    printf("%-20s : %.2f\n", "lSecond", lSecond);
 	printf("=================================================\n");
 }
 //===============================================

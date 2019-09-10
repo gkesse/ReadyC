@@ -3,15 +3,24 @@
 #define _GScheduler_
 //===============================================
 #include "GInclude.h"
-#include "GMap.h"
+#include "GList.h"
 //===============================================
 typedef struct _GSchedulerO GSchedulerO;
 typedef struct _GSchedulerTaskO GSchedulerTaskO;
-typedef void (*GSCHEDULER_TASK)(void* params);
+typedef void (*GSCHEDULER_TASK)();
+//===============================================
+typedef struct _GListO_GScheduler_GSCHEDULERTASK_PTR GListO_GScheduler_GSCHEDULERTASK_PTR;
 //===============================================
 struct _GSchedulerO {
     void (*Delete)();
- };
+    void (*Init)(long tickTimeUsec);
+    void (*Start)();
+    void (*AddTask)(GSCHEDULER_TASK task, int delay, int period);
+    void (*MainLoop)();
+#if defined(__unix) || defined(__WIN32)
+    GListO(GScheduler_GSCHEDULERTASK_PTR)* m_taskMap;
+#endif
+};
 //===============================================
 struct _GSchedulerTaskO {
 	int m_runMe;

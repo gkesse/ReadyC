@@ -1,10 +1,9 @@
 //===============================================
 #include "GProcessTimerInterval.h"
-#define _DEFAULT_SOURCE
-#include <stdio.h>
-#include <assert.h>
-#include <signal.h>
-#include <sys/time.h>
+#include "GSignal.h"
+#include "GMainLoop2.h"
+#include "GTimer2.h"
+#include "GConsole.h"
 //===============================================
 static GProcessO* m_GProcessTimerIntervalO = 0;
 //===============================================
@@ -34,7 +33,29 @@ GProcessO* GProcessTimerInterval() {
 	return m_GProcessTimerIntervalO;
 }
 //===============================================
+static void GProcessTimerInterval_Callback(int signo) {
+    GConsole()->Print("Je suis la fonction de rappel...\n");
+}
+//===============================================
 static void GProcessTimerInterval_Run(int argc, char** argv) {
-
+    GConsole()->Print("=================================================\n");
+    GConsole()->Print("Je suis un timer [ setitimer ]\n");
+    GConsole()->Print("=================================================\n");
+    GSignal()->MallocSigAction("TIMER");
+    GTimer2()->MallocItimerVal("TIMER");
+    
+    GSignal()->InitSigAction("TIMER", GProcessTimerInterval_Callback, 0);
+    GTimer2()->InitItimerVal("TIMER", 0, 200000);
+    
+    GSignal()->SigFillSet("TIMER");
+    GSignal()->SigDelSet("TIMER", GSIGNAL_SIGALRM);
+    GSignal()->SigDelSet("TIMER", GSIGNAL_SIGINT);
+    GSignal()->SigAction("TIMER", GSIGNAL_SIGALRM);
+    GTimer2()->SetItimer("TIMER", GSIGNAL_ITIMER_REAL);
+    GMainLoop2()->Run();
+    
+    GSignal()->FreeSigAction("TIMER");
+    GTimer2()->FreeItimerVal("TIMER");
+    GConsole()->Print("=================================================\n");
 }
 //===============================================

@@ -13,6 +13,7 @@
 /**/Debug/
 /**/.metadata/
 /**/.settings/
+<<<<<<< HEAD
 /**/.project
 /**/.cproject
 
@@ -21,3 +22,9 @@
 #================================================
 
 /**/video/
+=======
+/**/Release/
+/**/build/
+/**/bin/
+/**/RemoteSystemsTempFiles/
+>>>>>>> f2270c7bb70bb1e0157a6d161cfaf49338bda7bd

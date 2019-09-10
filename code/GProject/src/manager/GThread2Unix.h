@@ -15,9 +15,9 @@ struct _GThread2UnixO {
 #endif
 };
 //===============================================
-GThread2UnixO* GThread2Unix_New();
-void GThread2Unix_Delete();
-GThread2UnixO* GThread2Unix();
+GThread2O* GThread2Unix_New();
+void GThread2Unix_Delete(GThread2O* obj);
+GThread2O* GThread2Unix();
 //===============================================
 #endif
 //===============================================

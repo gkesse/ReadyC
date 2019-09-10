@@ -1,25 +1,21 @@
 //===============================================
 #ifndef _GInclude_
 #define _GInclude_
+ //===============================================
+#if defined(__MINGW32__)
+#define G_PLATEFORM_OS "WINDOWS"
 //===============================================
-/* Define */
-#define _USE_MATH_DEFINES
-#define _POSIX_C_SOURCE 200809L
-//===============================================
-/* C Standard */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 //===============================================
-/* SQLite */
-#include <sqlite3.h>
-//===============================================
-#if defined(__WIN32)
-#define G_PLATEFORM_OS "WINDOWS"
-//===============================================
-/* Socket */
+#include <windows.h>
+#include <process.h>
 #include <winsock2.h>
+//===============================================
+#include <sqlite3.h>
+#include <argtable3.h>
 //===============================================
 #elif defined(__unix)
 #define G_PLATEFORM_OS "UNIX"
@@ -29,6 +25,10 @@
 #include <unistd.h>
 #include <errno.h>
 #include <strings.h>
+//===============================================
+/* Signal */
+#include <signal.h>
+#include <setjmp.h>
 //===============================================
 /* Socket */
 #include <sys/socket.h>
@@ -40,11 +40,11 @@
 /* Thread */
 #include <pthread.h>
 //===============================================
-/* Timer */
-//#include <time.h>
+/* Semaphore */
+#include <semaphore.h>
 //===============================================
-/* Signal */
-//#include <signal.h>
+/* Timer */
+#include <sys/time.h>
 //===============================================
 /* MySQL */
 #include <mysql.h>
@@ -57,15 +57,16 @@
 //===============================================
 /* DBus */
 #include <dbus/dbus.h>
+//===============================================
+/* ArgTable */
+#include <argtable3.h>
 #endif
 //===============================================
-/* Define */
 #if !defined(TRUE)
 #define FALSE (0)
 #define TRUE (!FALSE)
 #endif
 //===============================================
-/* Typedef */
 typedef unsigned char uchar;
 typedef unsigned int uint;
 typedef unsigned long ulong;

@@ -1,4 +1,4 @@
 #================================================
-PROCESS = TIMER_INTERVAL
-CONFIG_SHOW = TRUE
+PROCESS = ARG_TABLE
+CONFIG_SHOW = FALSE
 #================================================

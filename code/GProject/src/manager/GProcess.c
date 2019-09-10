@@ -1,7 +1,10 @@
 //===============================================
 #include "GProcess.h"
+#include "GProcessTest.h"
+#include "GProcessArgTable.h"
 #include "GProcessConsole.h"
 #include "GProcessKeyboard.h"
+#include "GProcessList.h"
 #include "GProcessMap.h"
 #include "GProcessConfig.h"
 #include "GProcessSocketServer.h"
@@ -19,10 +22,13 @@
 #include "GProcessThread.h"
 #include "GProcessMutex.h"
 #include "GProcessSemaphore.h"
+#include "GProcessRaceCondition.h"
 #include "GProcessScheduler.h"
+#include "GProcessKernel.h"
 #include "GProcessTimer.h"
 #include "GProcessTimerInterval.h"
 #include "GProcessClock.h"
+#include "GProcessAlarmSignal.h"
 #include "GString2.h"
 #include "GConfig.h"
 //===============================================
@@ -43,8 +49,11 @@ void GProcess_Delete(GProcessO* obj) {
 //===============================================
 GProcessO* GProcess() {
     char* lKey = GConfig()->GetData("PROCESS");
+    if(GString2()->IsEqual(lKey, "TEST")) return GProcessTest();
+    if(GString2()->IsEqual(lKey, "ARG_TABLE")) return GProcessArgTable();
     if(GString2()->IsEqual(lKey, "CONSOLE")) return GProcessConsole();
     if(GString2()->IsEqual(lKey, "KEYBOARD")) return GProcessKeyboard();
+    if(GString2()->IsEqual(lKey, "LIST")) return GProcessList();
     if(GString2()->IsEqual(lKey, "MAP")) return GProcessMap();
     if(GString2()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
     if(GString2()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();
@@ -62,10 +71,13 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "THREAD")) return GProcessThread();
     if(GString2()->IsEqual(lKey, "MUTEX")) return GProcessMutex();
     if(GString2()->IsEqual(lKey, "SEMAPHORE")) return GProcessSemaphore();
+    if(GString2()->IsEqual(lKey, "RACE_CONDITION")) return GProcessRaceCondition();
     if(GString2()->IsEqual(lKey, "SCHEDULER")) return GProcessScheduler();
+    if(GString2()->IsEqual(lKey, "KERNEL")) return GProcessKernel();
     if(GString2()->IsEqual(lKey, "TIMER")) return GProcessTimer();
     if(GString2()->IsEqual(lKey, "TIMER_INTERVAL")) return GProcessTimerInterval();
     if(GString2()->IsEqual(lKey, "CLOCK")) return GProcessClock();
-    return GProcessConsole();
+    if(GString2()->IsEqual(lKey, "ALARM_SIGNAL")) return GProcessAlarmSignal();
+    return GProcessTest();
 }
 //===============================================

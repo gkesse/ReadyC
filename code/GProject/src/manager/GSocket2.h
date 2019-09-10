@@ -6,7 +6,10 @@
 //===============================================
 typedef struct _GSocket2O GSocket2O;
 //===============================================
-// ADATPER A LA CONNEXION MULTIPLE
+typedef enum _GSOCKET2_INITIALIZER {
+	GSOCKET2_INIT_AF_INET,
+	GSOCKET2_INIT_SOCK_STREAM
+} GSOCKET2_INITIALIZER;
 //===============================================
 struct _GSocket2O {
 	void* m_child;

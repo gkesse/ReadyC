@@ -34,6 +34,8 @@ static void GSocket2Unix_FreeAddress(char* socketName);
 //===============================================
 #if defined(__unix)
 static int GSocket2Unix_MapEqual(char* key1, char* key2);
+static int GSOCKET2_INIT_FAMILY(int iVal);
+static int GSOCKET2_INIT_TYPE(int iVal);
 #endif
 //===============================================
 GSocket2O* GSocket2Unix_New() {
@@ -101,7 +103,7 @@ static void GSocket2Unix_Socket(char* socketName, int family, int type, int prot
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
 	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocket2Unix_MapEqual);
-	*lSocket = socket(family, type, protocol);
+	*lSocket = socket(GSOCKET2_INIT_FAMILY(family), GSOCKET2_INIT_TYPE(type), protocol);
 	if(*lSocket == -1) {GConsole()->Print("[ GSocket2Unix ] Error GSocket2Unix_Socket2: %d\n", errno); exit(0);}
 #endif
 }
@@ -111,7 +113,7 @@ static void GSocket2Unix_AddressInt(char* addressName, int family, int address, 
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
 	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
-	bzero(lAddress, sizeof(*lAddress));
+	memset(lAddress, 0, sizeof(*lAddress));
 	lAddress->sin_family = family;
 	lAddress->sin_addr.s_addr = htonl(address);
 	lAddress->sin_port = htons(port);
@@ -123,8 +125,8 @@ static void GSocket2Unix_AddressChar(char* addressName, int family, char* addres
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
 	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
-	bzero(lAddress, sizeof(*lAddress));
-	lAddress->sin_family = family;
+	memset(lAddress, 0, sizeof(*lAddress));
+	lAddress->sin_family = GSOCKET2_INIT_FAMILY(family);
 	lAddress->sin_addr.s_addr = inet_addr(address);
 	lAddress->sin_port = htons(port);
 #endif
@@ -240,6 +242,20 @@ static int GSocket2Unix_MapEqual(char* key1, char* key2) {
 	int lStrcmp = strcmp(key1, key2);
 	if(lStrcmp == 0) return TRUE;
 	return FALSE;
+}
+#endif
+//===============================================
+#if defined(__unix)
+static int GSOCKET2_INIT_FAMILY(int iVal) {
+	if(iVal == GSOCKET2_INIT_AF_INET) {return AF_INET;}
+	return AF_INET;
+}
+#endif
+//===============================================
+#if defined(__unix)
+static int GSOCKET2_INIT_TYPE(int iVal) {
+	if(iVal == GSOCKET2_INIT_SOCK_STREAM) {return SOCK_STREAM;}
+	return SOCK_STREAM;
 }
 #endif
 //===============================================

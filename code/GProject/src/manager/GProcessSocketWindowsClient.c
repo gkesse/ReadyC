@@ -38,8 +38,8 @@ static void GProcessSocketWindowsClient_Run(int argc, char** argv) {
 	GSocket2()->MallocAddress("SERVER");
 
 	GSocket2()->Start("CLIENT", 2, 2);
-	GSocket2()->Socket("CLIENT", AF_INET , SOCK_STREAM, 0);
-	GSocket2()->AddressChar("SERVER", AF_INET, "127.0.0.1", 5566);
+	GSocket2()->Socket("CLIENT", GSOCKET2_INIT_AF_INET , GSOCKET2_INIT_SOCK_STREAM, 0);
+	GSocket2()->AddressChar("SERVER", GSOCKET2_INIT_AF_INET, "127.0.0.1", 5566);
 	GSocket2()->Connect("CLIENT", "SERVER");
 	char lMessage[255];
 	GSocket2()->Recv("CLIENT", lMessage, 254);
