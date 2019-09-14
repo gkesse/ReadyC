@@ -32,11 +32,10 @@ GProcessO* GProcessSocketUnixClient() {
 }
 //===============================================
 static void GProcessSocketUnixClient_Run(int argc, char** argv) {
-#if defined(__unix)
 	GSocket2()->MallocSocket("CLIENT");
 	GSocket2()->MallocAddress("SERVER");
-	GSocket2()->Socket("CLIENT", AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	GSocket2()->AddressChar("SERVER", AF_INET, "127.0.0.1", 5566);
+	GSocket2()->Socket("CLIENT", GSOCKET2_INIT_AF_INET, GSOCKET2_INIT_SOCK_STREAM, GSOCKET2_INIT_IPPROTO_TCP);
+	GSocket2()->AddressChar("SERVER", GSOCKET2_INIT_AF_INET, "127.0.0.1", 5566);
 	GSocket2()->Connect("CLIENT", "SERVER");
 	char lMessage[255];
 	GSocket2()->Read("CLIENT", lMessage, 254);
@@ -44,6 +43,5 @@ static void GProcessSocketUnixClient_Run(int argc, char** argv) {
 	GSocket2()->Close("CLIENT");
 	GSocket2()->FreeSocket("CLIENT");
 	GSocket2()->FreeAddress("SERVER");
-#endif
 }
 //===============================================

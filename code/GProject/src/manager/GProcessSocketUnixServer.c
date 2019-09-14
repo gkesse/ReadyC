@@ -32,7 +32,6 @@ GProcessO* GProcessSocketUnixServer() {
 }
 //===============================================
 static void GProcessSocketUnixServer_Run(int argc, char** argv) {
-#if defined(__unix)
 	GSocket2()->MallocSocket("SERVER");
 	GSocket2()->MallocAddress("SERVER");
 	GSocket2()->MallocSocket("CLIENT");
@@ -43,7 +42,7 @@ static void GProcessSocketUnixServer_Run(int argc, char** argv) {
 	GSocket2()->Listen("SERVER", 5);
 	while(1) {
 		GSocket2()->Accept("SERVER", "CLIENT", "CLIENT");
-		GSocket2()->Write("CLIENT", "BONJR", 0);
+		GSocket2()->Write("CLIENT", "Bonjour tout le monde", 0);
 		GSocket2()->Close("CLIENT");
 	}
 	GSocket2()->Close("SERVER");
@@ -51,6 +50,5 @@ static void GProcessSocketUnixServer_Run(int argc, char** argv) {
 	GSocket2()->FreeSocket("CLIENT");
 	GSocket2()->FreeAddress("SERVER");
 	GSocket2()->FreeAddress("CLIENT");
-#endif
 }
 //===============================================
