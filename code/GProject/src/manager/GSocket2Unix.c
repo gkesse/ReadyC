@@ -28,6 +28,8 @@ static void GSocket2Unix_Accept(char* serverSocket, char* clientSocket, char* cl
 static void GSocket2Unix_Connect(char* clientSocket, char* serverAddress);
 static int GSocket2Unix_Write(char* socketName, char* data, int size);
 static int GSocket2Unix_Read(char* socketName, char* data, int size);
+static int GSocket2Unix_SendTo(char* socketName, char* addressName, char* data, int size, int flags);
+static int GSocket2Unix_RecvFrom(char* socketName, char* addressName, char* data, int size, int flags);
 static void GSocket2Unix_Close(char* socketName);
 static void GSocket2Unix_FreeSocket(char* socketName);
 static void GSocket2Unix_FreeAddress(char* socketName);
@@ -63,6 +65,8 @@ GSocket2O* GSocket2Unix_New() {
 	lParent->Connect = GSocket2Unix_Connect;
 	lParent->Write = GSocket2Unix_Write;
 	lParent->Read = GSocket2Unix_Read;
+	lParent->SendTo = GSocket2Unix_SendTo;
+	lParent->RecvFrom = GSocket2Unix_RecvFrom;
 	lParent->Close = GSocket2Unix_Close;
 	lParent->FreeSocket = GSocket2Unix_FreeSocket;
 	lParent->FreeAddress = GSocket2Unix_FreeAddress;
@@ -141,8 +145,8 @@ static void GSocket2Unix_Bind(char* socketName, char* addressName) {
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
 	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocket2Unix_MapEqual);
 	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
-	int lSize = sizeof(*lAddress);
-	int lRes = bind(*lSocket,(struct sockaddr *)lAddress, lSize);
+	int lAddressSize = sizeof(*lAddress);
+	int lRes = bind(*lSocket, (struct sockaddr*)lAddress, lAddressSize);
 	if(lRes == -1) {GConsole()->Print("[ GSocket2Unix ] Error GSocket2Unix_Bind\n"); exit(0);}
 #endif
 }
@@ -211,6 +215,39 @@ static int GSocket2Unix_Read(char* socketName, char* data, int size) {
 	return 0;
 }
 //===============================================
+static int GSocket2Unix_SendTo(char* socketName, char* addressName, char* data, int size, int flags) {
+#if defined(__unix)
+	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
+	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocket2Unix_MapEqual);
+	int lSize = size;
+	if(lSize <= 0) lSize = strlen(data);
+	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
+	int lAddressSize = sizeof(*lAddress);
+    int lBytes = sendto(*lSocket, data, lSize, 0, lAddress, lAddressSize);
+    if(lBytes == -1) {GConsole()->Print("[ GSocket2Unix ] Error GSocket2Unix_SendTo\n"); exit(0);}
+	return lBytes;
+#endif
+	return 0;
+}
+//===============================================
+static int GSocket2Unix_RecvFrom(char* socketName, char* addressName, char* data, int size, int flags) {
+#if defined(__unix)
+	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
+	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
+	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
+	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocket2Unix_MapEqual);
+	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
+	int lAddressSize = sizeof(*lAddress);
+    int lBytes = recvfrom(*lSocket, data, size, flags, (struct sockaddr*)lAddress, (socklen_t*)&lAddressSize);
+	if(lBytes == -1) {GConsole()->Print("[ GSocket2Unix ] Error GSocket2Unix_RecvFrom\n"); exit(0);}
+	data[lBytes] = 0;
+	return lBytes;
+#endif
+	return 0;
+}
+//===============================================
 static void GSocket2Unix_Close(char* socketName) {
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
@@ -250,21 +287,22 @@ static int GSocket2Unix_MapEqual(char* key1, char* key2) {
 #if defined(__unix)
 static int GSOCKET2_INIT_FAMILY(int iVal) {
 	if(iVal == GSOCKET2_INIT_AF_INET) {return AF_INET;}
-	return AF_INET;
+	return iVal;
 }
 #endif
 //===============================================
 #if defined(__unix)
 static int GSOCKET2_INIT_TYPE(int iVal) {
 	if(iVal == GSOCKET2_INIT_SOCK_STREAM) {return SOCK_STREAM;}
-	return SOCK_STREAM;
+	if(iVal == GSOCKET2_INIT_SOCK_DGRAM) {return SOCK_DGRAM;}
+	return iVal;
 }
 #endif
 //===============================================
 #if defined(__unix)
 static int GSOCKET2_INIT_PROTOCOL(int iVal) {
 	if(iVal == GSOCKET2_INIT_IPPROTO_TCP) {return IPPROTO_TCP;}
-	return IPPROTO_TCP;
+	return iVal;
 }
 #endif
 //===============================================

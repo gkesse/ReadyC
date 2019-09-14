@@ -9,6 +9,7 @@ typedef struct _GSocket2O GSocket2O;
 typedef enum _GSOCKET2_INITIALIZER {
 	GSOCKET2_INIT_AF_INET,
 	GSOCKET2_INIT_SOCK_STREAM,
+	GSOCKET2_INIT_SOCK_DGRAM,
 	GSOCKET2_INIT_IPPROTO_TCP,
 	GSOCKET2_INIT_INADDR_ANY
 } GSOCKET2_INITIALIZER;
@@ -39,6 +40,8 @@ struct _GSocket2O {
 	int (*Read)(char* socketName, char* data, int size);
 	void (*Send)(char* socketName, char* message, int size);
 	void (*Recv)(char* socketName, char* message, int size);
+    int (*SendTo)(char* socketName, char* addressName, char* data, int size, int flags);
+    int (*RecvFrom)(char* socketName, char* addressName, char* data, int size, int flags);
 	void (*Close)(char* socketName);
 	void (*Clean)();
 	void (*FreeSocket)(char* socketName);

@@ -11,6 +11,8 @@
 #include "GProcessSocketClient.h"
 #include "GProcessSocketUnixServer.h"
 #include "GProcessSocketUnixClient.h"
+#include "GProcessSocketUnixServerUdp.h"
+#include "GProcessSocketUnixClientUdp.h"
 #include "GProcessSocketWindowsServer.h"
 #include "GProcessSocketWindowsClient.h"
 #include "GProcessSoapClient.h"
@@ -60,6 +62,8 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
     if(GString2()->IsEqual(lKey, "SOCKET_UNIX_SERVER")) return GProcessSocketUnixServer();
     if(GString2()->IsEqual(lKey, "SOCKET_UNIX_CLIENT")) return GProcessSocketUnixClient();
+    if(GString2()->IsEqual(lKey, "SOCKET_UNIX_SERVER_UDP")) return GProcessSocketUnixServerUdp();
+    if(GString2()->IsEqual(lKey, "SOCKET_UNIX_CLIENT_UDP")) return GProcessSocketUnixClientUdp();
     if(GString2()->IsEqual(lKey, "SOCKET_WINDOWS_SERVER")) return GProcessSocketWindowsServer();
     if(GString2()->IsEqual(lKey, "SOCKET_WINDOWS_CLIENT")) return GProcessSocketWindowsClient();
     if(GString2()->IsEqual(lKey, "SOAP_CLIENT")) return GProcessSoapClient();
