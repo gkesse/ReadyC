@@ -8,6 +8,8 @@ static int GString2_IsEqual(char* str1, char* str2);
 static char* GString2_Copy(char* str);
 static char* GString2_Trim(char* str);
 static char** GString2_Split(char* str, char* sep, int* count);
+static char* GString2_ToUpper(char* str);
+static char* GString2_ToLower(char* str);
 static void GString2_Free(char* ptr);
 static void GString2_Free2(char** ptr, int size);
 //===============================================
@@ -19,6 +21,8 @@ GString2O* GString2_New() {
     lObj->Copy = GString2_Copy;
     lObj->Trim = GString2_Trim;
     lObj->Split = GString2_Split;
+    lObj->ToUpper = GString2_ToUpper;
+    lObj->ToLower = GString2_ToLower;
     lObj->ToInt = atoi;
     lObj->ToFloat = atof;
     lObj->Free = GString2_Free;
@@ -114,6 +118,26 @@ static char** GString2_Split(char* str, char* sep, int* count) {
     }
     free(lStr);
     return lSplit;
+}
+//===============================================
+static char* GString2_ToUpper(char* str) {
+    int lSize = strlen(str) + 1;
+    char* lUpper = (char*)malloc(sizeof(char*)*lSize);
+    for(int i = 0; i < lSize; i ++) {
+        lUpper[i] = toupper(str[i]);
+    }
+    lUpper[lSize] = 0;
+    return lUpper;
+}
+//===============================================
+static char* GString2_ToLower(char* str) {
+    int lSize = strlen(str) + 1;
+    char* lLower = (char*)malloc(sizeof(char*)*lSize);
+    for(int i = 0; i < lSize; i ++) {
+        lLower[i] = tolower(str[i]);
+    }
+    lLower[lSize] = 0;
+    return lLower;
 }
 //===============================================
 static void GString2_Free(char* ptr) {

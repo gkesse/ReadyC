@@ -104,7 +104,7 @@
 			\
 			while(lNext != 0) { \
 				GKEY lKey = lNext->m_key; \
-				int lEqual = FALSE; \
+				BOOL lEqual = FALSE; \
 				if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
 				else lEqual = equal(lKey, key); \
 				if(lEqual == TRUE) { \

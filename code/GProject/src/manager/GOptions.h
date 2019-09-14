@@ -1,18 +1,19 @@
 //===============================================
-#ifndef _GProcessTest_
-#define _GProcessTest_
+#ifndef _GOptions_
+#define _GOptions_
 //===============================================
-#include "GProcess.h"
+#include "GInclude.h"
 //===============================================
-typedef struct _GProcessTestO GProcessTestO;
+typedef struct _GOptionsO GOptionsO;
 //===============================================
-struct _GProcessTestO {
-    GProcessO* m_parent;
+struct _GOptionsO {
+    void (*Delete)();
+    void (*GetArgs)(int argc, char** argv);
 };
 //===============================================
-GProcessO* GProcessTest_New();
-void GProcessTest_Delete();
-GProcessO* GProcessTest();
+GOptionsO* GOptions_New();
+void GOptions_Delete();
+GOptionsO* GOptions();
 //===============================================
 #endif
 //===============================================

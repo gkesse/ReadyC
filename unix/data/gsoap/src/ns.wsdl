@@ -24,13 +24,13 @@
   xmlns="http://www.w3.org/2001/XMLSchema"
   elementFormDefault="unqualified"
   attributeFormDefault="unqualified">
-  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
   <!-- operation request element -->
   <element name="add">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__add::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__add::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -38,7 +38,7 @@
   <element name="addResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__add::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -46,8 +46,8 @@
   <element name="sub">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__sub::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__sub::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -55,7 +55,7 @@
   <element name="subResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__sub::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -63,8 +63,8 @@
   <element name="mul">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__mul::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__mul::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -72,7 +72,7 @@
   <element name="mulResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__mul::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -80,8 +80,8 @@
   <element name="div">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__div::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__div::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -89,7 +89,7 @@
   <element name="divResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__div::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -97,8 +97,8 @@
   <element name="pow">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__pow::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__pow::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -106,7 +106,7 @@
   <element name="powResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__pow::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -115,7 +115,7 @@
 </types>
 
 <message name="addRequest">
- <part name="parameters" element="ns:add"/><!-- ns__add::ns__add -->
+ <part name="parameters" element="ns:add"/>
 </message>
 
 <message name="addResponse">
@@ -123,7 +123,7 @@
 </message>
 
 <message name="subRequest">
- <part name="parameters" element="ns:sub"/><!-- ns__sub::ns__sub -->
+ <part name="parameters" element="ns:sub"/>
 </message>
 
 <message name="subResponse">
@@ -131,7 +131,7 @@
 </message>
 
 <message name="mulRequest">
- <part name="parameters" element="ns:mul"/><!-- ns__mul::ns__mul -->
+ <part name="parameters" element="ns:mul"/>
 </message>
 
 <message name="mulResponse">
@@ -139,7 +139,7 @@
 </message>
 
 <message name="divRequest">
- <part name="parameters" element="ns:div"/><!-- ns__div::ns__div -->
+ <part name="parameters" element="ns:div"/>
 </message>
 
 <message name="divResponse">
@@ -147,7 +147,7 @@
 </message>
 
 <message name="powRequest">
- <part name="parameters" element="ns:pow"/><!-- ns__pow::ns__pow -->
+ <part name="parameters" element="ns:pow"/>
 </message>
 
 <message name="powResponse">
@@ -232,7 +232,7 @@
 </binding>
 
 <service name="Service">
- <documentation>gSOAP 2.8.14 generated service definition</documentation>
+ <documentation>gSOAP 2.7.13 generated service definition</documentation>
  <port name="Service" binding="tns:Service">
   <SOAP:address location="http://localhost:80"/>
  </port>

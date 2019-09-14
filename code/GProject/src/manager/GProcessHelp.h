@@ -1,19 +1,18 @@
 //===============================================
-#ifndef _GSleep_
-#define _GSleep_
+#ifndef _GProcessHelp_
+#define _GProcessHelp_
 //===============================================
-#include "GInclude.h"
+#include "GProcess.h"
 //===============================================
-typedef struct _GSleepO GSleepO;
+typedef struct _GProcessHelpO GProcessHelpO;
 //===============================================
-struct _GSleepO {
-    void (*Delete)();
-    void (*Sleep)(int delay);
+struct _GProcessHelpO {
+    GProcessO* m_parent;
 };
 //===============================================
-GSleepO* GSleep_New();
-void GSleep_Delete();
-GSleepO* GSleep();
+GProcessO* GProcessHelp_New();
+void GProcessHelp_Delete();
+GProcessO* GProcessHelp();
 //===============================================
 #endif
 //===============================================

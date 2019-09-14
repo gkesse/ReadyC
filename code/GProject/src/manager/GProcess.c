@@ -1,6 +1,6 @@
 //===============================================
 #include "GProcess.h"
-#include "GProcessTest.h"
+#include "GProcessHelp.h"
 #include "GProcessArgTable.h"
 #include "GProcessConsole.h"
 #include "GProcessKeyboard.h"
@@ -49,7 +49,7 @@ void GProcess_Delete(GProcessO* obj) {
 //===============================================
 GProcessO* GProcess() {
     char* lKey = GConfig()->GetData("PROCESS");
-    if(GString2()->IsEqual(lKey, "TEST")) return GProcessTest();
+    if(GString2()->IsEqual(lKey, "HELP")) return GProcessHelp();
     if(GString2()->IsEqual(lKey, "ARG_TABLE")) return GProcessArgTable();
     if(GString2()->IsEqual(lKey, "CONSOLE")) return GProcessConsole();
     if(GString2()->IsEqual(lKey, "KEYBOARD")) return GProcessKeyboard();
@@ -78,6 +78,6 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "TIMER_INTERVAL")) return GProcessTimerInterval();
     if(GString2()->IsEqual(lKey, "CLOCK")) return GProcessClock();
     if(GString2()->IsEqual(lKey, "ALARM_SIGNAL")) return GProcessAlarmSignal();
-    return GProcessTest();
+    return GProcessHelp();
 }
 //===============================================

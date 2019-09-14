@@ -1,21 +1,21 @@
-GSRV = srv/service.h
+GRLIB = /home/centos/Programs/ReadyLib/dev
+GSOAP = $(GRLIB)/gsoap/c/unix64/bin
+GSRV = srv
 GSRC = src
 GBUILD = build
 GBIN = bin
 GTARGET = $(GBIN)/libGSoap2.a
-GSOAP = /opt/gSOAP/gsoap
 
 GINCS = \
-    -I/opt/gSOAP/gsoap/
+    -I$(GRLIB)/gsoap/c/include \
 
 GOBJS = \
     $(GBUILD)/soapC.o \
     $(GBUILD)/soapServer.o \
     $(GBUILD)/soapClient.o \
-    $(GBUILD)/stdsoap2.o \
-    
-soap_src:
-	soapcpp2 -c -L -d$(GSRC) $(GSRV)
+
+all: soap_lib
+
 soap_lib: $(GOBJS)
 	@mkdir -p $(GBIN)
 	ar rcs $(GTARGET) $(GOBJS)
@@ -28,8 +28,7 @@ $(GBUILD)/soapServer.o: $(GSRC)/soapServer.c
 $(GBUILD)/soapClient.o: $(GSRC)/soapClient.c
 	@mkdir -p $(GBUILD)
 	gcc -c $(GSRC)/soapClient.c -o $(GBUILD)/soapClient.o $(GINCS)
-$(GBUILD)/stdsoap2.o: $(GSOAP)/stdsoap2.c
-	@mkdir -p $(GBUILD)
-	gcc -c $(GSOAP)/stdsoap2.c -o $(GBUILD)/stdsoap2.o $(GINCS)
+$(GSRC)/%.c: $(GSRV)/service.h
+	$(GSOAP)/soapcpp2 -c -L -d$(GSRC) $(GSRV)/service.h
 clean:
 	rm -f $(GSRC)/* $(GBUILD)/* $(GBIN)/*

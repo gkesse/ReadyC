@@ -8,13 +8,13 @@
   xmlns="http://www.w3.org/2001/XMLSchema"
   elementFormDefault="unqualified"
   attributeFormDefault="unqualified">
-  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
   <!-- operation request element -->
   <element name="add">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__add::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__add::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -22,7 +22,7 @@
   <element name="addResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__add::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -30,8 +30,8 @@
   <element name="sub">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__sub::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__sub::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -39,7 +39,7 @@
   <element name="subResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__sub::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -47,8 +47,8 @@
   <element name="mul">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__mul::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__mul::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -56,7 +56,7 @@
   <element name="mulResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__mul::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -64,8 +64,8 @@
   <element name="div">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__div::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__div::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -73,7 +73,7 @@
   <element name="divResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__div::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>
@@ -81,8 +81,8 @@
   <element name="pow">
    <complexType>
     <sequence>
-     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__pow::a -->
-     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/><!-- ns__pow::b -->
+     <element name="a" type="xsd:double" minOccurs="1" maxOccurs="1"/>
+     <element name="b" type="xsd:double" minOccurs="1" maxOccurs="1"/>
     </sequence>
    </complexType>
   </element>
@@ -90,7 +90,7 @@
   <element name="powResponse">
    <complexType>
     <sequence>
-     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/><!-- ns__pow::result -->
+     <element name="result" type="xsd:double" minOccurs="0" maxOccurs="1" nillable="true"/>
     </sequence>
    </complexType>
   </element>

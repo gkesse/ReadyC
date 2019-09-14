@@ -86,7 +86,8 @@ static void GThread2Unix_Join(char* threadName) {
 //===============================================
 static void GThread2Unix_Exit(char* threadName) {
 #if defined(__unix)
-	GMapO(GThread2Unix_GCHAR_PTR_GPTHREADT_PTR)* lThreadMap = m_GThread2UnixO->m_threadMap;
+	GThread2UnixO* lThread2Unix = m_GThread2UnixO->m_child;
+	GMapO(GThread2Unix_GCHAR_PTR_GPTHREADT_PTR)* lThreadMap = lThread2Unix->m_threadMap;
 	pthread_t* lThread = lThreadMap->GetData(lThreadMap, threadName, GThread2Unix_MapEqual);
 	pthread_exit(lThread);
 #endif

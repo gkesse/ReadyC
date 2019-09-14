@@ -110,7 +110,7 @@ static int GMutex2_MapEqual(char* key1, char* key2) {
 //===============================================
 #if defined(__unix)
 static pthread_mutex_t GMUTEX2_INIT_THREAD_MUTEX(int iVal) {
-	if(iVal == GMUTEX2_PTHREAD_MUTEX_INITIALIZER) {return (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;}
+	if(iVal == GMUTEX2_INIT_PTHREAD_MUTEX_INITIALIZER) {return (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;}
 	return (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
 }
 #endif
