@@ -34,15 +34,15 @@ GProcessO* GProcessSoapServer() {
 }
 //===============================================
 static void GProcessSoapServer_Run(int argc, char** argv) {
-    int lServerPort = GString2()->ToInt (
-        GConfig()->GetData("SOAP_SERVER_PORT"));
+    char* lServerPort = GConfig()->GetData("SOAP_SERVER_PORT");
+    int lServerPort2 = GString2()->ToInt(lServerPort);
     
 	GSoap()->Soap("SERVER");
 	GSoap()->Socket("SERVER");
 	GSoap()->Socket("CLIENT");
 
 	GSoap()->Init("SERVER");
-	GSoap()->Bind("SERVER", "SERVER", 0, lServerPort, 10);
+	GSoap()->Bind("SERVER", "SERVER", 0, lServerPort2, 10);
 
 	while(1) {
 		GSoap()->Accept("SERVER", "CLIENT");

@@ -42,16 +42,16 @@ GProcessO* GProcessSoapClient() {
 	if(m_GProcessSoapClientO == 0) {
 		m_GProcessSoapClientO = GProcessSoapClient_New();
 	}
-	return m_GProcessSoapClientO;
+	return m_GProcessSoapClientO; 
 }
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv) {
     char* lServerAddress = GConfig()->GetData("SOAP_SERVER_ADDRESS");
     char* lServerPort = GConfig()->GetData("SOAP_SERVER_PORT");
-    char* lServerUrl[32];
+    char lServerUrl[256];
     sprintf(lServerUrl, "http://%s:%s", lServerAddress, lServerPort);
 
-	GSoap()->Soap("CLIENT"); 
+	GSoap()->Soap("CLIENT");
 
 	GSoap()->Init1("CLIENT", SOAP_XML_INDENT);
 
