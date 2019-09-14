@@ -25,9 +25,7 @@ static void GSoap_Init(char* soapName);
 static void GSoap_Init1(char* soapName, int mode);
 static void GSoap_PrintFault(char* soapName, FILE* stream);
 static void GSoap_Done(char* soapName);
-#if defined(__unix)
 static void GSoap_CallFunc(char* soapName, const char* server, const char* action, GSOAP_CALL_FUNC callFunc, void* params);
-#endif
 static void GSoap_Destroy(char* soapName);
 static void GSoap_Serve(char* soapName);
 static void GSoap_Bind(char* soapName, char* socketName, char* host, int port, int backlog);
@@ -60,9 +58,7 @@ GSoapO* GSoap_New() {
     lObj->Init1 = GSoap_Init1;
     lObj->PrintFault = GSoap_PrintFault;
     lObj->Done = GSoap_Done;
-#if defined(__unix)
     lObj->CallFunc = GSoap_CallFunc;
-#endif
     lObj->Destroy = GSoap_Destroy;
     lObj->Serve = GSoap_Serve;
     lObj->Bind = GSoap_Bind;

@@ -36,6 +36,8 @@ static void GSocket2Unix_FreeAddress(char* socketName);
 static int GSocket2Unix_MapEqual(char* key1, char* key2);
 static int GSOCKET2_INIT_FAMILY(int iVal);
 static int GSOCKET2_INIT_TYPE(int iVal);
+static int GSOCKET2_INIT_PROTOCOL(int iVal);
+static int GSOCKET2_INIT_ADDRESS(int iVal);
 #endif
 //===============================================
 GSocket2O* GSocket2Unix_New() {
@@ -103,7 +105,7 @@ static void GSocket2Unix_Socket(char* socketName, int family, int type, int prot
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
 	int* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSocket2Unix_MapEqual);
-	*lSocket = socket(GSOCKET2_INIT_FAMILY(family), GSOCKET2_INIT_TYPE(type), protocol);
+	*lSocket = socket(GSOCKET2_INIT_FAMILY(family), GSOCKET2_INIT_TYPE(type), GSOCKET2_INIT_PROTOCOL(protocol));
 	if(*lSocket == -1) {GConsole()->Print("[ GSocket2Unix ] Error GSocket2Unix_Socket2: %d\n", errno); exit(0);}
 #endif
 }
@@ -114,8 +116,8 @@ static void GSocket2Unix_AddressInt(char* addressName, int family, int address, 
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
 	struct sockaddr_in* lAddress = lAddressMap->GetData(lAddressMap, addressName, GSocket2Unix_MapEqual);
 	memset(lAddress, 0, sizeof(*lAddress));
-	lAddress->sin_family = family;
-	lAddress->sin_addr.s_addr = htonl(address);
+	lAddress->sin_family = GSOCKET2_INIT_FAMILY(family);
+	lAddress->sin_addr.s_addr = htonl(GSOCKET2_INIT_ADDRESS(address));
 	lAddress->sin_port = htons(port);
 #endif
 }
@@ -256,6 +258,20 @@ static int GSOCKET2_INIT_FAMILY(int iVal) {
 static int GSOCKET2_INIT_TYPE(int iVal) {
 	if(iVal == GSOCKET2_INIT_SOCK_STREAM) {return SOCK_STREAM;}
 	return SOCK_STREAM;
+}
+#endif
+//===============================================
+#if defined(__unix)
+static int GSOCKET2_INIT_PROTOCOL(int iVal) {
+	if(iVal == GSOCKET2_INIT_IPPROTO_TCP) {return IPPROTO_TCP;}
+	return IPPROTO_TCP;
+}
+#endif
+//===============================================
+#if defined(__unix)
+static int GSOCKET2_INIT_ADDRESS(int iVal) {
+	if(iVal == GSOCKET2_INIT_INADDR_ANY) {return INADDR_ANY;}
+	return iVal;
 }
 #endif
 //===============================================

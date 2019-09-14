@@ -42,6 +42,7 @@
 #include <sqlite3.h>
 #include <dbus/dbus.h>
 #include <stdsoap2.h>
+#include <soapStub.h>
 #include <mysql/mysql.h>
 //===============================================
 #endif

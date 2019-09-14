@@ -2,6 +2,8 @@
 #include "GProcessSoapServer.h"
 #include "GConsole.h"
 #include "GSoap.h"
+#include "GString2.h"
+#include "GConfig.h"
 //===============================================
 static GProcessO* m_GProcessSoapServerO = 0;
 //===============================================
@@ -28,17 +30,19 @@ GProcessO* GProcessSoapServer() {
 	if(m_GProcessSoapServerO == 0) {
 		m_GProcessSoapServerO = GProcessSoapServer_New();
 	}
-	return m_GProcessSoapServerO;
+	return m_GProcessSoapServerO; 
 }
 //===============================================
 static void GProcessSoapServer_Run(int argc, char** argv) {
-#if defined(__unix)
+    int lServerPort = GString2()->ToInt (
+        GConfig()->GetData("SOAP_SERVER_PORT"));
+    
 	GSoap()->Soap("SERVER");
 	GSoap()->Socket("SERVER");
 	GSoap()->Socket("CLIENT");
 
 	GSoap()->Init("SERVER");
-	GSoap()->Bind("SERVER", "SERVER", 0, 8448, 10);
+	GSoap()->Bind("SERVER", "SERVER", 0, lServerPort, 10);
 
 	while(1) {
 		GSoap()->Accept("SERVER", "CLIENT");
@@ -50,7 +54,6 @@ static void GProcessSoapServer_Run(int argc, char** argv) {
 	GSoap()->FreeSocket("SERVER");
 	GSoap()->FreeSocket("CLIENT");
 	GSoap()->Clean();
-#endif
 }
 //===============================================
 #if defined(__unix)

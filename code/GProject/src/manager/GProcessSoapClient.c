@@ -2,9 +2,7 @@
 #include "GProcessSoapClient.h"
 #include "GConsole.h"
 #include "GSoap.h"
-#if defined(__unix)
-#include "soapStub.h"
-#endif
+#include "GConfig.h"
 //===============================================
 typedef struct _GSoapMath GSoapMath ;
 //===============================================
@@ -14,18 +12,14 @@ struct _GSoapMath {
 	double r;
 };
 //===============================================
-const char* G_SERVER_URL = "http://10.7.4.104:8448/";
-//===============================================
 static GProcessO* m_GProcessSoapClientO = 0;
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv);
 //===============================================
-#if defined(__unix)
-static void GProcessSoapClient_AddFunc(struct soap* soap, const char* server, const char* action, void* params);
-static void GProcessSoapClient_SubFunc(struct soap* soap, const char* server, const char* action, void* params);
-static void GProcessSoapClient_MulFunc(struct soap* soap, const char* server, const char* action, void* params);
-static void GProcessSoapClient_DivFunc(struct soap* soap, const char* server, const char* action, void* params);
-#endif
+static void GProcessSoapClient_AddFunc(GSOAP_STRUCT soap, const char* server, const char* action, void* params);
+static void GProcessSoapClient_SubFunc(GSOAP_STRUCT soap, const char* server, const char* action, void* params);
+static void GProcessSoapClient_MulFunc(GSOAP_STRUCT soap, const char* server, const char* action, void* params);
+static void GProcessSoapClient_DivFunc(GSOAP_STRUCT soap, const char* server, const char* action, void* params);
 //===============================================
 GProcessO* GProcessSoapClient_New() {
 	GProcessO* lParent = GProcess_New();
@@ -52,31 +46,35 @@ GProcessO* GProcessSoapClient() {
 }
 //===============================================
 static void GProcessSoapClient_Run(int argc, char** argv) {
-#if defined(__unix)
-	GSoap()->Soap("CLIENT");
+    char* lServerAddress = GConfig()->GetData("SOAP_SERVER_ADDRESS");
+    char* lServerPort = GConfig()->GetData("SOAP_SERVER_PORT");
+    char* lServerUrl[32];
+    sprintf(lServerUrl, "http://%s:%s", lServerAddress, lServerPort);
+
+	GSoap()->Soap("CLIENT"); 
 
 	GSoap()->Init1("CLIENT", SOAP_XML_INDENT);
 
-	GSoapMath lSoapMath;
+	GSoapMath lSoapMath; 
 
 	lSoapMath.a = 50;
 	lSoapMath.b = 30;
-	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_AddFunc, &lSoapMath);
+	GSoap()->CallFunc("CLIENT", lServerUrl, "", GProcessSoapClient_AddFunc, &lSoapMath);
 	GConsole()->Print("[ GSoap ] add(50, 30) = %g\n", lSoapMath.r);
 
 	lSoapMath.a = 50;
 	lSoapMath.b = 30;
-	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_SubFunc, &lSoapMath);
+	GSoap()->CallFunc("CLIENT", lServerUrl, "", GProcessSoapClient_SubFunc, &lSoapMath);
 	GConsole()->Print("[ GSoap ] Sub(50, 30) = %g\n", lSoapMath.r);
 
 	lSoapMath.a = 50;
 	lSoapMath.b = 30;
-	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_MulFunc, &lSoapMath);
+	GSoap()->CallFunc("CLIENT", lServerUrl, "", GProcessSoapClient_MulFunc, &lSoapMath);
 	GConsole()->Print("[ GSoap ] mul(50, 30) = %g\n", lSoapMath.r);
 
 	lSoapMath.a = 50;
 	lSoapMath.b = 30;
-	GSoap()->CallFunc("CLIENT", G_SERVER_URL, "", GProcessSoapClient_DivFunc, &lSoapMath);
+	GSoap()->CallFunc("CLIENT", lServerUrl, "", GProcessSoapClient_DivFunc, &lSoapMath);
 	GConsole()->Print("[ GSoap ] div(50, 30) = %g\n", lSoapMath.r);
 
 	GSoap()->Destroy("CLIENT");
@@ -85,10 +83,8 @@ static void GProcessSoapClient_Run(int argc, char** argv) {
 
 	GSoap()->FreeSoap("CLIENT");
 	GSoap()->Clean();
-#endif
 }
 //===============================================
-#if defined(__unix)
 static void GProcessSoapClient_AddFunc(struct soap* soap, const char* server, const char* action, void* params) {
 	GSoapMath* lSoapMath = (GSoapMath*)params;
 	double lA = lSoapMath->a;
@@ -141,5 +137,4 @@ struct Namespace namespaces[] = {
 		{ "ns", "urn:Calc"},
 		{ NULL, NULL }
 };
-#endif
 //===============================================

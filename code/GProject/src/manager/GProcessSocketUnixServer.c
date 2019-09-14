@@ -37,8 +37,8 @@ static void GProcessSocketUnixServer_Run(int argc, char** argv) {
 	GSocket2()->MallocAddress("SERVER");
 	GSocket2()->MallocSocket("CLIENT");
 	GSocket2()->MallocAddress("CLIENT");
-	GSocket2()->Socket("SERVER", AF_INET0, SOCK_STREAM0, IPPROTO_TCP0);
-	GSocket2()->AddressInt("SERVER", AF_INET0, INADDR_ANY0, 5566);
+	GSocket2()->Socket("SERVER", GSOCKET2_INIT_AF_INET, GSOCKET2_INIT_SOCK_STREAM, GSOCKET2_INIT_IPPROTO_TCP);
+	GSocket2()->AddressInt("SERVER", GSOCKET2_INIT_AF_INET, GSOCKET2_INIT_INADDR_ANY, 5566);
 	GSocket2()->Bind("SERVER", "SERVER");
 	GSocket2()->Listen("SERVER", 5);
 	while(1) {
