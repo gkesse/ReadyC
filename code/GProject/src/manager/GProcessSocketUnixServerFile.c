@@ -1,37 +1,37 @@
 //===============================================
-#include "GProcessSocketUnixServer.h"
+#include "GProcessSocketUnixServerFile.h"
 #include "GSocket2.h"
 #include "GConsole.h"
 //===============================================
-static GProcessO* m_GProcessSocketUnixServerO = 0;
+static GProcessO* m_GProcessSocketUnixServerFileO = 0;
 //===============================================
-static void GProcessSocketUnixServer_Run(int argc, char** argv);
+static void GProcessSocketUnixServerFile_Run(int argc, char** argv);
 //===============================================
-GProcessO* GProcessSocketUnixServer_New() {
+GProcessO* GProcessSocketUnixServerFile_New() {
 	GProcessO* lParent = GProcess_New();
-	GProcessSocketUnixServerO* lChild = (GProcessSocketUnixServerO*)malloc(sizeof(GProcessSocketUnixServerO));
+	GProcessSocketUnixServerFileO* lChild = (GProcessSocketUnixServerFileO*)malloc(sizeof(GProcessSocketUnixServerFileO));
 
 	lChild->m_parent = lParent;
 
 	lParent->m_child = lChild;
-	lParent->Delete = GProcessSocketUnixServer_Delete;
-	lParent->Run = GProcessSocketUnixServer_Run;
+	lParent->Delete = GProcessSocketUnixServerFile_Delete;
+	lParent->Run = GProcessSocketUnixServerFile_Run;
 	return lParent;
 }
 //===============================================
-void GProcessSocketUnixServer_Delete() {
-	GProcess_Delete(m_GProcessSocketUnixServerO);
-	m_GProcessSocketUnixServerO = 0;
+void GProcessSocketUnixServerFile_Delete() {
+	GProcess_Delete(m_GProcessSocketUnixServerFileO);
+	m_GProcessSocketUnixServerFileO = 0;
 }
 //===============================================
-GProcessO* GProcessSocketUnixServer() {
-	if(m_GProcessSocketUnixServerO == 0) {
-		m_GProcessSocketUnixServerO = GProcessSocketUnixServer_New();
+GProcessO* GProcessSocketUnixServerFile() {
+	if(m_GProcessSocketUnixServerFileO == 0) {
+		m_GProcessSocketUnixServerFileO = GProcessSocketUnixServerFile_New();
 	}
-	return m_GProcessSocketUnixServerO;
+	return m_GProcessSocketUnixServerFileO;
 }
 //===============================================
-static void GProcessSocketUnixServer_Run(int argc, char** argv) {
+static void GProcessSocketUnixServerFile_Run(int argc, char** argv) {
 	GSocket2()->MallocSocket("SERVER");
 	GSocket2()->MallocAddress("SERVER");
 	GSocket2()->MallocSocket("CLIENT");
@@ -42,13 +42,12 @@ static void GProcessSocketUnixServer_Run(int argc, char** argv) {
 	GSocket2()->Bind("SERVER", "SERVER");
 	GSocket2()->Listen("SERVER", 5);
     
-    char lMessage[256];
+    char lFilename[256];
     
 	while(1) {
 		GSocket2()->Accept("SERVER", "CLIENT", "CLIENT");
-		GSocket2()->Write("CLIENT", "SERVER: Bonjour tout le monde", 0);
-        GSocket2()->Read("CLIENT", lMessage, 256);
-        GConsole()->Print("%s\n", lMessage);
+		GSocket2()->Read("CLIENT", lFilename, 256);
+		GConsole()->Print("Filename : %s", lFilename);
 		GSocket2()->Close("CLIENT");
 	}
     

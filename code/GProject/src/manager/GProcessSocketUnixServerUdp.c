@@ -43,9 +43,9 @@ static void GProcessSocketUnixServerUdp_Run(int argc, char** argv) {
     char lMessage[256];
     
 	while(1) {
-		GSocket2()->RecvFrom("SERVER", "CLIENT", lMessage, 255, 0);
+		GSocket2()->RecvFrom("SERVER", "CLIENT", lMessage, 256, 0);
         GConsole()->Print("%s\n", lMessage);
-		GSocket2()->SendTo("SERVER", "CLIENT", "SERVER, Bonjour tout le monde", 0, 0);
+		GSocket2()->SendTo("SERVER", "CLIENT", "SERVER: Bonjour tout le monde", 0, 0);
 	}
     
 	GSocket2()->Close("SERVER");
