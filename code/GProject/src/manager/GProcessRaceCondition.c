@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessRaceCondition.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 typedef struct _GAccount {
     char* m_name;
@@ -38,6 +39,9 @@ GProcessO* GProcessRaceCondition() {
 }
 //===============================================
 static void GProcessRaceCondition_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessRaceCondition_Run");
+    GLog()->Write("#================================================");
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je teste une race condition\n");
     GConsole()->Print("=================================================\n");

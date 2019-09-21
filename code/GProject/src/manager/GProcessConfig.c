@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessConfig.h"
 #include "GConfig.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessConfigO = 0;
 //===============================================
@@ -31,6 +32,9 @@ GProcessO* GProcessConfig() {
 }
 //===============================================
 static void GProcessConfig_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessConfig_Run");
+    GLog()->Write("#================================================");
     GConfig()->SetData("Nom", "KESSE");
     GConfig()->SetData("Prenom", "Gerard");
     GConfig()->SetData("Email", "gerard.kesse@readydev.com");

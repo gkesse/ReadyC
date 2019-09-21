@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessCgi.h"
 #include "GConfig.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessCgiO = 0;
 //===============================================
@@ -31,6 +32,9 @@ GProcessO* GProcessCgi() {
 }
 //===============================================
 static void GProcessCgi_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessCgi_Run");
+    GLog()->Write("#================================================");
 	printf("Content-Type: text/html;charset=utf-8\n\n");
 	printf("<h1 style='color: red;'>[ GCgi ] Bonjour tout le monde</h1>\n\n");
 }

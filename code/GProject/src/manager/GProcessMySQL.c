@@ -3,6 +3,7 @@
 #include "GMySQL.h"
 #include "GConfig.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessMySQLO = 0;
 //===============================================
@@ -33,7 +34,9 @@ GProcessO* GProcessMySQL() {
 }
 //===============================================
 static void GProcessMySQL_Run(int argc, char** argv) {
-	// CONNEXION MULTIPLE
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessMySQL_Run");
+    GLog()->Write("#================================================");
 	GMySQL()->MallocRow("MYSQL");
 
 	GMySQL()->Init("MYSQL");

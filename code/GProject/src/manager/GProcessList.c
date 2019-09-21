@@ -3,6 +3,7 @@
 #include "GList.h"
 #include "GString2.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 typedef int* GINT_PTR;
 typedef char* GCHAR_PTR;
@@ -47,6 +48,9 @@ GProcessO* GProcessList() {
 }
 //===============================================
 static void GProcessList_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessList_Run");
+    GLog()->Write("#================================================");
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je suis une liste generique\n");
     GConsole()->Print("=================================================\n");

@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessRpcClient.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessRpcClientO = 0;
 //===============================================
@@ -31,6 +32,9 @@ GProcessO* GProcessRpcClient() {
 }
 //===============================================
 static void GProcessRpcClient_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessRpcClient_Run");
+    GLog()->Write("#================================================");
 	int lInt = 567;
 	char* lString = "Bonjour tout le monde";
 	GConsole()->Print("Entier decimal: [ %d ]\n", lInt);

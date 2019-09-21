@@ -5,6 +5,7 @@
 #include "GKernelDashboard.h"
 #include "GScheduler.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessKernelO = 0;
 //===============================================
@@ -35,6 +36,9 @@ GProcessO* GProcessKernel() {
 }
 //===============================================
 static void GProcessKernel_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessKernel_Run");
+    GLog()->Write("#================================================");
 	GScheduler()->Init(1000);
 	GScheduler()->Start();
 	GScheduler()->AddTask(GKernelConnect()->Update, 0, 200);

@@ -21,6 +21,8 @@ GString2O* GString2_New() {
     lObj->Copy = GString2_Copy;
     lObj->Trim = GString2_Trim;
     lObj->Split = GString2_Split;
+    lObj->Format = sprintf;
+    lObj->Concat = strcat;
     lObj->ToUpper = GString2_ToUpper;
     lObj->ToLower = GString2_ToLower;
     lObj->ToInt = atoi;

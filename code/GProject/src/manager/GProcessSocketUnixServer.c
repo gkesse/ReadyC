@@ -2,6 +2,7 @@
 #include "GProcessSocketUnixServer.h"
 #include "GSocket2.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessSocketUnixServerO = 0;
 //===============================================
@@ -32,6 +33,9 @@ GProcessO* GProcessSocketUnixServer() {
 }
 //===============================================
 static void GProcessSocketUnixServer_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessSocketUnixServer_Run");
+    GLog()->Write("#================================================");
 	GSocket2()->MallocSocket("SERVER");
 	GSocket2()->MallocAddress("SERVER");
 	GSocket2()->MallocSocket("CLIENT");

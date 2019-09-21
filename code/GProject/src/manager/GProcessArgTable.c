@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessArgTable.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessArgTableO = 0;
 //===============================================
@@ -36,6 +37,9 @@ struct arg_file *o, *file;
 struct arg_end *end;*/
 //===============================================
 static void GProcessArgTable_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessArgTable_Run");
+    GLog()->Write("#================================================");
 	GConsole()->Print("=================================================\n");
 	GConsole()->Print("Je suis un gestionnaire d'options\n");
 	GConsole()->Print("=================================================\n");

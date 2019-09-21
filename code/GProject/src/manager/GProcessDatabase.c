@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessDatabase.h"
 #include "GDatabase.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessDatabaseO = 0;
 //===============================================
@@ -31,6 +32,9 @@ GProcessO* GProcessDatabase() {
 }
 //===============================================
 static void GProcessDatabase_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessDatabase_Run");
+    GLog()->Write("#================================================");
 	GDatabase()->Version();
 	GDatabase()->Open("ELEPHANT", "data/sqlite/elephant.db");
 

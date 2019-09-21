@@ -46,7 +46,7 @@ static int GSOCKET2_INIT_SHUTDOWN(int iVal);
 #endif
 //===============================================
 GSocket2O* GSocket2Unix_New() {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_New");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_New");
 	GSocket2O* lParent = GSocket2_New();
 	GSocket2UnixO* lChild = (GSocket2UnixO*)malloc(sizeof(GSocket2UnixO));
 
@@ -79,7 +79,7 @@ GSocket2O* GSocket2Unix_New() {
 }
 //===============================================
 void GSocket2Unix_Delete(GSocket2O* obj) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Delete");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Delete");
 	GSocket2_Delete(obj);
 	m_GSocket2UnixO = 0;
 }
@@ -102,7 +102,7 @@ static void GSocket2Unix_MallocSocket(char* socketName) {
 }
 //===============================================
 static void GSocket2Unix_MallocAddress(char* addressName) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_MallocAddress");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_MallocAddress");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
@@ -113,7 +113,7 @@ static void GSocket2Unix_MallocAddress(char* addressName) {
 }
 //===============================================
 static void GSocket2Unix_Socket(char* socketName, int family, int type, int protocol) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Socket");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Socket");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -124,7 +124,7 @@ static void GSocket2Unix_Socket(char* socketName, int family, int type, int prot
 }
 //===============================================
 static void GSocket2Unix_AddressInt(char* addressName, int family, int address, int port) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_AddressInt");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_AddressInt");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
@@ -137,7 +137,7 @@ static void GSocket2Unix_AddressInt(char* addressName, int family, int address, 
 }
 //===============================================
 static void GSocket2Unix_AddressChar(char* addressName, int family, char* address, int port) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_AddressChar");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_AddressChar");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;
@@ -150,7 +150,7 @@ static void GSocket2Unix_AddressChar(char* addressName, int family, char* addres
 }
 //===============================================
 static void GSocket2Unix_Bind(char* socketName, char* addressName) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Bind");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Bind");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -160,11 +160,11 @@ static void GSocket2Unix_Bind(char* socketName, char* addressName) {
 	int lAddressSize = sizeof(*lAddress);
 	int lRes = bind(*lSocket, (struct sockaddr*)lAddress, lAddressSize);
 	if(lRes == -1) {GConsole()->Print("[ GSocket2Unix ] Error GSocket2Unix_Bind\n"); exit(0);}
-#endif
+#endif 
 }
 //===============================================
 static void GSocket2Unix_Listen(char* socketName, int backlog) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Listen");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Listen");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -175,7 +175,7 @@ static void GSocket2Unix_Listen(char* socketName, int backlog) {
 }
 //===============================================
 static void GSocket2Unix_Accept(char* serverSocket, char* clientSocket, char* clientAddress) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Accept");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Accept");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -190,7 +190,7 @@ static void GSocket2Unix_Accept(char* serverSocket, char* clientSocket, char* cl
 }
 //===============================================
 static void GSocket2Unix_Connect(char* clientSocket, char* serverAddress) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Connect");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Connect");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -204,7 +204,7 @@ static void GSocket2Unix_Connect(char* clientSocket, char* serverAddress) {
 }
 //===============================================
 static int GSocket2Unix_Write(char* socketName, char* data, int size) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Write");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Write");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -219,7 +219,7 @@ static int GSocket2Unix_Write(char* socketName, char* data, int size) {
 }
 //===============================================
 static int GSocket2Unix_Read(char* socketName, char* data, int size) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Read");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Read");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -234,7 +234,7 @@ static int GSocket2Unix_Read(char* socketName, char* data, int size) {
 }
 //===============================================
 static int GSocket2Unix_SendTo(char* socketName, char* addressName, char* data, int size, int flags) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_SendTo");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_SendTo");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -252,7 +252,7 @@ static int GSocket2Unix_SendTo(char* socketName, char* addressName, char* data, 
 }
 //===============================================
 static int GSocket2Unix_RecvFrom(char* socketName, char* addressName, char* data, int size, int flags) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_RecvFrom");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_RecvFrom");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -270,7 +270,7 @@ static int GSocket2Unix_RecvFrom(char* socketName, char* addressName, char* data
 }
 //===============================================
 static void GSocket2Unix_Shutdown(char* socketName, int mode) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Shutdown");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Shutdown");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -281,7 +281,7 @@ static void GSocket2Unix_Shutdown(char* socketName, int mode) {
 }
 //===============================================
 static void GSocket2Unix_Close(char* socketName) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_Close");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_Close");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -292,7 +292,7 @@ static void GSocket2Unix_Close(char* socketName) {
 }
 //===============================================
 static void GSocket2Unix_FreeSocket(char* socketName) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_FreeSocket");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_FreeSocket");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GINT_PTR)* lSocketMap = lSocketUnix->m_socketMap;
@@ -302,7 +302,7 @@ static void GSocket2Unix_FreeSocket(char* socketName) {
 }
 //===============================================
 static void GSocket2Unix_FreeAddress(char* socketName) {
-    GLog()->Write("Execution de la fonction : GSocket2Unix_FreeAddress");
+    //GLog()->Write("Execution de la fonction : GSocket2Unix_FreeAddress");
 #if defined(__unix)
 	GSocket2UnixO* lSocketUnix = m_GSocket2UnixO->m_child;
 	GMapO(GSocket2Unix_GCHAR_PTR_GSOCKADDRIN_PTR)* lAddressMap = lSocketUnix->m_addressMap;

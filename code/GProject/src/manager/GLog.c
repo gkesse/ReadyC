@@ -53,8 +53,8 @@ static void GLog_Prefix() {
 static void GLog_Write(char* data) {
     GLog_Filename();
     GLog_Prefix();
-    FILE* lFile = fopen(m_GLogO->m_filename, "a+"); 
-    fprintf(lFile, "%s | %s\n", m_GLogO->m_prefix, data);
-    fclose(lFile);
+    FILE* lpFile = fopen(m_GLogO->m_filename, "a+"); 
+    fprintf(lpFile, "%s | %s\n", m_GLogO->m_prefix, data);
+    fclose(lpFile);
 }
 //===============================================

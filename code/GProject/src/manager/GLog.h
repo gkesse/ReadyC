@@ -4,8 +4,8 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
-#define GLOG_BUFFER_FILENAME    (50)
-#define GLOG_BUFFER_PREFIX      (50)
+#define GLOG_BUFFER_FILENAME    256
+#define GLOG_BUFFER_PREFIX      256
 //===============================================
 typedef struct _GLogO GLogO;
 //===============================================

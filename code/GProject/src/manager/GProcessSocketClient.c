@@ -2,6 +2,7 @@
 #include "GProcessSocketClient.h"
 #include "GSocket2.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessSocketClientO = 0;
 //===============================================
@@ -32,6 +33,9 @@ GProcessO* GProcessSocketClient() {
 }
 //===============================================
 static void GProcessSocketClient_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessSocketClient_Run");
+    GLog()->Write("#================================================");
 
 }
 //===============================================

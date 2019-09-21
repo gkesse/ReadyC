@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessGtk.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessGtkO = 0;
 //===============================================
@@ -35,6 +36,9 @@ static void destroy (GtkWidget*, gpointer);
 //===============================================
 static void GProcessGtk_Run(int argc, char** argv) {
 #if defined(__unix)
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessGtk_Run");
+    GLog()->Write("#================================================");
 	GtkWidget *window, *button;
 
 	  gtk_init (&argc, &argv);

@@ -2,6 +2,7 @@
 #include "GProcessSocketWindowsServer.h"
 #include "GSocket2.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessSocketWindowsServerO = 0;
 //===============================================
@@ -33,6 +34,9 @@ GProcessO* GProcessSocketWindowsServer() {
 //===============================================
 static void GProcessSocketWindowsServer_Run(int argc, char** argv) {
 #if defined(__WIN32)
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessSocketWindowsServer_Run");
+    GLog()->Write("#================================================");
 	GSocket2()->MallocSocket("SERVER");
 	GSocket2()->MallocAddress("SERVER");
 	GSocket2()->MallocData("SERVER");
