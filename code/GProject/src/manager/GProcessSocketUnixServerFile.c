@@ -49,7 +49,6 @@ static void GProcessSocketUnixServerFile_Run(int argc, char** argv) {
     
     char lFilename[GSOCKET2_BUFFER_FILENAME]; 
     char lData[GSOCKET2_BUFFER_DATA];
-    char* lBuffer;
     
 	while(1) {
 		GSocket2()->Accept("SERVER", "CLIENT", "CLIENT");
@@ -63,15 +62,13 @@ static void GProcessSocketUnixServerFile_Run(int argc, char** argv) {
             if(lReadBytes <= 0) break;
             GConsole()->Print("%s", lData);
 
-            //int lWriteBytes = 0;
-            //lBuffer = lData;
             int lWriteCount = 0;
             
             while(1) {
                 int lWriteBytes = GSocket2()->Write("CLIENT", &lData[lWriteCount], 0);
                 if(lWriteBytes <= 0) break;
                 lWriteCount += lWriteBytes;
-            } 
+            }  
         }
         
         GFile2()->Close("SERVER");

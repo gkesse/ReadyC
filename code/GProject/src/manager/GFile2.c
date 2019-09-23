@@ -29,6 +29,7 @@ GFile2O* GFile2_New() {
 	lObj->Open = GFile2_Open;
 	lObj->Write = GFile2_Write;
 	lObj->Read = GFile2_Read;
+	lObj->Format = fprintf;
 	lObj->Close = GFile2_Close;
 	return lObj;
 }

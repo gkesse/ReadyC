@@ -47,17 +47,16 @@ static void GProcessSocketUnixClientFile_Run(int argc, char** argv) {
 	GSocket2()->Connect("CLIENT", "SERVER");
 
 	GSocket2()->Write("CLIENT", "Makefile", 0);
-    GFile2()->Open("CLIENT", "Makefile_recv.txt", "a+");
-	GSocket2()->Shutdown("CLIENT", GSOCKET2_INIT_SHUT_RD);
-    GFile2()->Open("CLIENT", "Makefile_recv.txt", "a+");
+    GFile2()->Open("CLIENT", "data/recv/Makefile", "w");
 
     while(1) {
         int lReadBytes = GSocket2()->Read("CLIENT", lData, GSOCKET2_BUFFER_DATA);
         if(lReadBytes <= 0) break;
         GConsole()->Print("%s", lData);
+        GFile2()->Write("CLIENT", lData, 0);
     }
     
-	//GFile2()->Close("CLIENT");
+	GFile2()->Close("CLIENT");
 	GSocket2()->Close("CLIENT");
     
 	GSocket2()->FreeSocket("CLIENT");

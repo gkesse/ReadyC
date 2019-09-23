@@ -10,6 +10,8 @@ struct _GProcessO {
     void* m_child;
     void (*Delete)();
     void (*Run)(int argc, char** argv);
+    int (*Fork)();
+    void (*Wait)();
 };
 //===============================================
 GProcessO* GProcess_New();

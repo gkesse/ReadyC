@@ -5,7 +5,7 @@
 #include "GInclude.h"
 //===============================================
 #define GSOCKET2_BUFFER_FILENAME    256
-#define GSOCKET2_BUFFER_DATA        20
+#define GSOCKET2_BUFFER_DATA        1024
 //===============================================
 typedef struct _GSocket2O GSocket2O;
 //===============================================

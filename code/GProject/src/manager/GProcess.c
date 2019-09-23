@@ -7,6 +7,7 @@
 #include "GProcessList.h"
 #include "GProcessMap.h"
 #include "GProcessConfig.h"
+#include "GProcessFork.h"
 #include "GProcessSocketServer.h"
 #include "GProcessSocketClient.h"
 #include "GProcessSocketUnixServer.h"
@@ -36,9 +37,14 @@
 #include "GString2.h"
 #include "GConfig.h"
 //===============================================
+static int GProcess_Fork();
+static void GProcess_Wait();
+//===============================================
 GProcessO* GProcess_New() {
     GProcessO* lObj = (GProcessO*)malloc(sizeof(GProcessO));
     lObj->m_child = 0;
+    lObj->Fork = GProcess_Fork;
+    lObj->Wait = GProcess_Wait;
     return lObj;
 }
 //===============================================
@@ -60,6 +66,7 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "LIST")) return GProcessList();
     if(GString2()->IsEqual(lKey, "MAP")) return GProcessMap();
     if(GString2()->IsEqual(lKey, "CONFIG")) return GProcessConfig();
+    if(GString2()->IsEqual(lKey, "FORK")) return GProcessFork();
     if(GString2()->IsEqual(lKey, "SOCKET_SERVER")) return GProcessSocketServer();
     if(GString2()->IsEqual(lKey, "SOCKET_CLIENT")) return GProcessSocketClient();
     if(GString2()->IsEqual(lKey, "SOCKET_UNIX_SERVER")) return GProcessSocketUnixServer();
@@ -87,5 +94,14 @@ GProcessO* GProcess() {
     if(GString2()->IsEqual(lKey, "CLOCK")) return GProcessClock();
     if(GString2()->IsEqual(lKey, "ALARM_SIGNAL")) return GProcessAlarmSignal();
     return GProcessHelp();
+}
+//===============================================
+static int GProcess_Fork() {
+    int lPid = fork();
+    return lPid;
+}
+//===============================================
+static void GProcess_Wait() {
+    wait(0);
 }
 //===============================================
