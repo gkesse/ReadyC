@@ -2,6 +2,7 @@
 #include "GProcessKeyboard.h"
 #include "GKeyboard.h"
 #include "GConsole.h"
+#include "GLog.h"
 #include "GBase.h"
 //===============================================
 static GProcessO* m_GProcessKeyboardO = 0;
@@ -33,6 +34,9 @@ GProcessO* GProcessKeyboard() {
 }
 //===============================================
 static void GProcessKeyboard_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessKeyboard_Run");
+    GLog()->Write("#================================================");
 	int lInt;
 	char lBinary[16];
 	int lOctal;

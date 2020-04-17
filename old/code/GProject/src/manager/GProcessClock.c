@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessClock.h"
 #include "GClock.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessClockO = 0;
 //===============================================
@@ -31,6 +32,9 @@ GProcessO* GProcessClock() {
 }
 //===============================================
 static void GProcessClock_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessClock_Run");
+    GLog()->Write("#================================================");
 	printf("=================================================\n");
     long lClock = GClock()->GetClock();
     long lClockPerSec = GClock()->GetClockPerSec();

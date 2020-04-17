@@ -13,6 +13,8 @@ struct _GString2O {
     char* (*Copy)(char* str);
     char* (*Trim)(char* str);
     char** (*Split)(char* str, char* sep, int* count);
+    int (*Format)( char * str, const char * format, ... );
+    char* (*Concat)(char *dest, const char *src);
     char* (*ToUpper)(char* str);
     char* (*ToLower)(char* str);
     int (*ToInt)(const char* str);

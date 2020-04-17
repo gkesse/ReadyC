@@ -2,6 +2,7 @@
 #include "GProcessScheduler.h"
 #include "GScheduler.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessSchedulerO = 0;
 //===============================================
@@ -34,6 +35,9 @@ GProcessO* GProcessScheduler() {
 }
 //===============================================
 static void GProcessScheduler_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessScheduler_Run");
+    GLog()->Write("#================================================");
 	GConsole()->Print("=================================================\n");
 	GConsole()->Print("Je suis un ordonnanceur cooperatif [ Scheduler ]\n");
 	GConsole()->Print("Je suis constitue d'un mode idle [ economie d'energie ]\n");

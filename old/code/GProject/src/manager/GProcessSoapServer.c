@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcessSoapServer.h"
 #include "GConsole.h"
+#include "GLog.h"
 #include "GSoap.h"
 #include "GString2.h"
 #include "GConfig.h"
@@ -34,6 +35,9 @@ GProcessO* GProcessSoapServer() {
 }
 //===============================================
 static void GProcessSoapServer_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessSoapServer_Run");
+    GLog()->Write("#================================================");
     char* lServerPort = GConfig()->GetData("SOAP_SERVER_PORT");
     int lServerPort2 = GString2()->ToInt(lServerPort);
     

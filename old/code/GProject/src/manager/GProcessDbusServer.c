@@ -2,6 +2,7 @@
 #include "GProcessDbusServer.h"
 #include "GDBus.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessDbusServerO = 0;
 //===============================================
@@ -40,6 +41,9 @@ const char* G_METHOD_NAME = "add_numbers";
 //===============================================
 static void GProcessDbusServer_Run(int argc, char** argv) {
 #if defined(__unix)
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessDbusServer_Run");
+    GLog()->Write("#================================================");
 	GDBus()->MallocError("SERVER");
 
 	GDBus()->Init("SERVER");

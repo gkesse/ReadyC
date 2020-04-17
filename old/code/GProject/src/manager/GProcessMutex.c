@@ -4,6 +4,7 @@
 #include "GThread2.h"
 #include "GSleep.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessMutexO = 0;
 //===============================================
@@ -36,6 +37,9 @@ GProcessO* GProcessMutex() {
 }
 //===============================================
 static void GProcessMutex_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessMutex_Run");
+    GLog()->Write("#================================================");
     GConsole()->Print("=================================================\n");
     GConsole()->Print("Je suis un mutex\n");
     GConsole()->Print("=================================================\n");

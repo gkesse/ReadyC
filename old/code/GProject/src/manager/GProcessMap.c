@@ -2,6 +2,7 @@
 #include "GProcessMap.h"
 #include "GMap.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 typedef int GINT;
 typedef char GCHAR;
@@ -46,6 +47,9 @@ GProcessO* GProcessMap() {
 }
 //===============================================
 static void GProcessMap_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessMap_Run");
+    GLog()->Write("#================================================");
 	GMapO(GProcessMap_GINT_GCHAR)* lMap = GMap_New_GProcessMap_GINT_GCHAR();
 	lMap->SetData(lMap, 0, 'A', 0);
 	lMap->SetData(lMap, 1, 'B', 0);

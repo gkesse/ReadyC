@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-SOAP_SOURCE_STAMP("@(#) soapServer.c ver 2.7.13 2019-09-14 08:37:17 GMT")
+SOAP_SOURCE_STAMP("@(#) soapServer.c ver 2.7.13 2019-09-21 22:35:22 GMT")
 
 
 SOAP_FMAC5 int SOAP_FMAC6 soap_serve(struct soap *soap)

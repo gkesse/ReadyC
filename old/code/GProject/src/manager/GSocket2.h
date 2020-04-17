@@ -4,14 +4,25 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
+#define GSOCKET2_BUFFER_FILENAME    256
+#define GSOCKET2_BUFFER_DATA        1024
+//===============================================
 typedef struct _GSocket2O GSocket2O;
 //===============================================
 typedef enum _GSOCKET2_INITIALIZER {
-	GSOCKET2_INIT_AF_INET,
+    // socket family
+	GSOCKET2_INIT_AF_INET, 
+    // socket type
 	GSOCKET2_INIT_SOCK_STREAM,
 	GSOCKET2_INIT_SOCK_DGRAM,
+    // socket protocol
 	GSOCKET2_INIT_IPPROTO_TCP,
-	GSOCKET2_INIT_INADDR_ANY
+    // socket address
+	GSOCKET2_INIT_INADDR_ANY,
+    // socket shutdown
+	GSOCKET2_INIT_SHUT_RD,    
+	GSOCKET2_INIT_SHUT_WR,    
+	GSOCKET2_INIT_SHUT_RDWR  
 } GSOCKET2_INITIALIZER;
 //===============================================
 struct _GSocket2O {
@@ -42,6 +53,7 @@ struct _GSocket2O {
 	void (*Recv)(char* socketName, char* message, int size);
     int (*SendTo)(char* socketName, char* addressName, char* data, int size, int flags);
     int (*RecvFrom)(char* socketName, char* addressName, char* data, int size, int flags);
+    void (*Shutdown)(char* socketName, int mode);
 	void (*Close)(char* socketName);
 	void (*Clean)();
 	void (*FreeSocket)(char* socketName);

@@ -4,12 +4,16 @@
 #include "GAlarm.h"
 #include "GPause.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessAlarmSignalO = 0;
 //===============================================
 static void GProcessAlarmSignal_Run(int argc, char** argv);
 //===============================================
 GProcessO* GProcessAlarmSignal_New() {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GSocket2Unix_MallocSocket");
+    GLog()->Write("#================================================");
 	GProcessO* lParent = GProcess_New();
 	GProcessAlarmSignalO* lChild = (GProcessAlarmSignalO*)malloc(sizeof(GProcessAlarmSignalO));
 
@@ -34,6 +38,9 @@ GProcessO* GProcessAlarmSignal() {
 }
 //===============================================
 static void GProcessAlarmSignal_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessAlarmSignal_Run");
+    GLog()->Write("#================================================");
     GConsole()->Print("=================================================\n");
     GConsole()->Print("J'envoie un signal alarm apres (x) secondes\n");
     GConsole()->Print("=================================================\n");

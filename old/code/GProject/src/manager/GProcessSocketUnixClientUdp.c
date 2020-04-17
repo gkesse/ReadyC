@@ -2,6 +2,7 @@
 #include "GProcessSocketUnixClientUdp.h"
 #include "GSocket2.h"
 #include "GConsole.h"
+#include "GLog.h"
 //===============================================
 static GProcessO* m_GProcessSocketUnixClientUdpO = 0;
 //===============================================
@@ -32,6 +33,9 @@ GProcessO* GProcessSocketUnixClientUdp() {
 }
 //===============================================
 static void GProcessSocketUnixClientUdp_Run(int argc, char** argv) {
+    GLog()->Write("#================================================");
+    GLog()->Write("# Execution de la fonction : GProcessSocketUnixClientUdp_Run");
+    GLog()->Write("#================================================");
 	GSocket2()->MallocSocket("CLIENT");
 	GSocket2()->MallocAddress("CLIENT");
 	GSocket2()->MallocAddress("SERVER");
@@ -43,8 +47,8 @@ static void GProcessSocketUnixClientUdp_Run(int argc, char** argv) {
     
     char lMessage[256];
     
-    GSocket2()->SendTo("CLIENT", "SERVER", "CLIENT, Bonjour tout le monde", 0, 0);
-    GSocket2()->RecvFrom("CLIENT", "SERVER", lMessage, 255, 0);
+    GSocket2()->SendTo("CLIENT", "SERVER", "CLIENT: Bonjour tout le monde", 0, 0);
+    GSocket2()->RecvFrom("CLIENT", "SERVER", lMessage, 256, 0);
     GConsole()->Print("%s\n", lMessage);
     
 	GSocket2()->Close("CLIENT");
