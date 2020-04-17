@@ -1,18 +1,20 @@
 //===============================================
-#ifndef _GInclude_
-#define _GInclude_
+#ifndef _GDebug_
+#define _GDebug_
 //===============================================
-#if defined(__WIN32)
+#include "GInclude.h"
 //===============================================
-#define _GPLATEFOME_ "WINDOWS"
+typedef struct _GDebugO GDebugO;
 //===============================================
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
-#include <time.h>
+struct _GDebugO {
+    void (*Delete)();
+    void (*Test)(int argc, char** argv);
+    void (*Write)(const char* key, ...);
+};
 //===============================================
-#endif
+GDebugO* GDebug_New();
+void GDebug_Delete();
+GDebugO* GDebug();
 //===============================================
 #endif
 //===============================================

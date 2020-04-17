@@ -3,7 +3,7 @@
 //===============================================
 int main(int argc, char** argv) {
 	GProcess()->Process(argc, argv);
-	printf("ooooooooooo\n");
+	GProcess()->Delete();
 	return 0;
 }
 //===============================================
