@@ -1,18 +1,16 @@
 //===============================================
-#ifndef _GProcessFork_
-#define _GProcessFork_
+#ifndef _GInclude_
+#define _GInclude_
 //===============================================
-#include "GProcess.h"
+#if defined(__WIN32)
 //===============================================
-typedef struct _GProcessForkO GProcessForkO;
+#define _GPLATEFOME_ "WINDOWS"
 //===============================================
-struct _GProcessForkO {
-    GProcessO* m_parent;
-};
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 //===============================================
-GProcessO* GProcessFork_New();
-void GProcessFork_Delete();
-GProcessO* GProcessFork();
+#endif
 //===============================================
 #endif
 //===============================================
