@@ -7,9 +7,21 @@ static void GDebug_Test(int argc, char** argv);
 static void GDebug_Write(const char* key, ...);
 //===============================================
 static void GDebug_Date(char* buffer);
+static void GDebug_HomePath(GDebugO* obj);
+//===============================================
+#if defined(__WIN32)
+static void GDebug_HomePathWin(GDebugO* obj);
+#endif
+//===============================================
+#if defined(__unix)
+static void GDebug_HomePathUnix(GDebugO* obj);
+#endif
 //===============================================
 GDebugO* GDebug_New() {
 	GDebugO* lObj = (GDebugO*)malloc(sizeof(GDebugO));
+
+	GDebug_HomePath(lObj);
+
 	lObj->Delete = GDebug_Delete;
 	lObj->Test = GDebug_Test;
 	lObj->Write = GDebug_Write;
@@ -65,4 +77,44 @@ static void GDebug_Date(char* buffer) {
 	if(lTimeInfo->tm_isdst == 1) lHour++;
 	sprintf(buffer, "%02d/%02d/%04d %02d:%02d:%02d", lDay, lMonth, lYear, lHour, lMin, lSec);
 }
+//===============================================
+static void GDebug_HomePath(GDebugO* obj) {
+#if defined(__WIN32)
+	GDebug_HomePathWin(obj);
+#else
+	GDebug_HomePathUnix(obj);
+#endif
+}
+//===============================================
+#if defined(__WIN32)
+static void GDebug_HomePathWin(GDebugO* obj) {
+	char lCommand[256];
+	sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
+	FILE* lpFile = popen(lCommand, "r");
+	int lBytes = fread(obj->m_homePath, 1, 255, lpFile);
+	obj->m_homePath[lBytes - 1] = 0;
+	pclose(lpFile);
+	sprintf(obj->m_debugPath, "%s/%s", obj->m_homePath, ".readydev/readyc/data/debug");
+	sprintf(obj->m_filename, "%s/%s", obj->m_debugPath, "debug.txt");
+	sprintf(lCommand, "if not exist %s ( mkdir %s )", obj->m_debugPath, obj->m_debugPath);
+	lpFile = popen(lCommand, "r");
+	pclose(lpFile);
+}
+#endif
+//===============================================
+#if defined(__unix)
+void GDebug_HomePathUnix(GDebugO* obj) {
+	char lCommand[256];
+	sprintf(lCommand, "%s", "echo -n $HOME");
+	FILE* lpFile = popen(lCommand, "r");
+	int lBytes = fread(obj->m_homePath, 1, 255, lpFile);
+	m_homePath[lBytes] = 0;
+	pclose(lpFile);
+	sprintf(obj->m_debugPath, "%s/%s", obj->m_homePath, ".readydev/readycpp/data/debug");
+	sprintf(obj->m_filename, "%s/%s", obj->m_debugPath, "debug.txt");
+	sprintf(lCommand, "if [ -d \"%s\" ] ; then mkdir -p %s ; fi", obj->m_debugPath, obj->m_debugPath);
+	lpFile = popen(lCommand, "r");
+	pclose(lpFile);
+}
+#endif
 //===============================================
