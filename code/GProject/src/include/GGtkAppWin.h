@@ -14,8 +14,8 @@ typedef struct _GGtkAppWin GGtkAppWin;
 typedef struct _GGtkAppWinClass GGtkAppWinClass;
 //===============================================
 GType ggtk_app_win_get_type(void);
-GGtkAppWin* ggtk_app_window_new(GGtkApp *app);
-void ggtk_app_window_open(GGtkAppWin *win, GFile* file);
+GGtkAppWin* ggtk_app_win_new(GGtkApp *app);
+void ggtk_app_win_open(GGtkAppWin *win, GFile* file);
 //===============================================
 #endif
 //===============================================

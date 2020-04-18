@@ -4,6 +4,9 @@
 //===============================================
 #if defined(_GUSE_GTK_ON_)
 //===============================================
+static void ggtk_app_activate(GApplication* app);
+static void ggtk_app_open (GApplication* app, GFile **files, gint n_files, const gchar *hint);
+//===============================================
 struct _GGtkApp {
 	GtkApplication* parent;
 };
@@ -33,13 +36,13 @@ static void ggtk_app_open (GApplication* app, GFile **files, gint n_files, const
 	GGtkAppWin* lWindow = 0;
 
 	if(lWindows) lWindow = GGTK_APP_WIN (lWindows->data);
-	else lWindow = ggtk_app_win_new (GGTK_APP(app));
+	else lWindow = ggtk_app_win_new(GGTK_APP(app));
 
 	for(int i = 0; i < n_files; i++) {
-		ggtk_app_window_open(lWindow, files[i]);
+		ggtk_app_win_open(lWindow, files[i]);
 	}
 
-	gtk_window_present (GTK_WINDOW(lWindow));
+	gtk_window_present(GTK_WINDOW(lWindow));
 }
 //===============================================
 GGtkApp* ggtk_app_new(void) {
