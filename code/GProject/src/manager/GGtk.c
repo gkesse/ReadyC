@@ -90,9 +90,18 @@ static void GGtk_Builder(int argc, char** argv) {
 	gtk_builder_add_from_file (lBuilder, m_GGtkO->m_builderPath, &lError);
 
 	GObject* lWindow = gtk_builder_get_object (lBuilder, "window");
-	//GObject* lButton = gtk_builder_get_object (lBuilder, "button1");
+	GObject* lCreate = gtk_builder_get_object (lBuilder, "create");
+	GObject* lRead = gtk_builder_get_object (lBuilder, "read");
+	GObject* lUpdate = gtk_builder_get_object (lBuilder, "update");
+	GObject* lDelete = gtk_builder_get_object (lBuilder, "delete");
+	GObject* lRun = gtk_builder_get_object (lBuilder, "run");
 
 	g_signal_connect (lWindow, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	g_signal_connect (lCreate, "clicked", G_CALLBACK (GGtk_OnCreate), NULL);
+	g_signal_connect (lRead, "clicked", G_CALLBACK (GGtk_OnRead), NULL);
+	g_signal_connect (lUpdate, "clicked", G_CALLBACK (GGtk_OnUpdate), NULL);
+	g_signal_connect (lDelete, "clicked", G_CALLBACK (GGtk_OnDelete), NULL);
+	g_signal_connect (lRun, "clicked", G_CALLBACK (GGtk_OnRun), NULL);
 
 	gtk_main ();
 }
