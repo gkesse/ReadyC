@@ -1,5 +1,6 @@
 //===============================================
 #include "GGtk.h"
+#include "GDir2.h"
 #include "GDebug.h"
 //===============================================
 #if defined(_GUSE_GTK_ON_)
@@ -7,6 +8,10 @@
 static GGtkO* m_GGtkO = 0;
 //===============================================
 static void GGtk_Test(int argc, char** argv);
+static void GGtk_Code(int argc, char** argv);
+static void GGtk_Builder(int argc, char** argv);
+//===============================================
+static void GGtk_BuilderPath (GGtkO* obj);
 //===============================================
 static void GGtk_OnStartup (GApplication *app);
 static void GGtk_OnActivate (GApplication *app);
@@ -26,6 +31,7 @@ GGtkO* GGtk_New() {
 	GGtkO* lObj = (GGtkO*)malloc(sizeof(GGtkO));
 
 	lObj->m_argMap = (sGArgMap*)malloc(sizeof(sGArgMap));
+	GGtk_BuilderPath(lObj);
 
 	lObj->Delete = GGtk_Delete;
 	lObj->Test = GGtk_Test;
@@ -48,7 +54,19 @@ GGtkO* GGtk() {
 //===============================================
 static void GGtk_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, 0);
-
+	int lRunFlag = 0;
+	for(int i = 2; i < argc;) {
+		char* lKey = argv[i++];
+		if(strcmp(lKey, "builder") == 0) {
+			GGtk_Builder(argc, argv); lRunFlag = 1; break;
+		}
+		break;
+	}
+	if(lRunFlag == 0) GGtk_Code(argc, argv);
+}
+//===============================================
+static void GGtk_Code(int argc, char** argv) {
+	GDebug()->Write(__FUNCTION__, 0);
 	gtk_init(&argc, &argv);
 	GtkApplication* lApp = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
 
@@ -60,6 +78,29 @@ static void GGtk_Test(int argc, char** argv) {
 
 	g_application_run (G_APPLICATION(lApp), 0, 0);
 	g_object_unref (G_APPLICATION(lApp));
+}
+//===============================================
+static void GGtk_Builder(int argc, char** argv) {
+	GDebug()->Write(__FUNCTION__, 0);
+	gtk_init(&argc, &argv);
+
+	GtkBuilder* lBuilder = gtk_builder_new ();
+	GError* lError = 0;
+
+	gtk_builder_add_from_file (lBuilder, m_GGtkO->m_builderPath, &lError);
+
+	GObject* lWindow = gtk_builder_get_object (lBuilder, "window");
+	//GObject* lButton = gtk_builder_get_object (lBuilder, "button1");
+
+	g_signal_connect (lWindow, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+
+	gtk_main ();
+}
+//===============================================
+static void GGtk_BuilderPath (GGtkO* obj) {
+	GDebug()->Write(__FUNCTION__, 0);
+	char* lDataPath = GDir2()->m_dataPath;
+	sprintf(obj->m_builderPath, "%s/%s", lDataPath, "data/builder/builder.ui");
 }
 //===============================================
 static void GGtk_OnStartup(GApplication *app) {

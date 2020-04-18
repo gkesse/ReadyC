@@ -12,6 +12,7 @@ struct _GGtkO {
     void (*Delete)();
     void (*Test)(int argc, char** argv);
     sGArgMap* m_argMap;
+    char m_builderPath[256];
 };
 //===============================================
 GGtkO* GGtk_New();
