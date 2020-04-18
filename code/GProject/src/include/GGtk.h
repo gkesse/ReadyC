@@ -1,21 +1,24 @@
 //===============================================
-#ifndef _GDir_
-#define _GDir_
+#ifndef _GGtk_
+#define _GGtk_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GDirO GDirO;
+#if defined(_GUSE_GTK_ON_)
 //===============================================
-struct _GDirO {
+typedef struct _GGtkO GGtkO;
+//===============================================
+struct _GGtkO {
     void (*Delete)();
     void (*Test)(int argc, char** argv);
-    char m_homePath[256];
-    char m_dataPath[256];
+    sGArgMap* m_argMap;
 };
 //===============================================
-GDirO* GDir_New();
-void GDir_Delete();
-GDirO* GDir();
+GGtkO* GGtk_New();
+void GGtk_Delete();
+GGtkO* GGtk();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================
