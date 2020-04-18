@@ -10,8 +10,16 @@ static void GGtk_Test(int argc, char** argv);
 //===============================================
 static void GGtk_OnStartup (GApplication *app);
 static void GGtk_OnActivate (GApplication *app);
+static void GGtk_OnQuit(GApplication *app);
+static void GGtk_OnRun(GApplication *app);
+static void GGtk_OnCreate(GApplication *app);
+static void GGtk_OnRead(GApplication *app);
+static void GGtk_OnUpdate(GApplication *app);
+static void GGtk_OnDelete(GApplication *app);
+//===============================================
 static void GGtk_Default (GApplication *app);
 static void GGtk_Button(GApplication *app);
+static void GGtk_Grid(GApplication *app);
 //===============================================
 GGtkO* GGtk_New() {
 	GDebug()->Write(__FUNCTION__, 0);
@@ -68,9 +76,36 @@ static void GGtk_OnActivate(GApplication *app) {
 		if(strcmp(lKey, "button") == 0) {
 			GGtk_Button(app); lRunFlag = 1; break;
 		}
+		if(strcmp(lKey, "grid") == 0) {
+			GGtk_Grid(app); lRunFlag = 1; break;
+		}
 		break;
 	}
 	if(lRunFlag == 0) GGtk_Default(app);
+}
+//===============================================
+static void GGtk_OnQuit(GApplication *app) {
+	GDebug()->Write(__FUNCTION__, 0);
+}
+//===============================================
+static void GGtk_OnRun(GApplication *app) {
+	GDebug()->Write(__FUNCTION__, 0);
+}
+//===============================================
+static void GGtk_OnCreate(GApplication *app) {
+	GDebug()->Write(__FUNCTION__, 0);
+}
+//===============================================
+static void GGtk_OnRead(GApplication *app) {
+	GDebug()->Write(__FUNCTION__, 0);
+}
+//===============================================
+static void GGtk_OnUpdate(GApplication *app) {
+	GDebug()->Write(__FUNCTION__, 0);
+}
+//===============================================
+static void GGtk_OnDelete(GApplication *app) {
+	GDebug()->Write(__FUNCTION__, 0);
 }
 //===============================================
 static void GGtk_Default(GApplication *app) {
@@ -92,6 +127,45 @@ static void GGtk_Button(GApplication *app) {
 
 	gtk_container_add(GTK_CONTAINER(lButtonBox), lButton);
 	gtk_container_add(GTK_CONTAINER(lWindow), lButtonBox);
+
+	g_signal_connect(lButton, "clicked", G_CALLBACK(GGtk_OnQuit), NULL);
+	g_signal_connect_swapped(lButton, "clicked", G_CALLBACK (gtk_widget_destroy), lWindow);
+
+	gtk_widget_show_all(lWindow);
+}
+//===============================================
+static void GGtk_Grid(GApplication *app) {
+	GDebug()->Write(__FUNCTION__, 0);
+	GtkWidget* lWindow = gtk_application_window_new(G_APPLICATION(app));
+	gtk_window_set_title (GTK_WINDOW(lWindow), "Gtk | ReadyDev");
+	gtk_window_set_default_size (GTK_WINDOW(lWindow), 640, 480);
+	gtk_container_set_border_width (GTK_CONTAINER (lWindow), 10);
+
+	GtkWidget* lGrid = gtk_grid_new();
+	GtkWidget* lRun = gtk_button_new_with_label("Run");
+	GtkWidget* lCreate = gtk_button_new_with_label("Create");
+	GtkWidget* lRead = gtk_button_new_with_label("Read");
+	GtkWidget* lUpdate = gtk_button_new_with_label("Update");
+	GtkWidget* lDelete = gtk_button_new_with_label("Delete");
+
+	gtk_grid_attach(GTK_GRID(lGrid), lCreate, 0, 0, 2, 1);
+	gtk_grid_attach(GTK_GRID(lGrid), lRead, 2, 0, 2, 1);
+	gtk_grid_attach(GTK_GRID(lGrid), lUpdate, 4, 0, 2, 1);
+	gtk_grid_attach(GTK_GRID(lGrid), lDelete, 1, 1, 4, 1);
+	gtk_grid_attach(GTK_GRID(lGrid), lRun, 0, 2, 6, 1);
+
+	gtk_grid_set_row_homogeneous(GTK_GRID(lGrid), 0);
+	gtk_grid_set_column_homogeneous(GTK_GRID(lGrid), 1);
+	gtk_grid_set_row_spacing(GTK_GRID(lGrid), 10);
+	gtk_grid_set_column_spacing(GTK_GRID(lGrid), 10);
+
+	gtk_container_add(GTK_CONTAINER(lWindow), lGrid);
+
+	g_signal_connect(lCreate, "clicked", G_CALLBACK(GGtk_OnCreate), NULL);
+	g_signal_connect(lRead, "clicked", G_CALLBACK(GGtk_OnRead), NULL);
+	g_signal_connect(lUpdate, "clicked", G_CALLBACK(GGtk_OnUpdate), NULL);
+	g_signal_connect(lDelete, "clicked", G_CALLBACK(GGtk_OnDelete), NULL);
+	g_signal_connect(lRun, "clicked", G_CALLBACK(GGtk_OnRun), NULL);
 
 	gtk_widget_show_all(lWindow);
 }
