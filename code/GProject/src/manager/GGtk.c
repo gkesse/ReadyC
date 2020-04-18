@@ -10,6 +10,7 @@ static GGtkO* m_GGtkO = 0;
 static void GGtk_Test(int argc, char** argv);
 static void GGtk_Code(int argc, char** argv);
 static void GGtk_Builder(int argc, char** argv);
+static void GGtk_Application(int argc, char** argv);
 //===============================================
 static void GGtk_BuilderPath (GGtkO* obj);
 //===============================================
@@ -60,6 +61,9 @@ static void GGtk_Test(int argc, char** argv) {
 		if(strcmp(lKey, "builder") == 0) {
 			GGtk_Builder(argc, argv); lRunFlag = 1; break;
 		}
+		if(strcmp(lKey, "app") == 0) {
+			GGtk_Application(argc, argv); lRunFlag = 1; break;
+		}
 		break;
 	}
 	if(lRunFlag == 0) GGtk_Code(argc, argv);
@@ -104,6 +108,11 @@ static void GGtk_Builder(int argc, char** argv) {
 	g_signal_connect (lRun, "clicked", G_CALLBACK (GGtk_OnRun), NULL);
 
 	gtk_main ();
+}
+//===============================================
+static void GGtk_Application(int argc, char** argv) {
+	GDebug()->Write(__FUNCTION__, 0);
+	g_application_run (G_APPLICATION (example_app_new ()), argc, argv);
 }
 //===============================================
 static void GGtk_BuilderPath (GGtkO* obj) {
