@@ -6,8 +6,6 @@
 static GDirO* m_GDirO = 0;
 //===============================================
 static void GDir_Test(int argc, char** argv);
-static char* GDir_HomePath();
-static char* GDir_DataPath();
 //===============================================
 static void GDir_GetHomePath(char* buffer);
 //===============================================
@@ -28,8 +26,6 @@ GDirO* GDir_New() {
 
 	lObj->Delete = GDir_Delete;
 	lObj->Test = GDir_Test;
-	lObj->HomePath = GDir_HomePath;
-	lObj->DataPath = GDir_DataPath;
 	return lObj;
 }
 //===============================================
@@ -49,18 +45,8 @@ GDirO* GDir() {
 //===============================================
 static void GDir_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, 0);
-	printf("%s\n", GDir()->HomePath());
-	printf("%s\n", GDir()->DataPath());
-}
-//===============================================
-static char* GDir_HomePath() {
-	GDebug()->Write(__FUNCTION__, 0);
-	return m_GDirO->m_homePath;
-}
-//===============================================
-static char* GDir_DataPath() {
-	GDebug()->Write(__FUNCTION__, 0);
-	return m_GDirO->m_dataPath;
+	printf("%s\n", GDir()->m_homePath);
+	printf("%s\n", GDir()->m_dataPath);
 }
 //===============================================
 static void GDir_GetHomePath(char* buffer) {

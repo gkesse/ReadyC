@@ -3,11 +3,18 @@
 //===============================================
 static GDebugO* m_GDebugO = 0;
 //===============================================
+#define _GDEBUG_CLEAR_OFF_
+//===============================================
 static void GDebug_Test(int argc, char** argv);
 static void GDebug_Write(const char* key, ...);
+static void GDebug_Clear();
+static void GDebug_Sep();
 //===============================================
 static void GDebug_Date(char* buffer);
 static void GDebug_HomePath(GDebugO* obj);
+static void GDebug_Log(const char* data);
+static void GDebug_Line(const char* data);
+static void GDebug_ClearObj(GDebugO* obj);
 //===============================================
 #if defined(__WIN32)
 static void GDebug_HomePathWin(GDebugO* obj);
@@ -21,10 +28,13 @@ GDebugO* GDebug_New() {
 	GDebugO* lObj = (GDebugO*)malloc(sizeof(GDebugO));
 
 	GDebug_HomePath(lObj);
+	GDebug_ClearObj(lObj);
 
 	lObj->Delete = GDebug_Delete;
 	lObj->Test = GDebug_Test;
 	lObj->Write = GDebug_Write;
+	lObj->Clear = GDebug_Clear;
+	lObj->Sep = GDebug_Sep;
 	return lObj;
 }
 //===============================================
@@ -39,6 +49,12 @@ GDebugO* GDebug() {
 		m_GDebugO = GDebug_New();
 	}
 	return m_GDebugO;
+}
+//===============================================
+static void GDebug_Test(int argc, char** argv) {
+	printf("%s\n", GDebug()->m_homePath);
+	printf("%s\n", GDebug()->m_debugPath);
+	printf("%s\n", GDebug()->m_filename);
 }
 //===============================================
 static void GDebug_Write(const char* key, ...) {
@@ -57,11 +73,38 @@ static void GDebug_Write(const char* key, ...) {
 		lIndex += sprintf(&lBuffer[lIndex], "%s", lData);
 	}
 	va_end(lArgs);
-	printf("%s\n", lBuffer);
+	GDebug_Log(lBuffer);
 }
 //===============================================
-static void GDebug_Test(int argc, char** argv) {
-
+static void GDebug_Log(const char* data) {
+	FILE* lpFile = fopen(m_GDebugO->m_filename, "a+");
+	fprintf(lpFile, "%s\n", data);
+	fclose(lpFile);
+}
+//===============================================
+static void GDebug_Line(const char* data) {
+	char lBuffer[256];
+	char lDate[256];
+	GDebug_Date(lDate);
+	sprintf(lBuffer, "%s | %s", lDate, data);
+	GDebug_Log(lBuffer);
+}
+//===============================================
+static void GDebug_Clear() {
+	FILE* lpFile = fopen(m_GDebugO->m_filename, "w");
+	fclose(lpFile);
+}
+//===============================================
+static void GDebug_ClearObj(GDebugO* obj) {
+#if defined(_GDEBUG_CLEAR_ON_)
+	FILE* lpFile = fopen(obj->m_filename, "w");
+	fclose(lpFile);
+#endif
+}
+//===============================================
+static void GDebug_Sep() {
+	const char* lSep = "=================================================";
+	GDebug_Line(lSep);
 }
 //===============================================
 static void GDebug_Date(char* buffer) {
@@ -94,8 +137,8 @@ static void GDebug_HomePathWin(GDebugO* obj) {
 	int lBytes = fread(obj->m_homePath, 1, 255, lpFile);
 	obj->m_homePath[lBytes - 1] = 0;
 	pclose(lpFile);
-	sprintf(obj->m_debugPath, "%s/%s", obj->m_homePath, ".readydev/readyc/data/debug");
-	sprintf(obj->m_filename, "%s/%s", obj->m_debugPath, "debug.txt");
+	sprintf(obj->m_debugPath, "%s\\%s", obj->m_homePath, ".readydev\\readyc\\data\\debug");
+	sprintf(obj->m_filename, "%s\\%s", obj->m_debugPath, "debug.txt");
 	sprintf(lCommand, "if not exist %s ( mkdir %s )", obj->m_debugPath, obj->m_debugPath);
 	lpFile = popen(lCommand, "r");
 	pclose(lpFile);

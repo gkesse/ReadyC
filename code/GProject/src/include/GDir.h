@@ -9,8 +9,6 @@ typedef struct _GDirO GDirO;
 struct _GDirO {
     void (*Delete)();
     void (*Test)(int argc, char** argv);
-    char* (*HomePath)();
-    char* (*DataPath)();
     char m_homePath[256];
     char m_dataPath[256];
 };
