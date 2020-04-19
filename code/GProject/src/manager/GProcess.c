@@ -50,7 +50,7 @@ static void GProcess_Process(int argc, char** argv) {
 //===============================================
 static void GProcess_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, 0);
-	GDir2()->Test(argc, argv);
+	GGtk()->Test(argc, argv);
 }
 //===============================================
 static void GProcess_Help() {
