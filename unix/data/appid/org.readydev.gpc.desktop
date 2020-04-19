@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=ReadyC
+Icon=gp_c
+StartupNotify=true
+Exec=/cygdrive/c/Users/Admin/Downloads/Programs/ReadyC/unix/bin/gp_c

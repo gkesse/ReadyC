@@ -114,7 +114,7 @@ static void GGtk_Builder(int argc, char** argv) {
 //===============================================
 static void GGtk_Application(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, 0);
-	g_application_run(G_APPLICATION(ggtk_app_new()), argc, argv);
+	g_application_run (G_APPLICATION (ggtk_app_new ()), argc, argv);
 }
 //===============================================
 static void GGtk_BuilderPath (GGtkO* obj) {
