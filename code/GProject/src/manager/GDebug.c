@@ -151,11 +151,11 @@ void GDebug_HomePathUnix(GDebugO* obj) {
 	sprintf(lCommand, "%s", "echo -n $HOME");
 	FILE* lpFile = popen(lCommand, "r");
 	int lBytes = fread(obj->m_homePath, 1, 255, lpFile);
-	m_homePath[lBytes] = 0;
+	obj->m_homePath[lBytes] = 0;
 	pclose(lpFile);
-	sprintf(obj->m_debugPath, "%s/%s", obj->m_homePath, ".readydev/readycpp/data/debug");
+	sprintf(obj->m_debugPath, "%s/%s", obj->m_homePath, ".readydev/readyc/data/debug");
 	sprintf(obj->m_filename, "%s/%s", obj->m_debugPath, "debug.txt");
-	sprintf(lCommand, "if [ -d \"%s\" ] ; then mkdir -p %s ; fi", obj->m_debugPath, obj->m_debugPath);
+	sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p %s ; fi", obj->m_debugPath, obj->m_debugPath);
 	lpFile = popen(lCommand, "r");
 	pclose(lpFile);
 }

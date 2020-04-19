@@ -3,6 +3,7 @@
 #include "GShell.h"
 #include "GDir2.h"
 #include "GGtk.h"
+#include "GDbus.h"
 #include "GDebug.h"
 //===============================================
 static GProcessO* m_GProcessO = 0;
@@ -49,7 +50,7 @@ static void GProcess_Process(int argc, char** argv) {
 //===============================================
 static void GProcess_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, 0);
-	GGtk()->Test(argc, argv);
+	GDir2()->Test(argc, argv);
 }
 //===============================================
 static void GProcess_Help() {

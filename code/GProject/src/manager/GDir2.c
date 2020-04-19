@@ -13,8 +13,12 @@ static void GDir2_GetHomePath(char* buffer);
 static void GDir2_GetHomePathWin(char* buffer);
 #endif
 //===============================================
-#if defined(__unix)
+#if defined(_GARCHI_UNIX_)
 static void GDir2_GetHomePathUnix(char* buffer);
+#endif
+//===============================================
+#if defined(_GARCHI_CYGWIN_)
+static void GDir2_GetHomePathCygwin(char* buffer);
 #endif
 //===============================================
 GDir2O* GDir2_New() {
@@ -53,8 +57,10 @@ static void GDir2_GetHomePath(char* buffer) {
 	GDebug()->Write(__FUNCTION__, 0);
 #if defined(__WIN32)
 	GDir2_GetHomePathWin(buffer);
-#else
+#elif defined(_GARCHI_UNIX_)
 	GDir2_GetHomePathUnix(buffer);
+#elif defined(_GARCHI_CYGWIN_)
+	GDir2_GetHomePathCygwin(buffer);
 #endif
 }
 //===============================================
@@ -67,12 +73,30 @@ static void GDir2_GetHomePathWin(char* buffer) {
 }
 #endif
 //===============================================
-#if defined(__unix)
+#if defined(_GARCHI_UNIX_)
 static void GDir2_GetHomePathUnix(char* buffer) {
 	GDebug()->Write(__FUNCTION__, 0);
 	char lCommand[256];
 	sprintf(lCommand, "%s", "echo -n $HOME");
 	GShell()->Run(lCommand, buffer, 255, 0);
+}
+#endif
+//===============================================
+#if defined(_GARCHI_UNIX_)
+static void GDir2_GetHomePathUnix(char* buffer) {
+	GDebug()->Write(__FUNCTION__, 0);
+	char lCommand[256];
+	sprintf(lCommand, "%s", "echo -n $HOME");
+	GShell()->Run(lCommand, buffer, 255, 0);
+}
+#endif
+//===============================================
+#if defined(_GARCHI_CYGWIN_)
+static void GDir2_GetHomePathCygwin(char* buffer) {
+	GDebug()->Write(__FUNCTION__, 0);
+	char lCommand[256];
+	sprintf(lCommand, "%s", "cygpath -w $(echo $HOME)");
+	GShell()->Run(lCommand, buffer, 255, 1);
 }
 #endif
 //===============================================

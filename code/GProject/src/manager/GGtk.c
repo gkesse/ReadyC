@@ -93,6 +93,7 @@ static void GGtk_Builder(int argc, char** argv) {
 	GError* lError = 0;
 
 	gtk_builder_add_from_file (lBuilder, m_GGtkO->m_builderPath, &lError);
+	if(lError != 0) {printf("%s\n", lError->message); exit(0);}
 
 	GObject* lWindow = gtk_builder_get_object (lBuilder, "window");
 	GObject* lCreate = gtk_builder_get_object (lBuilder, "create");

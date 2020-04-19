@@ -7,6 +7,14 @@ static GShellO* m_GShellO = 0;
 static void GShell_Test(int argc, char** argv);
 static void GShell_Run(const char* command, char* output, int size, int shift);
 //===============================================
+#if defined(__WIN32)
+static void GShell_TestWin(int argc, char** argv);
+#endif
+//===============================================
+#if defined(__unix)
+static void GShell_TestUnix(int argc, char** argv);
+#endif
+//===============================================
 GShellO* GShell_New() {
 	GDebug()->Write(__FUNCTION__, 0);
 	GShellO* lObj = (GShellO*)malloc(sizeof(GShellO));
@@ -32,6 +40,16 @@ GShellO* GShell() {
 //===============================================
 static void GShell_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, 0);
+#if defined(__WIN32)
+	GShell_TestWin(argc, argv);
+#else
+	GShell_TestUnix(argc, argv);
+#endif
+}
+//===============================================
+#if defined(__WIN32)
+static void GShell_TestWin(int argc, char** argv) {
+	GDebug()->Write(__FUNCTION__, 0);
 	char lCommand[256];
 	char lOuput[256];
 	sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
@@ -39,6 +57,19 @@ static void GShell_Test(int argc, char** argv) {
 	printf("%s\n", lOuput);
 	printf("%s\n", lOuput);
 }
+#endif
+//===============================================
+#if defined(__unix)
+static void GShell_TestUnix(int argc, char** argv) {
+	GDebug()->Write(__FUNCTION__, 0);
+	char lCommand[256];
+	char lOuput[256];
+	sprintf(lCommand, "%s", "echo -n $HOME");
+	GShell()->Run(lCommand, lOuput, 255, 0);
+	printf("%s\n", lOuput);
+	printf("%s\n", lOuput);
+}
+#endif
 //===============================================
 static void GShell_Run(const char* command, char* output, int size, int shift) {
 	GDebug()->Write(__FUNCTION__, 0);
