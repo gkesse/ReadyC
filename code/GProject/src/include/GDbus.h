@@ -1,23 +1,21 @@
 //===============================================
-#ifndef _GDbus_
-#define _GDbus_
+#ifndef _GDBus_
+#define _GDBus_
 //===============================================
 #include "GInclude.h"
 //===============================================
 #if defined(_GUSE_DBUS_ON_)
 //===============================================
-typedef struct _GDbusO GDbusO;
+typedef struct _GDBusO GDBusO;
 //===============================================
-struct _GDbusO {
+struct _GDBusO {
     void (*Delete)();
     void (*Test)(int argc, char** argv);
-    char m_homePath[256];
-    char m_dataPath[256];
 };
 //===============================================
-GDbusO* GDbus_New();
-void GDbus_Delete();
-GDbusO* GDbus();
+GDBusO* GDBus_New();
+void GDBus_Delete();
+GDBusO* GDBus();
 //===============================================
 #endif
 //===============================================

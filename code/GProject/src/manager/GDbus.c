@@ -1,83 +1,74 @@
 //===============================================
-#include "GDbus.h"
-#include "GShell.h"
+#include "GDBus.h"
 #include "GDebug.h"
 //===============================================
 #if defined(_GUSE_DBUS_ON_)
 //===============================================
-static GDbusO* m_GDbusO = 0;
+static GDBusO* m_GDBusO = 0;
 //===============================================
-static void GDbus_Test(int argc, char** argv);
+static void GDBus_Test(int argc, char** argv);
 //===============================================
-static void GDbus_GetHomePath(char* buffer);
+static void GDBus_SendSignal(int argc, char** argv);
 //===============================================
-#if defined(__WIN32)
-static void GDbus_GetHomePathWin(char* buffer);
-#endif
-//===============================================
-#if defined(__unix)
-static void GDbus_GetHomePathUnix(char* buffer);
-#endif
-//===============================================
-GDbusO* GDbus_New() {
+GDBusO* GDBus_New() {
 	GDebug()->Write(__FUNCTION__, 0);
-	GDbusO* lObj = (GDbusO*)malloc(sizeof(GDbusO));
-
-	GDbus_GetHomePath(lObj->m_homePath);
-	sprintf(lObj->m_dataPath, "%s/%s", lObj->m_homePath, ".readydev/readyc");
-
-	lObj->Delete = GDbus_Delete;
-	lObj->Test = GDbus_Test;
+	GDBusO* lObj = (GDBusO*)malloc(sizeof(GDBusO));
+	lObj->Delete = GDBus_Delete;
+	lObj->Test = GDBus_Test;
 	return lObj;
 }
 //===============================================
-void GDbus_Delete() {
+void GDBus_Delete() {
 	GDebug()->Write(__FUNCTION__, 0);
-	GDbusO* lObj = GDbus();
+	GDBusO* lObj = GDBus();
 	free(lObj);
-	m_GDbusO = 0;
+	m_GDBusO = 0;
 }
 //===============================================
-GDbusO* GDbus() {
-	if(m_GDbusO == 0) {
-		m_GDbusO = GDbus_New();
+GDBusO* GDBus() {
+	if(m_GDBusO == 0) {
+		m_GDBusO = GDBus_New();
 	}
-	return m_GDbusO;
+	return m_GDBusO;
 }
 //===============================================
-static void GDbus_Test(int argc, char** argv) {
+static void GDBus_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, 0);
+	GDBus_SendSignal(argc, argv);
+}
+//===============================================
+static void GDBus_SendSignal(int argc, char** argv) {
+	GDebug()->Write(__FUNCTION__, 0);
+	if(argc < 4) {printf("erreur arguments\n"); return;}
+	char* lData = argv[3];
 	DBusError lError;
 	dbus_error_init(&lError);
+	DBusConnection* lConnect = dbus_bus_get(DBUS_BUS_SESSION, &lError);
+	if(dbus_error_is_set(&lError)) {printf("erreur connexion: %s\n", lError.message); dbus_error_free(&lError); exit(0);}
+	if(lConnect == 0) {printf("erreur connexion\n"); exit(1);}
+	int lRes = dbus_bus_request_name(lConnect, "test.method.server", DBUS_NAME_FLAG_REPLACE_EXISTING, &lError);
+	if(dbus_error_is_set(&lError)) {printf("erreur nom connexion: %s\n", lError.message); dbus_error_free(&lError); exit(0);}
+	if(lRes != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {printf("erreur nom connexion\n"); exit(1);}
 
+	DBusMessage* lMessage = dbus_message_new_signal(
+			"/test/signal/Object", // object name of the signal
+			"test.signal.Type", // interface name of the signal
+			"Test"); // name of the signal
+
+	if(lMessage == 0) {printf("erreur message: %s\n", lError.message); dbus_error_free(&lError); exit(0);}
+
+	DBusMessageIter lArgs;
+	dbus_message_iter_init_append(lMessage, &lArgs);
+	lRes = dbus_message_iter_append_basic(&lArgs, DBUS_TYPE_STRING, &lData);
+	if (lRes == 0) {printf("erreur parametrage message\n");	exit(0);}
+	uint lSerial;
+	lRes = dbus_connection_send(lConnect, lMessage, &lSerial);
+	if (lRes == 0) {printf("erreur envoi message\n"); exit(0);}
+
+	dbus_connection_flush(lConnect);
+	dbus_message_unref(lMessage);
+	dbus_connection_close(lConnect) ;
 }
-//===============================================
-static void GDbus_GetHomePath(char* buffer) {
-	GDebug()->Write(__FUNCTION__, 0);
-#if defined(__WIN32)
-	GDbus_GetHomePathWin(buffer);
-#else
-	GDbus_GetHomePathUnix(buffer);
-#endif
-}
-//===============================================
-#if defined(__WIN32)
-static void GDbus_GetHomePathWin(char* buffer) {
-	GDebug()->Write(__FUNCTION__, 0);
-	char lCommand[256];
-	sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
-	GShell()->Run(lCommand, buffer, 255, 1);
-}
-#endif
-//===============================================
-#if defined(__unix)
-static void GDbus_GetHomePathUnix(char* buffer) {
-	GDebug()->Write(__FUNCTION__, 0);
-	char lCommand[256];
-	sprintf(lCommand, "%s", "echo -n $HOME");
-	GShell()->Run(lCommand, buffer, 255, 0);
-}
-#endif
 //===============================================
 #endif
 //===============================================
