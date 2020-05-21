@@ -3,9 +3,8 @@
 #include "GDebug.h"
 //===============================================
 int main(int argc, char** argv) {
-    GDebug()->Sep();
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
-    GProcess()->Run(argc, argv);
-    return 0;
+	GDebug()->Sep();
+	GProcess()->Process(argc, argv);
+	return 0;
 }
 //===============================================

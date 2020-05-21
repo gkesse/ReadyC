@@ -1,0 +1,6 @@
+OpenCV est une bibliothèque graphique libre, 
+initialement développée par Intel, 
+spécialisée dans le traitement d'images en temps réel. 
+La société de robotique Willow Garage 
+et la société ItSeez se sont succédé 
+au support de cette bibliothèque.
