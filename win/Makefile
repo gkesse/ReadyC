@@ -28,6 +28,8 @@ $(GBUILD)/%.o: $(GSRC)/manager/%.c
 	@if not exist "$(GBUILD)" @mkdir $(GBUILD)
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
 run:
-	$(GTARGET) $(argv)
+	@echo.
+	@$(GTARGET) $(argv)
+	@echo.
 clean:
 	del /q $(GBUILD)\*.o $(GBIN)\*.exe
