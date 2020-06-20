@@ -1,22 +1,28 @@
 //===============================================
-#ifndef _GShell_
-#define _GShell_
+#ifndef _GDir_
+#define _GDir_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GShellO GShellO;
+typedef struct _GDirO GDirO;
 //===============================================
-#define _EOA_ "_END_OF_ARGUMENT_"
+#if defined(__unix)
+#define GDIR_DATA_PATH "/Programs/ReadyC/unix/"
+#elif defined(__WIN32)
+#define GDIR_DATA_PATH ""
+#endif
 //===============================================
-struct _GShellO {
+struct _GDirO {
 	void (*Delete)();
 	void (*Test)(int argc, char** argv);
-    void (*Run)(char* command, char* output, int size, int shift);
+	void (*DataPath)(char* path, char* output);
+    char m_homePath[256];
+    char m_dataPath[256];
 };
 //===============================================
-GShellO* GShell_New();
-void GShell_Delete();
-GShellO* GShell();
+GDirO* GDir_New();
+void GDir_Delete();
+GDirO* GDir();
 //===============================================
 #endif
 //===============================================
