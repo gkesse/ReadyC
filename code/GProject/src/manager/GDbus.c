@@ -11,7 +11,7 @@ static void GDBus_Test(int argc, char** argv);
 static void GDBus_SendSignal(int argc, char** argv);
 //===============================================
 GDBusO* GDBus_New() {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	GDBusO* lObj = (GDBusO*)malloc(sizeof(GDBusO));
 	lObj->Delete = GDBus_Delete;
 	lObj->Test = GDBus_Test;
@@ -19,7 +19,7 @@ GDBusO* GDBus_New() {
 }
 //===============================================
 void GDBus_Delete() {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	GDBusO* lObj = GDBus();
 	free(lObj);
 	m_GDBusO = 0;
@@ -33,12 +33,12 @@ GDBusO* GDBus() {
 }
 //===============================================
 static void GDBus_Test(int argc, char** argv) {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	GDBus_SendSignal(argc, argv);
 }
 //===============================================
 static void GDBus_SendSignal(int argc, char** argv) {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	if(argc < 4) {printf("erreur arguments\n"); return;}
 	char* lData = argv[3];
 	DBusError lError;

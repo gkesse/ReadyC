@@ -4,7 +4,7 @@
 //===============================================
 int main(int argc, char** argv) {
 	GDebug()->Sep();
-	GProcess()->Process(argc, argv);
+	GProcess()->Run(argc, argv);
 	return 0;
 }
 //===============================================

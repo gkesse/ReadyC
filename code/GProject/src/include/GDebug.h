@@ -4,6 +4,8 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
+#define _EOA_ "_END_OF_ARG_"
+//===============================================
 typedef struct _GDebugO GDebugO;
 //===============================================
 struct _GDebugO {
@@ -12,6 +14,7 @@ struct _GDebugO {
     void (*Write)(const char* key, ...);
     void (*Clear)();
     void (*Sep)();
+    //===============================================
     char m_homePath[256];
     char m_debugPath[256];
     char m_filename[256];

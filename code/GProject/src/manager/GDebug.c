@@ -58,7 +58,7 @@ static void GDebug_Test(int argc, char** argv) {
 }
 //===============================================
 static void GDebug_Write(const char* key, ...) {
-	if(key == 0) return;
+	if(!strcmp(key, _EOA_) == 0) return;
 	char lBuffer[256];
 	char lDate[256];
 	int lIndex = 0;
@@ -69,7 +69,7 @@ static void GDebug_Write(const char* key, ...) {
 	va_start(lArgs, key);
 	while(1) {
 		char* lData = va_arg(lArgs, char*);
-		if(lData == 0) break;
+		if(!strcmp(lData, _EOA_) == 0) break;
 		lIndex += sprintf(&lBuffer[lIndex], "%s", lData);
 	}
 	va_end(lArgs);

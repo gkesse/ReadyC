@@ -8,21 +8,21 @@
 //===============================================
 static GProcessO* m_GProcessO = 0;
 //===============================================
-static void GProcess_Process(int argc, char** argv);
+static void GProcess_Run(int argc, char** argv);
 //===============================================
 static void GProcess_Test(int argc, char** argv);
 static void GProcess_Help();
 //===============================================
 GProcessO* GProcess_New() {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	GProcessO* lObj = (GProcessO*)malloc(sizeof(GProcessO));
 	lObj->Delete = GProcess_Delete;
-	lObj->Process = GProcess_Process;
+	lObj->Run = GProcess_Run;
 	return lObj;
 }
 //===============================================
 void GProcess_Delete() {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	GProcessO* lObj = GProcess();
 	free(lObj);
 	m_GProcessO = 0;
@@ -35,8 +35,8 @@ GProcessO* GProcess() {
 	return m_GProcessO;
 }
 //===============================================
-static void GProcess_Process(int argc, char** argv) {
-	GDebug()->Write(__FUNCTION__, 0);
+static void GProcess_Run(int argc, char** argv) {
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	int lRunFlag = 0;
 	for(int i = 1; i < argc;) {
 		char* lKey = argv[i++];
@@ -49,12 +49,12 @@ static void GProcess_Process(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Test(int argc, char** argv) {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	GDBus()->Test(argc, argv);
 }
 //===============================================
 static void GProcess_Help() {
-	GDebug()->Write(__FUNCTION__, 0);
+	GDebug()->Write(__FUNCTION__, _EOA_);
 	const char* lModule = "gp_c";
 	printf("\n");
 	printf("%s\n", "Description:");
