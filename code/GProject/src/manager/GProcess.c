@@ -1,6 +1,6 @@
 //===============================================
 #include "GProcess.h"
-#include "Gccv.h"
+#include "GCcv.h"
 #include "GDebug.h"
 //===============================================
 static GProcessO* m_GProcessO = 0;
@@ -44,6 +44,6 @@ static void GProcess_Run(int argc, char** argv) {
 //===============================================
 static void GProcess_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, _EOA_);
-	GCcv()->Test(argc, argv);
+	GDebug()->Test(argc, argv);
 }
 //===============================================
