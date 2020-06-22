@@ -44,6 +44,6 @@ static void GProcess_Run(int argc, char** argv) {
 //===============================================
 static void GProcess_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, _EOA_);
-	GDebug()->Test(argc, argv);
+	GCcv()->Test(argc, argv);
 }
 //===============================================
