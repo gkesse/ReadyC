@@ -1,5 +1,6 @@
 //===============================================
 #include "GProcess.h"
+#include "Gccv.h"
 #include "GDebug.h"
 //===============================================
 static GProcessO* m_GProcessO = 0;
@@ -7,7 +8,6 @@ static GProcessO* m_GProcessO = 0;
 static void GProcess_Run(int argc, char** argv);
 //===============================================
 static void GProcess_Test(int argc, char** argv);
-static void GProcess_Help();
 //===============================================
 GProcessO* GProcess_New() {
 	GDebug()->Write(__FUNCTION__, _EOA_);
@@ -33,32 +33,17 @@ GProcessO* GProcess() {
 //===============================================
 static void GProcess_Run(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, _EOA_);
-	int lRunFlag = 0;
+	char* lKey = "";
 	for(int i = 1; i < argc;) {
 		char* lKey = argv[i++];
-		if(strcmp(lKey, "test") == 0) {
-			GProcess_Test(argc, argv); lRunFlag = 1; break;
-		}
+		if(strcmp(lKey, "test") == 0) {GProcess_Test(argc, argv); return;}
 		break;
 	}
-	if(lRunFlag == 0) GProcess_Help();
+	printf("[GProcess] : ERREUR : projet inexistant : %s\n", lKey);
 }
 //===============================================
 static void GProcess_Test(int argc, char** argv) {
 	GDebug()->Write(__FUNCTION__, _EOA_);
-	GDebug()->Test(argc, argv);
-}
-//===============================================
-static void GProcess_Help() {
-	GDebug()->Write(__FUNCTION__, _EOA_);
-	const char* lModule = "gp_c";
-	printf("\n");
-	printf("%s\n", "Description:");
-	printf("\t%s\n", "Operations sur le module gp_c.");
-	printf("\n");
-	printf("%s\n", "Utilisation:");
-	printf("\t\%s : %s\n", lModule, "afficher aide");
-	printf("\t\%s %s : %s\n", lModule, "test", "tester module");
-	printf("\n");
+	GCcv()->Test(argc, argv);
 }
 //===============================================

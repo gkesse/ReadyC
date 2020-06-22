@@ -1,4 +1,3 @@
-GRLIB = C:\Users\Admin\Downloads\Programs\ReadyLib\dev
 GSRC = ../code/GProject/src
 GBIN = bin
 GBUILD = build
@@ -6,6 +5,7 @@ GTARGET = $(GBIN)/gp_c.exe
 
 GINCS = \
     -I$(GSRC)\include \
+    -IC:\Users\Admin\Downloads\Compressed\liuliu-ccv-07fc691\liuliu-ccv-07fc691\lib \
 
 GLIBS = \
 
