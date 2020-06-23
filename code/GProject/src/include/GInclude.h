@@ -45,15 +45,35 @@
 #include <semaphore.h>
 #include <pthread.h>
 #include <netinet/in.h>
-#include <netinet/tcp.h>
+#include <netinet/tcp.h> 
 #include <sys/socket.h>
 //===============================================
+#define _GUSE_GTK_ON_0
+#define _GUSE_GSOAP_ON_0
+#define _GUSE_DBUS_ON_0
+#define _GUSE_SQLITE_ON_
+#define _GUSE_MYSQL_ON_
+//===============================================
+#if defined(_GUSE_GTK_ON_)
 #include <gtk/gtk.h>
-#include <sqlite3.h>
-#include <dbus/dbus.h>
+#endif 
+//===============================================
+#if defined(_GUSE_GSOAP_ON_)
 #include <stdsoap2.h>
 #include <soapStub.h>
+#endif
+//===============================================
+#if defined(_GUSE_DBUS_ON_)
+#include <dbus/dbus.h>
+#endif
+//===============================================
+#if defined(_GUSE_SQLITE_ON_)
+#include <sqlite3.h>
+#endif
+//===============================================
+#if defined(_GUSE_MYSQL_ON_)
 #include <mysql/mysql.h>
+#endif
 //===============================================
 #endif
 //===============================================

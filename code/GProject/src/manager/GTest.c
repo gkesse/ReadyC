@@ -10,9 +10,12 @@ static GTestO* m_GTestO = 0;
 static void GTest_Run(int argc, char** argv);
 static void GTest_Default(int argc, char** argv);
 static void GTest_Alarm(int argc, char** argv);
-static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dwl, DWORD dw2);
 static void GTest_Base(int argc, char** argv);
 static void GTest_Config(int argc, char** argv);
+//===============================================
+#if defined (__WIN32)
+static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dwl, DWORD dw2);
+#endif
 //===============================================
 GTestO* GTest_New() {
     GTestO* lObj = (GTestO*)malloc(sizeof(GTestO));
@@ -51,15 +54,13 @@ static void GTest_Default(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Alarm(int argc, char** argv) {
+#if defined (__WIN32)
     printf("%s\n", __FUNCTION__);
     GAlarm2()->Timer("test", 1000);
     GAlarm2()->Callback("test", GTest_OnAlarm);
     GAlarm2()->Start("test");
     while(1) Sleep(3000);
-}
-//===============================================
-static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dwl, DWORD dw2) {
-    printf("%s\n", __FUNCTION__);
+#endif
 }
 //===============================================
 static void GTest_Base(int argc, char** argv) {
@@ -76,4 +77,10 @@ static void GTest_Config(int argc, char** argv) {
     GConfig2()->SetData("password", "12345678");
     GConfig2()->Show();
 }
+//===============================================
+#if defined (__WIN32)
+static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dwl, DWORD dw2) {
+    printf("%s\n", __FUNCTION__);
+}
+#endif
 //===============================================

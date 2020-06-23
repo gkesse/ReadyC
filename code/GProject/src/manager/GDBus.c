@@ -2,6 +2,8 @@
 #include "GDBus.h"
 #include "GConsole.h"
 //===============================================
+#if defined(_GUSE_DBUS_ON_)
+//===============================================
 #if defined(__unix)
 typedef char* GCHAR_PTR;
 typedef DBusConnection* GDBUSCONNECTION_PTR;
@@ -351,5 +353,7 @@ static int GDBus_MapEqual(char* key1, char* key2) {
 	if(lStrcmp == 0) return TRUE;
 	return FALSE;
 }
+#endif
+//===============================================
 #endif
 //===============================================

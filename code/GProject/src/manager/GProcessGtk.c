@@ -3,6 +3,8 @@
 #include "GConsole.h"
 #include "GLog.h"
 //===============================================
+#if defined(_GUSE_GTK_ON_)
+//===============================================
 static GProcessO* m_GProcessGtkO = 0;
 //===============================================
 static void GProcessGtk_Run(int argc, char** argv);
@@ -35,7 +37,6 @@ static void destroy (GtkWidget*, gpointer);
 #endif
 //===============================================
 static void GProcessGtk_Run(int argc, char** argv) {
-#if defined(__unix)
     //GLog()->Write("#================================================");
     //GLog()->Write("# Execution de la fonction : GProcessGtk_Run");
     //GLog()->Write("#================================================");
@@ -65,8 +66,6 @@ static void GProcessGtk_Run(int argc, char** argv) {
 	  gtk_widget_show_all (window);
 
 	  gtk_main ();
-
-#endif
 }
 //===============================================
 #if defined(__unix)
@@ -76,5 +75,7 @@ destroy (GtkWidget *window,
 {
   gtk_main_quit ();
 }
+#endif
+//===============================================
 #endif
 //===============================================

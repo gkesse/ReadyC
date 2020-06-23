@@ -1,10 +1,10 @@
 //===============================================
-#ifndef _GDir_
-#define _GDir_
+#ifndef _GDir2_
+#define _GDir2_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GDirO GDirO;
+typedef struct _GDir2O GDir2O;
 //===============================================
 #if defined(__unix)
 #define GDIR_DATA_PATH "/Programs/ReadyC/unix/"
@@ -12,7 +12,7 @@ typedef struct _GDirO GDirO;
 #define GDIR_DATA_PATH ""
 #endif
 //===============================================
-struct _GDirO {
+struct _GDir2O {
 	void (*Delete)();
 	void (*Test)(int argc, char** argv);
 	void (*DataPath)(char* path, char* output);
@@ -20,9 +20,9 @@ struct _GDirO {
     char m_dataPath[256];
 };
 //===============================================
-GDirO* GDir_New();
-void GDir_Delete();
-GDirO* GDir();
+GDir2O* GDir2_New();
+void GDir2_Delete();
+GDir2O* GDir2();
 //===============================================
 #endif
 //===============================================

@@ -42,7 +42,7 @@ const char* G_METHOD_NAME_2 = "add_numbers";
 #endif
 //===============================================
 static void GProcessDbusClient_Run(int argc, char** argv) {
-#if defined(__unix)
+#if defined(_GUSE_DBUS_ON_)
     //GLog()->Write("#================================================");
     //GLog()->Write("# Execution de la fonction : GProcessDbusClient_Run");
     //GLog()->Write("#================================================");

@@ -15,6 +15,8 @@ struct _GCcvO {
     void (*CreateMatrix)(char* matrixId);
     //===============================================
     GMapO_GCcv_GCHAR_PTR_GVOID_PTR* m_matrixMap;
+    GMapO_GCcv_GCHAR_PTR_GVOID_PTR* m_cascadeMap;
+    GMapO_GCcv_GCHAR_PTR_GVOID_PTR* m_facesMap;
 };
 //===============================================
 GCcvO* GCcv_New();

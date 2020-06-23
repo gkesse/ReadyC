@@ -17,6 +17,7 @@ struct _GCsvO {
     char* (*GetData)(int row, int col);
     void (*Size)(int* width, int* height);
     void (*Show)();
+    //===============================================
     GListO_GCsv_GVOID_PTR* m_dataMap;
     GListO_GCsv_GVOID_PTR* m_listMap;
 };

@@ -2,6 +2,8 @@
 #include "GAlarm2Win.h"
 #include "GMap2.h"
 //===============================================
+#if defined(__WIN32)
+//===============================================
 GDECLARE_MAP(GAlarm2Win, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GAlarm2Win, GCHAR_PTR, GVOID_PTR)
 //===============================================
@@ -64,4 +66,6 @@ static void GAlarm2Win_Start(char* alarmId) {
     MMRESULT lTimerId = timeSetEvent(lTimer, 1, (LPTIMECALLBACK)onFunc, 1, TIME_PERIODIC);   
     lTimerIdMap->SetData(lTimerIdMap, alarmId, (void*)lTimerId, GMap_EqualChar);
 }
+//===============================================
+#endif
 //===============================================

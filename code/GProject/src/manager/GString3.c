@@ -2,48 +2,48 @@
 #include "GString3.h"
 #include "GDebug.h"
 //===============================================
-static GStringO* m_GStringO = 0;
+static GString3O* m_GString3O = 0;
 //===============================================
-static void GString_Test(int argc, char** argv);
-static char* GString_Copy(char* str);
-static char* GString_Trim(char* str);
-static char** GString_Split(char* str, char* sep, int* count);
-static void GString_ToUpper(char* str, char* output);
-static void GString_ToLower(char* str, char* output);
-static void GString_Free(char* ptr);
-static void GString_Free2(char** ptr, int size);
+static void GString3_Test(int argc, char** argv);
+static char* GString3_Copy(char* str);
+static char* GString3_Trim(char* str);
+static char** GString3_Split(char* str, char* sep, int* count);
+static void GString3_ToUpper(char* str, char* output);
+static void GString3_ToLower(char* str, char* output);
+static void GString3_Free(char* ptr);
+static void GString3_Free2(char** ptr, int size);
 //===============================================
-GStringO* GString_New() {
-    GStringO* lObj = (GStringO*)malloc(sizeof(GStringO));
+GString3O* GString3_New() {
+    GString3O* lObj = (GString3O*)malloc(sizeof(GString3O));
     
-    lObj->Delete = GString_Delete;
-    lObj->Test = GString_Test;
-    lObj->Trim = GString_Trim;
-    lObj->Copy = GString_Copy;
-    lObj->Split = GString_Split;
-    lObj->ToUpper = GString_ToUpper;
-    lObj->ToLower = GString_ToLower;
-    lObj->Free = GString_Free;
-    lObj->Free2 = GString_Free2;
+    lObj->Delete = GString3_Delete;
+    lObj->Test = GString3_Test;
+    lObj->Trim = GString3_Trim;
+    lObj->Copy = GString3_Copy;
+    lObj->Split = GString3_Split;
+    lObj->ToUpper = GString3_ToUpper;
+    lObj->ToLower = GString3_ToLower;
+    lObj->Free = GString3_Free;
+    lObj->Free2 = GString3_Free2;
     return lObj; 
 }
 //===============================================
-void GString_Delete() {
+void GString3_Delete() {
 
 }
 //===============================================
-GStringO* GString() {
-    if(m_GStringO == 0) {
-        m_GStringO = GString_New();
+GString3O* GString3() {
+    if(m_GString3O == 0) {
+        m_GString3O = GString3_New();
     }
-    return m_GStringO;
+    return m_GString3O;
 }
 //===============================================
-static void GString_Test(int argc, char** argv) {
+static void GString3_Test(int argc, char** argv) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
 }
 //===============================================
-static char* GString_Trim(char* str) {
+static char* GString3_Trim(char* str) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     if(str[0] == 0) return 0;
     int lStart = 0;
@@ -65,7 +65,7 @@ static char* GString_Trim(char* str) {
     return lTrim;
 }
 //===============================================
-static char* GString_Copy(char* str) {
+static char* GString3_Copy(char* str) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     int lLength = strlen(str);
     char* lCopy = (char*)malloc(sizeof(char)*(lLength + 1));
@@ -73,7 +73,7 @@ static char* GString_Copy(char* str) {
     return lCopy;
 }
 //===============================================
-static char** GString_Split(char* str, char* sep, int* count) {
+static char** GString3_Split(char* str, char* sep, int* count) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     int lPos = 0;
     int lCount = 0;
@@ -86,11 +86,11 @@ static char** GString_Split(char* str, char* sep, int* count) {
     lCount += 1;
     *count = lCount;
     char** lSplit = (char**)malloc(sizeof(char*)*lCount);
-    char* lStr = GString()->Copy(str);
+    char* lStr = GString3()->Copy(str);
     char* lToken = strtok(lStr, sep);
     int lTok = 0;
     while(lToken != 0) {
-        lSplit[lTok] = GString()->Copy(lToken);
+        lSplit[lTok] = GString3()->Copy(lToken);
         lToken = strtok(0, sep);
         lTok++;
     }
@@ -98,7 +98,7 @@ static char** GString_Split(char* str, char* sep, int* count) {
     return lSplit;
 }
 //===============================================
-static void GString_ToUpper(char* str, char* output) {
+static void GString3_ToUpper(char* str, char* output) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     int lSize = strlen(str);
     for(int i = 0; i < lSize; i ++) {
@@ -107,7 +107,7 @@ static void GString_ToUpper(char* str, char* output) {
     output[lSize] = 0;
 }
 //===============================================
-static void GString_ToLower(char* str, char* output) {
+static void GString3_ToLower(char* str, char* output) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     int lSize = strlen(str);
     for(int i = 0; i < lSize; i ++) {
@@ -116,12 +116,12 @@ static void GString_ToLower(char* str, char* output) {
     output[lSize] = 0;
 }
 //===============================================
-static void GString_Free(char* ptr) {
+static void GString3_Free(char* ptr) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     free(ptr);
 }
 //===============================================
-static void GString_Free2(char** ptr, int size) {
+static void GString3_Free2(char** ptr, int size) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     for(int i = 0; i < size; i++) {
         free(ptr[i]);

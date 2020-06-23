@@ -3,7 +3,8 @@
 #define _GDBus_
 //===============================================
 #include "GInclude.h"
-#include "GMap.h"
+//===============================================
+#if defined(_GUSE_DBUS_ON_)
 //===============================================
 typedef struct _GDBusO GDBusO;
 typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR GMapO_GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR;
@@ -49,6 +50,8 @@ struct _GDBusO {
 GDBusO* GDBus_New();
 void GDBus_Delete();
 GDBusO* GDBus();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================

@@ -3,85 +3,85 @@
 #include "GShell.h"
 #include "GDebug.h"
 //===============================================
-static GDirO* m_GDirO = 0;
+static GDir2O* m_GDir2O = 0;
 //===============================================
-static void GDir_Test(int argc, char** argv);
-static void GDir_DataPath(char* path, char* output);
+static void GDir2_Test(int argc, char** argv);
+static void GDir2_DataPath(char* path, char* output);
 //===============================================
-static void GDir_HomePath(GDirO* obj);
+static void GDir2_HomePath(GDir2O* obj);
 //===============================================
 #if defined(__unix)
-static void GDir_HomePathUnix(GDirO* obj);
-static void GDir_TestUnix(int argc, char** argv);
+static void GDir2_HomePathUnix(GDir2O* obj);
+static void GDir2_TestUnix(int argc, char** argv);
 #elif defined(__WIN32)
-static void GDir_HomePathWin(GDirO* obj);
-static void GDir_TestWin(int argc, char** argv);
+static void GDir2_HomePathWin(GDir2O* obj);
+static void GDir2_TestWin(int argc, char** argv);
 #endif
 //===============================================
-GDirO* GDir_New() {
-    GDirO* lObj = (GDirO*)malloc(sizeof(GDirO));
+GDir2O* GDir2_New() {
+    GDir2O* lObj = (GDir2O*)malloc(sizeof(GDir2O));
 
-    GDir_HomePath(lObj);
+    GDir2_HomePath(lObj);
 
-    lObj->Delete = GDir_Delete;
-    lObj->Test = GDir_Test;
-    lObj->DataPath = GDir_DataPath;
+    lObj->Delete = GDir2_Delete;
+    lObj->Test = GDir2_Test;
+    lObj->DataPath = GDir2_DataPath;
     return lObj;
 }
 //===============================================
-void GDir_Delete() {
+void GDir2_Delete() {
 
 }
 //===============================================
-GDirO* GDir() {
-    if(m_GDirO == 0) {
-        m_GDirO = GDir_New();
+GDir2O* GDir2() {
+    if(m_GDir2O == 0) {
+        m_GDir2O = GDir2_New();
     }
-    return m_GDirO;
+    return m_GDir2O;
 }
 //===============================================
-static void GDir_Test(int argc, char** argv) {
+static void GDir2_Test(int argc, char** argv) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
 #if defined(__unix)
-    GDir_TestUnix(argc, argv);
+    GDir2_TestUnix(argc, argv);
 #elif defined(__WIN32)
-    GDir_TestWin(argc, argv);
+    GDir2_TestWin(argc, argv);
 #endif
 }
 //===============================================
 #if defined(__unix)
-static void GDir_TestUnix(int argc, char** argv) {
+static void GDir2_TestUnix(int argc, char** argv) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     char lDebugFile[256];
-    GDir()->DataPath("data/debug/debug.txt", lDebugFile);
-    printf("%s: %s\n", "m_homePath", GDir()->m_homePath);
-    printf("%s: %s\n", "m_dataPath", GDir()->m_dataPath);
+    GDir2()->DataPath("data/debug/debug.txt", lDebugFile);
+    printf("%s: %s\n", "m_homePath", GDir2()->m_homePath);
+    printf("%s: %s\n", "m_dataPath", GDir2()->m_dataPath);
     printf("%s: %s\n", "lDebugFile", lDebugFile);
 }
 #endif
 //===============================================
 #if defined(__WIN32)
-static void GDir_TestWin(int argc, char** argv) {
+static void GDir2_TestWin(int argc, char** argv) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
 }
 #endif
 //===============================================
-static void GDir_DataPath(char* path, char* output) {
+static void GDir2_DataPath(char* path, char* output) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
-    sprintf(output, "%s%s", m_GDirO->m_dataPath, path);
+    sprintf(output, "%s%s", m_GDir2O->m_dataPath, path);
 }
 //===============================================
-static void GDir_HomePath(GDirO* obj) {
+static void GDir2_HomePath(GDir2O* obj) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
 #if defined(__unix)
-    GDir_HomePathUnix(obj);
+    GDir2_HomePathUnix(obj);
 #elif defined(__WIN32)
-    GDir_HomePathWin(obj);
+    GDir2_HomePathWin(obj);
 #endif
 }
 //===============================================
 #if defined(__unix)
-static void GDir_HomePathUnix(GDirO* obj) {
+static void GDir2_HomePathUnix(GDir2O* obj) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
 	char lCommand[256];
 	sprintf(lCommand, "%s", "echo $HOME");
@@ -91,7 +91,7 @@ static void GDir_HomePathUnix(GDirO* obj) {
 #endif
 //===============================================
 #if defined(__WIN32)
-static void GDir_HomePathWin(GDirO* obj) {
+static void GDir2_HomePathWin(GDir2O* obj) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
 }
 #endif

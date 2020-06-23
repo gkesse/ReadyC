@@ -31,7 +31,7 @@ GOptionsO* GOptions() {
 }
 //===============================================
 static void GOptions_GetArgs(int argc, char** argv) {
-	BOOL lShowHelp = TRUE;
+	int lShowHelp = TRUE;
 
 	if(argc >= 2) {
 		lShowHelp = FALSE;

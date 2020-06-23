@@ -7,6 +7,7 @@
 typedef struct _GProcessO GProcessO;
 //===============================================
 struct _GProcessO {
+    void* m_child;
     void (*Delete)();
     void (*Run)(int argc, char** argv);
 };
