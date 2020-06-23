@@ -12,13 +12,12 @@
 #include <ctype.h>
 #include <time.h>
 #include <stdarg.h>
+#include <signal.h>
 //===============================================
 #include <windows.h>
 #include <process.h>
 #include <winsock2.h>
 #include <conio.h>
-#include <signal.h>
-#include <unistd.h>
 //===============================================
 #define _GUSE_SQLITE_ON_
 //===============================================
@@ -36,10 +35,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <time.h>
+#include <stdarg.h>
+#include <signal.h>  
 //===============================================
+#include <unistd.h>  
 #include <errno.h>  
 #include <sys/time.h>
-#include <signal.h>  
 #include <setjmp.h>  
 #include <sched.h>
 #include <semaphore.h>
@@ -52,7 +55,7 @@
 #define _GUSE_GSOAP_ON_0
 #define _GUSE_DBUS_ON_0
 #define _GUSE_SQLITE_ON_
-#define _GUSE_MYSQL_ON_
+#define _GUSE_MYSQL_ON_0
 //===============================================
 #if defined(_GUSE_GTK_ON_)
 #include <gtk/gtk.h>

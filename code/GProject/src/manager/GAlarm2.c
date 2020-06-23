@@ -1,7 +1,7 @@
 //===============================================
 #include "GAlarm2.h"
 #include "GAlarm2Win.h"
-#include "GString2.h"
+#include "GAlarm2Unix.h"
 //===============================================
 GAlarm2O* GAlarm2_New() {
     GAlarm2O* lObj = (GAlarm2O*)malloc(sizeof(GAlarm2O));
@@ -19,8 +19,12 @@ void GAlarm2_Delete(GAlarm2O* obj) {
 }
 //===============================================
 GAlarm2O* GAlarm2() {
-    if(GString2()->IsEqual(G_PLATEFORM_OS, "WINDOWS")) return GAlarm2Win();
+#if defined(__WIN32)
     return GAlarm2Win();
+#elif defined(__unix)
+    return GAlarm2Unix();
+#endif
+    return 0;
 }
 //===============================================
 

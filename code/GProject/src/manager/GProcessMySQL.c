@@ -34,6 +34,7 @@ GProcessO* GProcessMySQL() {
 }
 //===============================================
 static void GProcessMySQL_Run(int argc, char** argv) {
+#if defined(_GUSE_MYSQL_ON_)
     //GLog()->Write("#================================================");
     //GLog()->Write("# Execution de la fonction : GProcessMySQL_Run");
     //GLog()->Write("#================================================");
@@ -72,5 +73,6 @@ static void GProcessMySQL_Run(int argc, char** argv) {
 
 	GMySQL()->Close("SQLITE");
 	GMySQL()->FreeRow("SQLITE");
+#endif
 }
 //===============================================

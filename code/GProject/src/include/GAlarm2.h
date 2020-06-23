@@ -11,6 +11,8 @@ struct _GAlarm2O {
     void (*Callback)(char* alarmId, void* func);
     void (*Timer)(char* alarmId, int msec);
     void (*Start)(char* alarmId);
+    void (*Restart)(char* alarmId);
+    void (*Pause)();
 };
 //===============================================
 GAlarm2O* GAlarm2_New();

@@ -5,6 +5,8 @@
 #include "GInclude.h"
 #include "GMap.h"
 //===============================================
+#if defined(_GUSE_MYSQL_ON_)
+//===============================================
 typedef struct _GMySQLO GMySQLO;
 typedef struct _GMapO_GMySQL_GCHAR_PTR_GMYSQL_PTR GMapO_GMySQL_GCHAR_PTR_GMYSQL_PTR;
 typedef struct _GMapO_GMySQL_GCHAR_PTR_GMYSQLRES_PTR GMapO_GMySQL_GCHAR_PTR_GMYSQLRES_PTR;
@@ -41,6 +43,8 @@ struct _GMySQLO {
 GMySQLO* GMySQL_New();
 void GMySQL_Delete();
 GMySQLO* GMySQL();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================

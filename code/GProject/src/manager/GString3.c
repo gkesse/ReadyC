@@ -4,7 +4,6 @@
 //===============================================
 static GString3O* m_GString3O = 0;
 //===============================================
-static void GString3_Test(int argc, char** argv);
 static char* GString3_Copy(char* str);
 static char* GString3_Trim(char* str);
 static char** GString3_Split(char* str, char* sep, int* count);
@@ -17,7 +16,6 @@ GString3O* GString3_New() {
     GString3O* lObj = (GString3O*)malloc(sizeof(GString3O));
     
     lObj->Delete = GString3_Delete;
-    lObj->Test = GString3_Test;
     lObj->Trim = GString3_Trim;
     lObj->Copy = GString3_Copy;
     lObj->Split = GString3_Split;
@@ -37,10 +35,6 @@ GString3O* GString3() {
         m_GString3O = GString3_New();
     }
     return m_GString3O;
-}
-//===============================================
-static void GString3_Test(int argc, char** argv) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
 }
 //===============================================
 static char* GString3_Trim(char* str) {

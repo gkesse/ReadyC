@@ -180,18 +180,23 @@ static void GTestBasic_Getchar(int argc, char** argv) {
 }
 //===============================================
 static void GTestBasic_Getch(int argc, char** argv) {
+#if defined(__WIN32)
     printf("Saisir un caractere ? ");
     char lChar = getch();
     printf("\nlChar : %c\n", lChar);
+#endif
 }
 //===============================================
 static void GTestBasic_Getche(int argc, char** argv) {
+#if defined(__WIN32)
     printf("Saisir un caractere ? ");
     char lChar = getche();
     printf("\nlChar : %c\n", lChar);
+#endif
 }
 //===============================================
 static void GTestBasic_Kbhit(int argc, char** argv) {
+#if defined(__WIN32)
     printf("Appuyer q pour quitter ? ");
     while(1) {
         if(kbhit() != 0) {
@@ -200,6 +205,7 @@ static void GTestBasic_Kbhit(int argc, char** argv) {
         }
     }
     printf("\n");
+#endif
 }
 //===============================================
 static void GTestBasic_Arithmetic(int argc, char** argv) {

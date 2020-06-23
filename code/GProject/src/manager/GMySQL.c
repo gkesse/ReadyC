@@ -2,6 +2,8 @@
 #include "GMySQL.h"
 #include "GConsole.h"
 //===============================================
+#if defined(_GUSE_MYSQL_ON_)
+//===============================================
 #if defined(__unix)
 typedef char* GCHAR_PTR;
 typedef MYSQL* GMYSQL_PTR;
@@ -266,5 +268,7 @@ static int GMySQL_MapEqual(char* key1, char* key2) {
 	if(lStrcmp == 0) return TRUE;
 	return FALSE;
 }
+#endif
+//===============================================
 #endif
 //===============================================

@@ -12,7 +12,7 @@ typedef void WINAPI (*GALARM_CALLBACK)(UINT wTimerID, UINT msg, DWORD dwUser, DW
 static GAlarm2O* m_GAlarm2WinO = 0;
 //===============================================
 static void GAlarm2Win_Callback(char* alarmId, void* func);
-static void GAlarm2Win_Timer(char* alarmId, int sec);
+static void GAlarm2Win_Timer(char* alarmId, int msec);
 static void GAlarm2Win_Start(char* alarmId);
 //===============================================
 GAlarm2O* GAlarm2Win_New() {
@@ -44,10 +44,10 @@ GAlarm2O* GAlarm2Win() {
     return m_GAlarm2WinO;
 }
 //===============================================
-static void GAlarm2Win_Timer(char* alarmId, int sec) {
+static void GAlarm2Win_Timer(char* alarmId, int msec) {
     GAlarm2WinO* lChild = m_GAlarm2WinO->m_child;
     GMapO(GAlarm2Win, GCHAR_PTR, GVOID_PTR)* lTimerMap = lChild->m_timerMap;
-    lTimerMap->SetData(lTimerMap, alarmId, (void*)sec, GMap_EqualChar);
+    lTimerMap->SetData(lTimerMap, alarmId, (void*)msec, GMap_EqualChar);
 }
 //===============================================
 static void GAlarm2Win_Callback(char* alarmId, void* func) {
