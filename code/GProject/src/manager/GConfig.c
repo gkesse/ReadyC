@@ -16,9 +16,6 @@ static char* GConfig_GetData(char* key);
 static int GConfig_Size();
 static void GConfig_Show();
 //===============================================
-static void GConfig_OnMap(char* key, void* value);
-static int GConfig_OnLog(char* buffer, int index, void* obj);
-//===============================================
 GConfigO* GConfig_New() {
     GConfigO* lObj = (GConfigO*)malloc(sizeof(GConfigO));
 
@@ -83,21 +80,7 @@ static int GConfig_Size() {
 //===============================================
 static void GConfig_Show() {
     GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
-    GDebug()->Trace(1, 4, GConfig_OnLog, "Key|Value", _EOT_);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
-    lDataMap->Show(lDataMap, GConfig_OnMap);
-}
-//===============================================
-static void GConfig_OnMap(char* key, void* value) {
-    GDebug()->Trace(1, 3, "\t\t", 30, -10, key, 3, " : ", 3, (char*)value, _EOT_);
-}
-//===============================================
-static int GConfig_OnLog(char* buffer, int index, void* obj) {
-    int lIndex = index;
-    char lKey[256], lValue[256];
-    GString3()->SplitGet((char*)obj, lKey, "|", 0);
-    GString3()->SplitGet((char*)obj, lValue, "|", 1);
-    lIndex += sprintf(&buffer[lIndex], "\t\t%-10s : %s", lKey, lValue);
-    return lIndex - index;
+    lDataMap->Show(lDataMap, GMap_ShowChar);
 }
 //===============================================

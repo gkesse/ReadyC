@@ -24,6 +24,7 @@ static void GTestBasic_Getche(int argc, char** argv);
 static void GTestBasic_Kbhit(int argc, char** argv);
 static void GTestBasic_Arithmetic(int argc, char** argv);
 static void GTestBasic_Table(int argc, char** argv);
+static void GTestBasic_Clock(int argc, char** argv);
 //===============================================
 GTestBasicO* GTestBasic_New() {
     GTestBasicO* lObj = (GTestBasicO*)malloc(sizeof(GTestBasicO));
@@ -67,6 +68,7 @@ static void GTestBasic_Run(int argc, char** argv) {
         if(!strcmp(lKey, "kbhit")) {GTestBasic_Kbhit(argc, argv); return;}
         if(!strcmp(lKey, "arithmetic")) {GTestBasic_Arithmetic(argc, argv); return;}
         if(!strcmp(lKey, "table")) {GTestBasic_Table(argc, argv); return;}
+        if(!strcmp(lKey, "clock")) {GTestBasic_Clock(argc, argv); return;}
         break;
     }
     GTestBasic_Default(argc, argv);
@@ -282,5 +284,17 @@ static void GTestBasic_Table(int argc, char** argv) {
         int lItem = lTab[i];
         printf("%2d x %2d = %2d\n", lNumber, (i + 1), lItem);
     }
+}
+//===============================================
+static void GTestBasic_Clock(int argc, char** argv) {
+    ulong lDelay = 1000000000;
+    clock_t lStart = clock();
+    for(int i = 0; i< lDelay; i++);
+    clock_t lEnd = clock();
+    clock_t lTicks = lEnd - lStart;
+    double lTime = ((double)lTicks * 1000) / CLOCKS_PER_SEC;
+    printf("Temps ecoule : %.0f (ms)\n", lTime);
+    double lTimeFor = (double)(lTime * 1000 * 1000) / lDelay;
+    printf("Temps ecoule (for) : %.2f (ns)\n", lTimeFor);
 }
 //===============================================
