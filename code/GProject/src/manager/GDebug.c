@@ -179,23 +179,27 @@ static void GDebug_DebugFileWin(GDebugO* obj) {
 	pclose(lpFile);
 
 	sprintf(obj->m_debugFile, "%s\\%s", lDebugPath, GDEBUG_FILE);
-	sprintf(lCommand, "if not exist %s ( mkdir %s )", lDebugPath, lDebugPath);
 }
 #endif
 //===============================================
 #if defined(__unix)
 void GDebug_DebugFileUnix(GDebugO* obj) {
-	char lCommand[256];
-	sprintf(lCommand, "%s", "echo -n $HOME");
-	FILE* lpFile = popen(lCommand, "r");
-	int lBytes = fread(lHomePath, 1, 255, lpFile);
-	lHomePath[lBytes] = 0;
+	char lCommand[256], lHomePath[256], lDebugPath[256];
+    FILE* lpFile;
+    int lBytes;
+    
+	sprintf(lCommand, "%s", "echo $HOME");
+	lpFile = popen(lCommand, "r");
+	lBytes = fread(lHomePath, 1, 255, lpFile);
+	lHomePath[lBytes - 1] = 0;
 	pclose(lpFile);
-	sprintf(lDebugPath, "%s/%s", lHomePath, ".readydev/readyc/data/debug");
-	sprintf(obj->m_debugFile, "%s/%s", lDebugPath, "debug.txt");
-	sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p %s ; fi", lDebugPath, lDebugPath);
+    
+	sprintf(lDebugPath, "%s/%s/%s", lHomePath, GDATA_PATH, GDEBUG_PATH);
+	sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", lDebugPath, lDebugPath);
 	lpFile = popen(lCommand, "r");
 	pclose(lpFile);
+
+	sprintf(obj->m_debugFile, "%s/%s", lDebugPath, GDEBUG_FILE);
 }
 #endif
 //===============================================

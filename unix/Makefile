@@ -20,11 +20,6 @@ GOBJS = \
 GCFLAGS = \
     -std=gnu18 \
     -W -Wall \
-    -Wno-unused-parameter \
-    -Wno-format-overflow \
-    -Wno-unused-function \
-    -Wno-int-to-pointer-cast \
-    -Wno-pointer-to-int-cast \
     
 all: clean_exe compile run
  
