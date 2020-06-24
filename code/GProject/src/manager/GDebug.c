@@ -15,6 +15,8 @@ typedef int (*GDEBUG_LOG)(char* buffer, int index, void* obj);
 #define GDEBUG_FILE "debug.txt"
 #endif
 //===============================================
+#define GDEBUG_BUFFER 1024
+//===============================================
 static GDebugO* m_GDebugO = 0;
 //===============================================
 static void GDebug_Write(int key, ...);
@@ -36,57 +38,57 @@ static void GDebug_DebugFileUnix(GDebugO* obj);
 #endif
 //===============================================
 GDebugO* GDebug_New() {
-	GDebugO* lObj = (GDebugO*)malloc(sizeof(GDebugO));
+    GDebugO* lObj = (GDebugO*)malloc(sizeof(GDebugO));
 
-	GDebug_DebugFile(lObj);
+    GDebug_DebugFile(lObj);
 
-	lObj->Delete = GDebug_Delete;
-	lObj->Write = GDebug_Write;
-	lObj->Trace = GDebug_Trace;
-	lObj->Sep = GDebug_Sep;
-	return lObj;
+    lObj->Delete = GDebug_Delete;
+    lObj->Write = GDebug_Write;
+    lObj->Trace = GDebug_Trace;
+    lObj->Sep = GDebug_Sep;
+    return lObj;
 }
 //===============================================
 void GDebug_Delete() {
-	GDebugO* lObj = GDebug();
+    GDebugO* lObj = GDebug();
     if(lObj != 0) {
         free(lObj);
     }
-	m_GDebugO = 0;
+    m_GDebugO = 0;
 }
 //===============================================
 GDebugO* GDebug() {
-	if(m_GDebugO == 0) {
-		m_GDebugO = GDebug_New();
-	}
-	return m_GDebugO;
+    if(m_GDebugO == 0) {
+        m_GDebugO = GDebug_New();
+    }
+    return m_GDebugO;
 }
 //===============================================
 static void GDebug_Write(int key, ...) {
-	if(key == 0) return;
-	char lBuffer[256];
-	int lIndex = 0;
+    if(key == 0) return;
+    char lBuffer[GDEBUG_BUFFER];
+    int lIndex = 0;
 
-	va_list lArgs;
-	va_start(lArgs, key);
-	while(1) {
-		char* lData = va_arg(lArgs, char*);
-		if(!strcmp(lData, _EOA_)) break;
-		lIndex += sprintf(&lBuffer[lIndex], "%s", lData);
-	}
-	va_end(lArgs);
-	GDebug_Log(lBuffer);
+    va_list lArgs;
+    va_start(lArgs, key);
+    while(1) {
+        char* lData = va_arg(lArgs, char*);
+        if(!strcmp(lData, _EOA_)) break;
+        lIndex += sprintf(&lBuffer[lIndex], "%s", lData);
+    }
+    va_end(lArgs);
+    GDebug_Log(lBuffer);
 }
 //===============================================
 static void GDebug_Trace(int key, ...) {
-	if(key == 0) return;
-	char lBuffer[256];
-	int lIndex = 0;
+    if(key == 0) return;
+    char lBuffer[GDEBUG_BUFFER];
+    int lIndex = 0;
 
-	va_list lArgs;
-	va_start(lArgs, key);
-	while(1) {
-		int lType = va_arg(lArgs, int);
+    va_list lArgs;
+    va_start(lArgs, key);
+    while(1) {
+        int lType = va_arg(lArgs, int);
         if(lType == _EOT_) break;
         if(lType == 1) {
             int lData = va_arg(lArgs, int);
@@ -108,9 +110,7 @@ static void GDebug_Trace(int key, ...) {
         }
         else if(lType == 3) {
             char* lData = va_arg(lArgs, char*);
-            if(lIndex == 38) printf("%d\n", lIndex);
             lIndex += sprintf(&lBuffer[lIndex], "%s", lData);
-            if(lIndex == 38) printf("%d\n", lIndex);
         }
         else if(lType == 30) {
             int lWidth = va_arg(lArgs, int);
@@ -122,9 +122,9 @@ static void GDebug_Trace(int key, ...) {
             void* lObj = va_arg(lArgs, void*);
             lIndex += onLogFunc(lBuffer, lIndex, lObj);
         }
-	}
-	va_end(lArgs);
-	GDebug_Log(lBuffer);
+    }
+    va_end(lArgs);
+    GDebug_Log(lBuffer);
 }
 //===============================================
 static void GDebug_Log(const char* data) {
@@ -133,15 +133,15 @@ static void GDebug_Log(const char* data) {
     char lFormat[256];
     char lDate[256];
     
-	GDebug_Date(lDate);
+    GDebug_Date(lDate);
 
-	FILE* lpFile = fopen(m_GDebugO->m_debugFile, "a+");
+    FILE* lpFile = fopen(m_GDebugO->m_debugFile, "a+");
     for(int i = 0; i < lCount; i++) {
         GDebug_SplitGet(data, lData, "\n", i);
         sprintf(lFormat, "%s | %s", lDate, lData);
         fprintf(lpFile, "%s\n", lFormat);
     }
-	fclose(lpFile);
+    fclose(lpFile);
 }
 //===============================================
 static void GDebug_SplitGet(const char* strIn, char* strOut, char* sep, int index) {
@@ -186,71 +186,71 @@ static int GDebug_SplitCount(const char* strIn, char* sep) {
 }
 //===============================================
 static void GDebug_Sep() {
-	const char* lSep = "=================================================";
-	GDebug_Log(lSep);
+    const char* lSep = "=================================================";
+    GDebug_Log(lSep);
 }
 //===============================================
 static void GDebug_Date(char* buffer) {
-	time_t lRawTime;
-	time(&lRawTime);
-	struct tm* lTimeInfo = localtime(&lRawTime);
-	int lDay = lTimeInfo->tm_mday;
-	int lMonth = lTimeInfo->tm_mon + 1;
-	int lYear = lTimeInfo->tm_year + 1900;
-	int lHour = lTimeInfo->tm_hour;
-	int lMin = lTimeInfo->tm_min;
-	int lSec = lTimeInfo->tm_sec;
-	if(lTimeInfo->tm_isdst == 1) lHour++;
-	sprintf(buffer, "%02d/%02d/%04d %02d:%02d:%02d", lDay, lMonth, lYear, lHour, lMin, lSec);
+    time_t lRawTime;
+    time(&lRawTime);
+    struct tm* lTimeInfo = localtime(&lRawTime);
+    int lDay = lTimeInfo->tm_mday;
+    int lMonth = lTimeInfo->tm_mon + 1;
+    int lYear = lTimeInfo->tm_year + 1900;
+    int lHour = lTimeInfo->tm_hour;
+    int lMin = lTimeInfo->tm_min;
+    int lSec = lTimeInfo->tm_sec;
+    if(lTimeInfo->tm_isdst == 1) lHour++;
+    sprintf(buffer, "%02d/%02d/%04d %02d:%02d:%02d", lDay, lMonth, lYear, lHour, lMin, lSec);
 }
 //===============================================
 static void GDebug_DebugFile(GDebugO* obj) {
 #if defined(__WIN32)
-	GDebug_DebugFileWin(obj);
+    GDebug_DebugFileWin(obj);
 #else
-	GDebug_DebugFileUnix(obj);
+    GDebug_DebugFileUnix(obj);
 #endif
 }
 //===============================================
 #if defined(__WIN32)
 static void GDebug_DebugFileWin(GDebugO* obj) {
-	char lCommand[256], lHomePath[256], lDebugPath[256];
+    char lCommand[256], lHomePath[256], lDebugPath[256];
     FILE* lpFile;
     int lBytes;
     
-	sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
-	lpFile = popen(lCommand, "r");
-	lBytes = fread(lHomePath, 1, 255, lpFile);
-	lHomePath[lBytes - 1] = 0;
-	pclose(lpFile);
+    sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
+    lpFile = popen(lCommand, "r");
+    lBytes = fread(lHomePath, 1, 255, lpFile);
+    lHomePath[lBytes - 1] = 0;
+    pclose(lpFile);
     
-	sprintf(lDebugPath, "%s\\%s\\%s", lHomePath, GDATA_PATH, GDEBUG_PATH);
-	sprintf(lCommand, "if not exist \"%s\" ( mkdir \"%s\" )", lDebugPath, lDebugPath);
-	lpFile = popen(lCommand, "r");
-	pclose(lpFile);
+    sprintf(lDebugPath, "%s\\%s\\%s", lHomePath, GDATA_PATH, GDEBUG_PATH);
+    sprintf(lCommand, "if not exist \"%s\" ( mkdir \"%s\" )", lDebugPath, lDebugPath);
+    lpFile = popen(lCommand, "r");
+    pclose(lpFile);
 
-	sprintf(obj->m_debugFile, "%s\\%s", lDebugPath, GDEBUG_FILE);
+    sprintf(obj->m_debugFile, "%s\\%s", lDebugPath, GDEBUG_FILE);
 }
 #endif
 //===============================================
 #if defined(__unix)
 void GDebug_DebugFileUnix(GDebugO* obj) {
-	char lCommand[256], lHomePath[256], lDebugPath[256];
+    char lCommand[256], lHomePath[256], lDebugPath[256];
     FILE* lpFile;
     int lBytes;
     
-	sprintf(lCommand, "%s", "echo $HOME");
-	lpFile = popen(lCommand, "r");
-	lBytes = fread(lHomePath, 1, 255, lpFile);
-	lHomePath[lBytes - 1] = 0;
-	pclose(lpFile);
+    sprintf(lCommand, "%s", "echo $HOME");
+    lpFile = popen(lCommand, "r");
+    lBytes = fread(lHomePath, 1, 255, lpFile);
+    lHomePath[lBytes - 1] = 0;
+    pclose(lpFile);
     
-	sprintf(lDebugPath, "%s/%s/%s", lHomePath, GDATA_PATH, GDEBUG_PATH);
-	sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", lDebugPath, lDebugPath);
-	lpFile = popen(lCommand, "r");
-	pclose(lpFile);
+    sprintf(lDebugPath, "%s/%s/%s", lHomePath, GDATA_PATH, GDEBUG_PATH);
+    sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", lDebugPath, lDebugPath);
+    lpFile = popen(lCommand, "r");
+    pclose(lpFile);
 
-	sprintf(obj->m_debugFile, "%s/%s", lDebugPath, GDEBUG_FILE);
+    sprintf(obj->m_debugFile, "%s/%s", lDebugPath, GDEBUG_FILE);
 }
 #endif
 //===============================================
