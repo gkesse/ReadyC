@@ -16,6 +16,8 @@ static void GTest_Base(int argc, char** argv);
 static void GTest_Config(int argc, char** argv);
 static void GTest_Debug(int argc, char** argv);
 static void GTest_String(int argc, char** argv);
+//===============================================
+static int GTest_OnDebug(char* buffer, int index, void* obj);
 //=============================================== 
 #if defined (__WIN32)
 //===============================================
@@ -26,6 +28,15 @@ static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw
 static void GTest_OnAlarm(int sig);
 //===============================================
 #endif
+//===============================================
+typedef struct _sGPerson sGPerson;
+//===============================================
+struct _sGPerson {
+    int id;
+    char* name;
+    char* email;
+    double coef;
+};
 //===============================================
 GTestO* GTest_New() {
     GTestO* lObj = (GTestO*)malloc(sizeof(GTestO));
@@ -94,8 +105,26 @@ static void GTest_Config(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Debug(int argc, char** argv) {
-    GDebug()->Sep();
     GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Trace(1, 30, 5, "", 3, "Test du module debug", _EOT_);
+    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'un entier", _EOT_);
+    GDebug()->Trace(1, 30, 10, "", 30, -10, "Entier(int)", 3, " : ", 1, 2020, _EOT_);
+    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'un reel", _EOT_);
+    GDebug()->Trace(1, 30, 10, "", 30, -10, "Reel(float)", 3, " : ", 20, 2, 3.14, _EOT_);
+    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'une chaine de caracters", _EOT_);
+    GDebug()->Trace(1, 30, 10, "", 30, -10, "Chaine(char*)", 3, " : ", 3, "www.readydev.com", _EOT_);
+    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'une structure complexe", _EOT_);
+    GDebug()->Trace(1, 30, 10, "", 3, "Creation de la structure", _EOT_);
+
+    sGPerson lPersons[] = {
+        {1, "Pierre KESSE", "gerard.kesse@readydev.com", 25.25},
+        {2, "Deborah YOBOUE", "deborah.yoboue@readydev.com", 55.25},
+        {3, "Robins KESSE", "robins.kesse@readydev.com", 75.25},
+        {0, 0, 0, 0}
+    };
+    
+    GDebug()->Trace(1, 30, 10, "", 3, "Tracage de la structure", _EOT_);
+    GDebug()->Trace(1, 30, 10, "", 30, -10, "Structure(void*)", 3, " : \n", 4, GTest_OnDebug, lPersons, _EOT_);
 }
 //===============================================
 static void GTest_String(int argc, char** argv) {
@@ -103,6 +132,12 @@ static void GTest_String(int argc, char** argv) {
     char lTrim[256];
     GString3()->Trim("\n\t\r    Voici ma chaine    ", lTrim);
     printf(">%s<\n", lTrim);
+}
+//===============================================
+static int GTest_OnDebug(char* buffer, int index, void* obj) {
+    int lIndex = index;
+    lIndex += sprintf(&buffer[lIndex], "%s", "ooooo");
+    return lIndex - index;
 }
 //===============================================
 #if defined (__WIN32)

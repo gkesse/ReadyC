@@ -24,7 +24,8 @@ static void GDebug_Sep();
 static void GDebug_Date(char* buffer);
 static void GDebug_DebugFile(GDebugO* obj);
 static void GDebug_Log(const char* data);
-static void GDebug_Line(const char* data);
+static void GDebug_SplitGet(const char* strIn, char* strOut, char* sep, int index);
+static int GDebug_SplitCount(const char* strIn, char* sep);
 //===============================================
 #if defined(__WIN32)
 static void GDebug_DebugFileWin(GDebugO* obj);
@@ -64,10 +65,8 @@ GDebugO* GDebug() {
 static void GDebug_Write(int key, ...) {
 	if(key == 0) return;
 	char lBuffer[256];
-	char lDate[256];
 	int lIndex = 0;
-	GDebug_Date(lDate);
-	lIndex += sprintf(&lBuffer[lIndex], "%s | ", lDate);
+
 	va_list lArgs;
 	va_start(lArgs, key);
 	while(1) {
@@ -82,10 +81,8 @@ static void GDebug_Write(int key, ...) {
 static void GDebug_Trace(int key, ...) {
 	if(key == 0) return;
 	char lBuffer[256];
-	char lDate[256];
 	int lIndex = 0;
-	GDebug_Date(lDate);
-	lIndex += sprintf(&lBuffer[lIndex], "%s | ", lDate);
+
 	va_list lArgs;
 	va_start(lArgs, key);
 	while(1) {
@@ -131,22 +128,66 @@ static void GDebug_Trace(int key, ...) {
 }
 //===============================================
 static void GDebug_Log(const char* data) {
+    int lCount = GDebug_SplitCount(data, "\n");
+    char lData[256];
+    char lFormat[256];
+    char lDate[256];
+    
+	GDebug_Date(lDate);
+
 	FILE* lpFile = fopen(m_GDebugO->m_debugFile, "a+");
-	fprintf(lpFile, "%s\n", data);
+    for(int i = 0; i < lCount; i++) {
+        GDebug_SplitGet(data, lData, "\n", i);
+        sprintf(lFormat, "%s | %s", lDate, lData);
+        fprintf(lpFile, "%s\n", lFormat);
+    }
 	fclose(lpFile);
 }
 //===============================================
-static void GDebug_Line(const char* data) {
-	char lBuffer[256];
-	char lDate[256];
-	GDebug_Date(lDate);
-	sprintf(lBuffer, "%s | %s", lDate, data);
-	GDebug_Log(lBuffer);
+static void GDebug_SplitGet(const char* strIn, char* strOut, char* sep, int index) {
+    int lPos = 0;
+    int lOut = 0;
+    int lCount = 0;
+    int lFlag = 0;
+    while(strIn[lPos] != 0) {
+        if(lFlag == 0) {
+            if(lCount == index) lFlag = 1;
+            else lFlag = 2;
+        }
+        if(lFlag == 1) {
+            char lChar = strIn[lPos];
+            char* lSearch = strchr(sep, lChar);
+            if(lSearch != 0) break;
+            strOut[lOut] = lChar;
+            lPos++; lOut++;
+        }
+        if(lFlag == 2) {
+            char lChar = strIn[lPos];
+            char* lSearch = strchr(sep, lChar);
+            if(lSearch != 0) lCount++;
+            lPos++;
+            lFlag = 0;
+        }
+    }
+    strOut[lOut] = 0;
+}
+//===============================================
+static int GDebug_SplitCount(const char* strIn, char* sep) {
+    int lPos = 0;
+    int lCount = 0;
+    while(strIn[lPos] != 0) {
+        char lChar = strIn[lPos];
+        char* lSearch = strchr(sep, lChar);
+        if(lSearch != 0) lCount++;
+        lPos++;
+    }
+    lCount += 1;
+    return lCount;
 }
 //===============================================
 static void GDebug_Sep() {
 	const char* lSep = "=================================================";
-	GDebug_Line(lSep);
+	GDebug_Log(lSep);
 }
 //===============================================
 static void GDebug_Date(char* buffer) {
