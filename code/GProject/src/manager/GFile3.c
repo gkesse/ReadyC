@@ -81,7 +81,7 @@ static void GFile3_Test(int argc, char** argv) {
         GDir2()->DataPath("data/file/file3.txt", lFilePath);
         GFile3()->Open(lFile, lFilePath, "r");
         GFile3()->GetDataCsv(lFile);
-        char* lUpdate = GString3()->Copy("MY_UPDATE");
+        char* lUpdate = "MY_UPDATE";
         GCsv()->SetData(1, 1, lUpdate);
         //GCsv()->Clear();    
         GCsv()->Remove(3);    
@@ -128,17 +128,16 @@ static void GFile3_GetDataMap(char* fileId) {
     char lLine[256];
     
     while(fgets(lLine, sizeof(lLine), lpFile) != NULL) {
-        char* lTrim = GString3()->Trim(lLine);
-        if(lTrim == 0) {continue;}
-        char lFirst = lTrim[0];
-        if(lFirst == '#') {GString3()->Free(lTrim); continue;}
-        int lCount;
-        char** lSplit = GString3()->Split(lTrim, "=", &lCount);
-        char* lKey = GString3()->Trim(lSplit[0]);
-        char* lValue = GString3()->Trim(lSplit[1]);
+        GString3()->Trim(lLine, lLine);
+        if(lLine[0] == 0) {continue;}
+        char lFirst = lLine[0];
+        if(lFirst == '#') {continue;}
+        char lKey[256], lValue[256];
+        GString3()->SplitGet(lLine, lKey, "=", 0);
+        GString3()->SplitGet(lLine, lValue, "=", 1);
+        GString3()->Trim(lKey, lKey);
+        GString3()->Trim(lValue, lValue);
         GConfig()->SetData(lKey, lValue);
-        GString3()->Free(lTrim);
-        GString3()->Free2(lSplit, lCount);
     }
 }
 //===============================================
@@ -149,22 +148,20 @@ static void GFile3_GetDataCsv(char* fileId) {
     char lLine[256];
     
     while(fgets(lLine, sizeof(lLine), lpFile) != NULL) {
-        char* lTrim = GString3()->Trim(lLine);
-        if(lTrim == 0) {continue;}
-        char lFirst = lTrim[0];
-        if(lFirst == '#') {GString3()->Free(lTrim); continue;}
-        int lCount;
-        char** lSplit = GString3()->Split(lTrim, ";", &lCount);
+        GString3()->Trim(lLine, lLine);
+        if(lLine[0] == 0) {continue;}
+        char lFirst = lLine[0];
+        if(lFirst == '#') {continue;}
+        int lCount = GString3()->SplitCount(lLine, ";");
         
         GCsv()->AddRow();    
         
+        char lCol[256];
         for(int i = 0; i < lCount; i++) {
-            char* lCol = GString3()->Trim(lSplit[i]);
+            GString3()->SplitGet(lLine, lCol, ";", i);
+            GString3()->Trim(lCol, lCol);
             GCsv()->AddData(lCol);    
         }
-               
-        GString3()->Free(lTrim);
-        GString3()->Free2(lSplit, lCount);
     }
 }
 //===============================================

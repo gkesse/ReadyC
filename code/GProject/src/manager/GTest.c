@@ -3,8 +3,9 @@
 #include "GTestBasic.h"
 #include "GAlarm2.h"
 #include "GBase.h"
-#include "GDebug.h"
 #include "GConfig.h"
+#include "GString3.h"
+#include "GDebug.h"
 //===============================================
 static GTestO* m_GTestO = 0;
 //===============================================
@@ -14,6 +15,7 @@ static void GTest_Alarm(int argc, char** argv);
 static void GTest_Base(int argc, char** argv);
 static void GTest_Config(int argc, char** argv);
 static void GTest_Debug(int argc, char** argv);
+static void GTest_String(int argc, char** argv);
 //=============================================== 
 #if defined (__WIN32)
 //===============================================
@@ -54,6 +56,7 @@ static void GTest_Run(int argc, char** argv) {
         if(!strcmp(lKey, "base")) {GTest_Base(argc, argv); return;}
         if(!strcmp(lKey, "config")) {GTest_Config(argc, argv); return;}
         if(!strcmp(lKey, "debug")) {GTest_Debug(argc, argv); return;}
+        if(!strcmp(lKey, "string")) {GTest_String(argc, argv); return;}
         break;
     }
     GTest_Default(argc, argv);
@@ -93,6 +96,13 @@ static void GTest_Config(int argc, char** argv) {
 static void GTest_Debug(int argc, char** argv) {
     GDebug()->Sep();
     GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+}
+//===============================================
+static void GTest_String(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    char lTrim[256];
+    GString3()->Trim("\n\t\r    Voici ma chaine    ", lTrim);
+    printf(">%s<\n", lTrim);
 }
 //===============================================
 #if defined (__WIN32)

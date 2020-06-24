@@ -1,6 +1,8 @@
 //===============================================
 #include "GDebug.h"
 //===============================================
+typedef int (*GDEBUG_LOG)(char* buffer, int index, void* obj);
+//===============================================
 #if defined(__WIN32)
 #define GDATA_PATH ".readydev\\readyc\\data"
 #define GDEBUG_PATH "debug"
@@ -109,12 +111,19 @@ static void GDebug_Trace(int key, ...) {
         }
         else if(lType == 3) {
             char* lData = va_arg(lArgs, char*);
+            if(lIndex == 38) printf("%d\n", lIndex);
             lIndex += sprintf(&lBuffer[lIndex], "%s", lData);
+            if(lIndex == 38) printf("%d\n", lIndex);
         }
         else if(lType == 30) {
             int lWidth = va_arg(lArgs, int);
             char* lData = va_arg(lArgs, char*);
             lIndex += sprintf(&lBuffer[lIndex], "%*s", lWidth, lData);
+        }
+        else if(lType == 4) {
+            GDEBUG_LOG onLogFunc = (GDEBUG_LOG)va_arg(lArgs, void*);
+            void* lObj = va_arg(lArgs, void*);
+            lIndex += onLogFunc(lBuffer, lIndex, lObj);
         }
 	}
 	va_end(lArgs);

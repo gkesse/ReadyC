@@ -8,13 +8,11 @@ typedef struct _GString3O GString3O;
 //===============================================
 struct _GString3O {
     void (*Delete)();
-    char* (*Copy)(char* str);
-    char* (*Trim)(char* str);
-    char** (*Split)(char* str, char* sep, int* count);
-    void (*ToUpper)(char* str, char* output);
-    void (*ToLower)(char* str, char* output);
-    void (*Free)(char* ptr);
-    void (*Free2)(char** ptr, int size);
+    void (*ToUpper)(const char* strIn, char* strOut);
+    void (*ToLower)(const char* strIn, char* strOut);
+    void (*Trim)(const char* strIn, char* strOut);
+    void (*SplitGet)(const char* strIn, char* strOut, char* sep, int index);
+    int (*SplitCount)(const char* strIn, char* sep);
 };
 //===============================================
 GString3O* GString3_New();
