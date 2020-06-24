@@ -5,8 +5,9 @@
 #define GDATA_PATH ".readydev\\readyc\\data"
 #define GDEBUG_PATH "debug"
 #define GDEBUG_FILE "debug.txt"
+#endif
 //===============================================
-#elif defined(__unix)
+#if defined(__unix)
 #define GDATA_PATH ".readydev/readyc/data"
 #define GDEBUG_PATH "debug"
 #define GDEBUG_FILE "debug.txt"
