@@ -4,189 +4,169 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
-#define GDECLARE_MAP(GPREFIX, GKEY, GVALUE) \
-        typedef struct _GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE; \
-        typedef struct _GMapO_##GPREFIX##_##GKEY##_##GVALUE GMapO_##GPREFIX##_##GKEY##_##GVALUE; \
-        typedef int (*GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE)(GKEY key1, GKEY key2); \
-        typedef void (*GMAP_EQUAL_##GPREFIX##_##GKEY##_##GVALUE)(GKEY key, GVALUE value); \
-        \
-        struct _GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE { \
-            GKEY m_key; \
-            GVALUE m_value; \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* m_next; \
-        }; \
-        \
-        struct _GMapO_##GPREFIX##_##GKEY##_##GVALUE { \
-            void (*Delete)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
-            void (*SetData)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GVALUE value, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
-            GVALUE (*GetData)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
-            void (*Clear)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
-            void (*Remove)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
-            int (*Size)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
-            void (*Show)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GMAP_EQUAL_##GPREFIX##_##GKEY##_##GVALUE show); \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* m_head; \
-        }; \
-        \
-        GMapO_##GPREFIX##_##GKEY##_##GVALUE* GMap_New_##GPREFIX##_##GKEY##_##GVALUE(); \
-        static void GMap_Delete_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
-        static void GMap_Clear_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
-        static void GMap_Remove_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
-        static void GMap_RemoveNode_##GPREFIX##_##GKEY##_##GVALUE(GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* node); \
-        static void GMap_SetData_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GVALUE value, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
-        static GVALUE GMap_GetData_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
-        static int GMap_Size_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
-        static void GMap_Show_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GMAP_EQUAL_##GPREFIX##_##GKEY##_##GVALUE show);
+#define GDECLARE_MAP(GKEY, GVALUE, GTYPE) \
+		typedef struct _GMapNodeO_##GTYPE GMapNodeO_##GTYPE; \
+		typedef struct _GMapO_##GTYPE GMapO_##GTYPE; \
+		typedef int (*GMAP_EQUAL_KEY_##GTYPE)(GKEY key1, GKEY key2); \
+		typedef void (*GMAP_SHOWL_##GTYPE)(GKEY key, GVALUE value); \
+		\
+		struct _GMapNodeO_##GTYPE { \
+			GKEY m_key; \
+			GVALUE m_value; \
+			GMapNodeO_##GTYPE* m_next; \
+		}; \
+		\
+		struct _GMapO_##GTYPE { \
+			void (*Delete)(GMapO_##GTYPE* obj); \
+			void (*SetData)(GMapO_##GTYPE* obj, GKEY key, GVALUE value, GMAP_EQUAL_KEY_##GTYPE equal); \
+			GVALUE (*GetData)(GMapO_##GTYPE* obj, GKEY key, GMAP_EQUAL_KEY_##GTYPE equal); \
+			void (*Clear)(GMapO_##GTYPE* obj); \
+			void (*Remove)(GMapO_##GTYPE* obj, GKEY key, GMAP_EQUAL_KEY_##GTYPE equal); \
+			int (*Size)(GMapO_##GTYPE* obj); \
+			void (*Show)(GMapO_##GTYPE* obj, GMAP_SHOWL_##GTYPE show); \
+			GMapNodeO_##GTYPE* m_head; \
+		}; \
+		\
+		GMapO_##GTYPE* GMap_New_##GTYPE(); \
+		static void GMap_Delete_##GTYPE(GMapO_##GTYPE* obj); \
+		static void GMap_Clear_##GTYPE(GMapO_##GTYPE* obj); \
+		static void GMap_Remove_##GTYPE(GMapO_##GTYPE* obj, GKEY key, GMAP_EQUAL_KEY_##GTYPE equal); \
+		static void GMap_RemoveNode_##GTYPE(GMapNodeO_##GTYPE* node); \
+		static void GMap_SetData_##GTYPE(GMapO_##GTYPE* obj, GKEY key, GVALUE value, GMAP_EQUAL_KEY_##GTYPE equal); \
+		static GVALUE GMap_GetData_##GTYPE(GMapO_##GTYPE* obj, GKEY key, GMAP_EQUAL_KEY_##GTYPE equal); \
+		static int GMap_Size_##GTYPE(GMapO_##GTYPE* obj); \
+		static void GMap_Show_##GTYPE(GMapO_##GTYPE* obj, GMAP_SHOWL_##GTYPE show);
 //===============================================
-#define GDEFINE_MAP(GPREFIX, GKEY, GVALUE) \
-        \
-        GMapO_##GPREFIX##_##GKEY##_##GVALUE* GMap_New_##GPREFIX##_##GKEY##_##GVALUE() { \
-            GMapO_##GPREFIX##_##GKEY##_##GVALUE* lObj = (GMapO_##GPREFIX##_##GKEY##_##GVALUE*)malloc(sizeof(GMapO_##GPREFIX##_##GKEY##_##GVALUE)); \
-            \
-            lObj->Delete = GMap_Delete_##GPREFIX##_##GKEY##_##GVALUE; \
-            lObj->Clear = GMap_Clear_##GPREFIX##_##GKEY##_##GVALUE; \
-            lObj->Remove = GMap_Remove_##GPREFIX##_##GKEY##_##GVALUE; \
-            lObj->SetData = GMap_SetData_##GPREFIX##_##GKEY##_##GVALUE; \
-            lObj->GetData = GMap_GetData_##GPREFIX##_##GKEY##_##GVALUE; \
-            lObj->Size = GMap_Size_##GPREFIX##_##GKEY##_##GVALUE; \
-            lObj->Show = GMap_Show_##GPREFIX##_##GKEY##_##GVALUE; \
-            \
-            lObj->m_head = 0; \
-            return lObj; \
-        } \
-        \
-        static void GMap_Delete_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj) { \
-            if(obj != 0) { \
-                obj->Clear(obj); \
-                free(obj); \
-            } \
-        } \
-        \
-        static void GMap_Clear_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj) { \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lNext = obj->m_head; \
-            while(lNext != 0) { \
-                GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lPrevious = lNext; \
-                lNext = lNext->m_next; \
-                GMap_RemoveNode_##GPREFIX##_##GKEY##_##GVALUE(lPrevious); \
-            } \
-            obj->m_head = 0; \
-        } \
-        \
-        static void GMap_Remove_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal) { \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lNext = obj->m_head; \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lPrevious = 0; \
-            \
-            while(lNext != 0) { \
-                GKEY lKey = lNext->m_key; \
-                int lEqual = FALSE; \
-                if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
-                else lEqual = equal(lKey, key); \
-                if(lEqual == TRUE) { \
-                    if(lPrevious == 0) obj->m_head = lNext->m_next; \
-                    else lPrevious->m_next = lNext->m_next; \
-                    GMap_RemoveNode_##GPREFIX##_##GKEY##_##GVALUE(lNext); \
-                    return; \
-                } \
-                lPrevious = lNext; \
-                lNext = lNext->m_next; \
-            } \
-        } \
-        \
-        static void GMap_RemoveNode_##GPREFIX##_##GKEY##_##GVALUE(GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* node) { \
-            if(node != 0) { \
-                free(node); \
-            } \
-        } \
-        \
-        static void GMap_SetData_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GVALUE value, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal) { \
-            if(obj == 0) {printf("[ GMap ] Error Map None\n");  exit(0);} \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lNext = obj->m_head; \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lPrevious = 0; \
-            \
-            while(lNext != 0) { \
-                GKEY lKey = lNext->m_key; \
-                int lEqual = FALSE; \
-                if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
-                else lEqual = equal(lKey, key); \
-                if(lEqual == TRUE) { \
-                    free(lNext->m_value); \
-                    lNext->m_value = value; \
-                    return; \
-                } \
-                lPrevious = lNext; \
-                lNext = lNext->m_next; \
-            } \
-            \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lNode = (GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE*)malloc(sizeof(GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE)); \
-            lNode->m_key = key; \
-            lNode->m_value = value; \
-            lNode->m_next = 0; \
-            \
-            if(lPrevious == 0) obj->m_head = lNode; \
-            else lPrevious->m_next = lNode; \
-        }\
-        \
-        static GVALUE GMap_GetData_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal) { \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lNext = obj->m_head; \
-            \
-            while(lNext != 0) { \
-                GKEY lKey = lNext->m_key; \
-                GVALUE lValue = lNext->m_value; \
-                int lEqual = FALSE; \
-                if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
-                else lEqual = equal(lKey, key); \
-                if(lEqual == TRUE) return lValue; \
-                lNext = lNext->m_next; \
-            } \
-            return 0; \
-        } \
-        \
-        static int GMap_Size_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj) { \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lNext = obj->m_head; \
-            int lSize = 0; \
-            \
-            while(lNext != 0) { \
-                lSize++; \
-                lNext = lNext->m_next; \
-            } \
-            printf("[ GMap ] Size: %d\n", lSize); \
-            return lSize; \
-        } \
-        \
-        static void GMap_Show_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GMAP_EQUAL_##GPREFIX##_##GKEY##_##GVALUE show) { \
-            GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* lNext = obj->m_head; \
-            \
-            while(lNext != 0) { \
-                GKEY lKey = lNext->m_key; \
-                GVALUE lValue = lNext->m_value; \
-                show(lKey, lValue); \
-                lNext = lNext->m_next; \
-            } \
-        }
+#define GDEFINE_MAP(GKEY, GVALUE, GTYPE) \
+		\
+		GMapO_##GTYPE* GMap_New_##GTYPE() { \
+			GMapO_##GTYPE* lObj = (GMapO_##GTYPE*)malloc(sizeof(GMapO_##GTYPE)); \
+			\
+			lObj->Delete = GMap_Delete_##GTYPE; \
+			lObj->Clear = GMap_Clear_##GTYPE; \
+			lObj->Remove = GMap_Remove_##GTYPE; \
+			lObj->SetData = GMap_SetData_##GTYPE; \
+			lObj->GetData = GMap_GetData_##GTYPE; \
+			lObj->Size = GMap_Size_##GTYPE; \
+			lObj->Show = GMap_Show_##GTYPE; \
+			\
+			lObj->m_head = 0; \
+			return lObj; \
+		} \
+		\
+		static void GMap_Delete_##GTYPE(GMapO_##GTYPE* obj) { \
+			if(obj != 0) { \
+				obj->Clear(obj); \
+				free(obj); \
+			} \
+		} \
+		\
+		static void GMap_Clear_##GTYPE(GMapO_##GTYPE* obj) { \
+			GMapNodeO_##GTYPE* lNext = obj->m_head; \
+			while(lNext != 0) { \
+				GMapNodeO_##GTYPE* lPrevious = lNext; \
+				lNext = lNext->m_next; \
+				GMap_RemoveNode_##GTYPE(lPrevious); \
+			} \
+			obj->m_head = 0; \
+		} \
+		\
+		static void GMap_Remove_##GTYPE(GMapO_##GTYPE* obj, GKEY key, GMAP_EQUAL_KEY_##GTYPE equal) { \
+			GMapNodeO_##GTYPE* lNext = obj->m_head; \
+			GMapNodeO_##GTYPE* lPrevious = 0; \
+			\
+			while(lNext != 0) { \
+				GKEY lKey = lNext->m_key; \
+				int lEqual = FALSE; \
+				if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
+				else lEqual = equal(lKey, key); \
+				if(lEqual == TRUE) { \
+					if(lPrevious == 0) obj->m_head = lNext->m_next; \
+					else lPrevious->m_next = lNext->m_next; \
+					GMap_RemoveNode_##GTYPE(lNext); \
+					return; \
+				} \
+				lPrevious = lNext; \
+				lNext = lNext->m_next; \
+			} \
+		} \
+		\
+		static void GMap_RemoveNode_##GTYPE(GMapNodeO_##GTYPE* node) { \
+			if(node != 0) { \
+				free(node); \
+			} \
+		} \
+		\
+		static void GMap_SetData_##GTYPE(GMapO_##GTYPE* obj, GKEY key, GVALUE value, GMAP_EQUAL_KEY_##GTYPE equal) { \
+			if(obj == 0) {printf("[ GMap ] Error Map None\n");  exit(0);} \
+			GMapNodeO_##GTYPE* lNext = obj->m_head; \
+			GMapNodeO_##GTYPE* lPrevious = 0; \
+			\
+			while(lNext != 0) { \
+				GKEY lKey = lNext->m_key; \
+				BOOL lEqual = FALSE; \
+				if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
+				else lEqual = equal(lKey, key); \
+				if(lEqual == TRUE) { \
+					lNext->m_value = value; \
+					return; \
+				} \
+				lPrevious = lNext; \
+				lNext = lNext->m_next; \
+			} \
+			\
+			GMapNodeO_##GTYPE* lNode = (GMapNodeO_##GTYPE*)malloc(sizeof(GMapNodeO_##GTYPE)); \
+			lNode->m_key = key; \
+			lNode->m_value = value; \
+			lNode->m_next = 0; \
+			\
+			if(lPrevious == 0) obj->m_head = lNode; \
+			else lPrevious->m_next = lNode; \
+		}\
+		\
+		static GVALUE GMap_GetData_##GTYPE(GMapO_##GTYPE* obj, GKEY key, GMAP_EQUAL_KEY_##GTYPE equal) { \
+			GMapNodeO_##GTYPE* lNext = obj->m_head; \
+			\
+			while(lNext != 0) { \
+				GKEY lKey = lNext->m_key; \
+				GVALUE lValue = lNext->m_value; \
+				int lEqual = FALSE; \
+				if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
+				else lEqual = equal(lKey, key); \
+				if(lEqual == TRUE) return lValue; \
+				lNext = lNext->m_next; \
+			} \
+			return 0; \
+		} \
+		\
+		static int GMap_Size_##GTYPE(GMapO_##GTYPE* obj) { \
+			GMapNodeO_##GTYPE* lNext = obj->m_head; \
+			int lSize = 0; \
+			\
+			while(lNext != 0) { \
+				lSize++; \
+				lNext = lNext->m_next; \
+			} \
+			printf("[ GMap ] Size: %d\n", lSize); \
+			return lSize; \
+		} \
+		\
+		static void GMap_Show_##GTYPE(GMapO_##GTYPE* obj, GMAP_SHOWL_##GTYPE show) { \
+			GMapNodeO_##GTYPE* lNext = obj->m_head; \
+			\
+			while(lNext != 0) { \
+				GKEY lKey = lNext->m_key; \
+				GVALUE lValue = lNext->m_value; \
+				show(lKey, lValue); \
+				lNext = lNext->m_next; \
+			} \
+		}
 //===============================================
-#define GMap_New(GPREFIX, GKEY, GVALUE) \
-        GMap_New_##GPREFIX##_##GKEY##_##GVALUE
+#define GMapO(GTYPE) \
+		GMapO_##GTYPE
 //===============================================
-#define GMapO(GPREFIX, GKEY, GVALUE) \
-        GMapO_##GPREFIX##_##GKEY##_##GVALUE
-//===============================================
-#define GMapNodeO(GPREFIX, GKEY, GVALUE) \
-        GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE
-//===============================================
-typedef char* GCHAR_PTR;
-typedef void* GVOID_PTR;
-//===============================================
-static int GMap_EqualChar(char* key1, char* key2);
-static void GMap_ShowChar(char* key, void* value);
-//===============================================
-static int GMap_EqualChar(char* key1, char* key2) {
-    int lStrcmp = strcmp(key1, key2);
-    if(lStrcmp == 0) return TRUE;
-    return FALSE;
-}
-//===============================================
-static void GMap_ShowChar(char* key, void* value) {
-    printf("%s = %s\n", key, (char*)value);
-}
+#define GMapNodeO(GTYPE) \
+		GMapNodeO_##GTYPE
 //===============================================
 #endif
 //===============================================

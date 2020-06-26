@@ -1,24 +1,26 @@
+GRLIB = C:\Users\Admin\Downloads\Programs\ReadyLib\dev
 GSRC = ../code/GProject/src
 GBIN = bin
 GBUILD = build
-GTARGET = $(GBIN)/gp_c.exe
+GTARGET = $(GBIN)/GProject.exe
 
 GINCS = \
     -I$(GSRC)\include \
-    -IC:\Users\Admin\Downloads\Compressed\liuliu-ccv-07fc691\liuliu-ccv-07fc691\lib \
+    -I$(GRLIB)\sqlite\3.29.0\mingw\include \
 
 GLIBS = \
+    -L$(GRLIB)\sqlite\3.29.0\mingw\lib \
+    -lws2_32 -lsqlite3 \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
-    $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c)) \
+    $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c))
 
 GCFLAGS = \
-    -std=gnu11 \
+    -std=c11 \
+    -W -Wall \
 
-all: compile run
-    
-compile: $(GOBJS)
+all: $(GOBJS)
 	@if not exist "$(GBIN)" @mkdir $(GBIN)
 	gcc -o $(GTARGET) $(GOBJS) $(GLIBS) 
 $(GBUILD)/%.o: $(GSRC)/%.c
@@ -27,9 +29,5 @@ $(GBUILD)/%.o: $(GSRC)/%.c
 $(GBUILD)/%.o: $(GSRC)/manager/%.c
 	@if not exist "$(GBUILD)" @mkdir $(GBUILD)
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
-run:
-	@echo.
-	@$(GTARGET) $(argv)
-	@echo.
 clean:
 	del /q $(GBUILD)\*.o $(GBIN)\*.exe

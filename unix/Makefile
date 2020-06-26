@@ -1,34 +1,41 @@
+GRLIB = /home/centos/Programs/ReadyLib/dev
 GSRC = ../code/GProject/src
 GBIN = bin
 GBUILD = build
-GTARGET = $(GBIN)/gp_c
+GTARGET = $(GBIN)/GProject.exe 
 
 GINCS = \
-    -I$(GSRC)/include \
+    -I./data/gsoap/src \
+    -I$(GSRC)/manager \
+    -I$(GRLIB)/sqlite/c/include \
+    -I$(GRLIB)/gsoap/c/include \
+    -I/usr/include/gtk-2.0 -I/usr/lib64/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/libpng15 -I/usr/include/uuid -I/usr/include/pixman-1 -I/usr/include/libdrm \
+    -I/usr/include/dbus-1.0 -I/usr/lib64/dbus-1.0/include \
+    -I/usr/include/mysql \
 
 GLIBS = \
+    -L$(GRLIB)/gsoap/c/unix64/lib \
+    -L./data/gsoap/bin \
+    -L/usr/lib64/mysql \
+    -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgio-2.0 -lpangoft2-1.0 -lpangocairo-1.0 -lgdk_pixbuf-2.0 -lcairo -lpango-1.0 -lfontconfig -lgobject-2.0 -lglib-2.0 -lfreetype -lm \
+    -lsqlite3 -lgsoap -lGSoap2 -ldbus-1 -lmysqlclient -lpthread -lrt -ldl \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c)) \
 
 GCFLAGS = \
-    -std=gnu11 \
-
-all: compile run
- 
-compile: $(GOBJS)
-	@if ! [ -d "$(GBIN)" ] ; then mkdir $(GBIN) ; fi
+    -std=c11 \
+    -Wall 
+    
+all: $(GOBJS)
+	@mkdir -p $(GBIN)
 	gcc -o $(GTARGET) $(GOBJS) $(GLIBS) 
 $(GBUILD)/%.o: $(GSRC)/%.c
-	@if ! [ -d "$(GBUILD)" ] ; then mkdir $(GBUILD) ; fi
+	@mkdir -p $(GBUILD)
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
 $(GBUILD)/%.o: $(GSRC)/manager/%.c
-	@if ! [ -d "$(GBUILD)" ] ; then mkdir $(GBUILD) ; fi
+	@mkdir -p $(GBUILD)
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
-run:
-	@echo
-	@./bin/gp_c $(argv)
-	@echo
 clean:
-	rm -f $(GBUILD)/* $(GBIN)/*
+	rm -f $(GBUILD)/*.o $(GBIN)/*.exe

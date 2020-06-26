@@ -1,22 +1,19 @@
 //===============================================
-#ifndef _GProcess_
-#define _GProcess_
+#ifndef _GProcessFork_
+#define _GProcessFork_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GProcessO GProcessO;
+typedef struct _GProcessForkO GProcessForkO;
 //===============================================
-struct _GProcessO {
-    void* m_child;
+struct _GProcessForkO {
     void (*Delete)();
-    void (*Run)(int argc, char** argv);
-    int (*Fork)();
-    void (*Wait)();
+    void (*Test)(int argc, char** argv);
 };
 //===============================================
-GProcessO* GProcess_New();
-void GProcess_Delete(GProcessO* obj);
-GProcessO* GProcess();
+GProcessForkO* GProcessFork_New();
+void GProcessFork_Delete();
+GProcessForkO* GProcessFork();
 //===============================================
 #endif
 //===============================================

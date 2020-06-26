@@ -1,22 +1,19 @@
 //===============================================
-#ifndef _GProcess_
-#define _GProcess_
+#ifndef _GLog_
+#define _GLog_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GProcessO GProcessO;
+typedef struct _GLogO GLogO;
 //===============================================
-struct _GProcessO {
-    void* m_child;
+struct _GLogO {
     void (*Delete)();
-    void (*Run)(int argc, char** argv);
-    int (*Fork)();
-    void (*Wait)();
+    void (*Test)(int argc, char** argv);
 };
 //===============================================
-GProcessO* GProcess_New();
-void GProcess_Delete(GProcessO* obj);
-GProcessO* GProcess();
+GLogO* GLog_New();
+void GLog_Delete();
+GLogO* GLog();
 //===============================================
 #endif
 //===============================================

@@ -5,9 +5,9 @@
 #include "GInclude.h"
 //===============================================
 typedef struct _GConfigO GConfigO;
-typedef struct _GMapO_GConfig_GCHAR_PTR_GVOID_PTR GMapO_GConfig_GCHAR_PTR_GVOID_PTR;
 //===============================================
 struct _GConfigO {
+    void* m_child;
     void (*Delete)();
     void (*Clear)();
     void (*Remove)(char* key);
@@ -15,11 +15,10 @@ struct _GConfigO {
     char* (*GetData)(char* key);
     int (*Size)();
     void (*Show)();
-    GMapO_GConfig_GCHAR_PTR_GVOID_PTR* m_dataMap;
 };
 //===============================================
 GConfigO* GConfig_New();
-void GConfig_Delete();
+void GConfig_Delete(GConfigO* obj);
 GConfigO* GConfig();
 //===============================================
 #endif

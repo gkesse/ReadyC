@@ -1,6 +1,6 @@
 //===============================================
 #include "GCsv.h"
-#include "GList.h"
+#include "GList2.h"
 #include "GDebug.h"
 //===============================================
 GDECLARE_LIST(GCsv, GVOID_PTR)
