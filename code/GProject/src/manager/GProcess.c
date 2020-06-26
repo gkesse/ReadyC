@@ -1,6 +1,5 @@
 //===============================================
 #include "GProcess.h"
-<<<<<<< HEAD
 #include "GProcessHelp.h"
 #include "GProcessArgTable.h"
 #include "GProcessConsole.h"
@@ -37,10 +36,6 @@
 #include "GProcessAlarmSignal.h"
 #include "GString2.h"
 #include "GConfig.h"
-=======
-#include "GCcv.h"
-#include "GDebug.h"
->>>>>>> c70f04fa4527d8118859c8020c646a2ef7fa40e2
 //===============================================
 static int GProcess_Fork();
 static void GProcess_Wait();
