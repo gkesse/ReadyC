@@ -17,8 +17,11 @@ GOBJS = \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c))
 
 GCFLAGS = \
-    -std=c11 \
+    -std=gnu18 \
     -W -Wall \
+    -Wno-unused-parameter \
+    -Wno-format-overflow \
+    -Wno-unused-function \
 
 all: $(GOBJS)
 	@if not exist "$(GBIN)" @mkdir $(GBIN)

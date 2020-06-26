@@ -34,7 +34,7 @@ static void GSQLite_Finalize(char* dbName);
 static void GSQLite_Close(char* dbName);
 //===============================================
 static void GSQLite_ShowTables(char* dbName);
-static int GSQLite_ShowTablesCallback(void* unused, int rows, char** values, char** fields);
+static int GSQLite_ShowTablesCallback(void* params, int rows, char** values, char** fields);
 //===============================================
 static int GSQLite_MapEqual(char* key1, char* key2);
 //===============================================
@@ -234,8 +234,7 @@ static void GSQLite_ShowTables(char* dbName) {
 			"ORDER BY 1");
 }
 //===============================================
-static int GSQLite_ShowTablesCallback(void* unused, int rows, char** values, char** fields) {
-	unused = 0;
+static int GSQLite_ShowTablesCallback(void* params, int rows, char** values, char** fields) {
 	GConsole()->Print("[ TABLES ]:\n");
 	for(int i = 0; i < rows; i++) {
 		char* lValue = values[i] ? values[i] : "NULL";

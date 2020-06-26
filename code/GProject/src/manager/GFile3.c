@@ -55,7 +55,6 @@ GFileO* GFile() {
 static void GFile_Test(int argc, char** argv) {
     GDebug()->Write(__FUNCTION__, "()", _EOA_);
     char* lFile = "lFile";
-    char lData[256];
 
     int lId = 3;
     
