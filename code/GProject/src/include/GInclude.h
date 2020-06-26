@@ -13,6 +13,7 @@
 #include <time.h>
 #include <stdarg.h>
 //===============================================
+<<<<<<< HEAD
 #include <windows.h>
 #include <process.h>
 #include <winsock2.h>
@@ -29,10 +30,25 @@
 //===============================================
 #define _GNU_SOURCE
 #define _USE_MATH_DEFINES
+=======
+#define _GUSE_CCV_ON_
+//===============================================
+#if defined(_GUSE_CCV_ON_)
+#include <ccv.h>
+#endif
+//===============================================
+#endif
+//===============================================
+#elif defined(__WIN32)
+//===============================================
+#define _D_GNU_SOURCE
+#define _USE_MATH_DEFINES 
+>>>>>>> c70f04fa4527d8118859c8020c646a2ef7fa40e2
 //===============================================
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+<<<<<<< HEAD
 //===============================================
 #include <errno.h>  
 #include <sys/time.h>
@@ -52,12 +68,16 @@
 #include <soapStub.h>
 #include <mysql/mysql.h>
 //===============================================
+=======
+#include <time.h>
+#include <stdarg.h>
+#include <ctype.h>
+>>>>>>> c70f04fa4527d8118859c8020c646a2ef7fa40e2
 #endif
 //===============================================
 #if !defined(TRUE)
 #define FALSE (0)
 #define TRUE (!FALSE)
-#endif
 //===============================================
 #if !defined(BOOL)
 #define BOOL int

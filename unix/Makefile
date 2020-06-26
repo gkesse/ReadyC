@@ -5,6 +5,7 @@ GBUILD = build
 GTARGET = $(GBIN)/GProject.exe 
 
 GINCS = \
+<<<<<<< HEAD
     -I./data/gsoap/src \
     -I$(GSRC)/manager \
     -I$(GRLIB)/sqlite/c/include \
@@ -20,11 +21,20 @@ GLIBS = \
     -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgio-2.0 -lpangoft2-1.0 -lpangocairo-1.0 -lgdk_pixbuf-2.0 -lcairo -lpango-1.0 -lfontconfig -lgobject-2.0 -lglib-2.0 -lfreetype -lm \
     -lsqlite3 -lgsoap -lGSoap2 -ldbus-1 -lmysqlclient -lpthread -lrt -ldl \
 
+=======
+    -I$(GSRC)/include \
+    -I/usr/include/ccv \
+
+GLIBS = \
+    -lccv \
+    
+>>>>>>> c70f04fa4527d8118859c8020c646a2ef7fa40e2
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c)) \
 
 GCFLAGS = \
+<<<<<<< HEAD
     -std=c11 \
     -Wall 
     
@@ -36,6 +46,20 @@ $(GBUILD)/%.o: $(GSRC)/%.c
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
 $(GBUILD)/%.o: $(GSRC)/manager/%.c
 	@mkdir -p $(GBUILD)
+=======
+    -std=gnu11 \
+
+all: compile run
+ 
+compile: $(GOBJS)
+	@if ! [ -d "$(GBIN)" ] ; then mkdir -p $(GBIN) ; fi
+	gcc -o $(GTARGET) $(GOBJS) $(GLIBS) 
+$(GBUILD)/%.o: $(GSRC)/%.c
+	@if ! [ -d "$(GBUILD)" ] ; then mkdir -p $(GBUILD) ; fi
+	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
+$(GBUILD)/%.o: $(GSRC)/manager/%.c
+	@if ! [ -d "$(GBUILD)" ] ; then mkdir -p $(GBUILD) ; fi
+>>>>>>> c70f04fa4527d8118859c8020c646a2ef7fa40e2
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
 clean:
 	rm -f $(GBUILD)/*.o $(GBIN)/*.exe

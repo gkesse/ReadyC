@@ -12,6 +12,7 @@ static GCcvO* m_GCcvO = 0;
 //===============================================
 static void GCcv_Test(int argc, char** argv);
 static void GCcv_CreateMatrix(char* matrixId);
+static void GCcv_LoadImage(char* matrixId, char* filename);
 //===============================================
 GCcvO* GCcv_New() {
 	GDebug()->Write(__FUNCTION__, _EOA_);
@@ -47,6 +48,15 @@ static void GCcv_CreateMatrix(char* matrixId) {
 	GDebug()->Write(__FUNCTION__, _EOA_);
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lMatrixMap = m_GCcvO->m_matrixMap;
     ccv_dense_matrix_t* lMatrix = ccv_dense_matrix_new(20, 14, CCV_32F | CCV_C1, 0, 0);
+    if(lMatrix == 0) {printf("[GCcv] : ERREUR : creation matrice\n"); exit(0);}
+    lMatrixMap->SetData(lMatrixMap, matrixId, lMatrix, GMap_EqualChar);
+}
+//===============================================
+static void GCcv_LoadImage(char* matrixId, char* filename) {
+	GDebug()->Write(__FUNCTION__, _EOA_);
+    GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lMatrixMap = m_GCcvO->m_matrixMap;
+    ccv_dense_matrix_t* lMatrix = 0;
+    ccv_read(filename, &lMatrix, CCV_IO_RGB_COLOR | CCV_IO_ANY_FILE);
     if(lMatrix == 0) {printf("[GCcv] : ERREUR : creation matrice\n"); exit(0);}
     lMatrixMap->SetData(lMatrixMap, matrixId, lMatrix, GMap_EqualChar);
 }
