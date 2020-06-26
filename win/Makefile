@@ -2,7 +2,7 @@ GRLIB = C:\Users\Admin\Downloads\Programs\ReadyLib\dev
 GSRC = ../code/GProject/src
 GBIN = bin
 GBUILD = build
-GTARGET = $(GBIN)/GProject.exe
+GTARGET = $(GBIN)/gz_c.exe
 
 GINCS = \
     -I$(GSRC)\include \
@@ -23,7 +23,9 @@ GCFLAGS = \
     -Wno-format-overflow \
     -Wno-unused-function \
 
-all: $(GOBJS)
+all: clean_exe compile run
+
+compile: $(GOBJS)
 	@if not exist "$(GBIN)" @mkdir $(GBIN)
 	gcc -o $(GTARGET) $(GOBJS) $(GLIBS) 
 $(GBUILD)/%.o: $(GSRC)/%.c
@@ -32,5 +34,11 @@ $(GBUILD)/%.o: $(GSRC)/%.c
 $(GBUILD)/%.o: $(GSRC)/manager/%.c
 	@if not exist "$(GBUILD)" @mkdir $(GBUILD)
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
+run:
+	@echo.
+	@$(GTARGET) $(argv)
+	@echo.
+clean_exe:
+	del /q $(GBIN)\*.exe
 clean:
 	del /q $(GBUILD)\*.o $(GBIN)\*.exe

@@ -1,19 +1,19 @@
 //===============================================
-#ifndef _GProcess_
-#define _GProcess_
+#ifndef _GTest_
+#define _GTest_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GProcessO GProcessO;
+typedef struct _GTestO GTestO;
 //===============================================
-struct _GProcessO {
+struct _GTestO {
     void (*Delete)();
     void (*Run)(int argc, char** argv);
 };
 //===============================================
-GProcessO* GProcess_New();
-void GProcess_Delete();
-GProcessO* GProcess();
+GTestO* GTest_New();
+void GTest_Delete();
+GTestO* GTest();
 //===============================================
 #endif
 //===============================================
