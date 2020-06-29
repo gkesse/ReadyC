@@ -2,7 +2,7 @@ GRLIB = C:\Users\Admin\Downloads\Programs\ReadyLib\dev
 GSRC = ../code/GProject/src
 GBIN = bin
 GBUILD = build
-GTARGET = $(GBIN)/gz_c.exe
+GTARGET = $(GBIN)/gp_c.exe
 
 GINCS = \
     -I$(GSRC)\include \

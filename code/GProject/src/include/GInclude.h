@@ -16,6 +16,7 @@
 #include <windows.h>
 #include <process.h>
 #include <winsock2.h>
+#include <conio.h>
 //===============================================
 #define _GUSE_SQLITE_ON_
 //===============================================
