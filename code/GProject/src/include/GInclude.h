@@ -17,6 +17,8 @@
 #include <process.h>
 #include <winsock2.h>
 #include <conio.h>
+#include <signal.h>
+#include <unistd.h>
 //===============================================
 #define _GUSE_SQLITE_ON_
 //===============================================
@@ -58,10 +60,6 @@
 #if !defined(TRUE)
 #define FALSE (0)
 #define TRUE (!FALSE)
-#endif
-//===============================================
-#if !defined(BOOL)
-#define BOOL int
 #endif
 //===============================================
 typedef unsigned char uchar;

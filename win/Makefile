@@ -10,7 +10,8 @@ GINCS = \
 
 GLIBS = \
     -L$(GRLIB)\sqlite\3.29.0\mingw\lib \
-    -lws2_32 -lsqlite3 \
+    -lsqlite3 \
+    -lws2_32 -lwinmm \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \

@@ -37,7 +37,6 @@ static void GAlarm_Alarm(int sec) {
     m_GAlarmO->m_sec = sec;
 	alarm(sec);
 #endif
-
 }
 //===============================================
 static void GAlarm_Exec() {
