@@ -14,6 +14,7 @@ static GAlarm2O* m_GAlarm2WinO = 0;
 static void GAlarm2Win_Callback(char* alarmId, void* func);
 static void GAlarm2Win_Timer(char* alarmId, int msec);
 static void GAlarm2Win_Start(char* alarmId);
+static void GAlarm2Win_Pause();
 //===============================================
 GAlarm2O* GAlarm2Win_New() {
     GAlarm2O* lParent = GAlarm2_New();
@@ -29,6 +30,7 @@ GAlarm2O* GAlarm2Win_New() {
     lParent->Callback = GAlarm2Win_Callback;
     lParent->Timer = GAlarm2Win_Timer;
     lParent->Start = GAlarm2Win_Start;
+    lParent->Pause = GAlarm2Win_Pause;
     return lParent;
 }
 //===============================================
@@ -61,10 +63,16 @@ static void GAlarm2Win_Start(char* alarmId) {
     GMapO(GAlarm2Win, GCHAR_PTR, GVOID_PTR)* lTimerMap = lChild->m_timerMap;
     GMapO(GAlarm2Win, GCHAR_PTR, GVOID_PTR)* lTimerIdMap = lChild->m_timerIdMap;
     GMapO(GAlarm2Win, GCHAR_PTR, GVOID_PTR)* lCallbackMap = lChild->m_callbackMap;
-    int lTimer = (int)lCallbackMap->GetData(lTimerMap, alarmId, GMap_EqualChar);
+    int lTimer = (int)lTimerMap->GetData(lTimerMap, alarmId, GMap_EqualChar);
     GALARM_CALLBACK onFunc = (GALARM_CALLBACK)lCallbackMap->GetData(lCallbackMap, alarmId, GMap_EqualChar);
     MMRESULT lTimerId = timeSetEvent(lTimer, 1, (LPTIMECALLBACK)onFunc, 1, TIME_PERIODIC);   
     lTimerIdMap->SetData(lTimerIdMap, alarmId, (void*)lTimerId, GMap_EqualChar);
+}
+//===============================================
+static void GAlarm2Win_Pause() {
+    while(1) {
+        Sleep(1);
+    }
 }
 //===============================================
 #endif
