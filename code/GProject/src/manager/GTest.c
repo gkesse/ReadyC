@@ -3,6 +3,7 @@
 #include "GTestBasic.h"
 #include "GAlarm2.h"
 #include "GBase.h"
+#include "GDebug.h"
 #include "GConfig2.h"
 //===============================================
 static GTestO* m_GTestO = 0;
@@ -12,6 +13,7 @@ static void GTest_Default(int argc, char** argv);
 static void GTest_Alarm(int argc, char** argv);
 static void GTest_Base(int argc, char** argv);
 static void GTest_Config(int argc, char** argv);
+static void GTest_Debug(int argc, char** argv);
 //=============================================== 
 #if defined (__WIN32)
 //===============================================
@@ -50,6 +52,7 @@ static void GTest_Run(int argc, char** argv) {
         if(!strcmp(lKey, "alarm")) {GTest_Alarm(argc, argv); return;}
         if(!strcmp(lKey, "base")) {GTest_Base(argc, argv); return;}
         if(!strcmp(lKey, "config")) {GTest_Config(argc, argv); return;}
+        if(!strcmp(lKey, "debug")) {GTest_Debug(argc, argv); return;}
         break;
     }
     GTest_Default(argc, argv);
@@ -80,6 +83,12 @@ static void GTest_Config(int argc, char** argv) {
     GConfig2()->SetData("email", "gerard.kesse@readydev.com");
     GConfig2()->SetData("password", "12345678");
     GConfig2()->Show();
+}
+//===============================================
+static void GTest_Debug(int argc, char** argv) {
+	printf("%s\n", GDebug()->m_homePath);
+	printf("%s\n", GDebug()->m_debugPath);
+	printf("%s\n", GDebug()->m_filename);
 }
 //===============================================
 #if defined (__WIN32)

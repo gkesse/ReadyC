@@ -10,9 +10,7 @@ typedef struct _GDebugO GDebugO;
 //===============================================
 struct _GDebugO {
     void (*Delete)();
-    void (*Test)(int argc, char** argv);
     void (*Write)(const char* key, ...);
-    void (*Clear)();
     void (*Sep)();
     //===============================================
     char m_homePath[256];

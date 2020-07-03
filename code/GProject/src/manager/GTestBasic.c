@@ -11,6 +11,8 @@ static void GTestBasic_PrintfFormat(int argc, char** argv);
 static void GTestBasic_Scanf(int argc, char** argv);
 static void GTestBasic_Fgets(int argc, char** argv);
 static void GTestBasic_IfElse(int argc, char** argv);
+static void GTestBasic_Tenary(int argc, char** argv);
+static void GTestBasic_SwitchCase(int argc, char** argv);
 static void GTestBasic_For(int argc, char** argv);
 static void GTestBasic_While(int argc, char** argv);
 static void GTestBasic_DoWhile(int argc, char** argv);
@@ -52,6 +54,8 @@ static void GTestBasic_Run(int argc, char** argv) {
         if(!strcmp(lKey, "scanf")) {GTestBasic_Scanf(argc, argv); return;}
         if(!strcmp(lKey, "fgets")) {GTestBasic_Fgets(argc, argv); return;}
         if(!strcmp(lKey, "if_else")) {GTestBasic_IfElse(argc, argv); return;}
+        if(!strcmp(lKey, "tenary")) {GTestBasic_Tenary(argc, argv); return;}
+        if(!strcmp(lKey, "switch_case")) {GTestBasic_SwitchCase(argc, argv); return;}
         if(!strcmp(lKey, "for")) {GTestBasic_For(argc, argv); return;}
         if(!strcmp(lKey, "while")) {GTestBasic_While(argc, argv); return;}
         if(!strcmp(lKey, "do_while")) {GTestBasic_DoWhile(argc, argv); return;}
@@ -116,22 +120,67 @@ static void GTestBasic_Fgets(int argc, char** argv) {
     fgets(lString, 255, stdin);
     printf("\nVous avez saisi :\n");
     printf("%-20s : %s\n", "lString", lString);
-
 }
 //===============================================
 static void GTestBasic_IfElse(int argc, char** argv) {
-    int lMin = 1000;
-    int lMax = 2000;
-    int lInt = 1500;
+    int lMin = 4000;
+    int lMax = 6000;
+    int lVal = 0;
     
-    if(lInt < lMin) {
-        printf("L'entier (%d) est inferieur a (%d)\n", lInt, lMin);
+    for(int i = 0; i < 10; i++) {
+        if(lVal < lMin) {
+            printf("L'entier (%4d) est inferieur a (%d)\n", lVal, lMin);
+        }
+        else if(lVal <= lMax) {
+            printf("L'entier (%4d) est compris entre (%d) et (%d)\n", lVal, lMin, lMax);
+        }
+        else {
+            printf("L'entier (%4d) est superieur a (%d)\n", lVal, lMax);
+        }
+        lVal += 1000;
     }
-    else if(lInt <= lMax) {
-        printf("L'entier (%d) est compris entre (%d) et (%d)\n", lInt, lMin, lMax);
+}
+//===============================================
+static void GTestBasic_Tenary(int argc, char** argv) {
+    char* lVmin = "-5V";
+    char* lVmax = "+5V";
+    float lVref = 0.5;
+    float lVin = 0;
+    
+    for(int i = 0; i < 10; i++) {
+        char* lVt = (lVin >= lVref) ? lVmax : lVmin;
+        printf("Vin : %.1f ; Vt : %s\n", lVin, lVt);
+        lVin += 0.1;
     }
-    else {
-        printf("L'entier (%d) est superieur a (%d)\n", lInt, lMax);
+}
+//===============================================
+static void GTestBasic_SwitchCase(int argc, char** argv) {
+    int lState = 0;
+    int lContinue = 1;
+    
+    while(lContinue) {
+        switch(lState) {
+            case 0:
+                printf("Etat %d : Etat initial\n", lState);
+                lState = 1;
+                break;
+            case 1:
+                printf("Etat %d : Feux vert\n", lState);
+                lState = 2;
+                break;
+            case 2:
+                printf("Etat %d : Feux orange\n", lState);
+                lState = 3;
+                break;
+            case 3:
+                printf("Etat %d : Feux rouge\n", lState);
+                lState = 4;
+                break;
+            default:
+                printf("Etat %d : Etat par defaut\n", lState);
+                lContinue = 0;
+                break;
+        }
     }
 }
 //===============================================
