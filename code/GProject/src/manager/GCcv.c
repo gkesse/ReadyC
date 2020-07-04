@@ -16,7 +16,7 @@ static void GCcv_LoadImage(char* matrixId, char* filename);
 static void GCcv_DetectObject(char* facesId, char* matrixId, char* cascadeId,  char* filename);
 //===============================================
 GCcvO* GCcv_New() {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
 	GCcvO* lObj = (GCcvO*)malloc(sizeof(GCcvO));
     
     lObj->m_matrixMap = GMap_New(GCcv, GCHAR_PTR, GVOID_PTR)();
@@ -30,7 +30,7 @@ GCcvO* GCcv_New() {
 }
 //===============================================
 void GCcv_Delete() {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
 	GCcvO* lObj = GCcv();
 	free(lObj);
 	m_GCcvO = 0;
@@ -44,11 +44,11 @@ GCcvO* GCcv() {
 }
 //===============================================
 static void GCcv_Test(int argc, char** argv) {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GCcv_CreateMatrix(char* matrixId) {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lMatrixMap = m_GCcvO->m_matrixMap;
     ccv_dense_matrix_t* lMatrix = ccv_dense_matrix_new(20, 14, CCV_32F | CCV_C1, 0, 0);
     if(lMatrix == 0) {printf("[GCcv] : ERREUR : creation matrice\n"); exit(0);}
@@ -56,7 +56,7 @@ static void GCcv_CreateMatrix(char* matrixId) {
 }
 //===============================================
 static void GCcv_LoadImage(char* matrixId, char* filename) {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lMatrixMap = m_GCcvO->m_matrixMap;
     ccv_dense_matrix_t* lMatrix = 0;
     ccv_read(filename, &lMatrix, CCV_IO_RGB_COLOR | CCV_IO_ANY_FILE);
@@ -65,7 +65,7 @@ static void GCcv_LoadImage(char* matrixId, char* filename) {
 }
 //===============================================
 static void GCcv_LoadCascade(char* cascadeId, char* filename) {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lCascadeMap = m_GCcvO->m_cascadeMap;
     ccv_scd_classifier_cascade_t* lCascade = ccv_scd_classifier_cascade_read(filename);
     if(lMatrix == 0) {printf("[GCcv] : ERREUR : creation matrice\n"); exit(0);}
@@ -73,7 +73,7 @@ static void GCcv_LoadCascade(char* cascadeId, char* filename) {
 }
 //===============================================
 static void GCcv_DetectObject(char* facesId, char* matrixId, char* cascadeId,  char* filename) {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lFacesMap = m_GCcvO->m_facesMap;
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lMatrixMap = m_GCcvO->m_matrixMap;
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lCascadeMap = m_GCcvO->m_cascadeMap;
@@ -84,7 +84,7 @@ static void GCcv_DetectObject(char* facesId, char* matrixId, char* cascadeId,  c
 }
 //===============================================
 static void GCcv_ShowFaces(char* facesId, char* filename) {
-	GDebug()->Write(__FUNCTION__, _EOA_);
+	GDebug()->Write(1, __FUNCTION__, _EOA_);
     GMapO(GCcv, GCHAR_PTR, GVOID_PTR)* lFacesMap = m_GCcvO->m_facesMap;
     ccv_array_t* lFaces = lFacesMap->GetData(lFacesMap, facesId, GMap_EqualChar);
     int iFaces = lFaces->rnum

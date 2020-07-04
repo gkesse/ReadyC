@@ -4,7 +4,7 @@
 #include "GAlarm2.h"
 #include "GBase.h"
 #include "GDebug.h"
-#include "GConfig2.h"
+#include "GConfig.h"
 //===============================================
 static GTestO* m_GTestO = 0;
 //===============================================
@@ -46,6 +46,7 @@ GTestO* GTest() {
 }
 //===============================================
 static void GTest_Run(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     for(int i = 2; i < argc;) {
         char* lKey = argv[i++];
         if(!strcmp(lKey, "basic")) {GTestBasic()->Run(argc, argv); return;}
@@ -59,10 +60,12 @@ static void GTest_Run(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Default(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     printf("%s\n", __FUNCTION__);
 }
 //===============================================
 static void GTest_Alarm(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     printf("%s\n", __FUNCTION__);
     GAlarm2()->Timer("test", 1000);
     GAlarm2()->Callback("test", GTest_OnAlarm);
@@ -71,6 +74,7 @@ static void GTest_Alarm(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Base(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     int lDecimal;
     char lBinary[256];
     lDecimal = GBase()->FromBinary("11001100");
@@ -79,16 +83,16 @@ static void GTest_Base(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Config(int argc, char** argv) {
-    GConfig2()->SetData("name", "Gerard KESSE");
-    GConfig2()->SetData("email", "gerard.kesse@readydev.com");
-    GConfig2()->SetData("password", "12345678");
-    GConfig2()->Show();
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GConfig()->SetData("name", "Gerard KESSE");
+    GConfig()->SetData("email", "gerard.kesse@readydev.com");
+    GConfig()->SetData("password", "12345678");
+    GConfig()->Show();
 }
 //===============================================
 static void GTest_Debug(int argc, char** argv) {
-	printf("%s\n", GDebug()->m_homePath);
-	printf("%s\n", GDebug()->m_debugPath);
-	printf("%s\n", GDebug()->m_filename);
+    GDebug()->Sep();
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
 }
 //===============================================
 #if defined (__WIN32)

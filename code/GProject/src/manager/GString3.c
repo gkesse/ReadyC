@@ -38,7 +38,7 @@ GString3O* GString3() {
 }
 //===============================================
 static char* GString3_Trim(char* str) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     if(str[0] == 0) return 0;
     int lStart = 0;
     int lEnd = strlen(str) - 1;
@@ -60,7 +60,7 @@ static char* GString3_Trim(char* str) {
 }
 //===============================================
 static char* GString3_Copy(char* str) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     int lLength = strlen(str);
     char* lCopy = (char*)malloc(sizeof(char)*(lLength + 1));
     strcpy(lCopy, str);
@@ -68,7 +68,7 @@ static char* GString3_Copy(char* str) {
 }
 //===============================================
 static char** GString3_Split(char* str, char* sep, int* count) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     int lPos = 0;
     int lCount = 0;
     while(str[lPos] != 0) {
@@ -93,7 +93,7 @@ static char** GString3_Split(char* str, char* sep, int* count) {
 }
 //===============================================
 static void GString3_ToUpper(char* str, char* output) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     int lSize = strlen(str);
     for(int i = 0; i < lSize; i ++) {
         output[i] = toupper(str[i]);
@@ -102,7 +102,7 @@ static void GString3_ToUpper(char* str, char* output) {
 }
 //===============================================
 static void GString3_ToLower(char* str, char* output) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     int lSize = strlen(str);
     for(int i = 0; i < lSize; i ++) {
         output[i] = tolower(str[i]);
@@ -111,12 +111,12 @@ static void GString3_ToLower(char* str, char* output) {
 }
 //===============================================
 static void GString3_Free(char* ptr) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     free(ptr);
 }
 //===============================================
 static void GString3_Free2(char** ptr, int size) {
-    GDebug()->Write(__FUNCTION__, "()", _EOA_);
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     for(int i = 0; i < size; i++) {
         free(ptr[i]);
     }
