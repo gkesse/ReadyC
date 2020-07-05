@@ -20,6 +20,15 @@
 #include <conio.h>
 //===============================================
 #define _GUSE_SQLITE_ON_
+#define _GUSE_MYSQL_ON_
+//===============================================
+#if defined(_GUSE_SQLITE_ON_)
+#include <sqlite3.h>
+#endif
+//===============================================
+#if defined(_GUSE_MYSQL_ON_)
+#include <mysql/mysql.h>
+#endif
 //===============================================
 #if defined(_GUSE_SQLITE_ON_)
 #include <sqlite3.h>

@@ -1,83 +1,70 @@
 //===============================================
 #include "GSQLite.h"
-#include "GConsole.h"
+#include "GMap2.h"
+#include "GDir2.h"
 //===============================================
 #if defined(_GUSE_SQLITE_ON_)
 //===============================================
-typedef char* GCHAR_PTR;
-typedef sqlite3* GSQLITE_PTR;
-typedef sqlite3_stmt* GSQLITE_STMT_PTR;
+GDECLARE_MAP(GSQLite, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GSQLite, GCHAR_PTR, GVOID_PTR)
 //===============================================
-GDECLARE_MAP(GCHAR_PTR, GSQLITE_PTR, GSQLite_GCHAR_PTR_GSQLITE_PTR)
-GDEFINE_MAP(GCHAR_PTR, GSQLITE_PTR, GSQLite_GCHAR_PTR_GSQLITE_PTR)
-GDECLARE_MAP(GCHAR_PTR, GSQLITE_STMT_PTR, GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)
-GDEFINE_MAP(GCHAR_PTR, GSQLITE_STMT_PTR, GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)
+typedef int (*GSQLITE_EXEC)(void* params, int rows, char** values, char** fields);
 //===============================================
-static GDatabaseO* m_GSQLiteO = 0;
+static GSQLiteO* m_GSQLiteO = 0;
 //===============================================
 static void GSQLite_Version();
-static void GSQLite_Open(char* dbName, char* path);
-static void GSQLite_Exec(char* dbName, GSQLITE_CALLBACK_EXEC callback, char* sql);
-static int GSQLite_LastId(char* dbName);
-static void GSQLite_PrepareV2(char* dbName, char* sql);
-static void GSQLite_BindInt(char* dbName, char* sql, int index, int value);
-static void GSQLite_BindParameterIndexInt(char* dbName, char* parameterIndex, int value);
-static void GSQLite_BindBold(char* dbName, int index, void* data, int size);
-static int GSQLite_Step(char* dbName);
-static const uchar* GSQLite_ColumnText(char* dbName, int index);
-static int GSQLite_ColumnBytes(char* dbName, int index);
-static const void* GSQLite_ColumnBold(char* dbName, int index);
-static void GSQLite_GetAutocommit(char* dbName);
-static void GSQLite_Error(char* dbName);
-static void GSQLite_Free();
-static void GSQLite_Finalize(char* dbName);
-static void GSQLite_Close(char* dbName);
+static void GSQLite_Open(char* dbId, char* path);
+static void GSQLite_Exec(char* dbId, GSQLITE_EXEC onExec, void* params, char* sqlQuery);
+static int GSQLite_LastId(char* dbId);
+static void GSQLite_PrepareV2(char* dbId, char* sqlQuery);
+static void GSQLite_BindInt(char* dbId, char* sqlQuery, int index, int value);
+static void GSQLite_BindParameterIndexInt(char* dbId, char* parameterIndex, int value);
+static void GSQLite_BindBold(char* dbId, int index, void* data, int size);
+static int GSQLite_Step(char* dbId);
+static const uchar* GSQLite_ColumnText(char* dbId, int index);
+static int GSQLite_ColumnBytes(char* dbId, int index);
+static const void* GSQLite_ColumnBold(char* dbId, int index);
+static void GSQLite_GetAutocommit(char* dbId);
+static void GSQLite_Finalize(char* dbId);
+static void GSQLite_Close(char* dbId);
 //===============================================
-static void GSQLite_ShowTables(char* dbName);
+static void GSQLite_ShowTables(char* dbId);
 static int GSQLite_ShowTablesCallback(void* params, int rows, char** values, char** fields);
 //===============================================
-static int GSQLite_MapEqual(char* key1, char* key2);
-//===============================================
-GDatabaseO* GSQLite_New() {
-	GDatabaseO* lParent = GDatabase_New();
-	GSQLiteO* lChild = (GSQLiteO*)malloc(sizeof(GSQLiteO));
+GSQLiteO* GSQLite_New() {
+	GSQLiteO* lObj = (GSQLiteO*)malloc(sizeof(GSQLiteO));
 
-	lChild->m_parent = lParent;
-	lChild->m_dbMap = GMap_New_GSQLite_GCHAR_PTR_GSQLITE_PTR();
-	lChild->m_error = 0;
-	lChild->m_lastId = -1;
-	lChild->m_bytes = -1;
+    lObj->m_dbMap = GMap_New(GSQLite, GCHAR_PTR, GVOID_PTR)();
+    lObj->m_stmtMap = GMap_New(GSQLite, GCHAR_PTR, GVOID_PTR)();
 
-	lParent->m_child = lChild;
-	lParent->Delete = GSQLite_Delete;
-	lParent->Version = GSQLite_Version;
-	lParent->Open = GSQLite_Open;
-	lParent->Exec = GSQLite_Exec;
-	lParent->LastId = GSQLite_LastId;
-	lParent->PrepareV2 = GSQLite_PrepareV2;
-	lParent->BindInt = GSQLite_BindInt;
-	lParent->BindParameterIndexInt = GSQLite_BindParameterIndexInt;
-	lParent->BindBold = GSQLite_BindBold;
-	lParent->Step = GSQLite_Step;
-	lParent->ColumnText = GSQLite_ColumnText;
-	lParent->ColumnBytes = GSQLite_ColumnBytes;
-	lParent->ColumnBold = GSQLite_ColumnBold;
-	lParent->GetAutocommit = GSQLite_GetAutocommit;
-	lParent->Error = GSQLite_Error;
-	lParent->Free = GSQLite_Free;
-	lParent->Finalize = GSQLite_Finalize;
-	lParent->Close = GSQLite_Close;
-	//
-	lParent->ShowTables = GSQLite_ShowTables;
-	return lParent;
+	lObj->Delete = GSQLite_Delete;
+	lObj->Version = GSQLite_Version;
+	lObj->Open = GSQLite_Open;
+	lObj->Exec = GSQLite_Exec;
+	lObj->LastId = GSQLite_LastId;
+	lObj->PrepareV2 = GSQLite_PrepareV2;
+	lObj->BindInt = GSQLite_BindInt;
+	lObj->BindParameterIndexInt = GSQLite_BindParameterIndexInt;
+	lObj->BindBold = GSQLite_BindBold;
+	lObj->Step = GSQLite_Step;
+	lObj->ColumnText = GSQLite_ColumnText;
+	lObj->ColumnBytes = GSQLite_ColumnBytes;
+	lObj->ColumnBold = GSQLite_ColumnBold;
+	lObj->GetAutocommit = GSQLite_GetAutocommit;
+	lObj->Finalize = GSQLite_Finalize;
+	lObj->Close = GSQLite_Close;
+	return lObj;
 }
 //===============================================
 void GSQLite_Delete() {
-	GDatabase_Delete(m_GSQLiteO);
-	m_GSQLiteO = 0;
+    GSQLiteO* lObj = GSQLite();
+    if(lObj != 0) {
+        free(lObj);
+    }
+    m_GSQLiteO = 0;
 }
 //===============================================
-GDatabaseO* GSQLite() {
+GSQLiteO* GSQLite() {
 	if(m_GSQLiteO == 0) {
 		m_GSQLiteO = GSQLite_New();
 	}
@@ -86,168 +73,142 @@ GDatabaseO* GSQLite() {
 //===============================================
 static void GSQLite_Version() {
 	const char* lVersion = sqlite3_libversion();
-	GConsole()->Print("[ SQLITE ] Version: %s\n", lVersion);
+	printf("[GSQLite] SQLite Version : %s\n", lVersion);
 }
 //===============================================
-static void GSQLite_Open(char* dbName, char* path) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	sqlite3* lDb;
-	int lOk = sqlite3_open(path, &lDb);
-	if(lOk != SQLITE_OK) {GConsole()->Print("[ SQLITE ] Error GSQLite_Open\n"); exit(1);}
-	lDbMap->SetData(lDbMap, dbName, lDb, GSQLite_MapEqual);
+static void GSQLite_Open(char* dbId, char* path) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	char lPath[256];
+    GDir2()->PathC(path, lPath);
+    sqlite3* lDb;
+	int lOk = sqlite3_open(lPath, &lDb);
+	if(lOk != SQLITE_OK) {printf("[GSQLite] Erreur ouverture : %s\n", lPath); exit(0);}
+	lDbMap->SetData(lDbMap, dbId, lDb, GMap_EqualChar);
 }
 //===============================================
-static void GSQLite_Exec(char* dbName, GSQLITE_CALLBACK_EXEC callback, char* sql) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
-	char** lError = &lSQLite->m_error;
-	int lOk = sqlite3_exec(lDb, sql, callback, 0, lError);
-	if(lOk != SQLITE_OK) {GConsole()->Print("[ SQLITE ] Error GSQLite_Exec: %s\n", *lError); exit(1);}
+static void GSQLite_Exec(char* dbId, GSQLITE_EXEC onExec, void* params, char* sqlQuery) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
+    char* lError;
+	int lOk = sqlite3_exec(lDb, sqlQuery, onExec, params, &lError);
+	if(lOk != SQLITE_OK) {printf("[GSQLite] Erreur execution : %s\n", lError); exit(0);}
 }
 //===============================================
-static int GSQLite_LastId(char* dbName) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
+static int GSQLite_LastId(char* dbId) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
 	int lLastId = sqlite3_last_insert_rowid(lDb);
 	return lLastId;
 }
 //===============================================
-static void GSQLite_PrepareV2(char* dbName, char* sql) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
+static void GSQLite_PrepareV2(char* dbId, char* sqlQuery) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
 	sqlite3_stmt* lStmt;
-	int lOk = sqlite3_prepare_v2(lDb, sql, -1, &lStmt, 0);
-	if(lOk != SQLITE_OK) {GConsole()->Print("[ SQLITE ] Error GSQLite_PrepareV2: %s\n", sqlite3_errmsg(lDb)); exit(1); }
-	lStmtMap->SetData(lStmtMap, dbName, lStmt, GSQLite_MapEqual);
+	int lOk = sqlite3_prepare_v2(lDb, sqlQuery, -1, &lStmt, 0);
+	if(lOk != SQLITE_OK) {printf("[GSQLite] Error GSQLite_PrepareV2: %s\n", sqlite3_errmsg(lDb)); exit(0); }
+	lStmtMap->SetData(lStmtMap, dbId, lStmt, GMap_EqualChar);
 }
 //===============================================
-static void GSQLite_BindInt(char* dbName, char* sql, int index, int value) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
+static void GSQLite_BindInt(char* dbId, char* sqlQuery, int index, int value) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
 	int lOk = sqlite3_bind_int(lStmt, index, value);
-	if(lOk != SQLITE_OK) {GConsole()->Print("[ SQLITE ] Error GSQLite_BindInt: %s\n", sqlite3_errmsg(lDb)); exit(1); }
+	if(lOk != SQLITE_OK) {printf("[GSQLite] Error GSQLite_BindInt: %s\n", sqlite3_errmsg(lDb)); exit(0); }
 }
 //===============================================
-static void GSQLite_BindParameterIndexInt(char* dbName, char* parameterIndex, int value) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
+static void GSQLite_BindParameterIndexInt(char* dbId, char* parameterIndex, int value) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
 	int lIndex = sqlite3_bind_parameter_index(lStmt, parameterIndex);
 	int lOk = sqlite3_bind_int(lStmt, lIndex, value);
-	if(lOk != SQLITE_OK) {GConsole()->Print("[ SQLITE ] Error GSQLite_BindParameterIndexInt: %s\n", sqlite3_errmsg(lDb)); exit(1); }
+	if(lOk != SQLITE_OK) {printf("[GSQLite] Error GSQLite_BindParameterIndexInt: %s\n", sqlite3_errmsg(lDb)); exit(0); }
 }
 //===============================================
-static void GSQLite_BindBold(char* dbName, int index, void* data, int size) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
+static void GSQLite_BindBold(char* dbId, int index, void* data, int size) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
 	int lOk = sqlite3_bind_blob(lStmt, index, data, size, SQLITE_STATIC);
-	if(lOk != SQLITE_OK) {GConsole()->Print("[ SQLITE ] Error GSQLite_BindBold: %s\n", sqlite3_errmsg(lDb)); exit(1); }
+	if(lOk != SQLITE_OK) {printf("[GSQLite] Error GSQLite_BindBold: %s\n", sqlite3_errmsg(lDb)); exit(0); }
 }
 //===============================================
-static int GSQLite_Step(char* dbName) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
+static int GSQLite_Step(char* dbId) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
 	int lOk = sqlite3_step(lStmt);
 	return lOk;
 }
 //===============================================
-static const uchar* GSQLite_ColumnText(char* dbName, int index) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
+static const uchar* GSQLite_ColumnText(char* dbId, int index) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
 	const uchar* lText = sqlite3_column_text(lStmt, index);
 	return lText;
 }
 //===============================================
-static int GSQLite_ColumnBytes(char* dbName, int index) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
-	int* lBytes = &lSQLite->m_bytes;
-	*lBytes = sqlite3_column_bytes(lStmt, index);
-	return *lBytes;
+static int GSQLite_ColumnBytes(char* dbId, int index) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
+	int lBytes = sqlite3_column_bytes(lStmt, index);
+	return lBytes;
 }
 //===============================================
-static const void* GSQLite_ColumnBold(char* dbName, int index) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
+static const void* GSQLite_ColumnBold(char* dbId, int index) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
 	const void* lData = sqlite3_column_blob(lStmt, index);
 	return lData;
 }
 //===============================================
-static void GSQLite_GetAutocommit(char* dbName) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
+static void GSQLite_GetAutocommit(char* dbId) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
 	int lAutocommit = sqlite3_get_autocommit(lDb);
-	GConsole()->Print("[ SQLITE ] GetAutocommit: %s\n", lAutocommit);
+	printf("[GSQLite] GetAutocommit: %s\n", lAutocommit);
 }
 //===============================================
-static void GSQLite_Error(char* dbName) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
+static void GSQLite_Error(char* dbId) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
 	const char* lError = sqlite3_errmsg(lDb);
-	GConsole()->Print("[ SQLITE ] Error GSQLite_Error: %s\n", lError);
+	printf("[GSQLite] Error GSQLite_Error: %s\n", lError);
 }
 //===============================================
-static void GSQLite_Free() {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	char* lError = lSQLite->m_error;
-	sqlite3_free(lError);
-}
-//===============================================
-static void GSQLite_Finalize(char* dbName) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_STMT_PTR)* lStmtMap = lSQLite->m_stmtMap;
-	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbName, GSQLite_MapEqual);
+static void GSQLite_Finalize(char* dbId) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lStmtMap = m_GSQLiteO->m_stmtMap;
+	sqlite3_stmt* lStmt = lStmtMap->GetData(lStmtMap, dbId, GMap_EqualChar);
 	sqlite3_finalize(lStmt);
 }
 //===============================================
-static void GSQLite_Close(char* dbName) {
-	GSQLiteO* lSQLite = m_GSQLiteO->m_child;
-	GMapO(GSQLite_GCHAR_PTR_GSQLITE_PTR)* lDbMap = lSQLite->m_dbMap;
-	sqlite3* lDb = lDbMap->GetData(lDbMap, dbName, GSQLite_MapEqual);
+static void GSQLite_Close(char* dbId) {
+	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
+	sqlite3* lDb = lDbMap->GetData(lDbMap, dbId, GMap_EqualChar);
 	int lOk = sqlite3_close(lDb);
-	if(lOk != SQLITE_OK) GConsole()->Print("[ SQLITE ] Error GSQLite_Close\n");
+	if(lOk != SQLITE_OK) printf("[GSQLite] Error GSQLite_Close\n");
 }
 //===============================================
-static void GSQLite_ShowTables(char* dbName) {
-	m_GSQLiteO->Exec(dbName, GSQLite_ShowTablesCallback,
+static void GSQLite_ShowTables(char* dbId) {
+	m_GSQLiteO->Exec(dbId, GSQLite_ShowTablesCallback, 0,
 			"SELECT name FROM sqlite_master "
 			"WHERE type = 'table' "
 			"ORDER BY 1");
 }
 //===============================================
 static int GSQLite_ShowTablesCallback(void* params, int rows, char** values, char** fields) {
-	GConsole()->Print("[ TABLES ]:\n");
+	printf("[ TABLES ]:\n");
 	for(int i = 0; i < rows; i++) {
 		char* lValue = values[i] ? values[i] : "NULL";
-		GConsole()->Print("- %s\n", lValue);
+		printf("- %s\n", lValue);
 	}
-	GConsole()->Print("\n");
+	printf("\n");
 	return 0;
-}
-//===============================================
-static int GSQLite_MapEqual(char* key1, char* key2) {
-	int lStrcmp = strcmp(key1, key2);
-	if(lStrcmp == 0) return TRUE;
-	return FALSE;
 }
 //===============================================
 #endif

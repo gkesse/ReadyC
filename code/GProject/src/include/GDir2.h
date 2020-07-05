@@ -8,7 +8,10 @@ typedef struct _GDir2O GDir2O;
 //===============================================
 struct _GDir2O {
 	void (*Delete)();
-	void (*Path)(char* pathIn, char* pathOut);
+	void (*Path)(const char* pathIn, char* pathOut);
+	void (*PathC)(const char* pathIn, char* pathOut);
+	void (*Name)(const char* pathIn, char* pathOut);
+	void (*Create)(const char* pathIn);
     //===============================================
     char m_dataPath[256];
 };

@@ -1,5 +1,6 @@
 //===============================================
 #include "GDir2.h"
+#include "GString3.h"
 #include "GShell.h"
 #include "GDebug.h"
 //===============================================
@@ -13,7 +14,10 @@
 //===============================================
 static GDir2O* m_GDir2O = 0;
 //===============================================
-static void GDir2_Path(char* pathIn, char* pathOut);
+static void GDir2_Path(const char* pathIn, char* pathOut);
+static void GDir2_PathC(const char* pathIn, char* pathOut);
+static void GDir2_Name(const char* pathIn, char* pathOut);
+static void GDir2_Create(const char* pathIn);
 //===============================================
 static void GDir2_DataPath(GDir2O* obj);
 //===============================================
@@ -32,6 +36,9 @@ GDir2O* GDir2_New() {
 
     lObj->Delete = GDir2_Delete;
     lObj->Path = GDir2_Path;
+    lObj->PathC = GDir2_PathC;
+    lObj->Name = GDir2_Name;
+    lObj->Create = GDir2_Create;
     return lObj;
 }
 //===============================================
@@ -50,9 +57,43 @@ GDir2O* GDir2() {
     return m_GDir2O;
 }
 //===============================================
-static void GDir2_Path(char* pathIn, char* pathOut) {
+static void GDir2_Path(const char* pathIn, char* pathOut) {
     GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     sprintf(pathOut, "%s/%s", m_GDir2O->m_dataPath, pathIn);
+#if defined(__WIN32)
+    GString3()->Replace(pathOut, pathOut, "/", "\\");
+#endif
+}
+//===============================================
+static void GDir2_PathC(const char* pathIn, char* pathOut) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    char lPath[256];
+    sprintf(pathOut, "%s/%s", m_GDir2O->m_dataPath, pathIn);
+#if defined(__WIN32)
+    GString3()->Replace(pathOut, pathOut, "/", "\\");
+#endif
+    GDir2_Name(pathOut, lPath);
+    GDir2_Create(lPath);   
+}
+//===============================================
+static void GDir2_Name(const char* pathIn, char* pathOut) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    char lCommand[256], lOutput[256];
+    sprintf(lCommand, "dirname \"%s\"", pathIn);
+    GShell()->Run(lCommand, lOutput, 255, 1);
+    sprintf(pathOut, "%s", lOutput);
+}
+//===============================================
+static void GDir2_Create(const char* pathIn) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    char lCommand[256], lOutput[256];
+#if defined(__WIN32)
+    sprintf(lCommand, "if not exist \"%s\" ( mkdir \"%s\" )", pathIn, pathIn);
+#endif
+#if defined(__unix)
+    sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", obj->m_dataPath, obj->m_dataPath);
+#endif
+    GShell()->Run(lCommand, 0, 0, 0);
 }
 //===============================================
 static void GDir2_DataPath(GDir2O* obj) {
@@ -72,15 +113,11 @@ static void GDir2_DataPathWin(GDir2O* obj) {
     int lBytes;
     
     sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
-    lpFile = popen(lCommand, "r");
-    lBytes = fread(lHomePath, 1, 255, lpFile);
-    lHomePath[lBytes - 1] = 0;
-    pclose(lpFile);
+    GShell()->Run(lCommand, lHomePath, 255, 1);
     
     sprintf(obj->m_dataPath, "%s\\%s", lHomePath, GDATA_PATH);
     sprintf(lCommand, "if not exist \"%s\" ( mkdir \"%s\" )", obj->m_dataPath, obj->m_dataPath);
-    lpFile = popen(lCommand, "r");
-    pclose(lpFile);
+    GShell()->Run(lCommand, 0, 0, 0);
 }
 #endif
 //===============================================
@@ -92,15 +129,11 @@ static void GDir2_DataPathUnix(GDir2O* obj) {
     int lBytes;
     
     sprintf(lCommand, "%s", "echo $HOME");
-    lpFile = popen(lCommand, "r");
-    lBytes = fread(lHomePath, 1, 255, lpFile);
-    lHomePath[lBytes - 1] = 0;
-    pclose(lpFile);
+    GShell()->Run(lCommand, lHomePath, 255, 1);
     
     sprintf(obj->m_dataPath, "%s/%s", lHomePath, GDATA_PATH);
     sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", obj->m_dataPath, obj->m_dataPath);
-    lpFile = popen(lCommand, "r");
-    pclose(lpFile);
+    GShell()->Run(lCommand, 0, 0, 0);
 }
 #endif
 //===============================================

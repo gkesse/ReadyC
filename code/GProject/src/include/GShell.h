@@ -8,7 +8,6 @@ typedef struct _GShellO GShellO;
 //===============================================
 struct _GShellO {
 	void (*Delete)();
-	void (*Test)(int argc, char** argv);
     void (*Run)(const char* command, char* output, int size, int shift);
 };
 //===============================================
