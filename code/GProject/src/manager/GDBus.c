@@ -1,32 +1,11 @@
 //===============================================
 #include "GDBus.h"
-#include "GConsole.h"
+#include "GMap2.h"
 //===============================================
 #if defined(_GUSE_DBUS_ON_)
 //===============================================
-#if defined(__unix)
-typedef char* GCHAR_PTR;
-typedef DBusConnection* GDBUSCONNECTION_PTR;
-typedef DBusMessage* GDBUSMESSAGE_PTR;
-typedef DBusError* GDBUSERROR_PTR;
-typedef DBusPendingCall* GDBUSPENDINGCALL_PTR;
-typedef DBusMessageIter* GDBUSMESSAGEITR_PTR;
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GDBUSCONNECTION_PTR, GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)
-GDEFINE_MAP(GCHAR_PTR, GDBUSCONNECTION_PTR, GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GDBUSMESSAGE_PTR, GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)
-GDEFINE_MAP(GCHAR_PTR, GDBUSMESSAGE_PTR, GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GDBUSERROR_PTR, GDBus_GCHAR_PTR_GDBUSERROR_PTR)
-GDEFINE_MAP(GCHAR_PTR, GDBUSERROR_PTR, GDBus_GCHAR_PTR_GDBUSERROR_PTR)
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GDBUSPENDINGCALL_PTR, GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)
-GDEFINE_MAP(GCHAR_PTR, GDBUSPENDINGCALL_PTR, GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GDBUSMESSAGEITR_PTR, GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR)
-GDEFINE_MAP(GCHAR_PTR, GDBUSMESSAGEITR_PTR, GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR)
-#endif
+GDECLARE_MAP(GDBus, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GDBus, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static GDBusO* m_GDBusO = 0;
 //===============================================
@@ -54,19 +33,13 @@ static void GDBus_NewError(char* messageName, char* errorName, char* type, char*
 static void GDBus_ReleaseName(char* connName, char* busName, char* errorName);
 static void GDBus_FreeError(char* errorName);
 //===============================================
-#if defined(__unix)
-static int GDBus_MapEqual(char* key1, char* key2);
-#endif
-//===============================================
 GDBusO* GDBus_New() {
 	GDBusO* lObj = (GDBusO*)malloc(sizeof(GDBusO));
 
-#if defined(__unix)
-	lObj->m_connMap = GMap_New_GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR();
-	lObj->m_messageMap = GMap_New_GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR();
-	lObj->m_errorMap = GMap_New_GDBus_GCHAR_PTR_GDBUSERROR_PTR();
-	lObj->m_pendingMap = GMap_New_GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR();
-#endif
+	lObj->m_connMap = GMap_New(GDBus, GCHAR_PTR, GVOID_PTR)();
+	lObj->m_messageMap = GMap_New(GDBus, GCHAR_PTR, GVOID_PTR)();
+	lObj->m_errorMap = GMap_New(GDBus, GCHAR_PTR, GVOID_PTR)();
+	lObj->m_pendingMap = GMap_New(GDBus, GCHAR_PTR, GVOID_PTR)();
 
 	lObj->Delete = GDBus_Delete;
 	lObj->MallocError = GDBus_MallocError;
@@ -111,249 +84,195 @@ GDBusO* GDBus() {
 }
 //===============================================
 static void GDBus_MallocError(char* errorName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lErrorMap = m_GDBusO->m_errorMap;
 	DBusError* lError = (DBusError*)malloc(sizeof(DBusError));
-	if(lError == 0) {GConsole()->Print("[ GDBus ] Error GDBus_MallocError\n"); exit(0);}
-	lErrorMap->SetData(lErrorMap, errorName, lError, GDBus_MapEqual);
-#endif
+	if(lError == 0) {printf("[GDBus] Error GDBus_MallocError\n"); exit(0);}
+	lErrorMap->SetData(lErrorMap, errorName, lError, GMap_EqualChar);
 }
 //===============================================
 static void GDBus_MallocIterator(char* iteratorName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR)* lIteratorMap = m_GDBusO->m_iteratorMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lIteratorMap = m_GDBusO->m_iteratorMap;
 	DBusMessageIter* lIterator = (DBusMessageIter*)malloc(sizeof(DBusMessageIter));
-	if(lIterator == 0) {GConsole()->Print("[ GDBus ] Error GDBus_MallocError\n"); exit(0);}
-	lIteratorMap->SetData(lIteratorMap, iteratorName, lIterator, GDBus_MapEqual);
-#endif
+	if(lIterator == 0) {printf("[GDBus] Error GDBus_MallocError\n"); exit(0);}
+	lIteratorMap->SetData(lIteratorMap, iteratorName, lIterator, GMap_EqualChar);
 }
 //===============================================
 static void GDBus_Init(char* errorName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
-	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lErrorMap = m_GDBusO->m_errorMap;
+	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GMap_EqualChar);
 	dbus_error_init(lError);
 	int lOk = dbus_error_is_set (lError);
-	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_Init: %s\n", lError->message); GDBus_FreeError(errorName);}
-#endif
+	if(lOk == 0) {printf("[GDBus] Error GDBus_Init: %s\n", lError->message); GDBus_FreeError(errorName);}
 }
 //===============================================
 static void GDBus_Connection(char* connName, char* errorName, int type) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
-	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lErrorMap = m_GDBusO->m_errorMap;
+	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GMap_EqualChar);
 	DBusConnection* lConn = dbus_bus_get(type, lError);
 	int lOk = dbus_error_is_set (lError);
-	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_Connection: %s\n", lError->message); GDBus_FreeError(errorName);}
-	if(lConn == 0) {GConsole()->Print("[ GDBus ] Error GDBus_Connection\n"); exit(0);}
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	lConnMap->SetData(lConnMap, connName, lConn, GDBus_MapEqual);
-#endif
+	if(lOk == 0) {printf("[GDBus] Error GDBus_Connection: %s\n", lError->message); GDBus_FreeError(errorName);}
+	if(lConn == 0) {printf("[GDBus] Error GDBus_Connection\n"); exit(0);}
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	lConnMap->SetData(lConnMap, connName, lConn, GMap_EqualChar);
 }
 //===============================================
 static int GDBus_RequestName(char* connName, char* errorName, const char* serverName, int flags) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
-	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
-	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lErrorMap = m_GDBusO->m_errorMap;
+	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GMap_EqualChar);
+	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GMap_EqualChar);
 	int lRes = dbus_bus_request_name (lConn, serverName, flags, lError);
 	int lOk = dbus_error_is_set (lError);
-	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_RequestName: %s\n", lError->message); GDBus_FreeError(errorName);}
+	if(lOk == 0) {printf("[GDBus] Error GDBus_RequestName: %s\n", lError->message); GDBus_FreeError(errorName);}
 	return lRes;
-#endif
 	return 0;
 }
 //===============================================
 static void GDBus_ReadWriteDispatch(char* connName, int timeout) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GMap_EqualChar);
 	int lRes = dbus_connection_read_write_dispatch (lConn, timeout);
-	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_RequestName\n"); exit(0);}
-#endif
+	if(lRes == 0) {printf("[GDBus] Error GDBus_RequestName\n"); exit(0);}
 }
 //===============================================
 static int GDBus_PopMessage(char* connName, char* messageName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GMap_EqualChar);
 	DBusMessage* lMessage = dbus_connection_pop_message (lConn);
-	if(lMessage == 0) {GConsole()->Print("[ GDBus ] Warning GDBus_PopMessage\n"); return 0;}
-	lMessageMap->SetData(lMessageMap, messageName, lMessage, GDBus_MapEqual);
+	if(lMessage == 0) {printf("[GDBus] Warning GDBus_PopMessage\n"); return 0;}
+	lMessageMap->SetData(lMessageMap, messageName, lMessage, GMap_EqualChar);
 	return 1;
-#endif
 	return 0;
 }
 //===============================================
 static int GDBus_IsMethodCall(char* messageName, const char* interfaceName, const char* methodName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GMap_EqualChar);
 	int lRes = dbus_message_is_method_call (lMessage, interfaceName, methodName);
 	return lRes;
-#endif
 	return 0;
 }
 //===============================================
 static void GDBus_NewMethodCall(char* requestName, const char* serverName, const char* objectName, const char* interfaceName, const char* methodName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
 	DBusMessage* lRequest = dbus_message_new_method_call (serverName, objectName, interfaceName, methodName);
-	if(lRequest == 0) {GConsole()->Print("[ GDBus ] Error GDBus_NewMethodCall\n"); exit(0);}
-	lMessageMap->SetData(lMessageMap, requestName, lRequest, GDBus_MapEqual);
-#endif
+	if(lRequest == 0) {printf("[GDBus] Error GDBus_NewMethodCall\n"); exit(0);}
+	lMessageMap->SetData(lMessageMap, requestName, lRequest, GMap_EqualChar);
 }
 //===============================================
 static void GDBus_GetMessageArgs(char* messageName, char* errorName, int type, char** message) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
-	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GDBus_MapEqual);
-	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lErrorMap = m_GDBusO->m_errorMap;
+	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GMap_EqualChar);
+	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GMap_EqualChar);
 	int lRes = dbus_message_get_args(lMessage, lError, type, message, DBUS_TYPE_INVALID);
 	int lOk = dbus_error_is_set (lError);
-	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_GetMessageArgs: %s\n", lError->message); GDBus_FreeError(errorName); exit(0);}
-	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_GetMessageArgs\n"); exit(0);}
-#endif
+	if(lOk == 0) {printf("[GDBus] Error GDBus_GetMessageArgs: %s\n", lError->message); GDBus_FreeError(errorName); exit(0);}
+	if(lRes == 0) {printf("[GDBus] Error GDBus_GetMessageArgs\n"); exit(0);}
 }
 //===============================================
 static void GDBus_NewMethodReturn(char* messageName, char* replyName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GMap_EqualChar);
 	DBusMessage* lReply = dbus_message_new_method_return (lMessage);
-	if(lReply == 0) {GConsole()->Print("[ GDBus ] Error GDBus_NewMethodReturn\n"); exit(0);}
-	lMessageMap->SetData(lMessageMap, replyName, lReply, GDBus_MapEqual);
-#endif
+	if(lReply == 0) {printf("[GDBus] Error GDBus_NewMethodReturn\n"); exit(0);}
+	lMessageMap->SetData(lMessageMap, replyName, lReply, GMap_EqualChar);
 }
 //===============================================
 static void GDBus_IterInitAppend(char* replyName, char* iteratorName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR)* lIteratorMap = m_GDBusO->m_iteratorMap;
-	DBusMessage* lReply = lMessageMap->GetData(lMessageMap, replyName, GDBus_MapEqual);
-	DBusMessageIter* lIterator = lIteratorMap->GetData(lIteratorMap, iteratorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lIteratorMap = m_GDBusO->m_iteratorMap;
+	DBusMessage* lReply = lMessageMap->GetData(lMessageMap, replyName, GMap_EqualChar);
+	DBusMessageIter* lIterator = lIteratorMap->GetData(lIteratorMap, iteratorName, GMap_EqualChar);
 	dbus_message_iter_init_append (lReply, lIterator);
-#endif
 }
 //===============================================
 static void GDBus_IterInitAppendBasic(char* iteratorName, int type, char** message) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR)* lIteratorMap = m_GDBusO->m_iteratorMap;
-	DBusMessageIter* lIterator = lIteratorMap->GetData(lIteratorMap, iteratorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lIteratorMap = m_GDBusO->m_iteratorMap;
+	DBusMessageIter* lIterator = lIteratorMap->GetData(lIteratorMap, iteratorName, GMap_EqualChar);
 	int lRes = dbus_message_iter_append_basic (lIterator, type, message);
-	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_IterInitAppendBasic\n"); exit(0);}
-#endif
+	if(lRes == 0) {printf("[GDBus] Error GDBus_IterInitAppendBasic\n"); exit(0);}
 }
 //===============================================
 static void GDBus_SendConnection(char* connName, char* sendName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
-	DBusMessage* lSend = lMessageMap->GetData(lMessageMap, sendName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GMap_EqualChar);
+	DBusMessage* lSend = lMessageMap->GetData(lMessageMap, sendName, GMap_EqualChar);
 	int lRes = dbus_connection_send (lConn, lSend, 0);
-	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_Send\n"); exit(0);}
-#endif
+	if(lRes == 0) {printf("[GDBus] Error GDBus_Send\n"); exit(0);}
 }
 //===============================================
 static void GDBus_SendWithReply(char* connName, char* sendName, char* pendingName, int timeout) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
-	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
-	DBusMessage* lSend = lMessageMap->GetData(lMessageMap, sendName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
+	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GMap_EqualChar);
+	DBusMessage* lSend = lMessageMap->GetData(lMessageMap, sendName, GMap_EqualChar);
 	DBusPendingCall* lPendingCall;
 	int lRes = dbus_connection_send_with_reply (lConn, lSend, &lPendingCall, timeout);
-	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_SendWithReply\n"); exit(0);}
-	if(lPendingCall == 0) {GConsole()->Print("[ GDBus ] Error GDBus_SendWithReply\n"); exit(0);}
-	lPendingMap->SetData(lPendingMap, pendingName, lPendingCall, GDBus_MapEqual);
-#endif
+	if(lRes == 0) {printf("[GDBus] Error GDBus_SendWithReply\n"); exit(0);}
+	if(lPendingCall == 0) {printf("[GDBus] Error GDBus_SendWithReply\n"); exit(0);}
+	lPendingMap->SetData(lPendingMap, pendingName, lPendingCall, GMap_EqualChar);
 }
 //===============================================
 static void GDBus_PendingCallBlock(char* pendingName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
-	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
+	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GMap_EqualChar);
     dbus_pending_call_block (lPendingCall);
-#endif
 }
 //===============================================
 static void GDBus_PendingCallStealReply(char* pendingName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
-	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
+	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GMap_EqualChar);
     DBusMessage* lReply = dbus_pending_call_steal_reply (lPendingCall);
-	if(lReply == 0) {GConsole()->Print("[ GDBus ] Error GDBus_PendingCallStealReply\n"); exit(0);}
-#endif
+	if(lReply == 0) {printf("[GDBus] Error GDBus_PendingCallStealReply\n"); exit(0);}
 }
 //===============================================
 static void GDBus_FFlushConnection(char* connName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GMap_EqualChar);
 	dbus_connection_flush(lConn);
-#endif
 }
 //===============================================
 static void GDBus_UnrefMessage(char* replyName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	DBusMessage* lReply = lMessageMap->GetData(lMessageMap, replyName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	DBusMessage* lReply = lMessageMap->GetData(lMessageMap, replyName, GMap_EqualChar);
 	dbus_message_unref (lReply);
-#endif
 }
 //===============================================
 static void GDBus_UnrefPendingCall(char* pendingName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
-	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lPendingMap = m_GDBusO->m_pendingMap;
+	DBusPendingCall* lPendingCall = lPendingMap->GetData(lPendingMap, pendingName, GMap_EqualChar);
 	dbus_pending_call_unref(lPendingCall);
-#endif
 }
 //===============================================
 static void GDBus_NewError(char* messageName, char* errorName, char* type, char* message) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* lMessageMap = m_GDBusO->m_messageMap;
-	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lMessageMap = m_GDBusO->m_messageMap;
+	DBusMessage* lMessage = lMessageMap->GetData(lMessageMap, messageName, GMap_EqualChar);
 	DBusMessage* lError = dbus_message_new_error (lMessage, type, message);
-	if(lError == 0) {GConsole()->Print("[ GDBus ] Error GDBus_NewError\n"); exit(0);}
-	lMessageMap->SetData(lMessageMap, errorName, lError, GDBus_MapEqual);
-#endif
+	if(lError == 0) {printf("[GDBus] Error GDBus_NewError\n"); exit(0);}
+	lMessageMap->SetData(lMessageMap, errorName, lError, GMap_EqualChar);
 }
 //===============================================
 static void GDBus_ReleaseName(char* connName, char* busName, char* errorName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* lConnMap = m_GDBusO->m_connMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
-	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GDBus_MapEqual);
-	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lConnMap = m_GDBusO->m_connMap;
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lErrorMap = m_GDBusO->m_errorMap;
+	DBusConnection* lConn = lConnMap->GetData(lConnMap, connName, GMap_EqualChar);
+	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GMap_EqualChar);
 	int lRes = dbus_bus_release_name(lConn, busName, lError);
 	int lOk = dbus_error_is_set (lError);
-	if(lOk == 0) {GConsole()->Print("[ GDBus ] Error GDBus_ReleaseName: %s\n", lError->message); GDBus_FreeError(errorName); exit(0);}
-	if(lRes == 0) {GConsole()->Print("[ GDBus ] Error GDBus_ReleaseName\n"); exit(0);}
-#endif
+	if(lOk == 0) {printf("[GDBus] Error GDBus_ReleaseName: %s\n", lError->message); GDBus_FreeError(errorName); exit(0);}
+	if(lRes == 0) {printf("[GDBus] Error GDBus_ReleaseName\n"); exit(0);}
 }
 //===============================================
 static void GDBus_FreeError(char* errorName) {
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* lErrorMap = m_GDBusO->m_errorMap;
-	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GDBus_MapEqual);
+	GMapO(GDBus, GCHAR_PTR, GVOID_PTR)* lErrorMap = m_GDBusO->m_errorMap;
+	DBusError* lError = lErrorMap->GetData(lErrorMap, errorName, GMap_EqualChar);
 	dbus_error_free (lError);
 	free(lError);
-#endif
 }
-//===============================================
-#if defined(__unix)
-static int GDBus_MapEqual(char* key1, char* key2) {
-	int lStrcmp = strcmp(key1, key2);
-	if(lStrcmp == 0) return TRUE;
-	return FALSE;
-}
-#endif
 //===============================================
 #endif
 //===============================================

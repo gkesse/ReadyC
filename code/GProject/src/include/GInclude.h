@@ -57,8 +57,8 @@
 #include <sys/socket.h>
 //===============================================
 #define _GUSE_GTK_ON_0
-#define _GUSE_GSOAP_ON_0
-#define _GUSE_DBUS_ON_0
+#define _GUSE_GSOAP_ON_
+#define _GUSE_DBUS_ON_
 #define _GUSE_SQLITE_ON_
 #define _GUSE_MYSQL_ON_
 //===============================================

@@ -5,11 +5,14 @@ GTARGET = $(GBIN)/gp_c
 
 GINCS = \
     -I$(GSRC)/include \
+    -I/mingw64/include \
     -I/mingw64/include/mariadb \
+    -I/mingw64/include/dbus-1.0 \
+    -I/mingw64/lib/dbus-1.0/include \
 
 GLIBS = \
     -L/mingw64/lib \
-    -lsqlite3 -lmysqlclient \
+    -lsqlite3 -lmysqlclient -ldbus-1 -lgsoap \
     
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
@@ -18,6 +21,7 @@ GOBJS = \
 GCFLAGS = \
     -std=gnu18 \
     -W -Wall \
+    -DWITH_DOM \
     
 all: clean_exe compile run
  

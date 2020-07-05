@@ -7,11 +7,7 @@
 #if defined(_GUSE_DBUS_ON_)
 //===============================================
 typedef struct _GDBusO GDBusO;
-typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR GMapO_GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR;
-typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR;
-typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSERROR_PTR GMapO_GDBus_GCHAR_PTR_GDBUSERROR_PTR;
-typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR GMapO_GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR;
-typedef struct _GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR GMapO_GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR;
+typedef struct _GMapO_GDBus_GCHAR_PTR_GVOID_PTR GMapO_GDBus_GCHAR_PTR_GVOID_PTR;
 //===============================================
 struct _GDBusO {
 	void (*Delete)();
@@ -38,13 +34,12 @@ struct _GDBusO {
 	void (*NewError)(char* messageName, char* errorName, char* type, char* message);
 	void (*ReleaseName)(char* connName, char* busName, char* errorName);
 	void (*FreeError)(char* errorName);
-#if defined(__unix)
-	GMapO(GDBus_GCHAR_PTR_GDBUSCONNECTION_PTR)* m_connMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGE_PTR)* m_messageMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSERROR_PTR)* m_errorMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSPENDINGCALL_PTR)* m_pendingMap;
-	GMapO(GDBus_GCHAR_PTR_GDBUSMESSAGEITR_PTR)* m_iteratorMap;
-#endif
+    //===============================================
+	GMapO_GDBus_GCHAR_PTR_GVOID_PTR* m_connMap;
+	GMapO_GDBus_GCHAR_PTR_GVOID_PTR* m_messageMap;
+	GMapO_GDBus_GCHAR_PTR_GVOID_PTR* m_errorMap;
+	GMapO_GDBus_GCHAR_PTR_GVOID_PTR* m_pendingMap;
+	GMapO_GDBus_GCHAR_PTR_GVOID_PTR* m_iteratorMap;
 };
 //===============================================
 GDBusO* GDBus_New();

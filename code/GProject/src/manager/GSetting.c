@@ -1,6 +1,6 @@
 //===============================================
 #include "GSetting.h"
-#include "GFile2.h"
+#include "GFile3.h"
 #include "GString2.h"
 #include "GConfig.h"
 //===============================================
@@ -29,7 +29,7 @@ GSettingO* GSetting() {
 }
 //===============================================
 static void GSetting_Load(char* file) {
-	GFile2()->Exist(file);
+	GFile3()->Exist(file);
     FILE* lFile = fopen(file, "r");
     char lBuffer[100];
 
