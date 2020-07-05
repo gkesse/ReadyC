@@ -1,10 +1,8 @@
 //===============================================
 #ifndef _GInclude_
 #define _GInclude_
- //===============================================
-#if defined(__WIN32)
 //===============================================
-#define G_PLATEFORM_OS "WINDOWS"
+#if defined(__WIN32)
 //===============================================
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,8 +34,6 @@
 //===============================================
 #elif defined(__unix)
 //===============================================
-#define G_PLATEFORM_OS "UNIX"
-//===============================================
 #define _GNU_SOURCE
 #define _USE_MATH_DEFINES
 //===============================================
@@ -64,7 +60,7 @@
 #define _GUSE_GSOAP_ON_0
 #define _GUSE_DBUS_ON_0
 #define _GUSE_SQLITE_ON_
-#define _GUSE_MYSQL_ON_0
+#define _GUSE_MYSQL_ON_
 //===============================================
 #if defined(_GUSE_GTK_ON_)
 #include <gtk/gtk.h>
@@ -84,7 +80,7 @@
 #endif
 //===============================================
 #if defined(_GUSE_MYSQL_ON_)
-#include <mysql/mysql.h>
+#include <mysql.h>
 #endif
 //===============================================
 #endif

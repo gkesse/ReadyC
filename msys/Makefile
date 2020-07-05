@@ -5,9 +5,12 @@ GTARGET = $(GBIN)/gp_c
 
 GINCS = \
     -I$(GSRC)/include \
+    -I/mingw64/include/mariadb \
 
 GLIBS = \
-
+    -L/mingw64/lib \
+    -lsqlite3 -lmysqlclient \
+    
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c)) \

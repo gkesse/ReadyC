@@ -75,7 +75,7 @@ GMySQLO* GMySQL() {
 }
 //===============================================
 static void GMySQL_MallocRow(char* rowName) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLROW_PTR)* lRowMap = m_GMySQLO->m_rowMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lRowMap = m_GMySQLO->m_rowMap;
 	MYSQL_ROW* lRow = (MYSQL_ROW*)malloc(sizeof(MYSQL_ROW));
 	if(lRow == 0) {printf("[GMySQL] Error  GMySQL_MallocRow\n"); exit(0);}
 	lRowMap->SetData(lRowMap, rowName, lRow, GMap_EqualChar);
@@ -116,7 +116,7 @@ static void GMySQL_Query(char* mysqlId, char* sqlQuery) {
 //===============================================
 static void GMySQL_UseResult(char* mysqlId, char* resultName) {
 	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lMysqlMap = m_GMySQLO->m_mysqlMap;
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLRES_PTR)* lResultMap = m_GMySQLO->m_resultMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lResultMap = m_GMySQLO->m_resultMap;
 	MYSQL* lMysql = lMysqlMap->GetData(lMysqlMap, mysqlId, GMap_EqualChar);
 	MYSQL_RES* lResult = mysql_use_result(lMysql);
 	if(lResult == 0) {printf("[GMySQL] Error  GMySQL_Query: %s\n", mysql_error(lMysql)); exit(0);}
@@ -124,7 +124,7 @@ static void GMySQL_UseResult(char* mysqlId, char* resultName) {
 }
 //===============================================
 static int GMySQL_NumFields(char* resultName) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLRES_PTR)* lResultMap = m_GMySQLO->m_resultMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lResultMap = m_GMySQLO->m_resultMap;
 	MYSQL_RES* lResult = lResultMap->GetData(lResultMap, resultName, GMap_EqualChar);
 	int lNumFields = mysql_num_fields(lResult);
 	return lNumFields;
@@ -132,8 +132,8 @@ static int GMySQL_NumFields(char* resultName) {
 }
 //===============================================
 static int GMySQL_FetchRow(char* resultName, char* rowName) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLRES_PTR)* lResultMap = m_GMySQLO->m_resultMap;
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLROW_PTR)* lRowMap = m_GMySQLO->m_rowMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lResultMap = m_GMySQLO->m_resultMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lRowMap = m_GMySQLO->m_rowMap;
 	MYSQL_RES* lResult = lResultMap->GetData(lResultMap, resultName, GMap_EqualChar);
 	MYSQL_ROW* lRow = lRowMap->GetData(lRowMap, rowName, GMap_EqualChar);
 	*lRow = mysql_fetch_row(lResult);
@@ -144,15 +144,15 @@ static int GMySQL_FetchRow(char* resultName, char* rowName) {
 }
 //===============================================
 static void GMySQL_FetchLengths(char* resultName, char* lengthName) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLRES_PTR)* lResultMap = m_GMySQLO->m_resultMap;
-	GMapO(GMySQL_GCHAR_PTR_GULINT_PTR)* lLengthMap = m_GMySQLO->m_lengthMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lResultMap = m_GMySQLO->m_resultMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lLengthMap = m_GMySQLO->m_lengthMap;
 	MYSQL_RES* lResult = lResultMap->GetData(lResultMap, resultName, GMap_EqualChar);
 	ulint* lLength = mysql_fetch_lengths(lResult);
 	lLengthMap->SetData(lLengthMap, lengthName, lLength, GMap_EqualChar);
 }
 //===============================================
 static char* GMySQL_GetRow(char* rowName, int index) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLROW_PTR)* lRowMap = m_GMySQLO->m_rowMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lRowMap = m_GMySQLO->m_rowMap;
 	MYSQL_ROW* lRow = lRowMap->GetData(lRowMap, rowName, GMap_EqualChar);
 	char* lRowIndex = (*lRow)[index];
 	return lRowIndex;
@@ -160,7 +160,7 @@ static char* GMySQL_GetRow(char* rowName, int index) {
 }
 //===============================================
 static ulint GMySQL_GetLength(char* lengthName, int index) {
-	GMapO(GMySQL_GCHAR_PTR_GULINT_PTR)* lLengthMap = m_GMySQLO->m_lengthMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lLengthMap = m_GMySQLO->m_lengthMap;
 	ulint* lLength = lLengthMap->GetData(lLengthMap, lengthName, GMap_EqualChar);
 	uint lLengthIndex = lLength[index];
 	return lLengthIndex;
@@ -174,19 +174,19 @@ static void GMySQL_Close(char* mysqlId) {
 }
 //===============================================
 static void GMySQL_FreeResult(char* resultName) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLRES_PTR)* lResultMap = m_GMySQLO->m_resultMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lResultMap = m_GMySQLO->m_resultMap;
 	MYSQL_RES* lResult = lResultMap->GetData(lResultMap, resultName, GMap_EqualChar);
 	mysql_free_result(lResult);
 }
 //===============================================
 static void GMySQL_FreeRow(char* rowName) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLROW_PTR)* lRowMap = m_GMySQLO->m_rowMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lRowMap = m_GMySQLO->m_rowMap;
 	MYSQL_ROW* lRow = lRowMap->GetData(lRowMap, rowName, GMap_EqualChar);
 	free(lRow);
 }
 //===============================================
 static void GMySQL_DeleteRowMap(char* rowName) {
-	GMapO(GMySQL_GCHAR_PTR_GMYSQLROW_PTR)* lRowMap = m_GMySQLO->m_rowMap;
+	GMapO(GMySQL, GCHAR_PTR, GVOID_PTR)* lRowMap = m_GMySQLO->m_rowMap;
 	lRowMap->Delete(lRowMap);
 }
 //===============================================
@@ -205,12 +205,6 @@ static void GMySQL_QueryPrint(char* mysqlId, char* resultName, char* rowName, ch
 		}
 		printf("\n");
 	}
-}
-///===============================================
-static int GMap_EqualChar(char* key1, char* key2) {
-	int lStrcmp = strcmp(key1, key2);
-	if(lStrcmp == 0) return TRUE;
-	return FALSE;
 }
 //===============================================
 #endif

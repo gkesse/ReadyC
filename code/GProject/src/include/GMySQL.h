@@ -31,8 +31,8 @@ struct _GMySQLO {
     //===============================================
     GMapO_GMySQL_GCHAR_PTR_GVOID_PTR* m_mysqlMap;
     GMapO_GMySQL_GCHAR_PTR_GVOID_PTR* m_resultMap;
-    GMapO(GMySQL_GCHAR_PTR_GVOIDROW_PTR)* m_rowMap;
-    GMapO(GMySQL_GCHAR_PTR_GULINT_PTR)* m_lengthMap;
+    GMapO_GMySQL_GCHAR_PTR_GVOID_PTR* m_rowMap;
+    GMapO_GMySQL_GCHAR_PTR_GVOID_PTR* m_lengthMap;
 };
 //===============================================
 GMySQLO* GMySQL_New();

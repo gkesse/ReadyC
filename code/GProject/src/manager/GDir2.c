@@ -91,7 +91,7 @@ static void GDir2_Create(const char* pathIn) {
     sprintf(lCommand, "if not exist \"%s\" ( mkdir \"%s\" )", pathIn, pathIn);
 #endif
 #if defined(__unix)
-    sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", obj->m_dataPath, obj->m_dataPath);
+    sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", pathIn, pathIn);
 #endif
     GShell()->Run(lCommand, 0, 0, 0);
 }

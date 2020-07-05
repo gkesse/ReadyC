@@ -21,8 +21,11 @@ void GThread2_Delete(GThread2O* obj) {
 }
 //===============================================
 GThread2O* GThread2() {
+#if 0
     //if(GString2()->IsEqual(G_PLATEFORM_OS, "WINDOWS")) return GThread2Windows();
     if(GString2()->IsEqual(G_PLATEFORM_OS, "UNIX")) return GThread2Unix();
     return GThread2Unix();
+#endif
+    return 0;
 }
 //===============================================
