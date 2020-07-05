@@ -1,25 +1,23 @@
 //===============================================
-#ifndef _GClock_
-#define _GClock_
+#ifndef _GSQLite2_
+#define _GSQLite2_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GClockO GClockO;
-typedef struct _GMapO_GClock_GCHAR_PTR_GVOID_PTR GMapO_GClock_GCHAR_PTR_GVOID_PTR;
+typedef struct _GSQLite2O GSQLite2O;
+typedef struct _GMapO_GSQLite2_GCHAR_PTR_GVOID_PTR GMapO_GSQLite2_GCHAR_PTR_GVOID_PTR;
 //===============================================
-struct _GClockO {
+struct _GSQLite2O {
     void (*Delete)();
-    void (*Start)(char* clockId);
-    void (*End)(char* clockId);
-    double (*Time)(char* clockId);
+    void (*Version)();
+    void (*Open)(char* dbId, char* path);
     //===============================================
-    GMapO_GClock_GCHAR_PTR_GVOID_PTR* m_startMap; 
-    GMapO_GClock_GCHAR_PTR_GVOID_PTR* m_endMap; 
+    GMapO_GSQLite2_GCHAR_PTR_GVOID_PTR* m_dbMap; 
 };
 //===============================================
-GClockO* GClock_New();
-void GClock_Delete();
-GClockO* GClock();
+GSQLite2O* GSQLite2_New();
+void GSQLite2_Delete();
+GSQLite2O* GSQLite2();
 //===============================================
 #endif
 //===============================================

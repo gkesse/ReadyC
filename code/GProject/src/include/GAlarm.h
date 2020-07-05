@@ -7,14 +7,16 @@
 typedef struct _GAlarmO GAlarmO;
 //===============================================
 struct _GAlarmO {
-    void (*Delete)();
-    void (*Alarm)(int sec);
-    void (*Exec)();
-    int m_sec;
+    void* m_child;
+    void (*Callback)(char* alarmId, void* func);
+    void (*Timer)(char* alarmId, int msec);
+    void (*Start)(char* alarmId);
+    void (*Restart)(char* alarmId);
+    void (*Pause)();
 };
 //===============================================
 GAlarmO* GAlarm_New();
-void GAlarm_Delete();
+void GAlarm_Delete(GAlarmO* obj);
 GAlarmO* GAlarm();
 //===============================================
 #endif

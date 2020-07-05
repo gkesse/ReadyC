@@ -1,49 +1,47 @@
 //===============================================
 #include "GAlarm.h"
+#include "GAlarmWin.h"
+#include "GAlarmUnix.h"
 //===============================================
-static GAlarmO* m_GAlarmO = 0;
-//===============================================
-static void GAlarm_Alarm(int sec);
-static void GAlarm_Exec();
+static void GAlarm_Callback(char* alarmId, void* func);
+static void GAlarm_Timer(char* alarmId, int msec);
+static void GAlarm_Start(char* alarmId);
+static void GAlarm_Restart(char* alarmId);
+static void GAlarm_Pause();
 //===============================================
 GAlarmO* GAlarm_New() {
     GAlarmO* lObj = (GAlarmO*)malloc(sizeof(GAlarmO));
-    
-    lObj->m_sec = 0;
-    
-    lObj->Delete = GAlarm_Delete;
-    lObj->Alarm = GAlarm_Alarm;
-    lObj->Exec = GAlarm_Exec;
+    lObj->m_child = 0;
+    lObj->Callback = GAlarm_Callback;
+    lObj->Timer = GAlarm_Timer;
+    lObj->Start = GAlarm_Start;
+    lObj->Restart = GAlarm_Restart;
+    lObj->Pause = GAlarm_Pause;
     return lObj;
 }
 //===============================================
-void GAlarm_Delete() {
-    GAlarmO* lObj = GAlarm();
-    if(lObj != 0) {
-        free(lObj);
+void GAlarm_Delete(GAlarmO* obj) {
+    if(obj != 0) {
+        if(obj->m_child != 0) {
+            free(obj->m_child);
+        }
+        free(obj);
     }
-    m_GAlarmO = 0;
 }
 //===============================================
 GAlarmO* GAlarm() {
-    if(m_GAlarmO == 0) {
-        m_GAlarmO = GAlarm_New();
-    }
-    return m_GAlarmO;
-}
-//===============================================
-static void GAlarm_Alarm(int sec) {
-#if defined(__unix)
-    m_GAlarmO->m_sec = sec;
-	alarm(sec);
+#if defined(__WIN32)
+    return GAlarmWin();
+#elif defined(__unix)
+    return GAlarmUnix();
 #endif
+    return 0;
 }
 //===============================================
-static void GAlarm_Exec() {
-#if defined(__unix)
-    if(m_GAlarmO->m_sec > 0) {
-        alarm(m_GAlarmO->m_sec);
-    }
-#endif
-}
+static void GAlarm_Callback(char* alarmId, void* func) {}
+static void GAlarm_Timer(char* alarmId, int msec) {}
+static void GAlarm_Start(char* alarmId) {}
+static void GAlarm_Restart(char* alarmId) {}
+static void GAlarm_Pause() {}
 //===============================================
+

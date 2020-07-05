@@ -9,6 +9,7 @@ static void GString3_ToLower(const char* strIn, char* strOut);
 static void GString3_Trim(const char* strIn, char* strOut);
 static void GString3_SplitGet(const char* strIn, char* strOut, char* sep, int index);
 static int GString3_SplitCount(const char* strIn, char* sep);
+static void GString3_Replace(const char* strIn, char* strOut, const char* pattern, const char* replace);
 //===============================================
 GString3O* GString3_New() {
     GString3O* lObj = (GString3O*)malloc(sizeof(GString3O));
@@ -19,6 +20,7 @@ GString3O* GString3_New() {
     lObj->Trim = GString3_Trim;
     lObj->SplitGet = GString3_SplitGet;
     lObj->SplitCount = GString3_SplitCount;
+    lObj->Replace = GString3_Replace;
     return lObj; 
 }
 //===============================================
@@ -85,7 +87,7 @@ static void GString3_Trim(const char* strIn, char* strOut) {
     for(lPos = lLeft; lPos <= lRight; lPos++, lOut++) {
         strOut[lOut] = strIn[lPos];
     }
-    strOut[lPos] = 0;
+    strOut[lOut] = 0;
 }
 //===============================================
 static void GString3_SplitGet(const char* strIn, char* strOut, char* sep, int index) {
@@ -129,5 +131,19 @@ static int GString3_SplitCount(const char* strIn, char* sep) {
     }
     lCount += 1;
     return lCount;
+}
+//===============================================
+static void GString3_Replace(const char* strIn, char* strOut, const char* pattern, const char* replace) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    int lFlag = 0;
+    int lOut = 0;
+    
+    strcpy(strIn, strOut);
+    while(1) {
+        if(lFlag == 0) {
+            char* lPattern = strstr(strIn, pattern);
+            if(lPattern == 0) break;
+        }
+    }
 }
 //===============================================

@@ -60,14 +60,14 @@ static void GFile3_Test(int argc, char** argv) {
     
     if(lId == 1) {
         char lFilePath[256];
-        GDir2()->DataPath("data/file/file.txt", lFilePath);
+        GDir2()->Path("data/file/file.txt", lFilePath);
         GFile3()->Open(lFile, lFilePath, "r");
         GFile3()->Show(lFile);
         GFile3()->Close(lFile);
     }
     else if(lId == 2) {
         char lFilePath[256];
-        GDir2()->DataPath("data/file/file2.txt", lFilePath);
+        GDir2()->Path("data/file/file2.txt", lFilePath);
         GFile3()->Open(lFile, lFilePath, "r");
         GFile3()->GetDataMap(lFile);
         GConfig()->Remove("MY_KEY_03");
@@ -78,7 +78,7 @@ static void GFile3_Test(int argc, char** argv) {
     else if(lId == 3) {
         int lWidth, lHeight; char* lData;
         char lFilePath[256];
-        GDir2()->DataPath("data/file/file3.txt", lFilePath);
+        GDir2()->Path("data/file/file3.txt", lFilePath);
         GFile3()->Open(lFile, lFilePath, "r");
         GFile3()->GetDataCsv(lFile);
         char* lUpdate = "MY_UPDATE";

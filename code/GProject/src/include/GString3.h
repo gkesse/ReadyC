@@ -13,6 +13,7 @@ struct _GString3O {
     void (*Trim)(const char* strIn, char* strOut);
     void (*SplitGet)(const char* strIn, char* strOut, char* sep, int index);
     int (*SplitCount)(const char* strIn, char* sep);
+    void (*Replace)(const char* strIn, char* strOut, const char* pattern, const char* replace);
 };
 //===============================================
 GString3O* GString3_New();

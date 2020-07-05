@@ -6,17 +6,10 @@
 //===============================================
 typedef struct _GDir2O GDir2O;
 //===============================================
-#if defined(__unix)
-#define GDIR_DATA_PATH "/Programs/ReadyC/unix/"
-#elif defined(__WIN32)
-#define GDIR_DATA_PATH ""
-#endif
-//===============================================
 struct _GDir2O {
 	void (*Delete)();
-	void (*Test)(int argc, char** argv);
-	void (*DataPath)(char* path, char* output);
-    char m_homePath[256];
+	void (*Path)(char* pathIn, char* pathOut);
+    //===============================================
     char m_dataPath[256];
 };
 //===============================================

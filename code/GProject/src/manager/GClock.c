@@ -1,18 +1,26 @@
 //===============================================
 #include "GClock.h"
+#include "GMap2.h"
+//===============================================
+GDECLARE_MAP(GClock, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GClock, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static GClockO* m_GClockO = 0;
 //===============================================
-static long GClock_GetClock();
-static long GClock_GetClockPerSec();
-static double GClock_GetSecond(long clock);
+static void GClock_Start(char* clockId);
+static void GClock_End(char* clockId);
+static double GClock_Time(char* clockId);
 //===============================================
 GClockO* GClock_New() {
     GClockO* lObj = (GClockO*)malloc(sizeof(GClockO));
+
+    lObj->m_startMap = GMap_New(GClock, GCHAR_PTR, GVOID_PTR)();
+    lObj->m_endMap = GMap_New(GClock, GCHAR_PTR, GVOID_PTR)();
+
     lObj->Delete = GClock_Delete;
-    lObj->GetClock = GClock_GetClock;
-    lObj->GetClockPerSec = GClock_GetClockPerSec;
-    lObj->GetSecond = GClock_GetSecond;
+    lObj->Start = GClock_Start;
+    lObj->End = GClock_End;
+    lObj->Time = GClock_Time;
     return lObj;
 }
 //===============================================
@@ -31,27 +39,25 @@ GClockO* GClock() {
     return m_GClockO;
 }
 //===============================================
-static long GClock_GetClock() {
-#if defined(__unix)
-    long lClock = clock();
-	return lClock;
-#endif
-	return 0;
+static void GClock_Start(char* clockId) {
+    GMapO(GClock, GCHAR_PTR, GVOID_PTR)* lStartMap = m_GClockO->m_startMap;
+    clock_t lStart = clock();
+    lStartMap->SetData(lStartMap, clockId, (void*)lStart, GMap_EqualChar);
 }
 //===============================================
-static long GClock_GetClockPerSec() {
-#if defined(__unix)
-    long lClockPerSec = CLOCKS_PER_SEC;
-	return lClockPerSec;
-#endif
-	return 0;
+static void GClock_End(char* clockId) {
+    GMapO(GClock, GCHAR_PTR, GVOID_PTR)* lEndMap = m_GClockO->m_endMap;
+    clock_t lEnd = clock();
+    lEndMap->SetData(lEndMap, clockId, (void*)lEnd, GMap_EqualChar);
 }
 //===============================================
-static double GClock_GetSecond(long clockTick) {
-#if defined(__unix)
-    double lSecond = (double)clockTick/CLOCKS_PER_SEC;
-	return lSecond;
-#endif
-	return 0.0;
+static double GClock_Time(char* clockId) {
+    GMapO(GClock, GCHAR_PTR, GVOID_PTR)* lStartMap = m_GClockO->m_startMap;
+    GMapO(GClock, GCHAR_PTR, GVOID_PTR)* lEndMap = m_GClockO->m_endMap;
+    clock_t lStart = (clock_t)lStartMap->GetData(lStartMap, clockId, GMap_EqualChar);
+    clock_t lEnd = (clock_t)lEndMap->GetData(lEndMap, clockId, GMap_EqualChar);
+    clock_t lTicks = lEnd - lStart;
+    double lTime_ms = ((double)lTicks * 1000) / CLOCKS_PER_SEC;
+    return lTime_ms;
 }
 //===============================================

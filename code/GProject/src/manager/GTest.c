@@ -1,10 +1,13 @@
 //===============================================
 #include "GTest.h"
 #include "GTestBasic.h"
-#include "GAlarm2.h"
+#include "GAlarm.h"
 #include "GBase.h"
 #include "GConfig.h"
 #include "GString3.h"
+#include "GClock.h"
+#include "GSQLite2.h"
+#include "GDir2.h"
 #include "GDebug.h"
 //===============================================
 static GTestO* m_GTestO = 0;
@@ -16,6 +19,9 @@ static void GTest_Base(int argc, char** argv);
 static void GTest_Config(int argc, char** argv);
 static void GTest_Debug(int argc, char** argv);
 static void GTest_String(int argc, char** argv);
+static void GTest_Clock(int argc, char** argv);
+static void GTest_SQLite(int argc, char** argv);
+static void GTest_Dir(int argc, char** argv);
 //===============================================
 static int GTest_OnDebug(char* buffer, int index, void* obj);
 //=============================================== 
@@ -47,7 +53,9 @@ GTestO* GTest_New() {
 //===============================================
 void GTest_Delete() {
     GTestO* lObj = GTest();
-    free(lObj);
+    if(lObj != 0) {
+        free(lObj);
+    }
     m_GTestO = 0;
 }
 //===============================================
@@ -68,6 +76,9 @@ static void GTest_Run(int argc, char** argv) {
         if(!strcmp(lKey, "config")) {GTest_Config(argc, argv); return;}
         if(!strcmp(lKey, "debug")) {GTest_Debug(argc, argv); return;}
         if(!strcmp(lKey, "string")) {GTest_String(argc, argv); return;}
+        if(!strcmp(lKey, "clock")) {GTest_Clock(argc, argv); return;}
+        if(!strcmp(lKey, "sqlite")) {GTest_SQLite(argc, argv); return;}
+        if(!strcmp(lKey, "dir")) {GTest_Dir(argc, argv); return;}
         break;
     }
     GTest_Default(argc, argv);
@@ -81,10 +92,10 @@ static void GTest_Default(int argc, char** argv) {
 static void GTest_Alarm(int argc, char** argv) {
     GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
     printf("%s\n", __FUNCTION__);
-    GAlarm2()->Timer("test", 1000);
-    GAlarm2()->Callback("test", GTest_OnAlarm);
-    GAlarm2()->Start("test");
-    GAlarm2()->Pause();
+    GAlarm()->Timer("test", 1000);
+    GAlarm()->Callback("test", GTest_OnAlarm);
+    GAlarm()->Start("test");
+    GAlarm()->Pause();
 }
 //===============================================
 static void GTest_Base(int argc, char** argv) {
@@ -129,9 +140,36 @@ static void GTest_Debug(int argc, char** argv) {
 //===============================================
 static void GTest_String(int argc, char** argv) {
     GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
-    char lTrim[256];
+    char lTrim[256], lReplace[256];
     GString3()->Trim("\n\t\r    Voici ma chaine    ", lTrim);
-    printf(">%s<\n", lTrim);
+    //GString3()->Replace("Bonjour Yao ! Comment vas-tus Yao ?", lReplace, "Yao", "Xavier");
+    printf("lTrim : >%s<\n", lTrim);
+    //printf("lReplace : >%s<\n", lReplace);
+}
+//===============================================
+static void GTest_Clock(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    ulong lDelay = 1000000000;
+    GClock()->Start("clock");
+    for(int i = 0; i< lDelay; i++);
+    GClock()->End("clock");
+    double lTime = GClock()->Time("clock");
+    printf("Temps ecoule : %.0f (ms)\n", lTime);
+    double lTimeFor = (double)(lTime * 1000 * 1000) / lDelay;
+    printf("Temps ecoule (for) : %.2f (ns)\n", lTimeFor);
+}
+//===============================================
+static void GTest_SQLite(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GSQLite2()->Version();
+    GSQLite2()->Open("db", "data/sqlite/db.dat");
+}
+//===============================================
+static void GTest_Dir(int argc, char** argv) {
+    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    char lPath[256];
+    GDir2()->Path("data/sqlite/db.dat", lPath);
+    printf("%s\n", lPath);
 }
 //===============================================
 static int GTest_OnDebug(char* buffer, int index, void* obj) {
@@ -161,7 +199,7 @@ static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw
 //===============================================
 static void GTest_OnAlarm(int sig) {
     printf("%s\n", __FUNCTION__);
-    GAlarm2()->Restart("test");
+    GAlarm()->Restart("test");
 }
 //===============================================
 #endif
