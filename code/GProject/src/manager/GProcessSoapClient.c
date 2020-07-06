@@ -5,7 +5,7 @@
 #include "GSoap.h"
 #include "GConfig.h"
 //===============================================
-#if defined(_GUSE_GSOAP_ON_)
+#if defined(_GUSE_GSOAP_ON_) && 0
 //===============================================
 typedef struct _GSoapMath GSoapMath ;
 //===============================================

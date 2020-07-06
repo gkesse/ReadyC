@@ -1,20 +1,15 @@
 //===============================================
 #include "GSoap.h"
-#include "GConsole.h"
+#include "GMap2.h"
 //===============================================
 #if defined(_GUSE_GSOAP_ON_)
 //===============================================
 #include "soapH.h"
 //===============================================
-typedef char* GCHAR_PTR;
-typedef struct soap* GSOAP_PTR;
-typedef SOAP_SOCKET* GSOAP_SOCKET_PTR;
+typedef void (*GSOAP_FUNC)(void* soap, const char* server, const char* action, void* params);
 //===============================================
-GDECLARE_MAP(GCHAR_PTR, GSOAP_PTR, GSoap_GCHAR_PTR_GSOAP_PTR)
-GDEFINE_MAP(GCHAR_PTR, GSOAP_PTR, GSoap_GCHAR_PTR_GSOAP_PTR)
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GSOAP_SOCKET_PTR, GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)
-GDEFINE_MAP(GCHAR_PTR, GSOAP_SOCKET_PTR, GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)
+GDECLARE_MAP(GSoap, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GSoap, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static GSoapO* m_GSoapO = 0;
 //===============================================
@@ -25,7 +20,7 @@ static void GSoap_Init(char* soapName);
 static void GSoap_Init1(char* soapName, int mode);
 static void GSoap_PrintFault(char* soapName, FILE* stream);
 static void GSoap_Done(char* soapName);
-static void GSoap_CallFunc(char* soapName, const char* server, const char* action, GSOAP_CALL_FUNC callFunc, void* params);
+static void GSoap_CallFunc(char* soapName, const char* server, const char* action, void* onFunc, void* params);
 static void GSoap_Destroy(char* soapName);
 static void GSoap_Serve(char* soapName);
 static void GSoap_Bind(char* soapName, char* socketName, char* host, int port, int backlog);
@@ -38,13 +33,11 @@ static void GSoap_FreeSoap(char* soapName);
 static void GSoap_FreeSocket(char* socketName);
 static void GSoap_Clean();
 //===============================================
-static int GSoap_MapEqual(char* key1, char* key2);
-//===============================================
 GSoapO* GSoap_New() {
     GSoapO* lObj = (GSoapO*)malloc(sizeof(GSoapO));
 
-    lObj->m_soapMap = GMap_New_GSoap_GCHAR_PTR_GSOAP_PTR();
-    lObj->m_socketMap = GMap_New_GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR();
+    lObj->m_soapMap = GMap_New(GSoap, GCHAR_PTR, GVOID_PTR)();
+    lObj->m_socketMap = GMap_New(GSoap, GCHAR_PTR, GVOID_PTR)();
 
     lObj->Delete = GSoap_Delete;
     lObj->Soap = GSoap_Soap;
@@ -85,129 +78,123 @@ GSoapO* GSoap() {
 }
 //===============================================
 static void GSoap_Soap(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
 	struct soap* lSoap = (struct soap*)malloc(sizeof(struct soap));
-	lSoapMap->SetData(lSoapMap, soapName, lSoap, GSoap_MapEqual);
+	lSoapMap->SetData(lSoapMap, soapName, lSoap, GMap_EqualChar);
 }
 //===============================================
 static void GSoap_Socket(char* socketName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* lSocketMap = m_GSoapO->m_socketMap;
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSocketMap = m_GSoapO->m_socketMap;
 	SOAP_SOCKET* lSocket = (SOAP_SOCKET*)malloc(sizeof(SOAP_SOCKET));
-	lSocketMap->SetData(lSocketMap, socketName, lSocket, GSoap_MapEqual);
+	lSocketMap->SetData(lSocketMap, socketName, lSocket, GMap_EqualChar);
 }
 //===============================================
 static void* GSoap_Malloc(char* soapName, int size) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	return soap_malloc(lSoap, size);
 	return 0;
 }
 //===============================================
 static void GSoap_Init(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	soap_init(lSoap);
 }
 //===============================================
 static void GSoap_Init1(char* soapName, int mode) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	soap_init1(lSoap, mode);
 }
 //===============================================
 static void GSoap_PrintFault(char* soapName, FILE* stream) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	soap_print_fault(lSoap, stream);
 }
 //===============================================
 static void GSoap_Done(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	soap_done(lSoap);
 }
 //===============================================
-static void GSoap_CallFunc(char* soapName, const char* server, const char* action, GSOAP_CALL_FUNC callFunc, void* params) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
-	callFunc(lSoap, server, action, params);
+static void GSoap_CallFunc(char* soapName, const char* server, const char* action, void* onFunc, void* params) {
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
+	((GSOAP_FUNC)onFunc)(lSoap, server, action, params);
 }
 //===============================================
 static void GSoap_Destroy(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	soap_destroy(lSoap);
 }
 //===============================================
 static void GSoap_Serve(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	soap_serve(lSoap);
 }
 //===============================================
 static void GSoap_Bind(char* soapName, char* socketName, char* host, int port, int backlog) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* lSocketMap = m_GSoapO->m_socketMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
-	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSocketMap = m_GSoapO->m_socketMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
+	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GMap_EqualChar);
 	*lSocket = soap_bind(lSoap, host, port, backlog);
-	if(soap_valid_socket(*lSocket) == 0) {GConsole()->Print("[ GSoap ] Error GSoap_Bind\n"); soap_print_fault(lSoap, stderr); exit(0);}
+	if(soap_valid_socket(*lSocket) == 0) {printf("[GSoap] Error GSoap_Bind\n"); soap_print_fault(lSoap, stderr); exit(0);}
 }
 //===============================================
 static void GSoap_ValidSocket(char* socketName, char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* lSocketMap = m_GSoapO->m_socketMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
-	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSocketMap = m_GSoapO->m_socketMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
+	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GMap_EqualChar);
 	int lOk = soap_valid_socket(*lSocket);
-	if(lOk == 0) {GConsole()->Print("[ GSoap ] Error GSoap_ValidSocket\n"); soap_print_fault(lSoap, stderr); exit(0);}
+	if(lOk == 0) {printf("[GSoap] Error GSoap_ValidSocket\n"); soap_print_fault(lSoap, stderr); exit(0);}
 }
 //===============================================
 static void GSoap_Accept(char* soapName, char* socketName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* lSocketMap = m_GSoapO->m_socketMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
-	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSocketMap = m_GSoapO->m_socketMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
+	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GMap_EqualChar);
 	*lSocket = soap_accept(lSoap);
-	if(soap_valid_socket(*lSocket) == 0) {GConsole()->Print("[ GSoap ] Error GSoap_Accept\n"); soap_print_fault(lSoap, stderr); exit(0);}
+	if(soap_valid_socket(*lSocket) == 0) {printf("[GSoap] Error GSoap_Accept\n"); soap_print_fault(lSoap, stderr); exit(0);}
 }
 //===============================================
 static void GSoap_End(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	soap_end(lSoap);
 } 
 //===============================================
 static int GSoap_SenderFault(char* soapName, char* faultString, char* faultDetail) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	return soap_sender_fault(lSoap, faultString, faultDetail);
 	return 0;
 }
 //===============================================
 static void GSoap_FreeSoap(char* soapName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	struct soap* lSoap = lSoapMap->GetData(lSoapMap, soapName, GMap_EqualChar);
 	free(lSoap);
 }
 //===============================================
 static void GSoap_FreeSocket(char* socketName) {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* lSocketMap = m_GSoapO->m_socketMap;
-	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GSoap_MapEqual);
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSocketMap = m_GSoapO->m_socketMap;
+	SOAP_SOCKET* lSocket = lSocketMap->GetData(lSocketMap, socketName, GMap_EqualChar);
 	free(lSocket);
 }
 //===============================================
 static void GSoap_Clean() {
-	GMapO(GSoap_GCHAR_PTR_GSOAP_PTR)* lSoapMap = m_GSoapO->m_soapMap;
-	GMapO(GSoap_GCHAR_PTR_GSOAP_SOCKET_PTR)* lSocketMap = m_GSoapO->m_socketMap;
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSoapMap = m_GSoapO->m_soapMap;
+	GMapO(GSoap, GCHAR_PTR, GVOID_PTR)* lSocketMap = m_GSoapO->m_socketMap;
 	lSoapMap->Delete(lSoapMap);
 	lSocketMap->Delete(lSocketMap);
-}
-//===============================================
-static int GSoap_MapEqual(char* key1, char* key2) {
-    int lStrcmp = strcmp(key1, key2);
-    if(lStrcmp == 0) return TRUE;
-    return FALSE;
 }
 //===============================================
 #endif

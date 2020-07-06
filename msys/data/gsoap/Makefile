@@ -2,7 +2,7 @@ GSRV = srv
 GSRC = src
 GBUILD = build
 GBIN = bin
-GTARGET = $(GBIN)/libGSoap2.a
+GTARGET = $(GBIN)/libgsoap2.a
 
 GINCS = \
     -I/mingw64/include \
