@@ -3,16 +3,13 @@
 #define _GThread2Unix_
 //===============================================
 #include "GThread2.h"
-#include "GMap.h"
 //===============================================
 typedef struct _GThread2UnixO GThread2UnixO;
-typedef struct _GMapO_GThread2Unix_GCHAR_PTR_GPTHREADT_PTR GMapO_GThread2Unix_GCHAR_PTR_GPTHREADT_PTR;
+typedef struct _GMapO_GThread2Unix_GCHAR_PTR_GVOID_PTR GMapO_GThread2Unix_GCHAR_PTR_GVOID_PTR;
 //===============================================
 struct _GThread2UnixO {
 	void* m_parent;
-#if defined(__unix)
-	GMapO(GThread2Unix_GCHAR_PTR_GPTHREADT_PTR)* m_threadMap;
-#endif
+	GMapO_GThread2Unix_GCHAR_PTR_GVOID_PTR* m_threadMap;
 };
 //===============================================
 GThread2O* GThread2Unix_New();

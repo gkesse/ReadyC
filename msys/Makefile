@@ -6,15 +6,16 @@ GTARGET = $(GBIN)/gp_c
 GINCS = \
     -I$(GSRC)/include \
     -I./data/gsoap/src \
-    -I/mingw32/include \
-    -I/mingw32/include/mariadb \
-    -I/mingw32/include/dbus-1.0 \
-    -I/mingw32/lib/dbus-1.0/include \
+    -I/mingw64/include \
+    -I/mingw64/include/mariadb \
+    -I/mingw64/include/dbus-1.0 \
+    -I/mingw64/lib/dbus-1.0/include \
 
 GLIBS = \
     -L./data/gsoap/bin \
-    -L/mingw32/lib \
-    -lsqlite3 -lmysqlclient -ldbus-1 -lgsoap -lgsoap2 \
+    -L/mingw64/lib \
+    -lws2_32 -lgsoap2 \
+    -lsqlite3 -lmysqlclient -ldbus-1 -lgsoap \
     
     
 GOBJS = \
@@ -24,6 +25,7 @@ GOBJS = \
 GCFLAGS = \
     -std=gnu18 \
     -W -Wall \
+    -DWITH_NO_C_LOCAL \
     
 all: clean_exe compile run
  

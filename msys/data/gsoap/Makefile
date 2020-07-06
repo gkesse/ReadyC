@@ -12,6 +12,11 @@ GOBJS = \
     $(GBUILD)/soapServer.o \
     $(GBUILD)/soapClient.o \
 
+GCFLAGS = \
+    -std=gnu18 \
+    -W -Wall \
+    -DWITH_NO_C_LOCAL \
+
 all: clean soap_lib
 
 soap_lib: $(GOBJS)
@@ -19,13 +24,13 @@ soap_lib: $(GOBJS)
 	ar rcs $(GTARGET) $(GOBJS)
 $(GBUILD)/soapC.o: $(GSRC)/soapC.c
 	@if ! [ -d "$(GBUILD)" ] ; then mkdir -p $(GBUILD) ; fi
-	gcc -c $(GSRC)/soapC.c -o $(GBUILD)/soapC.o $(GINCS)
+	gcc $(GCFLAGS) -c $(GSRC)/soapC.c -o $(GBUILD)/soapC.o $(GINCS)
 $(GBUILD)/soapServer.o: $(GSRC)/soapServer.c
 	@if ! [ -d "$(GBUILD)" ] ; then mkdir -p $(GBUILD) ; fi
-	gcc -c $(GSRC)/soapServer.c -o $(GBUILD)/soapServer.o $(GINCS)
+	gcc $(GCFLAGS) -c $(GSRC)/soapServer.c -o $(GBUILD)/soapServer.o $(GINCS)
 $(GBUILD)/soapClient.o: $(GSRC)/soapClient.c
 	@if ! [ -d "$(GBUILD)" ] ; then mkdir -p $(GBUILD) ; fi
-	gcc -c $(GSRC)/soapClient.c -o $(GBUILD)/soapClient.o $(GINCS)
+	gcc $(GCFLAGS) -c $(GSRC)/soapClient.c -o $(GBUILD)/soapClient.o $(GINCS)
 $(GSRC)/%.c: $(GSRV)/service.h
 	@if ! [ -d "$(GSRC)" ] ; then mkdir -p $(GSRC) ; fi
 	@soapcpp2 -c -L -d$(GSRC) $(GSRV)/service.h
