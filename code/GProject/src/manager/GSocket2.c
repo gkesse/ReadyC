@@ -1,9 +1,7 @@
 //===============================================
 #include "GSocket2.h"
-#include "GSocket2Windows.h"
+#include "GSocket2Win.h"
 #include "GSocket2Unix.h"
-#include "GString2.h"
-#include "GConfig.h"
 //===============================================
 #if defined(_GUSE_SOCKET_ON_)
 //===============================================
@@ -23,9 +21,13 @@ void GSocket2_Delete(GSocket2O* obj) {
 }
 //===============================================
 GSocket2O* GSocket2() {
-    if(GString2()->IsEqual(G_PLATEFORM_OS, "WINDOWS")) return GSocket2Windows();
-    if(GString2()->IsEqual(G_PLATEFORM_OS, "UNIX")) return GSocket2Unix();
-    return GSocket2Windows();
+#if defined(__unix)
+    return GSocket2Unix();
+#endif
+#if defined(__WIN32)
+    return GSocket2Win();
+#endif
+    return 0;
 }
 //===============================================
 #endif

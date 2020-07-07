@@ -4,16 +4,14 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
-#define _EOA_ "_END_OF_ARG_"
-#define _EOT_ (-1) // _END_OF_TRACE_
+#define _EOA_ (-1) // "_END_OF_ARG_"
 //===============================================
 typedef struct _GDebugO GDebugO;
 //===============================================
 struct _GDebugO {
     void (*Delete)();
     void (*Write)(int key, ...);
-    void (*Trace)(int key, ...);
-    void (*Sep)();
+    void (*Sep)(int key);
     //===============================================
     char m_debugFile[256];
 };

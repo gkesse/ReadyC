@@ -53,7 +53,7 @@ GFile3O* GFile3() {
 } 
 //===============================================
 static void GFile3_Test(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char* lFile = "lFile";
 
     int lId = 3;
@@ -96,14 +96,14 @@ static void GFile3_Test(int argc, char** argv) {
 }
 //===============================================
 static void GFile3_Exist(char* filename) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     FILE* lFile = fopen(filename, "r");
     if(lFile != 0) {printf("erreur: fichier inexistant : %s\n", filename); exit(0);}
     fclose(lFile);
 }
 //===============================================
 static void GFile3_Open(char* fileId, char* filename, char* mode) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GFile3, GCHAR_PTR, GVOID_PTR)* lpFileMap = m_GFile3O->m_pFileMap;
     FILE* lpFile = fopen(filename, mode);
     if(lpFile == 0) {printf("erreur: echec ouverture fichier : %s\n", filename); exit(0);}
@@ -111,7 +111,7 @@ static void GFile3_Open(char* fileId, char* filename, char* mode) {
 }
 //===============================================
 static char* GFile3_GetData(char* fileId) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GFile3, GCHAR_PTR, GVOID_PTR)* lpFileMap = m_GFile3O->m_pFileMap;
     FILE* lpFile = lpFileMap->GetData(lpFileMap, fileId, GMap_EqualChar);
     int lSize = GFile3_Size(fileId);
@@ -122,7 +122,7 @@ static char* GFile3_GetData(char* fileId) {
 }
 //===============================================
 static void GFile3_GetDataMap(char* fileId) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GFile3, GCHAR_PTR, GVOID_PTR)* lpFileMap = m_GFile3O->m_pFileMap;
     FILE* lpFile = lpFileMap->GetData(lpFileMap, fileId, GMap_EqualChar);
     char lLine[256];
@@ -142,7 +142,7 @@ static void GFile3_GetDataMap(char* fileId) {
 }
 //===============================================
 static void GFile3_GetDataCsv(char* fileId) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GFile3, GCHAR_PTR, GVOID_PTR)* lpFileMap = m_GFile3O->m_pFileMap;
     FILE* lpFile = lpFileMap->GetData(lpFileMap, fileId, GMap_EqualChar);
     char lLine[256];
@@ -166,7 +166,7 @@ static void GFile3_GetDataCsv(char* fileId) {
 }
 //===============================================
 static int GFile3_Size(char* fileId) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GFile3, GCHAR_PTR, GVOID_PTR)* lpFileMap = m_GFile3O->m_pFileMap;
     FILE* lpFile = lpFileMap->GetData(lpFileMap, fileId, GMap_EqualChar);
     fseek(lpFile, 0, SEEK_END);
@@ -176,14 +176,14 @@ static int GFile3_Size(char* fileId) {
 }
 //===============================================
 static void GFile3_Show(char* fileId) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char* lData = GFile3_GetData(fileId);
     printf("%s\n", lData);
     free(lData);
 }
 //===============================================
 static void GFile3_Close(char* fileId) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GFile3, GCHAR_PTR, GVOID_PTR)* lpFileMap = m_GFile3O->m_pFileMap;
     FILE* lpFile = lpFileMap->GetData(lpFileMap, fileId, GMap_EqualChar);
     fclose(lpFile);

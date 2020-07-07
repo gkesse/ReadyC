@@ -4,23 +4,23 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
+#if defined(_GUSE_THREAD_ON_)
+//===============================================
 typedef struct _GThread2O GThread2O;
 //===============================================
 struct _GThread2O {
 	void* m_child;
     void (*Delete)();
-    void (*Create)(char* threadName, void onFunc, void* params);
-    void (*Join)(char* threadName);
-    void (*Exit)(char* threadName);
-    void (*FreeThread)(char* threadName);
-    void (*BeginThread)(char* threadName, void* callback, void* params);
-    void (*WaitForSingleObject)(char* threadName, int delay);
-    void (*CloseHandle)(char* threadName);
+    void (*Create)(char* threadId, void* onFunc, void* params);
+    void (*Join)(char* threadId, int delay);
+    void (*Close)(char* threadId);
 };
 //===============================================
 GThread2O* GThread2_New();
 void GThread2_Delete(GThread2O* obj);
 GThread2O* GThread2();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================

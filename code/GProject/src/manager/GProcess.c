@@ -29,7 +29,7 @@ GProcessO* GProcess() {
 }
 //===============================================
 static void GProcess_Run(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     for(int i = 1; i < argc;) {
         char* lKey = argv[i++];
         if(!strcmp(lKey, "test")) {GTest()->Run(argc, argv); return;}
@@ -39,7 +39,7 @@ static void GProcess_Run(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Default(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     printf("%s\n", __FUNCTION__);
 }
 //===============================================

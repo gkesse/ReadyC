@@ -18,7 +18,8 @@
 #include <conio.h>
 //===============================================
 #define _GUSE_SQLITE_ON_
-#define _GUSE_MYSQL_ON_
+#define _GUSE_MYSQL_ON_0
+#define _GUSE_THREAD_ON_
 //===============================================
 #if defined(_GUSE_SQLITE_ON_)
 #include <sqlite3.h>
@@ -57,10 +58,12 @@
 #include <sys/socket.h>
 //===============================================
 #define _GUSE_GTK_ON_0
-#define _GUSE_GSOAP_ON_
+#define _GUSE_GSOAP_ON_0
 #define _GUSE_DBUS_ON_
 #define _GUSE_SQLITE_ON_
-#define _GUSE_MYSQL_ON_
+#define _GUSE_MYSQL_ON_0
+#define _GUSE_SCHEDULER_ON_0
+#define _GUSE_THREAD_ON_
 //===============================================
 #if defined(_GUSE_GTK_ON_)
 #include <gtk/gtk.h>

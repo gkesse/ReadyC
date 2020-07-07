@@ -58,7 +58,7 @@ GDir2O* GDir2() {
 }
 //===============================================
 static void GDir2_Path(const char* pathIn, char* pathOut) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     sprintf(pathOut, "%s/%s", m_GDir2O->m_dataPath, pathIn);
 #if defined(__WIN32)
     GString3()->Replace(pathOut, pathOut, "/", "\\");
@@ -66,7 +66,7 @@ static void GDir2_Path(const char* pathIn, char* pathOut) {
 }
 //===============================================
 static void GDir2_PathC(const char* pathIn, char* pathOut) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lPath[256];
     sprintf(pathOut, "%s/%s", m_GDir2O->m_dataPath, pathIn);
 #if defined(__WIN32)
@@ -77,7 +77,7 @@ static void GDir2_PathC(const char* pathIn, char* pathOut) {
 }
 //===============================================
 static void GDir2_Name(const char* pathIn, char* pathOut) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lCommand[256], lOutput[256];
     sprintf(lCommand, "dirname \"%s\"", pathIn);
     GShell()->Run(lCommand, lOutput, 255, 1);
@@ -85,7 +85,7 @@ static void GDir2_Name(const char* pathIn, char* pathOut) {
 }
 //===============================================
 static void GDir2_Create(const char* pathIn) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lCommand[256], lOutput[256];
 #if defined(__WIN32)
     sprintf(lCommand, "if not exist \"%s\" ( mkdir \"%s\" )", pathIn, pathIn);
@@ -97,7 +97,7 @@ static void GDir2_Create(const char* pathIn) {
 }
 //===============================================
 static void GDir2_DataPath(GDir2O* obj) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
 #if defined(__WIN32)
     GDir2_DataPathWin(obj);
 #endif
@@ -123,7 +123,7 @@ static void GDir2_DataPathWin(GDir2O* obj) {
 //===============================================
 #if defined(__unix)
 static void GDir2_DataPathUnix(GDir2O* obj) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lCommand[256], lHomePath[256];
     FILE* lpFile;
     int lBytes;

@@ -6,33 +6,9 @@
 //===============================================
 #if defined(_GUSE_SOCKET_ON_)
 //===============================================
-#define GSOCKET2_BUFFER_FILENAME    256
-#define GSOCKET2_BUFFER_DATA        1024
-//===============================================
-typedef struct _GSocket2O GSocket2O;
-//===============================================
-typedef enum _GSOCKET2_INITIALIZER {
-    // socket family
-	GSOCKET2_INIT_AF_INET, 
-    // socket type
-	GSOCKET2_INIT_SOCK_STREAM,
-	GSOCKET2_INIT_SOCK_DGRAM,
-    // socket protocol
-	GSOCKET2_INIT_IPPROTO_TCP,
-    // socket address
-	GSOCKET2_INIT_INADDR_ANY,
-    // socket shutdown
-	GSOCKET2_INIT_SHUT_RD,    
-	GSOCKET2_INIT_SHUT_WR,    
-	GSOCKET2_INIT_SHUT_RDWR  
-} GSOCKET2_INITIALIZER;
-//===============================================
 struct _GSocket2O {
 	void* m_child;
 	void (*Delete)(GSocket2O* obj);
-	void (*MallocSocket)(char* socketName);
-	void (*MallocAddress)(char* addressName);
-	void (*MallocData)(char* dataName);
 	void (*Start)(char* dataName, int major, int minor);
 	void (*Status)(char* dataName);
 	void (*Major)(char* dataName);
@@ -58,9 +34,6 @@ struct _GSocket2O {
     void (*Shutdown)(char* socketName, int mode);
 	void (*Close)(char* socketName);
 	void (*Clean)();
-	void (*FreeSocket)(char* socketName);
-	void (*FreeAddress)(char* socketName);
-	void (*FreeData)(char* dataName);
 };
 //===============================================
 GSocket2O* GSocket2_New();

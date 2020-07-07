@@ -4,6 +4,8 @@
 //===============================================
 #include "GThread2.h"
 //===============================================
+#if defined(_GUSE_THREAD_ON_)
+//===============================================
 typedef struct _GThread2UnixO GThread2UnixO;
 typedef struct _GMapO_GThread2Unix_GCHAR_PTR_GVOID_PTR GMapO_GThread2Unix_GCHAR_PTR_GVOID_PTR;
 //===============================================
@@ -15,6 +17,8 @@ struct _GThread2UnixO {
 GThread2O* GThread2Unix_New();
 void GThread2Unix_Delete(GThread2O* obj);
 GThread2O* GThread2Unix();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================

@@ -27,7 +27,7 @@ GShellO* GShell() {
 }
 //===============================================
 static void GShell_Run(const char* command, char* output, int size, int shift) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	FILE* lpFile = popen(command, "r");
 	if(output != 0) {
 		int lBytes = fread(output, 1, size, lpFile);

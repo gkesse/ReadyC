@@ -10,6 +10,7 @@
 #include "GMySQL.h"
 #include "GDir2.h"
 #include "GShell.h"
+#include "GThread2.h"
 #include "GDebug.h"
 //===============================================
 static GTestO* m_GTestO = 0;
@@ -26,15 +27,20 @@ static void GTest_SQLite(int argc, char** argv);
 static void GTest_MySQL(int argc, char** argv);
 static void GTest_Dir(int argc, char** argv);
 static void GTest_Shell(int argc, char** argv);
+static void GTest_Thread(int argc, char** argv);
 //===============================================
 static int GTest_OnDebug(char* buffer, int index, void* obj);
 //=============================================== 
 #if defined (__WIN32)
+unsigned __stdcall GTest_OnThread1(void* params);
+unsigned __stdcall GTest_OnThread2(void* params);
 static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dwl, DWORD dw2);
 static void GTest_ShellWin(int argc, char** argv);
 #endif
 //===============================================
 #if defined (__unix)
+static void* GTest_OnThread1(void* params);
+static void* GTest_OnThread2(void* params);
 static void GTest_OnAlarm(int sig);
 static void GTest_ShellUnix(int argc, char** argv);
 #endif
@@ -71,7 +77,7 @@ GTestO* GTest() {
 }
 //===============================================
 static void GTest_Run(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     for(int i = 2; i < argc;) {
         char* lKey = argv[i++];
         if(!strcmp(lKey, "basic")) {GTestBasic()->Run(argc, argv); return;}
@@ -85,18 +91,19 @@ static void GTest_Run(int argc, char** argv) {
         if(!strcmp(lKey, "mysql")) {GTest_MySQL(argc, argv); return;}
         if(!strcmp(lKey, "dir")) {GTest_Dir(argc, argv); return;}
         if(!strcmp(lKey, "shell")) {GTest_Shell(argc, argv); return;}
+        if(!strcmp(lKey, "thread")) {GTest_Thread(argc, argv); return;}
         break;
     }
     GTest_Default(argc, argv);
 }
 //===============================================
 static void GTest_Default(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     printf("%s\n", __FUNCTION__);
 }
 //===============================================
 static void GTest_Alarm(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     printf("%s\n", __FUNCTION__);
     GAlarm()->Timer("test", 1000);
     GAlarm()->Callback("test", GTest_OnAlarm);
@@ -105,16 +112,16 @@ static void GTest_Alarm(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Base(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lDecimal;
     char lBinary[256];
     lDecimal = GBase()->FromBinary("11001100");
     GBase()->ToBinary(lDecimal, lBinary);
-    printf("[%d]_10 = [%s]_2\n", lDecimal, lBinary);
+    printf("[%d]10 = [%s]2\n", lDecimal, lBinary);
 }
 //===============================================
 static void GTest_Config(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GConfig()->SetData("name", "Gerard KESSE");
     GConfig()->SetData("email", "gerard.kesse@readydev.com");
     GConfig()->SetData("password", "12345678");
@@ -122,16 +129,16 @@ static void GTest_Config(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Debug(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
-    GDebug()->Trace(1, 30, 5, "", 3, "Test du module debug", _EOT_);
-    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'un entier", _EOT_);
-    GDebug()->Trace(1, 30, 10, "", 30, -10, "Entier(int)", 3, " : ", 1, 2020, _EOT_);
-    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'un reel", _EOT_);
-    GDebug()->Trace(1, 30, 10, "", 30, -10, "Reel(double)", 3, " : ", 20, 2, 3.14, _EOT_);
-    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'une chaine de caracters", _EOT_);
-    GDebug()->Trace(1, 30, 10, "", 30, -10, "Chaine(char*)", 3, " : ", 3, "www.readydev.com", _EOT_);
-    GDebug()->Trace(1, 30, 5, "", 3, "Tracage d'une structure complexe", _EOT_);
-    GDebug()->Trace(1, 30, 10, "", 3, "Creation de la structure", _EOT_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    GDebug()->Write(2, 30, 5, "", 3, "Test du module debug", _EOA_);
+    GDebug()->Write(2, 30, 5, "", 3, "Tracage d'un entier", _EOA_);
+    GDebug()->Write(2, 30, 10, "", 30, -10, "Entier(int)", 3, " : ", 1, 2020, _EOA_);
+    GDebug()->Write(2, 30, 5, "", 3, "Tracage d'un reel", _EOA_);
+    GDebug()->Write(2, 30, 10, "", 30, -10, "Reel(double)", 3, " : ", 20, 2, 3.14, _EOA_);
+    GDebug()->Write(2, 30, 5, "", 3, "Tracage d'une chaine de caracters", _EOA_);
+    GDebug()->Write(2, 30, 10, "", 30, -10, "Chaine(char*)", 3, " : ", 3, "www.readydev.com", _EOA_);
+    GDebug()->Write(2, 30, 5, "", 3, "Tracage d'une structure complexe", _EOA_);
+    GDebug()->Write(2, 30, 10, "", 3, "Creation de la structure", _EOA_);
 
     sGPerson lPersons[] = {
         {1, "Gerard KESSE", "gerard.kesse@rdev.com", 25.25},
@@ -140,12 +147,12 @@ static void GTest_Debug(int argc, char** argv) {
         {0, 0, 0, 0}
     };
     
-    GDebug()->Trace(1, 30, 10, "", 3, "Tracage de la structure", _EOT_);
-    GDebug()->Trace(1, 30, 10, "", 30, -10, "Structure(void*)", 3, " : \n\n", 4, GTest_OnDebug, lPersons, _EOT_);
+    GDebug()->Write(2, 30, 10, "", 3, "Tracage de la structure", _EOA_);
+    GDebug()->Write(2, 30, 10, "", 30, -10, "Structure(void*)", 3, " : \n\n", 4, GTest_OnDebug, lPersons, _EOA_);
 }
 //===============================================
 static void GTest_String(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lTrim[256], lReplace[256];
     
     GString3()->Trim("\n\t\r    Voici ma chaine    \n\t\r", lTrim);
@@ -156,7 +163,7 @@ static void GTest_String(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Clock(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     ulong lDelay = 1000000000;
     GClock()->Start("clock");
     for(int i = 0; i< lDelay; i++);
@@ -168,18 +175,20 @@ static void GTest_Clock(int argc, char** argv) {
 }
 //===============================================
 static void GTest_SQLite(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GSQLite()->Version();
     GSQLite()->Open("db", "data/sqlite/db.dat");
 }
 //===============================================
 static void GTest_MySQL(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+#if defined(_GUSE_MYSQL_ON_)
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMySQL()->Version();
+#endif
 }
 //===============================================
 static void GTest_Dir(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lPath[256];
     GDir2()->Path("data/sqlite/db.dat", lPath);
     printf("%s\n", lPath);
@@ -188,12 +197,30 @@ static void GTest_Dir(int argc, char** argv) {
 }
 //===============================================
 static void GTest_Shell(int argc, char** argv) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
 #if defined(__WIN32)
 	GTest_ShellWin(argc, argv);
-#endif
-#if defined(__unix)
+#elif defined(__unix)
 	GTest_ShellUnix(argc, argv);
+#endif
+}
+//===============================================
+static void GTest_Thread(int argc, char** argv) {
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+#if defined(__WIN32)
+    GThread2()->Create("thread1", GTest_OnThread1, 0);
+    GThread2()->Create("thread2", GTest_OnThread2, 0);
+    GThread2()->Join("thread1", INFINITE);
+    GThread2()->Join("thread2", INFINITE);
+    GThread2()->Close("thread1");
+    GThread2()->Close("thread2");
+#elif defined(__unix)
+    GThread2()->Create("thread1", GTest_OnThread1, 0);
+    GThread2()->Create("thread2", GTest_OnThread2, 0);
+    GThread2()->Join("thread1", 0);
+    GThread2()->Join("thread2", 0);
+    GThread2()->Close("thread1");
+    GThread2()->Close("thread2");
 #endif
 }
 //===============================================
@@ -216,12 +243,22 @@ static int GTest_OnDebug(char* buffer, int index, void* obj) {
 //===============================================
 #if defined (__WIN32)
 //===============================================
+unsigned __stdcall GTest_OnThread1(void* params) {
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    return 0;
+}
+//===============================================
+unsigned __stdcall GTest_OnThread2(void* params) {
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    return 0;
+}
+//===============================================
 static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dwl, DWORD dw2) {
-    printf("%s\n", __FUNCTION__);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
 }
 //===============================================
 static void GTest_ShellWin(int argc, char** argv) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
 	char lCommand[256];
 	char lOuput[256];
 	sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
@@ -229,17 +266,25 @@ static void GTest_ShellWin(int argc, char** argv) {
 	printf("%s\n", lOuput);
 }
 //===============================================
-#endif
+#elif defined (__unix)
 //===============================================
-#if defined (__unix)
+void* GTest_OnThread1(void* params) {
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    return 0;
+}
+//===============================================
+void* GTest_OnThread2(void* params) {
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    return 0;
+}
 //===============================================
 static void GTest_OnAlarm(int sig) {
-    printf("%s\n", __FUNCTION__);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GAlarm()->Restart("test");
 }
 //===============================================
 static void GTest_ShellUnix(int argc, char** argv) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
 	char lCommand[256];
 	char lOuput[256];
 	sprintf(lCommand, "%s", "echo -n $HOME");

@@ -4,6 +4,8 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
+#if defined(_GUSE_TIMER_ON_)
+//===============================================
 typedef struct _GTimer2O GTimer2O;
 typedef struct _GMapO_GTimer2_GCHAR_PTR_GVOID_PTR GMapO_GTimer2_GCHAR_PTR_GVOID_PTR;
 //===============================================
@@ -25,6 +27,8 @@ struct _GTimer2O {
 GTimer2O* GTimer2_New();
 void GTimer2_Delete();
 GTimer2O* GTimer2();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================

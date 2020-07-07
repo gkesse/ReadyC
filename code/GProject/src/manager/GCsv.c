@@ -47,7 +47,7 @@ GCsvO* GCsv() {
 }
 //===============================================
 static void GCsv_Clear() {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GListO(GCsv, GVOID_PTR)* lDataMap = m_GCsvO->m_dataMap;
     int lSize = lDataMap->Size(lDataMap);
     for(int i = 0; i< lSize; i++) {
@@ -58,7 +58,7 @@ static void GCsv_Clear() {
 }
 //===============================================
 static void GCsv_Remove(int row) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GListO(GCsv, GVOID_PTR)* lDataMap = m_GCsvO->m_dataMap;
     GListO(GCsv, GVOID_PTR)* lItemMap = lDataMap->GetData(lDataMap, row);
     lItemMap->Clear(lItemMap, 0);
@@ -66,27 +66,27 @@ static void GCsv_Remove(int row) {
 }
 //===============================================
 static void GCsv_AddRow() {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GListO(GCsv, GVOID_PTR)* lDataMap = m_GCsvO->m_dataMap;
     m_GCsvO->m_listMap = GList_New(GCsv, GVOID_PTR)();
     lDataMap->AddData(lDataMap, m_GCsvO->m_listMap);
 }
 //===============================================
 static void GCsv_AddData(char* value) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GListO(GCsv, GVOID_PTR)* lItemMap = m_GCsvO->m_listMap;
     lItemMap->AddData(lItemMap, value);
 }
 //===============================================
 static void GCsv_SetData(int row, int col, char* data) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GListO(GCsv, GVOID_PTR)* lDataMap = m_GCsvO->m_dataMap;
     GListO(GCsv, GVOID_PTR)* lItemMap = lDataMap->GetData(lDataMap, row);
     lItemMap->SetData(lItemMap, col, data, 0);
 }
 //===============================================
 static char* GCsv_GetData(int row, int col) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lWidth, lHeight;
     GCsv_Size(&lWidth, &lHeight);
     if(lWidth == 0 || lHeight == 0) return 0;
@@ -97,7 +97,7 @@ static char* GCsv_GetData(int row, int col) {
 }
 //===============================================
 static void GCsv_Size(int* width, int* height) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GListO(GCsv, GVOID_PTR)* lDataMap = m_GCsvO->m_dataMap;
     *width = lDataMap->Size(lDataMap);
     *height = 0;
@@ -108,7 +108,7 @@ static void GCsv_Size(int* width, int* height) {
 }
 //===============================================
 static void GCsv_Show() {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GListO(GCsv, GVOID_PTR)* lDataMap = m_GCsvO->m_dataMap;
     int lSize = lDataMap->Size(lDataMap);
     for(int i = 0; i < lSize; i++) {

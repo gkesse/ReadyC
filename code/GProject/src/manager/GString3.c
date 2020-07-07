@@ -36,7 +36,7 @@ GString3O* GString3() {
 }
 //===============================================
 static void GString3_ToUpper(const char* strIn, char* strOut) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lSize = strlen(strIn);
     char strIn2[256];
     strcpy(strIn2, strIn);
@@ -48,7 +48,7 @@ static void GString3_ToUpper(const char* strIn, char* strOut) {
 }
 //===============================================
 static void GString3_ToLower(const char* strIn, char* strOut) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lSize = strlen(strIn);
     char strIn2[256];
     strcpy(strIn2, strIn);
@@ -60,7 +60,7 @@ static void GString3_ToLower(const char* strIn, char* strOut) {
 }
 //===============================================
 static void GString3_Trim(const char* strIn, char* strOut) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lPos = 0;
     int lLeft = 0;
     int lFlag = 0;
@@ -100,7 +100,7 @@ static void GString3_Trim(const char* strIn, char* strOut) {
 }
 //===============================================
 static void GString3_SplitGet(const char* strIn, char* strOut, char* sep, int index) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lPos = 0;
     int lOut = 0;
     int lCount = 0;
@@ -132,7 +132,7 @@ static void GString3_SplitGet(const char* strIn, char* strOut, char* sep, int in
 }
 //===============================================
 static int GString3_SplitCount(const char* strIn, char* sep) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lPos = 0;
     int lCount = 0;
 
@@ -147,7 +147,7 @@ static int GString3_SplitCount(const char* strIn, char* sep) {
 }
 //===============================================
 static void GString3_Replace(const char* strIn, char* strOut, const char* pattern, const char* replace) {
-    GDebug()->Write(1, __FUNCTION__, "()", _EOA_); 
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_); 
     int lFlag = 0;
     int lPos = 0;
     int lOut = 0;

@@ -3,7 +3,8 @@
 #define _GScheduler_
 //===============================================
 #include "GInclude.h"
-#include "GList.h"
+//===============================================
+#if defined(_GUSE_SCHEDULER_ON_)
 //===============================================
 typedef struct _GSchedulerO GSchedulerO;
 typedef struct _GSchedulerTaskO GSchedulerTaskO;
@@ -32,6 +33,8 @@ struct _GSchedulerTaskO {
 GSchedulerO* GScheduler_New();
 void GScheduler_Delete();
 GSchedulerO* GScheduler();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================

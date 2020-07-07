@@ -2,6 +2,8 @@
 #include "GTimer2.h"
 #include "GMap2.h"
 //===============================================
+#if defined(_GUSE_TIMER_ON_)
+//===============================================
 GDECLARE_MAP(GTimer2, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GTimer2, GCHAR_PTR, GVOID_PTR)
 //===============================================
@@ -100,4 +102,6 @@ static void GTimer2_SetItimer(char* itimerValName, int timerId) {
     int lRes = setitimer(GTimer2_InitTimerID(timerId), lItimerVal, 0);
     if(lRes == -1) {printf("[GTimer2] Error GTimer2_SetItimer\n"); exit(0);}
 }
+//===============================================
+#endif
 //===============================================

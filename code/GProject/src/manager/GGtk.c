@@ -29,7 +29,7 @@ static void GGtk_Button(GApplication *app);
 static void GGtk_Grid(GApplication *app);
 //===============================================
 GGtkO* GGtk_New() {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	GGtkO* lObj = (GGtkO*)malloc(sizeof(GGtkO));
 
 	lObj->m_argMap = (sGArgMap*)malloc(sizeof(sGArgMap));
@@ -41,7 +41,7 @@ GGtkO* GGtk_New() {
 }
 //===============================================
 void GGtk_Delete() {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	GGtkO* lObj = GGtk();
 	free(lObj);
 	m_GGtkO = 0;
@@ -55,7 +55,7 @@ GGtkO* GGtk() {
 }
 //===============================================
 static void GGtk_Test(int argc, char** argv) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	int lRunFlag = 0;
 	for(int i = 2; i < argc;) {
 		char* lKey = argv[i++];
@@ -71,7 +71,7 @@ static void GGtk_Test(int argc, char** argv) {
 }
 //===============================================
 static void GGtk_Code(int argc, char** argv) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	gtk_init(&argc, &argv);
 	GtkApplication* lApp = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
 
@@ -86,7 +86,7 @@ static void GGtk_Code(int argc, char** argv) {
 }
 //===============================================
 static void GGtk_Builder(int argc, char** argv) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	gtk_init(&argc, &argv);
 
 	GtkBuilder* lBuilder = gtk_builder_new ();
@@ -113,22 +113,22 @@ static void GGtk_Builder(int argc, char** argv) {
 }
 //===============================================
 static void GGtk_Application(int argc, char** argv) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	g_application_run (G_APPLICATION (ggtk_app_new ()), argc, argv);
 }
 //===============================================
 static void GGtk_BuilderPath (GGtkO* obj) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	char* lDataPath = GDir2()->m_dataPath;
 	sprintf(obj->m_builderPath, "%s/%s", lDataPath, "data/builder/builder.ui");
 }
 //===============================================
 static void GGtk_OnStartup(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GGtk_OnActivate(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	int lArgc = m_GGtkO->m_argMap->argc;
 	char** lArgv = m_GGtkO->m_argMap->argv;
 	int lRunFlag = 0;
@@ -146,31 +146,31 @@ static void GGtk_OnActivate(GApplication *app) {
 }
 //===============================================
 static void GGtk_OnQuit(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GGtk_OnRun(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GGtk_OnCreate(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GGtk_OnRead(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GGtk_OnUpdate(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GGtk_OnDelete(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 }
 //===============================================
 static void GGtk_Default(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	GtkWidget* lWindow = gtk_application_window_new(G_APPLICATION(app));
 	gtk_window_set_title (GTK_WINDOW(lWindow), "Gtk | ReadyDev");
 	gtk_window_set_default_size (GTK_WINDOW(lWindow), 640, 480);
@@ -178,7 +178,7 @@ static void GGtk_Default(GApplication *app) {
 }
 //===============================================
 static void GGtk_Button(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	GtkWidget* lWindow = gtk_application_window_new(G_APPLICATION(app));
 	gtk_window_set_title (GTK_WINDOW(lWindow), "Gtk | ReadyDev");
 	gtk_window_set_default_size (GTK_WINDOW(lWindow), 640, 480);
@@ -196,7 +196,7 @@ static void GGtk_Button(GApplication *app) {
 }
 //===============================================
 static void GGtk_Grid(GApplication *app) {
-	GDebug()->Write(1, __FUNCTION__, _EOA_);
+	GDebug()->Write(2, __FUNCTION__, _EOA_);
 	GtkWidget* lWindow = gtk_application_window_new(G_APPLICATION(app));
 	gtk_window_set_title (GTK_WINDOW(lWindow), "Gtk | ReadyDev");
 	gtk_window_set_default_size (GTK_WINDOW(lWindow), 640, 480);

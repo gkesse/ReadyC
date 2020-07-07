@@ -5,12 +5,12 @@
 #include "GPause.h"
 #include "GConsole.h"
 //===============================================
-#if defined(__unix) || defined(__WIN32) || defined(__WIN32)
+#if defined(_GUSE_SCHEDULER_ON_)
+//===============================================
 typedef GSchedulerTaskO* GSCHEDULERTASK_PTR;
 //===============================================
 GDECLARE_LIST(GSCHEDULERTASK_PTR, GScheduler_GSCHEDULERTASK_PTR)
 GDEFINE_LIST(GSCHEDULERTASK_PTR, GScheduler_GSCHEDULERTASK_PTR)
-#endif
 //===============================================
 static GSchedulerO* m_GSchedulerO = 0;
 //===============================================
@@ -128,4 +128,6 @@ static void GScheduler_DeleteTask(int index) {
     GListO(GScheduler_GSCHEDULERTASK_PTR)* lTaskMap = m_GSchedulerO->m_taskMap;
     lTaskMap->RemoveIndex(lTaskMap, index, 0);    
 }
+//===============================================
+#endif
 //===============================================
