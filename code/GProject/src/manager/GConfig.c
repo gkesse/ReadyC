@@ -1,7 +1,7 @@
 //===============================================
 #include "GConfig.h"
-#include "GMap2.h"
-#include "GString3.h"
+#include "GMap.h"
+#include "GString.h"
 #include "GDebug.h"
 //===============================================
 GDECLARE_MAP(GConfig, GCHAR_PTR, GVOID_PTR)

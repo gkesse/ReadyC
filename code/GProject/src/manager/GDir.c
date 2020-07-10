@@ -1,6 +1,6 @@
 //===============================================
-#include "GDir2.h"
-#include "GString3.h"
+#include "GDir.h"
+#include "GString.h"
 #include "GShell.h"
 #include "GDebug.h"
 //===============================================
@@ -12,71 +12,71 @@
 #define GDATA_PATH ".readydev/readyc"
 #endif
 //===============================================
-static GDir2O* m_GDir2O = 0;
+static GDirO* m_GDirO = 0;
 //===============================================
-static void GDir2_Path(const char* pathIn, char* pathOut);
-static void GDir2_PathC(const char* pathIn, char* pathOut);
-static void GDir2_Name(const char* pathIn, char* pathOut);
-static void GDir2_Create(const char* pathIn);
+static void GDir_Path(const char* pathIn, char* pathOut);
+static void GDir_PathC(const char* pathIn, char* pathOut);
+static void GDir_Name(const char* pathIn, char* pathOut);
+static void GDir_Create(const char* pathIn);
 //===============================================
-static void GDir2_DataPath(GDir2O* obj);
+static void GDir_DataPath(GDirO* obj);
 //===============================================
 #if defined(__WIN32)
-static void GDir2_DataPathWin(GDir2O* obj);
+static void GDir_DataPathWin(GDirO* obj);
 #endif
 //===============================================
 #if defined(__unix)
-static void GDir2_DataPathUnix(GDir2O* obj);
+static void GDir_DataPathUnix(GDirO* obj);
 #endif
 //===============================================
-GDir2O* GDir2_New() {
-    GDir2O* lObj = (GDir2O*)malloc(sizeof(GDir2O));
+GDirO* GDir_New() {
+    GDirO* lObj = (GDirO*)malloc(sizeof(GDirO));
 
-    GDir2_DataPath(lObj);
+    GDir_DataPath(lObj);
 
-    lObj->Delete = GDir2_Delete;
-    lObj->Path = GDir2_Path;
-    lObj->PathC = GDir2_PathC;
-    lObj->Name = GDir2_Name;
-    lObj->Create = GDir2_Create;
+    lObj->Delete = GDir_Delete;
+    lObj->Path = GDir_Path;
+    lObj->PathC = GDir_PathC;
+    lObj->Name = GDir_Name;
+    lObj->Create = GDir_Create;
     return lObj;
 }
 //===============================================
-void GDir2_Delete() {
-    GDir2O* lObj = GDir2();
+void GDir_Delete() {
+    GDirO* lObj = GDir();
     if(lObj != 0) {
         free(lObj);
     }
-    m_GDir2O = 0;
+    m_GDirO = 0;
 }
 //===============================================
-GDir2O* GDir2() {
-    if(m_GDir2O == 0) {
-        m_GDir2O = GDir2_New();
+GDirO* GDir() {
+    if(m_GDirO == 0) {
+        m_GDirO = GDir_New();
     }
-    return m_GDir2O;
+    return m_GDirO;
 }
 //===============================================
-static void GDir2_Path(const char* pathIn, char* pathOut) {
+static void GDir_Path(const char* pathIn, char* pathOut) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
-    sprintf(pathOut, "%s/%s", m_GDir2O->m_dataPath, pathIn);
+    sprintf(pathOut, "%s/%s", m_GDirO->m_dataPath, pathIn);
 #if defined(__WIN32)
-    GString3()->Replace(pathOut, pathOut, "/", "\\");
+    GString()->Replace(pathOut, pathOut, "/", "\\");
 #endif
 }
 //===============================================
-static void GDir2_PathC(const char* pathIn, char* pathOut) {
+static void GDir_PathC(const char* pathIn, char* pathOut) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lPath[256];
-    sprintf(pathOut, "%s/%s", m_GDir2O->m_dataPath, pathIn);
+    sprintf(pathOut, "%s/%s", m_GDirO->m_dataPath, pathIn);
 #if defined(__WIN32)
-    GString3()->Replace(pathOut, pathOut, "/", "\\");
+    GString()->Replace(pathOut, pathOut, "/", "\\");
 #endif
-    GDir2_Name(pathOut, lPath);
-    GDir2_Create(lPath);   
+    GDir_Name(pathOut, lPath);
+    GDir_Create(lPath);   
 }
 //===============================================
-static void GDir2_Name(const char* pathIn, char* pathOut) {
+static void GDir_Name(const char* pathIn, char* pathOut) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lCommand[256], lOutput[256];
     sprintf(lCommand, "dirname \"%s\"", pathIn);
@@ -84,7 +84,7 @@ static void GDir2_Name(const char* pathIn, char* pathOut) {
     sprintf(pathOut, "%s", lOutput);
 }
 //===============================================
-static void GDir2_Create(const char* pathIn) {
+static void GDir_Create(const char* pathIn) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lCommand[256], lOutput[256];
 #if defined(__WIN32)
@@ -96,18 +96,18 @@ static void GDir2_Create(const char* pathIn) {
     GShell()->Run(lCommand, 0, 0, 0);
 }
 //===============================================
-static void GDir2_DataPath(GDir2O* obj) {
+static void GDir_DataPath(GDirO* obj) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
 #if defined(__WIN32)
-    GDir2_DataPathWin(obj);
+    GDir_DataPathWin(obj);
 #endif
 #if defined(__unix)
-    GDir2_DataPathUnix(obj);
+    GDir_DataPathUnix(obj);
 #endif
 }
 //===============================================
 #if defined(__WIN32)
-static void GDir2_DataPathWin(GDir2O* obj) {
+static void GDir_DataPathWin(GDirO* obj) {
     char lCommand[256], lHomePath[256];
     FILE* lpFile;
     int lBytes;
@@ -122,7 +122,7 @@ static void GDir2_DataPathWin(GDir2O* obj) {
 #endif
 //===============================================
 #if defined(__unix)
-static void GDir2_DataPathUnix(GDir2O* obj) {
+static void GDir_DataPathUnix(GDirO* obj) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lCommand[256], lHomePath[256];
     FILE* lpFile;

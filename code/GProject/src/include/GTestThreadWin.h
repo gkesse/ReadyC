@@ -1,21 +1,19 @@
 //===============================================
-#ifndef _GKeyboard_
-#define _GKeyboard_
+#ifndef _GTestThreadWin_
+#define _GTestThreadWin_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GKeyboardO GKeyboardO;
+typedef struct _GTestThreadWinO GTestThreadWinO;
 //===============================================
-struct _GKeyboardO {
+struct _GTestThreadWinO {
     void (*Delete)();
-    int (*Input)(const char* template, ...);
-    char* (*Line)(char* str, int size, FILE* stream);
-    int (*Clear)(FILE* stream);
+    void (*Run)(int argc, char** argv);
 };
 //===============================================
-GKeyboardO* GKeyboard_New();
-void GKeyboard_Delete();
-GKeyboardO* GKeyboard();
+GTestThreadWinO* GTestThreadWin_New();
+void GTestThreadWin_Delete();
+GTestThreadWinO* GTestThreadWin();
 //===============================================
 #endif
 //===============================================

@@ -1,6 +1,6 @@
 //===============================================
 #include "GClock.h"
-#include "GMap2.h"
+#include "GMap.h"
 //===============================================
 GDECLARE_MAP(GClock, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GClock, GCHAR_PTR, GVOID_PTR)

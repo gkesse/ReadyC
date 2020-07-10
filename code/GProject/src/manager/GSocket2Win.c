@@ -1,30 +1,15 @@
 //===============================================
 #include "GSocket2Win.h"
-#include "GConsole.h"
-#include "GString2.h"
+#include "GString.h"
+#include "GMap.h"
 //===============================================
-#if defined(_GUSE_SOCKET_ON_)
+#if defined(__WIN32)
 //===============================================
-typedef char* GCHAR_PTR;
-typedef WSADATA* GWSADATA_PTR;
-typedef SOCKET* GSOCKET_PTR;
-typedef SOCKADDR_IN* GSOCKADDR_IN_PTR;
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GWSADATA_PTR, GSocket2Win_GCHAR_PTR_GWSADATA_PTR)
-GDEFINE_MAP(GCHAR_PTR, GWSADATA_PTR, GSocket2Win_GCHAR_PTR_GWSADATA_PTR)
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GSOCKET_PTR, GSocket2Win_GCHAR_PTR_GSOCKET_PTR)
-GDEFINE_MAP(GCHAR_PTR, GSOCKET_PTR, GSocket2Win_GCHAR_PTR_GSOCKET_PTR)
-//===============================================
-GDECLARE_MAP(GCHAR_PTR, GSOCKADDR_IN_PTR, GSocket2Win_GCHAR_PTR_GSOCKADDR_IN_PTR)
-GDEFINE_MAP(GCHAR_PTR, GSOCKADDR_IN_PTR, GSocket2Win_GCHAR_PTR_GSOCKADDR_IN_PTR)
+GDECLARE_MAP(GSocket2Win, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GSocket2Win, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static GSocket2O* m_GSocket2WinO = 0;
 //===============================================
-static void GSocket2Win_MallocData(char* dataName);
-static void GSocket2Win_MallocAddress(char* addressName);
-static void GSocket2Win_MallocSocket(char* socketName);
-static void GSocket2Win_Start(char* dataName, int major, int minor);
 static void GSocket2Win_Status(char* dataName);
 static void GSocket2Win_Major(char* dataName);
 static void GSocket2Win_Minor(char* dataName);
@@ -44,9 +29,6 @@ static void GSocket2Win_Send(char* socketName, char* message, int size);
 static void GSocket2Win_Recv(char* socketName, char* message, int size);
 static void GSocket2Win_Close(char* socketName);
 static void GSocket2Win_Clean();
-static void GSocket2Win_FreeData(char* datatName);
-static void GSocket2Win_FreeSocket(char* socketName);
-static void GSocket2Win_FreeAddress(char* addressName);
 //===============================================
 static int GSocket2Win_MapEqual(char* key1, char* key2);
 //===============================================
@@ -55,15 +37,12 @@ GSocket2O* GSocket2Win_New() {
 	GSocket2WinO* lChild = (GSocket2WinO*)malloc(sizeof(GSocket2WinO));
 
 	lChild->m_parent = lParent;
-	lChild->m_dataMap = GMap_New_GSocket2Win_GCHAR_PTR_GWSADATA_PTR();
-	lChild->m_socketMap = GMap_New_GSocket2Win_GCHAR_PTR_GSOCKET_PTR();
-	lChild->m_addressMap = GMap_New_GSocket2Win_GCHAR_PTR_GSOCKADDR_IN_PTR();
+	lChild->m_dataMap = GMap_New(GSocket2Win, GCHAR_PTR, GVOID_PTR)();
+	lChild->m_socketMap = GMap_New(GSocket2Win, GCHAR_PTR, GVOID_PTR)();
+	lChild->m_addressMap = GMap_New(GSocket2Win, GCHAR_PTR, GVOID_PTR)();
 
 	lParent->m_child = lChild;
 	lParent->Delete = GSocket2Win_Delete;
-	lParent->MallocData = GSocket2Win_MallocData;
-	lParent->MallocAddress = GSocket2Win_MallocAddress;
-	lParent->MallocSocket = GSocket2Win_MallocSocket;
 	lParent->Start = GSocket2Win_Start;
 	lParent->Status = GSocket2Win_Status;
 	lParent->Major = GSocket2Win_Major;
@@ -84,9 +63,6 @@ GSocket2O* GSocket2Win_New() {
 	lParent->Recv = GSocket2Win_Recv;
 	lParent->Close = GSocket2Win_Close;
 	lParent->Clean = GSocket2Win_Clean;
-	lParent->FreeData = GSocket2Win_FreeData;
-	lParent->FreeSocket = GSocket2Win_FreeSocket;
-	lParent->FreeAddress = GSocket2Win_FreeAddress;
 	return lParent;
 }
 //===============================================
@@ -100,21 +76,6 @@ GSocket2O* GSocket2Win() {
 		m_GSocket2WinO = GSocket2Win_New();
 	}
 	return m_GSocket2WinO;
-}
-//===============================================
-static void GSocket2Win_MallocData(char* dataName) {
-	GSocket2WinO* lSocketWindows = m_GSocket2WinO->m_child;
-	GMapO(GSocket2Win_GCHAR_PTR_GWSADATA_PTR)* lDataMap = lSocketWindows->m_dataMap;
-	WSADATA* lData = (WSADATA*)malloc(sizeof(WSADATA));
-	if(lData == 0) {GConsole()->Print("[ GSocket2Win ] Error GSocket2Win_MallocData\n"); exit(0);}
-	lDataMap->SetData(lDataMap, dataName, lData, GSocket2Win_MapEqual);
-}
-//===============================================
-static void GSocket2Win_MallocAddress(char* addressName) {
-	GSocket2WinO* lSocketWindows = m_GSocket2WinO->m_child;
-	GMapO(GSocket2Win_GCHAR_PTR_GSOCKADDR_IN_PTR)* lAddressMap = lSocketWindows->m_addressMap;
-	SOCKADDR_IN* lAddress = (SOCKADDR_IN*)malloc(sizeof(SOCKADDR_IN));
-	lAddressMap->SetData(lAddressMap, addressName, lAddress, GSocket2Win_MapEqual);
 }
 //===============================================
 static void GSocket2Win_Start(char* dataName, int major, int minor) {

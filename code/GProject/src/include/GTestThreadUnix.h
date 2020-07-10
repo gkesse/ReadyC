@@ -1,20 +1,19 @@
 //===============================================
-#ifndef _GKernelDashboard_
-#define _GKernelDashboard_
+#ifndef _GTestThreadUnix_
+#define _GTestThreadUnix_
 //===============================================
 #include "GInclude.h"
-#include "GEnum.h"
 //===============================================
-typedef struct _GKernelDashboardO GKernelDashboardO;
+typedef struct _GTestThreadUnixO GTestThreadUnixO;
 //===============================================
-struct _GKernelDashboardO {
+struct _GTestThreadUnixO {
     void (*Delete)();
-    void (*Update)();
+    void (*Run)(int argc, char** argv);
 };
 //===============================================
-GKernelDashboardO* GKernelDashboard_New();
-void GKernelDashboard_Delete();
-GKernelDashboardO* GKernelDashboard();
+GTestThreadUnixO* GTestThreadUnix_New();
+void GTestThreadUnix_Delete();
+GTestThreadUnixO* GTestThreadUnix();
 //===============================================
 #endif
 //===============================================

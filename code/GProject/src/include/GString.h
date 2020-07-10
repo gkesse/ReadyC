@@ -1,12 +1,12 @@
 //===============================================
-#ifndef _GString3_
-#define _GString3_
+#ifndef _GString_
+#define _GString_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GString3O GString3O;
+typedef struct _GStringO GStringO;
 //===============================================
-struct _GString3O {
+struct _GStringO {
     void (*Delete)();
     void (*ToUpper)(const char* strIn, char* strOut);
     void (*ToLower)(const char* strIn, char* strOut);
@@ -16,9 +16,9 @@ struct _GString3O {
     void (*Replace)(const char* strIn, char* strOut, const char* pattern, const char* replace);
 };
 //===============================================
-GString3O* GString3_New();
-void GString3_Delete();
-GString3O* GString3();
+GStringO* GString_New();
+void GString_Delete();
+GStringO* GString();
 //===============================================
 #endif
 //===============================================

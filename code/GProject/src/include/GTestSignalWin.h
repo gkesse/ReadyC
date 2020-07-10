@@ -1,19 +1,19 @@
 //===============================================
-#ifndef _GConsole_
-#define _GConsole_
+#ifndef _GTestSignalWin_
+#define _GTestSignalWin_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GConsoleO GConsoleO;
+typedef struct _GTestSignalWinO GTestSignalWinO;
 //===============================================
-struct _GConsoleO {
+struct _GTestSignalWinO {
     void (*Delete)();
-    int (*Print)(const char* template, ...);
+    void (*Run)(int argc, char** argv);
 };
 //===============================================
-GConsoleO* GConsole_New();
-void GConsole_Delete();
-GConsoleO* GConsole();
+GTestSignalWinO* GTestSignalWin_New();
+void GTestSignalWin_Delete();
+GTestSignalWinO* GTestSignalWin();
 //===============================================
 #endif
 //===============================================

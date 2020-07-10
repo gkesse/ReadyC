@@ -4,7 +4,7 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
-#if defined(_GUSE_SOCKET_ON_)
+typedef struct _GSocket2O GSocket2O;
 //===============================================
 struct _GSocket2O {
 	void* m_child;
@@ -39,8 +39,6 @@ struct _GSocket2O {
 GSocket2O* GSocket2_New();
 void GSocket2_Delete(GSocket2O* obj);
 GSocket2O* GSocket2();
-//===============================================
-#endif
 //===============================================
 #endif
 //===============================================

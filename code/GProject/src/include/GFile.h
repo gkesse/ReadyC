@@ -1,13 +1,13 @@
 //===============================================
-#ifndef _GFile3_
-#define _GFile3_
+#ifndef _GFile_
+#define _GFile_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GFile3O GFile3O;
-typedef struct _GMapO_GFile3_GCHAR_PTR_GVOID_PTR GMapO_GFile3_GCHAR_PTR_GVOID_PTR;
+typedef struct _GFileO GFileO;
+typedef struct _GMapO_GFile_GCHAR_PTR_GVOID_PTR GMapO_GFile_GCHAR_PTR_GVOID_PTR;
 //===============================================
-struct _GFile3O { 
+struct _GFileO { 
 	void (*Delete)();
 	void (*Test)(int argc, char** argv);
 	void (*Exist)(char* filename);
@@ -19,12 +19,12 @@ struct _GFile3O {
 	void (*Show)(char* fileId);
 	void (*Close)(char* fileId);
     //===============================================
-	GMapO_GFile3_GCHAR_PTR_GVOID_PTR* m_pFileMap;
+	GMapO_GFile_GCHAR_PTR_GVOID_PTR* m_pFileMap;
 };
 //===============================================
-GFile3O* GFile3_New();
-void GFile3_Delete();
-GFile3O* GFile3();
+GFileO* GFile_New();
+void GFile_Delete();
+GFileO* GFile();
 //===============================================
 #endif
 //===============================================

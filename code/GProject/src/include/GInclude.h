@@ -64,6 +64,8 @@
 #define _GUSE_MYSQL_ON_0
 #define _GUSE_SCHEDULER_ON_0
 #define _GUSE_THREAD_ON_
+#define _GUSE_TIMER_ON_
+#define _GUSE_MUTEX_ON_
 //===============================================
 #if defined(_GUSE_GTK_ON_)
 #include <gtk/gtk.h>
@@ -97,6 +99,8 @@ typedef unsigned char uchar;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 typedef unsigned long int ulint;
+//===============================================
+#include "GStruct.h"
 //===============================================
 #endif
 //===============================================

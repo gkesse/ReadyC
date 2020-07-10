@@ -1,7 +1,7 @@
 //===============================================
 #include "GSQLite.h"
-#include "GMap2.h"
-#include "GDir2.h"
+#include "GMap.h"
+#include "GDir.h"
 //===============================================
 #if defined(_GUSE_SQLITE_ON_)
 //===============================================
@@ -79,7 +79,7 @@ static void GSQLite_Version() {
 static void GSQLite_Open(char* dbId, char* path) {
 	GMapO(GSQLite, GCHAR_PTR, GVOID_PTR)* lDbMap = m_GSQLiteO->m_dbMap;
 	char lPath[256];
-    GDir2()->PathC(path, lPath);
+    GDir()->PathC(path, lPath);
     sqlite3* lDb;
 	int lOk = sqlite3_open(lPath, &lDb);
 	if(lOk != SQLITE_OK) {printf("[GSQLite] Erreur ouverture : %s\n", lPath); exit(0);}

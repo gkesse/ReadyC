@@ -1,20 +1,19 @@
 //===============================================
-#ifndef _GKernelMenu_
-#define _GKernelMenu_
+#ifndef _GTestSignalUnix_
+#define _GTestSignalUnix_
 //===============================================
 #include "GInclude.h"
-#include "GEnum.h"
 //===============================================
-typedef struct _GKernelMenuO GKernelMenuO;
+typedef struct _GTestSignalUnixO GTestSignalUnixO;
 //===============================================
-struct _GKernelMenuO {
+struct _GTestSignalUnixO {
     void (*Delete)();
-    void (*Update)();
+    void (*Run)(int argc, char** argv);
 };
 //===============================================
-GKernelMenuO* GKernelMenu_New();
-void GKernelMenu_Delete();
-GKernelMenuO* GKernelMenu();
+GTestSignalUnixO* GTestSignalUnix_New();
+void GTestSignalUnix_Delete();
+GTestSignalUnixO* GTestSignalUnix();
 //===============================================
 #endif
 //===============================================

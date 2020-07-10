@@ -1,9 +1,5 @@
 //===============================================
 #include "GScheduler.h"
-#include "GSignal.h"
-#include "GTimer2.h"
-#include "GPause.h"
-#include "GConsole.h"
 //===============================================
 #if defined(_GUSE_SCHEDULER_ON_)
 //===============================================
@@ -56,10 +52,10 @@ GSchedulerO* GScheduler() {
 //===============================================
 static void GScheduler_Init(long tickTimeUsec) {
     GSignal()->MallocSigAction("_SCHEDULER_");
-    GTimer2()->MallocItimerVal("_SCHEDULER_");
+    GTimer()->MallocItimerVal("_SCHEDULER_");
     GSignal()->MallocSigJmpBuf("_SCHEDULER_");
     GSignal()->InitSigAction("_SCHEDULER_", GScheduler_Update, 0);
-    GTimer2()->InitItimerVal("_SCHEDULER_", 0, tickTimeUsec);
+    GTimer()->InitItimerVal("_SCHEDULER_", 0, tickTimeUsec);
     GSignal()->SigFillSet("_SCHEDULER_");
     GSignal()->SigDelSet("_SCHEDULER_", GSIGNAL_SIGALRM);
     GSignal()->SigDelSet("_SCHEDULER_", GSIGNAL_SIGINT);
@@ -67,7 +63,7 @@ static void GScheduler_Init(long tickTimeUsec) {
 }
 //===============================================
 static void GScheduler_Start() {
-    GTimer2()->SetItimer("_SCHEDULER_", GTIMER2_ITIMER_REAL);
+    GTimer()->SetItimer("_SCHEDULER_", GTIMER2_ITIMER_REAL);
 }
 //===============================================
 static void GScheduler_AddTask(GSCHEDULER_TASK task, int delay, int period) {

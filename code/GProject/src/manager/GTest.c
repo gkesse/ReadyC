@@ -1,17 +1,22 @@
 //===============================================
 #include "GTest.h"
-#include "GTestBasic.h"
 #include "GAlarm.h"
 #include "GBase.h"
 #include "GConfig.h"
-#include "GString3.h"
+#include "GString.h"
 #include "GClock.h"
 #include "GSQLite.h"
 #include "GMySQL.h"
-#include "GDir2.h"
+#include "GDir.h"
 #include "GShell.h"
 #include "GThread2.h"
 #include "GDebug.h"
+//===============================================
+#include "GTestBasic.h"
+#include "GTestThreadUnix.h"
+#include "GTestThreadWin.h"
+#include "GTestSignalUnix.h"
+#include "GTestSignalWin.h"
 //===============================================
 static GTestO* m_GTestO = 0;
 //===============================================
@@ -28,19 +33,22 @@ static void GTest_MySQL(int argc, char** argv);
 static void GTest_Dir(int argc, char** argv);
 static void GTest_Shell(int argc, char** argv);
 static void GTest_Thread(int argc, char** argv);
+static void GTest_Thread2(int argc, char** argv);
+static void GTest_Signal(int argc, char** argv);
 //===============================================
 static int GTest_OnDebug(char* buffer, int index, void* obj);
+static void GTest_OnTimerThread(void* params);
 //=============================================== 
 #if defined (__WIN32)
-unsigned __stdcall GTest_OnThread1(void* params);
-unsigned __stdcall GTest_OnThread2(void* params);
+unsigned __stdcall GTest_OnThread_1(void* params);
+unsigned __stdcall GTest_OnThread_2(void* params);
 static void WINAPI GTest_OnAlarm(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dwl, DWORD dw2);
 static void GTest_ShellWin(int argc, char** argv);
 #endif
 //===============================================
 #if defined (__unix)
-static void* GTest_OnThread1(void* params);
-static void* GTest_OnThread2(void* params);
+static void* GTest_OnThread_1(void* params);
+static void* GTest_OnThread_2(void* params);
 static void GTest_OnAlarm(int sig);
 static void GTest_ShellUnix(int argc, char** argv);
 #endif
@@ -92,6 +100,8 @@ static void GTest_Run(int argc, char** argv) {
         if(!strcmp(lKey, "dir")) {GTest_Dir(argc, argv); return;}
         if(!strcmp(lKey, "shell")) {GTest_Shell(argc, argv); return;}
         if(!strcmp(lKey, "thread")) {GTest_Thread(argc, argv); return;}
+        if(!strcmp(lKey, "thread2")) {GTest_Thread2(argc, argv); return;}
+        if(!strcmp(lKey, "signal")) {GTest_Signal(argc, argv); return;}
         break;
     }
     GTest_Default(argc, argv);
@@ -155,8 +165,8 @@ static void GTest_String(int argc, char** argv) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lTrim[256], lReplace[256];
     
-    GString3()->Trim("\n\t\r    Voici ma chaine    \n\t\r", lTrim);
-    GString3()->Replace("C:/Users/Admin/.readydev/readyc/data/debug", lReplace, "/", "\\");
+    GString()->Trim("\n\t\r    Voici ma chaine    \n\t\r", lTrim);
+    GString()->Replace("C:/Users/Admin/.readydev/readyc/data/debug", lReplace, "/", "\\");
     
     printf("lTrim : >%s<\n", lTrim);
     printf("lReplace : >%s<\n", lReplace);
@@ -190,9 +200,9 @@ static void GTest_MySQL(int argc, char** argv) {
 static void GTest_Dir(int argc, char** argv) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     char lPath[256];
-    GDir2()->Path("data/sqlite/db.dat", lPath);
+    GDir()->Path("data/sqlite/db.dat", lPath);
     printf("%s\n", lPath);
-    GDir2()->Name(lPath, lPath);
+    GDir()->Name(lPath, lPath);
     printf("%s\n", lPath);
 }
 //===============================================
@@ -208,19 +218,39 @@ static void GTest_Shell(int argc, char** argv) {
 static void GTest_Thread(int argc, char** argv) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
 #if defined(__WIN32)
-    GThread2()->Create("thread1", GTest_OnThread1, 0);
-    GThread2()->Create("thread2", GTest_OnThread2, 0);
-    GThread2()->Join("thread1", INFINITE);
-    GThread2()->Join("thread2", INFINITE);
-    GThread2()->Close("thread1");
-    GThread2()->Close("thread2");
+    GTestThreadWin()->Run(argc, argv);
 #elif defined(__unix)
-    GThread2()->Create("thread1", GTest_OnThread1, 0);
-    GThread2()->Create("thread2", GTest_OnThread2, 0);
-    GThread2()->Join("thread1", 0);
-    GThread2()->Join("thread2", 0);
-    GThread2()->Close("thread1");
-    GThread2()->Close("thread2");
+    GTestThreadUnix()->Run(argc, argv);
+#endif
+}
+//===============================================
+static void GTest_Thread2(int argc, char** argv) {
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+#if defined(__WIN32)
+    GDebug()->Write(2, 3, "\nDebut de la concurrence\n", _EOA_);
+    GThread2()->Create("thread_1", GTest_OnThread_1, 0);
+    GThread2()->Create("thread_2", GTest_OnThread_2, 0);
+    GThread2()->Join("thread_1", INFINITE);
+    GThread2()->Join("thread_2", INFINITE);
+    GThread2()->Close("thread_1");
+    GThread2()->Close("thread_2");
+    GDebug()->Write(2, 3, "\nFin de la concurrence\n", _EOA_);
+#elif defined(__unix)
+    GDebug()->Write(2, 3, "\nDebut de la concurrence\n", _EOA_);
+    GThread2()->Create("thread_1", GTest_OnThread_1, 0);
+    GThread2()->Create("thread_2", GTest_OnThread_2, 0);
+    GThread2()->Join("thread_1", 0);
+    GThread2()->Join("thread_2", 0);
+    GDebug()->Write(2, 3, "\nFin de la concurrence\n", _EOA_);
+#endif
+}
+//===============================================
+static void GTest_Signal(int argc, char** argv) {
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+#if defined(__WIN32)
+    GTestSignalWin()->Run(argc, argv);
+#elif defined(__unix)
+    GTestSignalUnix()->Run(argc, argv);
 #endif
 }
 //===============================================
@@ -243,13 +273,19 @@ static int GTest_OnDebug(char* buffer, int index, void* obj) {
 //===============================================
 #if defined (__WIN32)
 //===============================================
-unsigned __stdcall GTest_OnThread1(void* params) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+unsigned __stdcall GTest_OnThread_1(void* params) {
+    for(int i = 0; i < 10; i++) {
+        GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+        sleep(1);
+    }
     return 0;
 }
 //===============================================
-unsigned __stdcall GTest_OnThread2(void* params) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+unsigned __stdcall GTest_OnThread_2(void* params) {
+    for(int i = 0; i < 10; i++) {
+        GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+        sleep(1);
+    }
     return 0;
 }
 //===============================================
@@ -268,14 +304,20 @@ static void GTest_ShellWin(int argc, char** argv) {
 //===============================================
 #elif defined (__unix)
 //===============================================
-void* GTest_OnThread1(void* params) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
-    return 0;
+void* GTest_OnThread_1(void* params) {
+    for(int i = 0; i < 10; i++) {
+        GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+        sleep(1);
+    }
+    GThread2()->Close("thread_1");
 }
 //===============================================
-void* GTest_OnThread2(void* params) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
-    return 0;
+void* GTest_OnThread_2(void* params) {
+    for(int i = 0; i < 10; i++) {
+        GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+        sleep(1);
+    }
+    GThread2()->Close("thread_2");
 }
 //===============================================
 static void GTest_OnAlarm(int sig) {

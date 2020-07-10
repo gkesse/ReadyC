@@ -1,6 +1,6 @@
 //===============================================
 #include "GThread2Win.h"
-#include "GMap2.h"
+#include "GMap.h"
 #include "GDebug.h"
 //===============================================
 #if defined(_GUSE_THREAD_ON_)
@@ -46,7 +46,7 @@ GThread2O* GThread2Win() {
 }
 //===============================================
 static void GThread2Win_Create(char* threadId, void* onFunc, void* params) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "() : ", 3, threadId, _EOA_);
 	GThread2WinO* lThread2Windows = m_GThread2WinO->m_child;
 	GMapO(GThread2Win, GCHAR_PTR, GVOID_PTR)* lThreadMap = lThread2Windows->m_threadMap;
     unsigned lThreadID;
@@ -56,7 +56,7 @@ static void GThread2Win_Create(char* threadId, void* onFunc, void* params) {
 }
 //===============================================
 static void GThread2Win_Join(char* threadId, int delay) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "() : ", 3, threadId, _EOA_);
 	GThread2WinO* lThread2Windows = m_GThread2WinO->m_child;
 	GMapO(GThread2Win, GCHAR_PTR, GVOID_PTR)* lThreadMap = lThread2Windows->m_threadMap;
 	HANDLE lThread = (HANDLE)lThreadMap->GetData(lThreadMap, threadId, GMap_EqualChar);
@@ -64,7 +64,7 @@ static void GThread2Win_Join(char* threadId, int delay) {
 }
 //===============================================
 static void GThread2Win_Close(char* threadId) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "() : ", 3, threadId, _EOA_);
 	GThread2WinO* lThread2Windows = m_GThread2WinO->m_child;
 	GMapO(GThread2Win, GCHAR_PTR, GVOID_PTR)* lThreadMap = lThread2Windows->m_threadMap;
 	HANDLE lThread = (HANDLE)lThreadMap->GetData(lThreadMap, threadId, GMap_EqualChar);

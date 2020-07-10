@@ -1,8 +1,12 @@
 //===============================================
 #include "GSetting.h"
-#include "GFile3.h"
-#include "GString2.h"
+#include "GFile.h"
+#include "GString.h"
 #include "GConfig.h"
+//===============================================
+#define GSETTING_LINE (256)
+#define GSETTING_KEY (256)
+#define GSETTING_VALUE (256)
 //===============================================
 static GSettingO* m_GSettingO = 0;
 //===============================================
@@ -29,27 +33,24 @@ GSettingO* GSetting() {
 }
 //===============================================
 static void GSetting_Load(char* file) {
-	GFile3()->Exist(file);
+	GFile()->Exist(file);
     FILE* lFile = fopen(file, "r");
-    char lBuffer[100];
+    char lBuffer[GSETTING_LINE];
+    char lKey[GSETTING_KEY];
+    char lValue[GSETTING_VALUE];
 
     while(fgets(lBuffer, sizeof(lBuffer), lFile) != NULL) {
-       char* lTrim = GString2()->Trim(lBuffer);
-        if(lTrim == 0) {continue;}
-        char lFirst = lTrim[0];
-        if(lFirst == '#') {GString2()->Free(lTrim); continue;}
-        int lCount;
-        char** lSplit = GString2()->Split(lTrim, "=", &lCount);
-        char* lKey = GString2()->Trim(lSplit[0]);
-        char* lValue = GString2()->Trim(lSplit[1]);
+        GString()->Trim(lBuffer, lBuffer);
+        if(lBuffer[0] == 0) continue;
+        char lFirst = lBuffer[0];
+        if(lFirst == '#') continue;
+        int lCount = GString()->SplitCount(lBuffer, "=");
+        if(lCount != 2) continue;
+        GString()->SplitGet(lBuffer, lKey, "=", 0);
+        GString()->SplitGet(lBuffer, lValue, "=", 1);
+        GString()->Trim(lKey, lKey);
+        GString()->Trim(lValue, lValue);
         GConfig()->SetData(lKey, lValue);
-        GString2()->Free(lTrim);
-        GString2()->Free2(lSplit, lCount);
-    }
-    char* lConfigShow = GConfig()->GetData("CONFIG_SHOW");
-    if(GString2()->IsEqual(lConfigShow, "TRUE")) {
-        GConfig()->Show();
-        printf("\n");
     }
     fclose(lFile);
 }

@@ -1,12 +1,12 @@
 //===============================================
-#ifndef _GDir2_
-#define _GDir2_
+#ifndef _GDir_
+#define _GDir_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GDir2O GDir2O;
+typedef struct _GDirO GDirO;
 //===============================================
-struct _GDir2O {
+struct _GDirO {
 	void (*Delete)();
 	void (*Path)(const char* pathIn, char* pathOut);
 	void (*PathC)(const char* pathIn, char* pathOut);
@@ -16,9 +16,9 @@ struct _GDir2O {
     char m_dataPath[256];
 };
 //===============================================
-GDir2O* GDir2_New();
-void GDir2_Delete();
-GDir2O* GDir2();
+GDirO* GDir_New();
+void GDir_Delete();
+GDirO* GDir();
 //===============================================
 #endif
 //===============================================

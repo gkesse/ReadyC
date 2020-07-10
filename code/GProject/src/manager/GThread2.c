@@ -2,7 +2,7 @@
 #include "GThread2.h"
 #include "GThread2Unix.h"
 #include "GThread2Win.h"
-#include "GString3.h"
+#include "GString.h"
 #include "GConfig.h"
 //===============================================
 #if defined(_GUSE_THREAD_ON_)

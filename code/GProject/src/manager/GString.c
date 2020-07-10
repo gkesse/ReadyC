@@ -1,44 +1,46 @@
 //===============================================
-#include "GString3.h"
+#include "GString.h"
 #include "GDebug.h"
 //===============================================
-static GString3O* m_GString3O = 0;
+#define GSTRING_BUFFER (256)
 //===============================================
-static void GString3_ToUpper(const char* strIn, char* strOut);
-static void GString3_ToLower(const char* strIn, char* strOut);
-static void GString3_Trim(const char* strIn, char* strOut);
-static void GString3_SplitGet(const char* strIn, char* strOut, char* sep, int index);
-static int GString3_SplitCount(const char* strIn, char* sep);
-static void GString3_Replace(const char* strIn, char* strOut, const char* pattern, const char* replace);
+static GStringO* m_GStringO = 0;
 //===============================================
-GString3O* GString3_New() {
-    GString3O* lObj = (GString3O*)malloc(sizeof(GString3O));
+static void GString_ToUpper(const char* strIn, char* strOut);
+static void GString_ToLower(const char* strIn, char* strOut);
+static void GString_Trim(const char* strIn, char* strOut);
+static void GString_SplitGet(const char* strIn, char* strOut, char* sep, int index);
+static int GString_SplitCount(const char* strIn, char* sep);
+static void GString_Replace(const char* strIn, char* strOut, const char* pattern, const char* replace);
+//===============================================
+GStringO* GString_New() {
+    GStringO* lObj = (GStringO*)malloc(sizeof(GStringO));
     
-    lObj->ToUpper = GString3_ToUpper;
-    lObj->ToLower = GString3_ToLower;
-    lObj->Delete = GString3_Delete;
-    lObj->Trim = GString3_Trim;
-    lObj->SplitGet = GString3_SplitGet;
-    lObj->SplitCount = GString3_SplitCount;
-    lObj->Replace = GString3_Replace;
+    lObj->ToUpper = GString_ToUpper;
+    lObj->ToLower = GString_ToLower;
+    lObj->Delete = GString_Delete;
+    lObj->Trim = GString_Trim;
+    lObj->SplitGet = GString_SplitGet;
+    lObj->SplitCount = GString_SplitCount;
+    lObj->Replace = GString_Replace;
     return lObj; 
 }
 //===============================================
-void GString3_Delete() {
+void GString_Delete() {
 
 }
 //===============================================
-GString3O* GString3() {
-    if(m_GString3O == 0) {
-        m_GString3O = GString3_New();
+GStringO* GString() {
+    if(m_GStringO == 0) {
+        m_GStringO = GString_New();
     }
-    return m_GString3O;
+    return m_GStringO;
 }
 //===============================================
-static void GString3_ToUpper(const char* strIn, char* strOut) {
+static void GString_ToUpper(const char* strIn, char* strOut) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lSize = strlen(strIn);
-    char strIn2[256];
+    char strIn2[GSTRING_BUFFER];
     strcpy(strIn2, strIn);
 
     for(int i = 0; i < lSize; i ++) {
@@ -47,10 +49,10 @@ static void GString3_ToUpper(const char* strIn, char* strOut) {
     strOut[lSize] = 0;
 }
 //===============================================
-static void GString3_ToLower(const char* strIn, char* strOut) {
+static void GString_ToLower(const char* strIn, char* strOut) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lSize = strlen(strIn);
-    char strIn2[256];
+    char strIn2[GSTRING_BUFFER];
     strcpy(strIn2, strIn);
 
     for(int i = 0; i < lSize; i ++) {
@@ -59,12 +61,12 @@ static void GString3_ToLower(const char* strIn, char* strOut) {
     strOut[lSize] = 0;
 }
 //===============================================
-static void GString3_Trim(const char* strIn, char* strOut) {
+static void GString_Trim(const char* strIn, char* strOut) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lPos = 0;
     int lLeft = 0;
     int lFlag = 0;
-    char strIn2[256];
+    char strIn2[GSTRING_BUFFER];
     strcpy(strIn2, strIn);
 
     while(strIn2[lPos] != 0) {
@@ -99,13 +101,13 @@ static void GString3_Trim(const char* strIn, char* strOut) {
     strOut[lOut] = 0;
 }
 //===============================================
-static void GString3_SplitGet(const char* strIn, char* strOut, char* sep, int index) {
+static void GString_SplitGet(const char* strIn, char* strOut, char* sep, int index) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lPos = 0;
     int lOut = 0;
     int lCount = 0;
     int lFlag = 0;
-    char strIn2[256];
+    char strIn2[GSTRING_BUFFER];
     strcpy(strIn2, strIn);
 
     while(strIn2[lPos] != 0) {
@@ -131,7 +133,7 @@ static void GString3_SplitGet(const char* strIn, char* strOut, char* sep, int in
     strOut[lOut] = 0;
 }
 //===============================================
-static int GString3_SplitCount(const char* strIn, char* sep) {
+static int GString_SplitCount(const char* strIn, char* sep) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     int lPos = 0;
     int lCount = 0;
@@ -146,15 +148,15 @@ static int GString3_SplitCount(const char* strIn, char* sep) {
     return lCount;
 }
 //===============================================
-static void GString3_Replace(const char* strIn, char* strOut, const char* pattern, const char* replace) {
+static void GString_Replace(const char* strIn, char* strOut, const char* pattern, const char* replace) {
     GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_); 
     int lFlag = 0;
     int lPos = 0;
     int lOut = 0;
     char* lPattern = 0;
     int lSize = strlen(pattern);
-    char lBuffer[256];
-    char strIn2[256];
+    char lBuffer[GSTRING_BUFFER];
+    char strIn2[GSTRING_BUFFER];
     strcpy(strIn2, strIn);
     
     while(strIn2[lPos] != 0) {

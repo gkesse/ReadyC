@@ -1,6 +1,6 @@
 //===============================================
 #include "GThread2Unix.h"
-#include "GMap2.h"
+#include "GMap.h"
 #include "GDebug.h"
 //===============================================
 #if defined(_GUSE_THREAD_ON_)
@@ -46,8 +46,8 @@ GThread2O* GThread2Unix() {
 }
 //===============================================
 static void GThread2Unix_Create(char* threadId, void* onFunc, void* params) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
-	GThread2UnixO* lThread2Unix = m_GThread2UnixO->m_child;
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "() : ", 3, threadId, _EOA_);	
+    GThread2UnixO* lThread2Unix = m_GThread2UnixO->m_child;
 	GMapO(GThread2Unix, GCHAR_PTR, GVOID_PTR)* lThreadMap = lThread2Unix->m_threadMap;
 	pthread_t* lThread = (pthread_t*)malloc(sizeof(pthread_t));
 	int lRes = pthread_create(lThread, 0, (GTHREAD_FUNC)onFunc, params);
@@ -56,8 +56,8 @@ static void GThread2Unix_Create(char* threadId, void* onFunc, void* params) {
 }
 //===============================================
 static void GThread2Unix_Join(char* threadId, int delay) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
-	GThread2UnixO* lThread2Unix = m_GThread2UnixO->m_child;
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "() : ", 3, threadId, _EOA_);	
+    GThread2UnixO* lThread2Unix = m_GThread2UnixO->m_child;
 	GMapO(GThread2Unix, GCHAR_PTR, GVOID_PTR)* lThreadMap = lThread2Unix->m_threadMap;
 	pthread_t* lThread = (pthread_t*)lThreadMap->GetData(lThreadMap, threadId, GMap_EqualChar);
 	int lRes = pthread_join(*lThread, 0);
@@ -65,11 +65,11 @@ static void GThread2Unix_Join(char* threadId, int delay) {
 }
 //===============================================
 static void GThread2Unix_Close(char* threadId) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
-	GThread2UnixO* lThread2Unix = m_GThread2UnixO->m_child;
+    GDebug()->Write(2, 3, __FUNCTION__, 3, "() : ", 3, threadId, _EOA_);	
+    GThread2UnixO* lThread2Unix = m_GThread2UnixO->m_child;
 	GMapO(GThread2Unix, GCHAR_PTR, GVOID_PTR)* lThreadMap = lThread2Unix->m_threadMap;
 	pthread_t* lThread = (pthread_t*)lThreadMap->GetData(lThreadMap, threadId, GMap_EqualChar);
-	pthread_exit(lThread);
+	pthread_exit(0);
     free(lThread);
 }
 //===============================================
