@@ -5,14 +5,16 @@
 typedef struct _sGUser sGUser;
 //===============================================
 struct _sGUser {
-    //===============================================
+    //-----------------------------------------------
+    // methodes
     void (*Delete)(sGUser* obj);
     void (*Show)(sGUser* obj);
-    //===============================================
+    //-----------------------------------------------
+    // proprietes
     char* name;
     char* email;
     char* password;
-    //===============================================
+    //-----------------------------------------------
 };
 //===============================================
 static void GUser_Create(sGUser* obj, char* name, char* email, char* password);
@@ -21,14 +23,14 @@ static void GUser_Show(sGUser* obj);
 static void GUser_Delete(sGUser* obj);
 //===============================================
 static void GUser_Create(sGUser* obj, char* name, char* email, char* password) {
-    //===============================================
+    //-----------------------------------------------
     obj->name = name;
     obj->email = email;
     obj->password = password;
-    //===============================================
+    //-----------------------------------------------
     obj->Delete = GUser_Delete;
     obj->Show = GUser_Show;
-    //===============================================
+    //-----------------------------------------------
 }
 //===============================================
 static sGUser* GUser_New(char* name, char* email, char* password) {
@@ -54,7 +56,6 @@ int main(int argc, char** argv) {
     sGUser* lUser = GUser_New("Gerard KESSE", "gerard.kesse@readydev.com", "123456");
     lUser->Show(lUser);
     lUser->Delete(lUser);
-    lUser->Show(lUser);
     // forme statique
     sGUser lUser2;
     GUser_Create(&lUser2, "Jean DUPONT", "jean.dupont@readydev.com", "654321");
