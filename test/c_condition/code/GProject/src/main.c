@@ -44,7 +44,7 @@ void GElevator_CHOICE(int argc, char** argv) {
     printf("\n");
     printf("CHOIX ? : ");
     char lAnswer[256];
-    gets(lAnswer);
+    fgets(lAnswer, 255, stdin);
     exit(0);
     if(!strcmp(lAnswer, "m")) {G_STATE = "S_MENU";}
     else if(!strcmp(lAnswer, "1")) {G_STATE = "S_OPEN";}
