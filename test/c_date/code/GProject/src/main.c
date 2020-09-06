@@ -22,7 +22,7 @@ void GDate_Read(char* buffer) {
     int lHour = lTimeInfo->tm_hour;
     int lMin = lTimeInfo->tm_min;
     int lSec = lTimeInfo->tm_sec;
-    if(lTimeInfo->tm_isdst == 1) lHour++;
+    if(lTimeInfo->tm_isdst > 1) lHour =+ lTimeInfo->tm_isdst;
     sprintf(buffer, "%02d/%02d/%04d %02d:%02d:%02d", lDay, lMonth, lYear, lHour, lMin, lSec);
 }
 //===============================================
