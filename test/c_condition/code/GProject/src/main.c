@@ -1,6 +1,7 @@
 //===============================================
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 //===============================================
 void GElevator_MENU(int argc, char** argv);
@@ -44,8 +45,8 @@ void GElevator_CHOICE(int argc, char** argv) {
     printf("\n");
     printf("CHOIX ? : ");
     char lAnswer[256];
-    fgets(lAnswer, 255, stdin);
-    exit(0);
+    fgets(lAnswer, 255, stdin); 
+    lAnswer[strlen(lAnswer)-1] = 0;
     if(!strcmp(lAnswer, "m")) {G_STATE = "S_MENU";}
     else if(!strcmp(lAnswer, "1")) {G_STATE = "S_OPEN";}
     else if(!strcmp(lAnswer, "2")) {G_STATE = "S_CLOSE";}
