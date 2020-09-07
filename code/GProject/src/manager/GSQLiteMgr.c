@@ -11,6 +11,8 @@ static GSQLiteMgrO* m_GSQLiteMgrO = 0;
 //===============================================
 typedef struct _sGSQLiteShow sGSQLiteShow;
 typedef struct _sGSQLiteValue sGSQLiteValue;
+typedef struct _sGSQLiteCol sGSQLiteCol;
+typedef struct _sGSQLiteRow sGSQLiteRow;
 //===============================================
 struct _sGSQLiteShow {
     int onHeader;
@@ -25,15 +27,33 @@ struct _sGSQLiteValue {
     int index;
 };
 //===============================================
+struct _sGSQLiteCol{
+    char* col;
+    char* sep;
+    int count;
+};
+//===============================================
+struct _sGSQLiteRow {
+    char* row;
+    char* sep;
+    int count;
+    int index;
+};
+//===============================================
 static void GSQLiteMgr_Test(int argc, char** argv);
 static void* GSQLiteMgr_Open();
 static void GSQLiteMgr_Exec(void* onExec, void* params, char* sqlQuery);
 //===============================================
 static void GSQLiteMgr_QueryShow(char* sqlQuery, char* width, int widthD);
+static void GSQLiteMgr_QueryWrite(char* sqlQuery);
 static void GSQLiteMgr_QueryValue(char* sqlQuery, char* value);
+static void GSQLiteMgr_QueryCol(char* sqlQuery, char* col, char* sep);
+static void GSQLiteMgr_QueryRow(char* sqlQuery, char* row, char* sep);
 //===============================================
 static int GSQLiteMgr_OnQueryShow(void* params, int rows, char** values, char** fields);
 static int GSQLiteMgr_OnQueryValue(void* params, int rows, char** values, char** fields);
+static int GSQLiteMgr_OnQueryCol(void* params, int rows, char** values, char** fields);
+static int GSQLiteMgr_OnQueryRow(void* params, int rows, char** values, char** fields);
 //===============================================
 GSQLiteMgrO* GSQLiteMgr_New() {
 	GSQLiteMgrO* lObj = (GSQLiteMgrO*)malloc(sizeof(GSQLiteMgrO));
@@ -41,7 +61,10 @@ GSQLiteMgrO* GSQLiteMgr_New() {
 	lObj->Delete = GSQLiteMgr_Delete;
 	lObj->Test = GSQLiteMgr_Test;
 	lObj->QueryShow = GSQLiteMgr_QueryShow;
+	lObj->QueryWrite = GSQLiteMgr_QueryWrite;
 	lObj->QueryValue = GSQLiteMgr_QueryValue;
+	lObj->QueryCol = GSQLiteMgr_QueryCol;
+	lObj->QueryRow = GSQLiteMgr_QueryRow;
 	return lObj;
 }
 //===============================================
@@ -64,18 +87,48 @@ static void GSQLiteMgr_Test(int argc, char** argv) {
     char lSqlQuery[B_QUERY+1];
     char lValue[B_VALUE+1];
 
+    /*sprintf(lSqlQuery, "\
+    insert into CONFIG_DATA (CONFIG_KEY, CONFIG_VALUE)\
+    values ('%s', '%s') \
+    ", "G_MY_KEY", "MY_VALUE");
+    GSQLiteMgr()->QueryWrite(lSqlQuery);*/
+
     sprintf(lSqlQuery, "\
     select * from CONFIG_DATA \
     limit 5 \
     ");
     GSQLiteMgr()->QueryShow(lSqlQuery, "20;30", 25);
     printf("\n");
+    
     sprintf(lSqlQuery, "\
     select CONFIG_VALUE from CONFIG_DATA \
     where CONFIG_KEY = 'G_DEPOT_ROOT' \
     ");
     GSQLiteMgr()->QueryValue(lSqlQuery, lValue);
     printf("%s\n", lValue);
+    printf("\n");
+    
+    sprintf(lSqlQuery, "\
+    select CONFIG_KEY from CONFIG_DATA \
+    limit 5 \
+    ");
+    GSQLiteMgr()->QueryCol(lSqlQuery, lValue, "|");
+    printf("%s\n", lValue);
+    printf("\n");
+    
+    sprintf(lSqlQuery, "\
+    select * from CONFIG_DATA \
+    where CONFIG_KEY = 'G_MY_KEY' \
+    ");
+    GSQLiteMgr()->QueryRow(lSqlQuery, lValue, "|");
+    printf("%s\n", lValue);
+    printf("\n");
+
+    /*sprintf(lSqlQuery, "\
+    delete from CONFIG_DATA\
+    where CONFIG_KEY = '%s' \
+    ", "G_MY_KEY");
+    GSQLiteMgr()->QueryWrite(lSqlQuery);*/
 } 
 //===============================================
 static void* GSQLiteMgr_Open() {
@@ -119,9 +172,25 @@ static void GSQLiteMgr_QueryShow(char* sqlQuery, char* width, int widthD) {
     printf("\n");
 }
 //===============================================
+static void GSQLiteMgr_QueryWrite(char* sqlQuery) {
+    GSQLiteMgr_Exec(0, 0, sqlQuery);
+}
+//===============================================
 static void GSQLiteMgr_QueryValue(char* sqlQuery, char* value) {
     sGSQLiteValue lParams = {value, 0, 0};
     GSQLiteMgr_Exec(GSQLiteMgr_OnQueryValue, &lParams, sqlQuery);
+}
+//===============================================
+static void GSQLiteMgr_QueryCol(char* sqlQuery, char* col, char* sep) {
+    col[0] = 0;
+    sGSQLiteCol lParams = {col, sep, 0};
+    GSQLiteMgr_Exec(GSQLiteMgr_OnQueryCol, &lParams, sqlQuery);
+}
+//===============================================
+static void GSQLiteMgr_QueryRow(char* sqlQuery, char* row, char* sep) {
+    row[0] = 0;
+    sGSQLiteRow lParams = {row, sep, 0, 0};
+    GSQLiteMgr_Exec(GSQLiteMgr_OnQueryRow, &lParams, sqlQuery);
 }
 //===============================================
 static int GSQLiteMgr_OnQueryShow(void* params, int colCount, char** colValue, char** colName) {
@@ -196,8 +265,32 @@ static int GSQLiteMgr_OnQueryShow(void* params, int colCount, char** colValue, c
 //===============================================
 static int GSQLiteMgr_OnQueryValue(void* params, int colCount, char** colValue, char** colName) {
     sGSQLiteValue* lParams = (sGSQLiteValue*)params;
-    if(lParams->index == lParams->count) {
+    if(lParams->count == lParams->index) {
         strcpy(lParams->value, colValue[0]);
+    }
+    lParams->count++;
+    return 0;
+}
+//===============================================
+static int GSQLiteMgr_OnQueryCol(void* params, int colCount, char** colValue, char** colName) {
+    sGSQLiteCol* lParams = (sGSQLiteCol*)params;
+    if(lParams->count != 0) {
+        strcat(lParams->col, lParams->sep);
+    }
+    char* lColValue = colValue[0] ? colValue[0] : "NULL";
+    strcat(lParams->col, lColValue);
+    lParams->count++;
+    return 0;
+}
+//===============================================
+static int GSQLiteMgr_OnQueryRow(void* params, int colCount, char** colValue, char** colName) {
+    sGSQLiteRow* lParams = (sGSQLiteRow*)params;
+    if(lParams->count == lParams->index) {
+        for(int i = 0; i < colCount; i++) {
+            char* lColValue = colValue[i] ? colValue[i] : "NULL";
+            if(i != 0) strcat(lParams->row, lParams->sep);
+            strcat(lParams->row, lColValue);
+        }
     }
     lParams->count++;
     return 0;
