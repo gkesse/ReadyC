@@ -4,6 +4,7 @@
 typedef int (*GDEBUG_LOG)(char* buffer, int index, void* obj);
 //===============================================
 #define B_DEBUG_MSG (1024)
+#define B_STRING (256)
 #define B_DEBUG_SHOW (1)
 #define B_DEBUG_STREAM (2)
 //===============================================
@@ -116,9 +117,9 @@ static void GDebug_Write(int key, ...) {
 //===============================================
 static void GDebug_Log(const char* data) {
     int lCount = GDebug_SplitCount(data, "\n");
-    char lData[256];
-    char lFormat[256];
-    char lDate[256];
+    char lData[B_STRING+1];
+    char lFormat[B_STRING+1];
+    char lDate[B_STRING+1];
     
     GDebug_Date(lDate);
 
@@ -133,9 +134,9 @@ static void GDebug_Log(const char* data) {
 //===============================================
 static void GDebug_LogC(const char* data) {
     int lCount = GDebug_SplitCount(data, "\n");
-    char lData[256];
-    char lFormat[256];
-    char lDate[256];
+    char lData[B_STRING+1];
+    char lFormat[B_STRING+1];
+    char lDate[B_STRING+1];
     
     GDebug_Date(lDate);
 
@@ -218,13 +219,13 @@ static void GDebug_DebugFile(GDebugO* obj) {
 //===============================================
 #if defined(__WIN32)
 static void GDebug_DebugFileWin(GDebugO* obj) {
-    char lCommand[256], lHomePath[256], lDebugPath[256];
+    char lCommand[B_STRING+1], lHomePath[B_STRING+1], lDebugPath[B_STRING+1];
     FILE* lpFile;
     int lBytes;
     
     sprintf(lCommand, "%s", "echo %HOMEDRIVE%%HOMEPATH%");
     lpFile = popen(lCommand, "r");
-    lBytes = fread(lHomePath, 1, 255, lpFile);
+    lBytes = fread(lHomePath, 1, B_STRING, lpFile);
     lHomePath[lBytes - 1] = 0;
     pclose(lpFile);
     
@@ -239,13 +240,13 @@ static void GDebug_DebugFileWin(GDebugO* obj) {
 //===============================================
 #if defined(__unix)
 void GDebug_DebugFileUnix(GDebugO* obj) {
-    char lCommand[256], lHomePath[256], lDebugPath[256];
+    char lCommand[B_STRING+1], lHomePath[B_STRING+1], lDebugPath[B_STRING+1];
     FILE* lpFile;
     int lBytes;
     
     sprintf(lCommand, "%s", "echo $HOME");
     lpFile = popen(lCommand, "r");
-    lBytes = fread(lHomePath, 1, 255, lpFile);
+    lBytes = fread(lHomePath, 1, B_STRING, lpFile);
     lHomePath[lBytes - 1] = 0;
     pclose(lpFile);
     

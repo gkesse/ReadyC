@@ -5,7 +5,6 @@
 #include "GInclude.h"
 //===============================================
 typedef struct _GManagerO GManagerO;
-typedef struct _GMapO_GManager_GCHAR_PTR_GVOID_PTR GMapO_GManager_GCHAR_PTR_GVOID_PTR;
 //===============================================
 typedef struct _sGManager sGManager;
 typedef struct _sGSQLite sGSQLite;

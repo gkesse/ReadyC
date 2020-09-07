@@ -1,13 +1,9 @@
 //===============================================
 #include "GProcess.h"
 #include "GSQLiteUi.h"
-#include "GMap.h"
 #include "GConfig.h"
 //===============================================
 #define B_ANSWER (256)
-//===============================================
-GDECLARE_MAP(GProcess, GCHAR_PTR, GVOID_PTR)
-GDEFINE_MAP(GProcess, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static GProcessO* m_GProcessO = 0;
 //===============================================

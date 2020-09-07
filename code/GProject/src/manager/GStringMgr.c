@@ -42,6 +42,7 @@ static char* GStringMgr_Copy(const char* strIn) {
     int lSize = strlen(strIn);
     char* lStrOut = (char*)malloc(sizeof(char)*(lSize+1));
     strcpy(lStrOut, strIn);
+    return lStrOut;
 }
 //===============================================
 static void GStringMgr_ToUpper(const char* strIn, char* strOut) {

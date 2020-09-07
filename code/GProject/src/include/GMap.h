@@ -172,11 +172,13 @@
 #define GMapNodeO(GPREFIX, GKEY, GVALUE) \
         GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE
 //===============================================
+#define GMap_New(GPREFIX, GKEY, GVALUE) \
+        GMap_New_##GPREFIX##_##GKEY##_##GVALUE
+//===============================================
 typedef char* GCHAR_PTR;
 typedef void* GVOID_PTR;
 //===============================================
 static int GMap_EqualChar(char* key1, char* key2);
-static void GMap_ShowChar(char* key, void* value);
 //===============================================
 static int GMap_EqualChar(char* key1, char* key2) {
     int lStrcmp = strcmp(key1, key2);
@@ -184,9 +186,15 @@ static int GMap_EqualChar(char* key1, char* key2) {
     return 0;
 }
 //===============================================
+#if defined(_GMAP_SHOW_CHAR_)
+//===============================================
+static void GMap_ShowChar(char* key, void* value);
+//===============================================
 static void GMap_ShowChar(char* key, void* value) {
     printf("%s = %s\n", key, (char*)value);
 }
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================

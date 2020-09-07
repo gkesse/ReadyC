@@ -1,6 +1,5 @@
 //===============================================
 #include "GManager.h"
-#include "GMap.h"
 //===============================================
 #define B_ANSWER (256)
 #define B_PATH (256)
@@ -9,9 +8,6 @@
 #define B_SQLITE_FILE "/home/osboxes/Programs/ReadyBin/unix/.CONFIG_O.dat"
 #define B_JSON_FILE "/home/osboxes/Programs/ReadyC/unix/data/json/menu.json"
 #endif
-//===============================================
-GDECLARE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
-GDEFINE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static GManagerO* m_GManagerO = 0;
 //===============================================

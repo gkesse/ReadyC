@@ -1,12 +1,8 @@
 //===============================================
 #include "GSQLiteUi.h"
 #include "GProcess.h"
-#include "GMap.h"
 //===============================================
 #define B_ANSWER (256)
-//===============================================
-GDECLARE_MAP(GSQLiteUi, GCHAR_PTR, GVOID_PTR)
-GDEFINE_MAP(GSQLiteUi, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static GSQLiteUiO* m_GSQLiteUiO = 0;
 //===============================================

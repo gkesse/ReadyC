@@ -1,4 +1,6 @@
 //===============================================
+#define _GMAP_SHOW_CHAR_
+//===============================================
 #include "GConfig.h"
 #include "GMap.h"
 #include "GStringMgr.h"
