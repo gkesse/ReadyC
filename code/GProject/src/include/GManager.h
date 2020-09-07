@@ -18,6 +18,11 @@ struct _GManagerO {
     sGManager* m_mgr;
 };
 //===============================================
+struct _sGManager {
+    sGSQLite* sqlite;
+    sGJson* json;
+};
+//===============================================
 struct _sGSQLite {
     char* file;
 };

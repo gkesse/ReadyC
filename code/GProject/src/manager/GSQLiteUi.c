@@ -62,7 +62,7 @@ static void GSQLiteUi_Run(int argc, char** argv) {
 }
 //===============================================
 static void GSQLiteUi_Run_ADMIN(int argc, char** argv) {
-    GProcess()->run(argc, argv);
+    GProcess()->Run(argc, argv);
     m_GSQLiteUiO->G_STATE = "S_END";
 }
 //===============================================
@@ -124,6 +124,13 @@ static void GSQLiteUi_Run_LOAD(int argc, char** argv) {
 //===============================================
 static void GSQLiteUi_Run_QUIT(int argc, char** argv) {
     printf("\n");
-    m_GSQLiteUiO->G_STATE = "S_END";
+    printf("C_QUIT (Oui/[N]on) ? ");
+    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    if(!strcmp(lAnswer, "-q")) {m_GSQLiteUiO->G_STATE = "S_END";}
+    else if(!strcmp(lAnswer, "-i")) {m_GSQLiteUiO->G_STATE = "S_INIT";}
+    else if(!strcmp(lAnswer, "-a")) {m_GSQLiteUiO->G_STATE = "S_ADMIN";}
+    else if(!strcmp(lAnswer, "o")) {m_GSQLiteUiO->G_STATE = "S_END";}
+    else if(!strcmp(lAnswer, "n")) {m_GSQLiteUiO->G_STATE = "S_INIT";}
+    else if(!strcmp(lAnswer, "")) {m_GSQLiteUiO->G_STATE = "S_INIT";}
 }
 //===============================================
