@@ -2,6 +2,7 @@
 #include "GProcess.h"
 #include "GSQLiteUi.h"
 #include "GMap.h"
+#include "GConfig.h"
 //===============================================
 #define B_ANSWER (256)
 //===============================================
@@ -73,12 +74,13 @@ static void GProcess_Run_METHOD(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Run_CHOICE(int argc, char** argv) {
-    char* lLast = "";
+    char* lLast = GConfig()->GetData("G_ADMIN_ID");
+    if(lLast == 0) lLast = "";
     printf("C_ADMIN (%s) ? ", lLast);
     char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
     if(!strcmp(lAnswer, "-q")) {m_GProcessO->G_STATE = "S_END";}
     //
-    else if(!strcmp(lAnswer, "1")) {m_GProcessO->G_STATE = "S_SQLITE";}
+    else if(!strcmp(lAnswer, "1")) {m_GProcessO->G_STATE = "S_SQLITE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     //
 }
 //===============================================

@@ -3,19 +3,21 @@
 //===============================================
 typedef int (*GDEBUG_LOG)(char* buffer, int index, void* obj);
 //===============================================
+#define B_DEBUG_MSG (1024)
+#define B_DEBUG_SHOW (1)
+#define B_DEBUG_STREAM (2)
+//===============================================
 #if defined(__WIN32)
-#define GDATA_PATH ".readydev\\readyc\\data"
-#define GDEBUG_PATH "debug"
-#define GDEBUG_FILE "debug.txt"
+#define B_DATA_PATH ".readydev\\readyc\\data"
+#define B_DEBUG_PATH "debug"
+#define B_DEBUG_FILE "debug.txt"
 #endif
 //===============================================
 #if defined(__unix)
-#define GDATA_PATH ".readydev/readyc/data"
-#define GDEBUG_PATH "debug"
-#define GDEBUG_FILE "debug.txt"
+#define B_DATA_PATH ".readydev/readyc/data"
+#define B_DEBUG_PATH "debug"
+#define B_DEBUG_FILE "debug.txt"
 #endif
-//===============================================
-#define GDEBUG_BUFFER 1024
 //===============================================
 static GDebugO* m_GDebugO = 0;
 //===============================================
@@ -64,15 +66,15 @@ GDebugO* GDebug() {
 }
 //===============================================
 static void GDebug_Write(int key, ...) {
-    if(key == 0) return;
-    char lBuffer[GDEBUG_BUFFER];
+    if(B_DEBUG_SHOW == 0) return;
+    char lBuffer[B_DEBUG_MSG];
     int lIndex = 0;
 
     va_list lArgs;
     va_start(lArgs, key);
+    int lType = key;
     while(1) {
-        int lType = va_arg(lArgs, int);
-        if(lType == _EOA_) break;
+        if(lType == 0) break;
         if(lType == 1) {
             int lData = va_arg(lArgs, int);
             lIndex += sprintf(&lBuffer[lIndex], "%d", lData);
@@ -105,10 +107,11 @@ static void GDebug_Write(int key, ...) {
             void* lObj = va_arg(lArgs, void*);
             lIndex += onLogFunc(lBuffer, lIndex, lObj);
         }
+        lType = va_arg(lArgs, int);
     }
     va_end(lArgs);
-    if(key == 1) GDebug_Log(lBuffer);
-    else GDebug_LogC(lBuffer);
+    if(B_DEBUG_STREAM == 1) GDebug_Log(lBuffer);
+    else if(B_DEBUG_STREAM == 2)  GDebug_LogC(lBuffer);
 }
 //===============================================
 static void GDebug_Log(const char* data) {
@@ -201,7 +204,7 @@ static void GDebug_Date(char* buffer) {
     int lHour = lTimeInfo->tm_hour;
     int lMin = lTimeInfo->tm_min;
     int lSec = lTimeInfo->tm_sec;
-    if(lTimeInfo->tm_isdst == 1) lHour++;
+    if(lTimeInfo->tm_isdst > 0) lHour += lTimeInfo->tm_isdst;
     sprintf(buffer, "%02d/%02d/%04d %02d:%02d:%02d", lDay, lMonth, lYear, lHour, lMin, lSec);
 }
 //===============================================
@@ -225,12 +228,12 @@ static void GDebug_DebugFileWin(GDebugO* obj) {
     lHomePath[lBytes - 1] = 0;
     pclose(lpFile);
     
-    sprintf(lDebugPath, "%s\\%s\\%s", lHomePath, GDATA_PATH, GDEBUG_PATH);
+    sprintf(lDebugPath, "%s\\%s\\%s", lHomePath, B_DATA_PATH, B_DEBUG_PATH);
     sprintf(lCommand, "if not exist \"%s\" ( mkdir \"%s\" )", lDebugPath, lDebugPath);
     lpFile = popen(lCommand, "r");
     pclose(lpFile);
 
-    sprintf(obj->m_debugFile, "%s\\%s", lDebugPath, GDEBUG_FILE);
+    sprintf(obj->m_debugFile, "%s\\%s", lDebugPath, B_DEBUG_FILE);
 }
 #endif
 //===============================================
@@ -246,12 +249,12 @@ void GDebug_DebugFileUnix(GDebugO* obj) {
     lHomePath[lBytes - 1] = 0;
     pclose(lpFile);
     
-    sprintf(lDebugPath, "%s/%s/%s", lHomePath, GDATA_PATH, GDEBUG_PATH);
+    sprintf(lDebugPath, "%s/%s/%s", lHomePath, B_DATA_PATH, B_DEBUG_PATH);
     sprintf(lCommand, "if ! [ -d \"%s\" ] ; then mkdir -p \"%s\" ; fi", lDebugPath, lDebugPath);
     lpFile = popen(lCommand, "r");
     pclose(lpFile);
 
-    sprintf(obj->m_debugFile, "%s/%s", lDebugPath, GDEBUG_FILE);
+    sprintf(obj->m_debugFile, "%s/%s", lDebugPath, B_DEBUG_FILE);
 }
 #endif
 //===============================================

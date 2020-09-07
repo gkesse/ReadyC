@@ -47,38 +47,32 @@ GConfigO* GConfig() {
 }
 //===============================================
 static void GConfig_Clear() {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     lDataMap->Clear(lDataMap);
 }
 //===============================================
 static void GConfig_Remove(char* key) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     lDataMap->Remove(lDataMap, key, GMap_EqualChar);
 }
 //===============================================
 static void GConfig_SetData(char* key, char* value) {
-    GDebug()->Write(2, __FUNCTION__, "(", key, ", ", value, ")", _EOA_);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     lDataMap->SetData(lDataMap, key, value, GMap_EqualChar);
 }
 //===============================================
 static char* GConfig_GetData(char* key) {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     char* lValue = lDataMap->GetData(lDataMap, key, GMap_EqualChar);
     return lValue;
 }
 //===============================================
 static int GConfig_Size() {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     return lDataMap->Size(lDataMap);
 }
 //===============================================
 static void GConfig_Show() {
-    GDebug()->Write(2, 3, __FUNCTION__, 3, "()", _EOA_);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     lDataMap->Show(lDataMap, GMap_ShowChar);
 }
