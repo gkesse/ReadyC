@@ -1,10 +1,21 @@
 //===============================================
 #include "GSQLiteMgr.h"
+#include "GStringMgr.h"
 #include "GManager.h"
 //===============================================
 #define B_QUERY (256)
+#define B_WIDTH (8)
 //===============================================
 static GSQLiteMgrO* m_GSQLiteMgrO = 0;
+//===============================================
+typedef struct _sGSQLiteShow sGSQLiteShow;
+//===============================================
+struct _sGSQLiteShow {
+    int onHeader;
+    int onGrid;
+    char* width;
+    int widthD;
+};
 //===============================================
 static void GSQLiteMgr_Test(int argc, char** argv);
 static void* GSQLiteMgr_Open();
@@ -45,6 +56,11 @@ static void GSQLiteMgr_Test(int argc, char** argv) {
     where type='table' \
     ");
     GSQLiteMgr()->QueryShow(lSqlQuery);
+    sprintf(lSqlQuery, "\
+    select * from CONFIG_DATA \
+    limit 5 \
+    ");
+    GSQLiteMgr()->QueryShow(lSqlQuery);
 } 
 //===============================================
 static void* GSQLiteMgr_Open() {
@@ -65,11 +81,96 @@ static void GSQLiteMgr_Exec(void* onExec, void* params, char* sqlQuery) {
 }
 //===============================================
 static void GSQLiteMgr_QueryShow(char* sqlQuery) {
-    GSQLiteMgr_Exec(GSQLiteMgr_OnQueryShow, 0, sqlQuery);
+    sGSQLiteShow lParams = {1, 1, "20;50", 20};
+    
+    GSQLiteMgr_Exec(GSQLiteMgr_OnQueryShow, &lParams, sqlQuery);
+    
+    int lWidthC = GStringMgr()->SplitCount(lParams.width, ";");
+    char lWidthG[B_WIDTH+1];
+
+    printf("+-");
+    for(int i = 0; i < 2; i++) {
+        int lWidth = lParams.widthD;
+        if(i < lWidthC) {
+            GStringMgr()->SplitGet(lParams.width, lWidthG, ";", i);
+            lWidth = atoi(lWidthG);
+        }
+        if(i != 0) printf("-+-");
+        for(int j = 0; j < lWidth; j++) {
+            printf("-");
+        }
+    }
+    printf("-+");
+    printf("\n");
 }
 //===============================================
-static int GSQLiteMgr_OnQueryShow(void* params, int rows, char** values, char** fields) {
-	printf("%d : %s : %s\n", rows, values[0], fields[0]);
+static int GSQLiteMgr_OnQueryShow(void* params, int colCount, char** colValue, char** colName) {
+	sGSQLiteShow* lParams = (sGSQLiteShow*)params;
+
+    int lWidthC = GStringMgr()->SplitCount(lParams->width, ";");
+    char lWidthG[B_WIDTH+1];
+    
+    if(lParams->onHeader == 1) {
+        printf("+-");
+        for(int i = 0; i < colCount; i++) {
+            int lWidth = lParams->widthD;
+            if(i < lWidthC) {
+                GStringMgr()->SplitGet(lParams->width, lWidthG, ";", i);
+                lWidth = atoi(lWidthG);
+            }
+            if(i != 0) printf("-+-");
+            for(int j = 0; j < lWidth; j++) {
+                printf("-");
+            }
+        }
+        printf("-+");
+        printf("\n");
+    }
+    if(lParams->onHeader == 1) {
+        printf("| ");
+        for(int i = 0; i < colCount; i++) {
+            int lWidth = lParams->widthD;
+            if(i < lWidthC) {
+                GStringMgr()->SplitGet(lParams->width, lWidthG, ";", i);
+                lWidth = atoi(lWidthG);
+            }
+            if(i != 0) printf(" | ");
+            printf("%-*s", lWidth, colName[i]);
+        }
+        printf(" |");
+        printf("\n");
+    }
+    if(lParams->onGrid == 1) {
+        printf("+-");
+        for(int i = 0; i < colCount; i++) {
+            int lWidth = lParams->widthD;
+            if(i < lWidthC) {
+                GStringMgr()->SplitGet(lParams->width, lWidthG, ";", i);
+                lWidth = atoi(lWidthG);
+            }
+            if(i != 0) printf("-+-");
+            for(int j = 0; j < lWidth; j++) {
+                printf("-");
+            }
+        }
+        printf("-+");
+        printf("\n");
+    } 
+    printf("| ");
+	for(int i = 0; i < colCount; i++) {
+        int lWidth = lParams->widthD;
+        if(i < lWidthC) {
+            GStringMgr()->SplitGet(lParams->width, lWidthG, ";", i);
+            lWidth = atoi(lWidthG);
+        }
+        char* lColValue = colValue[i] ? colValue[i] : "NULL";
+        if(i != 0) printf(" | ");
+        printf("%-*s", lWidth, lColValue);
+    }
+    printf(" |");
+    printf("\n");
+    lParams->onHeader = 0;
+    lParams->onGrid = 0;
 	return 0; 
 }
 //===============================================
