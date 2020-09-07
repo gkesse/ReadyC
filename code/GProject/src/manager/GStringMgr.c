@@ -142,6 +142,7 @@ static void GStringMgr_SplitGet(const char* strIn, char* strOut, char* sep, int 
 }
 //===============================================
 static int GStringMgr_SplitCount(const char* strIn, char* sep) {
+    if(strIn[0] == 0) return 0;
     int lPos = 0;
     int lCount = 0;
 

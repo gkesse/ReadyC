@@ -81,7 +81,7 @@ static void GSQLiteMgr_Exec(void* onExec, void* params, char* sqlQuery) {
 }
 //===============================================
 static void GSQLiteMgr_QueryShow(char* sqlQuery) {
-    sGSQLiteShow lParams = {1, 1, "20;50", 20};
+    sGSQLiteShow lParams = {1, 1, "", 25};
     
     GSQLiteMgr_Exec(GSQLiteMgr_OnQueryShow, &lParams, sqlQuery);
     
