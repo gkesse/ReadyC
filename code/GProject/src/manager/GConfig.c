@@ -1,7 +1,7 @@
 //===============================================
 #include "GConfig.h"
 #include "GMap.h"
-#include "GDebug.h"
+#include "GStringMgr.h"
 //===============================================
 GDECLARE_MAP(GConfig, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GConfig, GCHAR_PTR, GVOID_PTR)
@@ -57,8 +57,9 @@ static void GConfig_Remove(char* key) {
 }
 //===============================================
 static void GConfig_SetData(char* key, char* value) {
+    char* lValue = GStringMgr()->Copy(value);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
-    lDataMap->SetData(lDataMap, key, value, GMap_EqualChar);
+    lDataMap->SetData(lDataMap, key, lValue, GMap_EqualChar);
 }
 //===============================================
 static char* GConfig_GetData(char* key) {
