@@ -77,10 +77,10 @@
             \
             while(lNext != 0) { \
                 GKEY lKey = lNext->m_key; \
-                int lEqual = FALSE; \
-                if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
+                int lEqual = 0; \
+                if(equal == 0) lEqual = (lKey == key) ? 1 : 0; \
                 else lEqual = equal(lKey, key); \
-                if(lEqual == TRUE) { \
+                if(lEqual == 1) { \
                     if(lPrevious == 0) obj->m_head = lNext->m_next; \
                     else lPrevious->m_next = lNext->m_next; \
                     GMap_RemoveNode_##GPREFIX##_##GKEY##_##GVALUE(lNext); \
@@ -104,10 +104,10 @@
             \
             while(lNext != 0) { \
                 GKEY lKey = lNext->m_key; \
-                int lEqual = FALSE; \
-                if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
+                int lEqual = 0; \
+                if(equal == 0) lEqual = (lKey == key) ? 1 : 0; \
                 else lEqual = equal(lKey, key); \
-                if(lEqual == TRUE) { \
+                if(lEqual == 1) { \
                     free(lNext->m_value); \
                     lNext->m_value = value; \
                     return; \
@@ -131,10 +131,10 @@
             while(lNext != 0) { \
                 GKEY lKey = lNext->m_key; \
                 GVALUE lValue = lNext->m_value; \
-                int lEqual = FALSE; \
-                if(equal == 0) lEqual = (lKey == key) ? TRUE : FALSE; \
+                int lEqual = 0; \
+                if(equal == 0) lEqual = (lKey == key) ? 1 : 0; \
                 else lEqual = equal(lKey, key); \
-                if(lEqual == TRUE) return lValue; \
+                if(lEqual == 1) return lValue; \
                 lNext = lNext->m_next; \
             } \
             return 0; \
@@ -180,8 +180,8 @@ static void GMap_ShowChar(char* key, void* value);
 //===============================================
 static int GMap_EqualChar(char* key1, char* key2) {
     int lStrcmp = strcmp(key1, key2);
-    if(lStrcmp == 0) return TRUE;
-    return FALSE;
+    if(lStrcmp == 0) return 1;
+    return 0;
 }
 //===============================================
 static void GMap_ShowChar(char* key, void* value) {

@@ -2,6 +2,8 @@
 #include "GProcess.h"
 #include "GMap.h"
 //===============================================
+#define B_ANSWER (256)
+//===============================================
 GDECLARE_MAP(GProcess, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GProcess, GCHAR_PTR, GVOID_PTR)
 //===============================================
@@ -61,37 +63,49 @@ static void GProcess_Run_ADMIN(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Run_INIT(int argc, char** argv) {
-    printf("run_INIT\n");
+    printf("\n");
+    printf("C_ADMIN !!!\n");
+    printf("\t%-2s : %s\n", "-q", "quitter l'application");
+    printf("\t%-2s : %s\n", "-i", "reinitialiser l'application");
+    printf("\t%-2s : %s\n", "-a", "redemarrer l'application");
+    printf("\t%-2s : %s\n", "-v", "valider les configurations");
+    printf("\n");
     m_GProcessO->G_STATE = "S_LOAD";
 }
 //===============================================
 static void GProcess_Run_METHOD(int argc, char** argv) {
-    printf("run_METHOD\n");
+    printf("C_ADMIN :\n");
+    printf("\t%-2s : %s\n", "1", "S_SQLITE");
+    printf("\n");
     m_GProcessO->G_STATE = "S_CHOICE";
 }
 //===============================================
 static void GProcess_Run_CHOICE(int argc, char** argv) {
-    printf("run_CHOICE\n");
-    m_GProcessO->G_STATE = "S_SQLITE";
+    char* lLast = "";
+    printf("C_ADMIN (%s) ? ", lLast);
+    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    if(!strcmp(lAnswer, "-q")) {m_GProcessO->G_STATE = "S_END";}
+    //
+    else if(!strcmp(lAnswer, "1")) {m_GProcessO->G_STATE = "S_SQLITE";}
+    //
 }
 //===============================================
 static void GProcess_Run_SQLITE(int argc, char** argv) {
+    printf("\n");
     printf("run_SQLITE\n");
     m_GProcessO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GProcess_Run_SAVE(int argc, char** argv) {
-    printf("run_SAVE\n");
     m_GProcessO->G_STATE = "S_QUIT";
 }
 //===============================================
 static void GProcess_Run_LOAD(int argc, char** argv) {
-    printf("run_LOAD\n");
     m_GProcessO->G_STATE = "S_METHOD";
 }
 //===============================================
 static void GProcess_Run_QUIT(int argc, char** argv) {
-    printf("run_QUIT\n");
+    printf("\n");
     m_GProcessO->G_STATE = "S_END";
 }
 //===============================================
