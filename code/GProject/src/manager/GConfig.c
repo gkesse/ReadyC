@@ -4,6 +4,7 @@
 #include "GConfig.h"
 #include "GMap.h"
 #include "GStringMgr.h"
+#include "GSQLiteMgr.h"
 //===============================================
 GDECLARE_MAP(GConfig, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GConfig, GCHAR_PTR, GVOID_PTR)
@@ -68,6 +69,16 @@ static char* GConfig_GetData(char* key) {
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     char* lValue = lDataMap->GetData(lDataMap, key, GMap_EqualChar);
     return lValue;
+}
+//===============================================
+static void GConfig_SaveData(char* key) {
+    char* lValue = GConfig_GetData(key);
+    if(GConfig_CheckData(key))
+}
+//===============================================
+static void GConfig_CheckData(char* key) {
+    char* lValue = GConfig_GetData(key);
+    if(GConfig_CheckData(key))
 }
 //===============================================
 static int GConfig_Size() {
