@@ -1,20 +1,20 @@
 //===============================================
-#ifndef _GProcess_
-#define _GProcess_
+#ifndef _GDateUi_
+#define _GDateUi_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GProcessO GProcessO;
+typedef struct _GDateUiO GDateUiO;
 //===============================================
-struct _GProcessO {
+struct _GDateUiO {
     void (*Delete)();
     void (*Run)(int argc, char** argv);
     char* G_STATE;
 };
 //===============================================
-GProcessO* GProcess_New();
-void GProcess_Delete();
-GProcessO* GProcess();
+GDateUiO* GDateUi_New();
+void GDateUi_Delete();
+GDateUiO* GDateUi();
 //===============================================
 #endif
 //===============================================
