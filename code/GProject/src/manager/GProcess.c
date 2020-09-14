@@ -74,6 +74,7 @@ static void GProcess_Run_CHOICE(int argc, char** argv) {
     if(lLast == 0) lLast = "";
     printf("C_ADMIN (%s) ? ", lLast);
     char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GProcessO->G_STATE = "S_END";}
     //
     else if(!strcmp(lAnswer, "1")) {m_GProcessO->G_STATE = "S_SQLITE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
@@ -86,10 +87,12 @@ static void GProcess_Run_SQLITE(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Run_SAVE(int argc, char** argv) {
+    GConfig()->SaveData("G_ADMIN_ID");
     m_GProcessO->G_STATE = "S_END";
 }
 //===============================================
 static void GProcess_Run_LOAD(int argc, char** argv) {
+    GConfig()->LoadData("G_ADMIN_ID");
     m_GProcessO->G_STATE = "S_METHOD";
 }
 //===============================================
