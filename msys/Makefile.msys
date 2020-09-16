@@ -28,7 +28,7 @@ GCFLAGS = \
     -Wno-unused-parameter \
     -DWITH_NO_C_LOCAL \
     
-all: clean compile run
+all: clean_exe compile run
  
 compile: $(GOBJS)
 	@if ! [ -d "$(GBIN)" ] ; then mkdir -p $(GBIN) ; fi
