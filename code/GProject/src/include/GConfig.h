@@ -13,6 +13,8 @@ struct _GConfigO {
     void (*Remove)(char* key);
     void (*SetData)(char* key, char* value);
     char* (*GetData)(char* key);
+    void (*SaveData)(char* key);
+    void (*LoadData)(char* key);
     int (*Size)();
     void (*Show)();
     GMapO_GConfig_GCHAR_PTR_GVOID_PTR* m_dataMap;

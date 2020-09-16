@@ -19,6 +19,7 @@ struct _sGSQLiteShow {
     int onGrid;
     char* width;
     int widthD;
+    int colCount;
 };
 //===============================================
 struct _sGSQLiteValue {
@@ -149,15 +150,15 @@ static void GSQLiteMgr_Exec(void* onExec, void* params, char* sqlQuery) {
 }
 //===============================================
 static void GSQLiteMgr_QueryShow(char* sqlQuery, char* width, int widthD) {
-    sGSQLiteShow lParams = {1, 1, width, widthD};
+    sGSQLiteShow lParams = {1, 1, width, widthD, 0};
     
     GSQLiteMgr_Exec(GSQLiteMgr_OnQueryShow, &lParams, sqlQuery);
     
     int lWidthC = GStringMgr()->SplitCount(lParams.width, ";");
     char lWidthG[B_WIDTH+1];
 
-    printf("+-");
-    for(int i = 0; i < 2; i++) {
+    if(lParams.colCount > 0) printf("+-");
+    for(int i = 0; i < lParams.colCount; i++) {
         int lWidth = lParams.widthD;
         if(i < lWidthC) {
             GStringMgr()->SplitGet(lParams.width, lWidthG, ";", i);
@@ -168,8 +169,8 @@ static void GSQLiteMgr_QueryShow(char* sqlQuery, char* width, int widthD) {
             printf("-");
         }
     }
-    printf("-+");
-    printf("\n");
+    if(lParams.colCount > 0) printf("-+");
+    if(lParams.colCount > 0) printf("\n");
 }
 //===============================================
 static void GSQLiteMgr_QueryWrite(char* sqlQuery) {
@@ -260,6 +261,7 @@ static int GSQLiteMgr_OnQueryShow(void* params, int colCount, char** colValue, c
     printf("\n");
     lParams->onHeader = 0;
     lParams->onGrid = 0;
+    lParams->colCount = colCount;
 	return 0; 
 }
 //===============================================

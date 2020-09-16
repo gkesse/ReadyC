@@ -2,6 +2,7 @@
 #include "GSQLiteUi.h"
 #include "GProcess.h"
 #include "GSQLiteMgr.h"
+#include "GConfig.h"
 //===============================================
 #define B_ANSWER (256)
 #define B_QUERY (256)
@@ -21,6 +22,7 @@ static void GSQLiteUi_Run_QUIT(int argc, char** argv);
 static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv);
 static void GSQLiteUi_Run_CONIG_CREATE(int argc, char** argv);
 static void GSQLiteUi_Run_CONIG_DELETE(int argc, char** argv);
+static void GSQLiteUi_Run_CONIG_SHOW(int argc, char** argv);
 //===============================================
 GSQLiteUiO* GSQLiteUi_New() {
     GSQLiteUiO* lObj = (GSQLiteUiO*)malloc(sizeof(GSQLiteUiO));
@@ -55,6 +57,7 @@ static void GSQLiteUi_Run(int argc, char** argv) {
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_TABLES_SHOW")) {GSQLiteUi_Run_TABLES_SHOW(argc, argv);}
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_CONIG_CREATE")) {GSQLiteUi_Run_CONIG_CREATE(argc, argv);}
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_CONIG_DELETE")) {GSQLiteUi_Run_CONIG_DELETE(argc, argv);}
+        else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_CONIG_SHOW")) {GSQLiteUi_Run_CONIG_SHOW(argc, argv);}
         //
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_SAVE")) {GSQLiteUi_Run_SAVE(argc, argv);}
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_LOAD")) {GSQLiteUi_Run_LOAD(argc, argv);}
@@ -93,68 +96,83 @@ static void GSQLiteUi_Run_METHOD(int argc, char** argv) {
 }
 //===============================================
 static void GSQLiteUi_Run_CHOICE(int argc, char** argv) {
-    char* lLast = "";
+    char* lLast = GConfig()->GetData("G_SQLITE_ID");
     printf("C_SQLITE (%s) ? ", lLast);
     char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GSQLiteUiO->G_STATE = "S_END";}
-    if(!strcmp(lAnswer, "-i")) {m_GSQLiteUiO->G_STATE = "S_INIT";}
-    if(!strcmp(lAnswer, "-a")) {m_GSQLiteUiO->G_STATE = "S_ADMIN";}
+    else if(!strcmp(lAnswer, "-i")) {m_GSQLiteUiO->G_STATE = "S_INIT";}
+    else if(!strcmp(lAnswer, "-a")) {m_GSQLiteUiO->G_STATE = "S_ADMIN";}
     //
-    else if(!strcmp(lAnswer, "1")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW";}
-    else if(!strcmp(lAnswer, "2")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW";}
+    else if(!strcmp(lAnswer, "1")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "2")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
     //
-    else if(!strcmp(lAnswer, "10")) {m_GSQLiteUiO->G_STATE = "S_CONIG_CREATE";}
-    else if(!strcmp(lAnswer, "11")) {m_GSQLiteUiO->G_STATE = "S_CONIG_DELETE";}
-    else if(!strcmp(lAnswer, "12")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW";}
-    else if(!strcmp(lAnswer, "13")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW";}
+    else if(!strcmp(lAnswer, "10")) {m_GSQLiteUiO->G_STATE = "S_CONIG_CREATE"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "11")) {m_GSQLiteUiO->G_STATE = "S_CONIG_DELETE"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "12")) {m_GSQLiteUiO->G_STATE = "S_CONIG_SHOW"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "13")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
     //
 }
 //===============================================
 static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv) {
     printf("\n");
-    char lSqlQuery[B_QUERY+1];
+    char lQuery[B_QUERY+1];
 
-    sprintf(lSqlQuery, "\
-    select * from CONFIG_C \
-    limit 100 \
+    sprintf(lQuery, "\
+    select name from sqlite_master \
+    where type='table' \
     ");
     
-    GSQLiteMgr()->QueryShow(lSqlQuery, "20;30", 25);
+    GSQLiteMgr()->QueryShow(lQuery, "20;30", 25);
     
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GSQLiteUi_Run_CONIG_CREATE(int argc, char** argv) {
     printf("\n");
-    char lSqlQuery[B_QUERY+1];
+    char lQuery[B_QUERY+1];
 
-    sprintf(lSqlQuery, "\
+    sprintf(lQuery, "\
     create table CONFIG_C ( \
     CONFIG_KEY text unique not null, \
     CONFIG_VALUE text \
     )");
     
-    GSQLiteMgr()->QueryWrite(lSqlQuery);
+    GSQLiteMgr()->QueryWrite(lQuery);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GSQLiteUi_Run_CONIG_DELETE(int argc, char** argv) {
     printf("\n");
-    char lSqlQuery[B_QUERY+1];
+    char lQuery[B_QUERY+1];
 
-    sprintf(lSqlQuery, "\
+    sprintf(lQuery, "\
     drop table CONFIG_C ( \
     )");
     
-    GSQLiteMgr()->QueryWrite(lSqlQuery);
+    GSQLiteMgr()->QueryWrite(lQuery);
+    m_GSQLiteUiO->G_STATE = "S_SAVE";
+}
+//===============================================
+static void GSQLiteUi_Run_CONIG_SHOW(int argc, char** argv) {
+    printf("\n");
+    char lQuery[B_QUERY+1];
+
+    sprintf(lQuery, "\
+    select * from CONFIG_C \
+    ");
+    
+    GSQLiteMgr()->QueryShow(lQuery, "20;30", 25);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GSQLiteUi_Run_SAVE(int argc, char** argv) {
+    GConfig()->SaveData("G_SQLITE_ID");
     m_GSQLiteUiO->G_STATE = "S_QUIT";
 }
 //===============================================
 static void GSQLiteUi_Run_LOAD(int argc, char** argv) {
+    GConfig()->LoadData("G_SQLITE_ID");
     m_GSQLiteUiO->G_STATE = "S_METHOD";
 }
 //===============================================

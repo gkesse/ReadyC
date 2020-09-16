@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcess.h"
 #include "GSQLiteUi.h"
+#include "GDateUi.h"
 #include "GConfig.h"
 //===============================================
 #define B_ANSWER (256)
@@ -16,6 +17,7 @@ static void GProcess_Run_SAVE(int argc, char** argv);
 static void GProcess_Run_LOAD(int argc, char** argv);
 //===============================================
 static void GProcess_Run_SQLITE(int argc, char** argv);
+static void GProcess_Run_DATE(int argc, char** argv);
 //===============================================
 GProcessO* GProcess_New() {
     GProcessO* lObj = (GProcessO*)malloc(sizeof(GProcessO));
@@ -47,6 +49,7 @@ static void GProcess_Run(int argc, char** argv) {
         else if(!strcmp(m_GProcessO->G_STATE, "S_CHOICE")) {GProcess_Run_CHOICE(argc, argv);}
         //
         else if(!strcmp(m_GProcessO->G_STATE, "S_SQLITE")) {GProcess_Run_SQLITE(argc, argv);}
+        else if(!strcmp(m_GProcessO->G_STATE, "S_DATE")) {GProcess_Run_DATE(argc, argv);}
         //
         else if(!strcmp(m_GProcessO->G_STATE, "S_SAVE")) {GProcess_Run_SAVE(argc, argv);}
         else if(!strcmp(m_GProcessO->G_STATE, "S_LOAD")) {GProcess_Run_LOAD(argc, argv);}
@@ -65,18 +68,20 @@ static void GProcess_Run_INIT(int argc, char** argv) {
 static void GProcess_Run_METHOD(int argc, char** argv) {
     printf("C_ADMIN :\n");
     printf("\t%-2s : %s\n", "1", "S_SQLITE");
+    printf("\t%-2s : %s\n", "2", "S_DATE");
     printf("\n");
     m_GProcessO->G_STATE = "S_CHOICE";
 }
 //===============================================
 static void GProcess_Run_CHOICE(int argc, char** argv) {
     char* lLast = GConfig()->GetData("G_ADMIN_ID");
-    if(lLast == 0) lLast = "";
     printf("C_ADMIN (%s) ? ", lLast);
     char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GProcessO->G_STATE = "S_END";}
     //
     else if(!strcmp(lAnswer, "1")) {m_GProcessO->G_STATE = "S_SQLITE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "2")) {m_GProcessO->G_STATE = "S_DATE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     //
 }
 //===============================================
@@ -85,11 +90,18 @@ static void GProcess_Run_SQLITE(int argc, char** argv) {
     m_GProcessO->G_STATE = "S_SAVE";
 }
 //===============================================
+static void GProcess_Run_DATE(int argc, char** argv) {
+    GDateUi()->Run(argc, argv);
+    m_GProcessO->G_STATE = "S_SAVE";
+}
+//===============================================
 static void GProcess_Run_SAVE(int argc, char** argv) {
+    GConfig()->SaveData("G_ADMIN_ID");
     m_GProcessO->G_STATE = "S_END";
 }
 //===============================================
 static void GProcess_Run_LOAD(int argc, char** argv) {
+    GConfig()->LoadData("G_ADMIN_ID");
     m_GProcessO->G_STATE = "S_METHOD";
 }
 //===============================================
