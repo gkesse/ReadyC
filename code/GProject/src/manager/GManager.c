@@ -82,13 +82,13 @@ static void GManager_Printf(const char* format, ...) {
     va_list lArgs;
     va_start (lArgs, format);
     vprintf (format, lArgs);
+    fflush(stdout); 
     va_end (lArgs);
 }
 //===============================================
 static void GManager_ReadLine(char* buffer, int size) {
     fflush(stdout); 
     fgets(buffer, size, stdin); 
-    fflush(stdout); 
     buffer[strlen(buffer)-1] = 0;
 }
 //===============================================

@@ -82,6 +82,7 @@ static void GDateUi_Run_INIT(int argc, char** argv) {
 }
 //===============================================
 static void GDateUi_Run_METHOD(int argc, char** argv) {
+    printf("\n");
     printf("C_DATE :\n");
     printf("\t%-2s : %s\n", "1", "afficher la date");
     printf("\t%-2s : %s\n", "2", "afficher l'heure");

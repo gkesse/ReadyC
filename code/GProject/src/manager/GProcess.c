@@ -102,7 +102,7 @@ static void GProcess_Run_SAVE(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Run_LOAD(int argc, char** argv) {
-    //GConfig()->LoadData("G_ADMIN_ID");
+    GConfig()->LoadData("G_ADMIN_ID");
     m_GProcessO->G_STATE = "S_METHOD";
 }
 //===============================================

@@ -84,6 +84,7 @@ static void GSQLiteUi_Run_INIT(int argc, char** argv) {
 }
 //===============================================
 static void GSQLiteUi_Run_METHOD(int argc, char** argv) {
+    printf("\n");
     printf("C_SQLITE :\n");
     printf("\t%-2s : %s\n", "1", "afficher les tables");
     printf("\t%-2s : %s\n", "2", "extraire le schema d'une table");
@@ -99,7 +100,7 @@ static void GSQLiteUi_Run_METHOD(int argc, char** argv) {
 static void GSQLiteUi_Run_CHOICE(int argc, char** argv) {
     char* lLast = GConfig()->GetData("G_SQLITE_ID");
     printf("C_SQLITE (%s) ? ", lLast);
-    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    char lAnswer[B_ANSWER+1]; GManager()->ReadLine(lAnswer, B_ANSWER);
     if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GSQLiteUiO->G_STATE = "S_END";}
     else if(!strcmp(lAnswer, "-i")) {m_GSQLiteUiO->G_STATE = "S_INIT";}
@@ -173,7 +174,7 @@ static void GSQLiteUi_Run_SAVE(int argc, char** argv) {
 }
 //===============================================
 static void GSQLiteUi_Run_LOAD(int argc, char** argv) {
-    //GConfig()->LoadData("G_SQLITE_ID");
+    GConfig()->LoadData("G_SQLITE_ID");
     m_GSQLiteUiO->G_STATE = "S_METHOD";
 }
 //===============================================
