@@ -18,6 +18,7 @@ static GManagerO* m_GManagerO = 0;
 static sGManager* GManager_DataGet();
 static void GManager_DataClear();
 static void GManager_Printf(const char* format, ...);
+static void GManager_ReadLine(char* buffer, int size);
 //===============================================
 static void GManager_Init(GManagerO* obj);
 //===============================================
@@ -30,6 +31,7 @@ GManagerO* GManager_New() {
     lObj->DataGet = GManager_DataGet;
     lObj->DataClear = GManager_DataClear;
     lObj->Printf = GManager_Printf;
+    lObj->ReadLine = GManager_ReadLine;
     return lObj;
 }
 //===============================================
@@ -81,5 +83,12 @@ static void GManager_Printf(const char* format, ...) {
     va_start (lArgs, format);
     vprintf (format, lArgs);
     va_end (lArgs);
+}
+//===============================================
+static void GManager_ReadLine(char* buffer, int size) {
+    fflush(stdout); 
+    fgets(buffer, size, stdin); 
+    fflush(stdout); 
+    buffer[strlen(buffer)-1] = 0;
 }
 //===============================================

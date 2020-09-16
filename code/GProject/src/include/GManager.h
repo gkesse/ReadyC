@@ -15,6 +15,7 @@ struct _GManagerO {
     sGManager* (*DataGet)();
     void (*DataClear)();
     void (*Printf)(const char* format, ...);
+    void (*ReadLine)(char* buffer, int size);
     sGManager* m_mgr;
 };
 //===============================================

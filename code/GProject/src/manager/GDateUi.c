@@ -3,6 +3,7 @@
 #include "GProcess.h"
 #include "GSQLiteMgr.h"
 #include "GConfig.h"
+#include "GManager.h"
 //===============================================
 #define B_ANSWER (256)
 #define B_QUERY (256)
@@ -92,7 +93,7 @@ static void GDateUi_Run_METHOD(int argc, char** argv) {
 static void GDateUi_Run_CHOICE(int argc, char** argv) {
     char* lLast = GConfig()->GetData("G_DATE_ID");
     printf("C_DATE (%s) ? ", lLast);
-    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    char lAnswer[B_ANSWER+1]; GManager()->ReadLine(lAnswer, B_ANSWER);
     if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GDateUiO->G_STATE = "S_END";}
     else if(!strcmp(lAnswer, "-i")) {m_GDateUiO->G_STATE = "S_INIT";}

@@ -3,6 +3,7 @@
 #include "GProcess.h"
 #include "GSQLiteMgr.h"
 #include "GConfig.h"
+#include "GManager.h"
 //===============================================
 #define B_ANSWER (256)
 #define B_QUERY (256)
@@ -179,7 +180,7 @@ static void GSQLiteUi_Run_LOAD(int argc, char** argv) {
 static void GSQLiteUi_Run_QUIT(int argc, char** argv) {
     printf("\n");
     printf("C_QUIT (Oui/[N]on) ? ");
-    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    char lAnswer[B_ANSWER+1]; GManager()->ReadLine(lAnswer, B_ANSWER);
     if(!strcmp(lAnswer, "-q")) {m_GSQLiteUiO->G_STATE = "S_END";}
     else if(!strcmp(lAnswer, "-i")) {m_GSQLiteUiO->G_STATE = "S_INIT";}
     else if(!strcmp(lAnswer, "-a")) {m_GSQLiteUiO->G_STATE = "S_ADMIN";}
