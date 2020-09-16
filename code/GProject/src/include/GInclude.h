@@ -11,10 +11,12 @@
 #include <time.h>
 #include <stdarg.h>
 #include <signal.h>
+#include <winsock2.h>
 #include <windows.h>
 #include <process.h>
-#include <winsock2.h>
 #include <conio.h>
+//===============================================
+#include <sqlite3.h>
 //===============================================
 #elif defined(__unix)
 //===============================================

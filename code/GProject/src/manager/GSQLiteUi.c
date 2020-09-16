@@ -172,7 +172,7 @@ static void GSQLiteUi_Run_SAVE(int argc, char** argv) {
 }
 //===============================================
 static void GSQLiteUi_Run_LOAD(int argc, char** argv) {
-    GConfig()->LoadData("G_SQLITE_ID");
+    //GConfig()->LoadData("G_SQLITE_ID");
     m_GSQLiteUiO->G_STATE = "S_METHOD";
 }
 //===============================================

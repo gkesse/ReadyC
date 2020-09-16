@@ -7,6 +7,10 @@
 #if defined(__unix)
 #define B_SQLITE_FILE "/home/osboxes/Programs/ReadyBin/unix/.CONFIG_O.dat"
 #define B_JSON_FILE "/home/osboxes/Programs/ReadyC/unix/data/json/menu.json"
+//===============================================
+#elif defined(__WIN32)
+#define B_SQLITE_FILE "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\msys\\.CONFIG_O.dat"
+#define B_JSON_FILE "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\msys\\data\\json\\menu.json"
 #endif
 //===============================================
 static GManagerO* m_GManagerO = 0;
