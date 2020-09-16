@@ -76,7 +76,8 @@ static void GProcess_Run_METHOD(int argc, char** argv) {
 static void GProcess_Run_CHOICE(int argc, char** argv) {
     char* lLast = GConfig()->GetData("G_ADMIN_ID");
     printf("C_ADMIN (%s) ? ", lLast);
-    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    //char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    scanf("%[^\n]%*c", lAnswer);
     if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GProcessO->G_STATE = "S_END";}
     //
@@ -102,6 +103,6 @@ static void GProcess_Run_SAVE(int argc, char** argv) {
 //===============================================
 static void GProcess_Run_LOAD(int argc, char** argv) {
     //GConfig()->LoadData("G_ADMIN_ID");
-    m_GProcessO->G_STATE = "S_END";
+    m_GProcessO->G_STATE = "S_METHOD";
 }
 //===============================================
