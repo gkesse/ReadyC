@@ -3,6 +3,7 @@
 #include "GSQLiteUi.h"
 #include "GDateUi.h"
 #include "GConfig.h"
+#include "GManager.h"
 //===============================================
 #define B_ANSWER (256)
 //===============================================
@@ -58,26 +59,25 @@ static void GProcess_Run(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Run_INIT(int argc, char** argv) {
-    printf("\n");
-    printf("C_ADMIN !!!\n");
-    printf("\t%-2s : %s\n", "-q", "quitter l'application");
-    printf("\n");
+    GManager()->Printf("\n");
+    GManager()->Printf("C_ADMIN !!!\n");
+    GManager()->Printf("\t%-2s : %s\n", "-q", "quitter l'application");
+    GManager()->Printf("\n");
     m_GProcessO->G_STATE = "S_LOAD";
 }
 //===============================================
 static void GProcess_Run_METHOD(int argc, char** argv) {
-    printf("C_ADMIN :\n");
-    printf("\t%-2s : %s\n", "1", "S_SQLITE");
-    printf("\t%-2s : %s\n", "2", "S_DATE");
-    printf("\n");
+    GManager()->Printf("C_ADMIN :\n");
+    GManager()->Printf("\t%-2s : %s\n", "1", "S_SQLITE");
+    GManager()->Printf("\t%-2s : %s\n", "2", "S_DATE");
+    GManager()->Printf("\n");
     m_GProcessO->G_STATE = "S_CHOICE";
 }
 //===============================================
 static void GProcess_Run_CHOICE(int argc, char** argv) {
     char* lLast = GConfig()->GetData("G_ADMIN_ID");
-    printf("C_ADMIN (%s) ? ", lLast);
-    //char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
-    scanf("%[^\n]%*c", lAnswer);
+    GManager()->Printf("C_ADMIN (%s) ? ", lLast);
+    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
     if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GProcessO->G_STATE = "S_END";}
     //
@@ -102,7 +102,7 @@ static void GProcess_Run_SAVE(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Run_LOAD(int argc, char** argv) {
-    //GConfig()->LoadData("G_ADMIN_ID");
+    GConfig()->LoadData("G_ADMIN_ID");
     m_GProcessO->G_STATE = "S_METHOD";
 }
 //===============================================

@@ -17,6 +17,7 @@ static GManagerO* m_GManagerO = 0;
 //===============================================
 static sGManager* GManager_DataGet();
 static void GManager_DataClear();
+static void GManager_Printf(const char* format, ...);
 //===============================================
 static void GManager_Init(GManagerO* obj);
 //===============================================
@@ -28,6 +29,7 @@ GManagerO* GManager_New() {
     lObj->Delete = GManager_Delete;
     lObj->DataGet = GManager_DataGet;
     lObj->DataClear = GManager_DataClear;
+    lObj->Printf = GManager_Printf;
     return lObj;
 }
 //===============================================
@@ -72,5 +74,12 @@ static void GManager_DataClear() {
     free(m_GManagerO->m_mgr->json);
     // manager
     free(m_GManagerO->m_mgr);
+}
+//===============================================
+static void GManager_Printf(const char* format, ...) {
+    va_list lArgs;
+    va_start (lArgs, format);
+    vprintf (format, lArgs);
+    va_end (lArgs);
 }
 //===============================================

@@ -14,6 +14,7 @@ struct _GManagerO {
     void (*Delete)();
     sGManager* (*DataGet)();
     void (*DataClear)();
+    void (*Printf)(const char* format, ...);
     sGManager* m_mgr;
 };
 //===============================================

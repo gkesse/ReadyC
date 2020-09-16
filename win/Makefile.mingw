@@ -5,9 +5,12 @@ GTARGET = $(GBIN)\gp_c.exe
 
 GINCS = \
     -I$(GSRC)\include \
+    -IC:\Users\Admin\Downloads\Programs\ReadyLib\dev\sqlite\3.29.0\mingw\include \
 
 GLIBS = \
-
+    -LC:\Users\Admin\Downloads\Programs\ReadyLib\dev\sqlite\3.29.0\mingw\lib \
+    -lsqlite3 \
+    
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c))
