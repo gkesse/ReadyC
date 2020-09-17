@@ -1,12 +1,12 @@
 //===============================================
 #include "GDateUi.h"
 #include "GProcess.h"
-#include "GSQLiteMgr.h"
 #include "GConfig.h"
 #include "GManager.h"
+#include "GDate.h"
 //===============================================
 #define B_ANSWER (256)
-#define B_QUERY (256)
+#define B_DATETIME (256)
 //===============================================
 static GDateUiO* m_GDateUiO = 0;
 //===============================================
@@ -23,6 +23,7 @@ static void GDateUi_Run_QUIT(int argc, char** argv);
 static void GDateUi_Run_DATE_SHOW(int argc, char** argv);
 static void GDateUi_Run_TIME_SHOW(int argc, char** argv);
 static void GDateUi_Run_DATE_TIME_SHOW(int argc, char** argv);
+static void GDateUi_Run_DATE_LETTER_SHOW(int argc, char** argv);
 //===============================================
 GDateUiO* GDateUi_New() {
     GDateUiO* lObj = (GDateUiO*)malloc(sizeof(GDateUiO));
@@ -57,6 +58,7 @@ static void GDateUi_Run(int argc, char** argv) {
         else if(!strcmp(m_GDateUiO->G_STATE, "S_DATE_SHOW")) {GDateUi_Run_DATE_SHOW(argc, argv);}
         else if(!strcmp(m_GDateUiO->G_STATE, "S_TIME_SHOW")) {GDateUi_Run_TIME_SHOW(argc, argv);}
         else if(!strcmp(m_GDateUiO->G_STATE, "S_DATE_TIME_SHOW")) {GDateUi_Run_DATE_TIME_SHOW(argc, argv);}
+        else if(!strcmp(m_GDateUiO->G_STATE, "S_DATE_LETTER_SHOW")) {GDateUi_Run_DATE_LETTER_SHOW(argc, argv);}
         //
         else if(!strcmp(m_GDateUiO->G_STATE, "S_SAVE")) {GDateUi_Run_SAVE(argc, argv);}
         else if(!strcmp(m_GDateUiO->G_STATE, "S_LOAD")) {GDateUi_Run_LOAD(argc, argv);}
@@ -87,6 +89,7 @@ static void GDateUi_Run_METHOD(int argc, char** argv) {
     printf("\t%-2s : %s\n", "1", "afficher la date");
     printf("\t%-2s : %s\n", "2", "afficher l'heure");
     printf("\t%-2s : %s\n", "3", "afficher la date et l'heure");
+    printf("\t%-2s : %s\n", "4", "afficher la date LETTRE");
     printf("\n");
     m_GDateUiO->G_STATE = "S_CHOICE";
 }
@@ -103,24 +106,39 @@ static void GDateUi_Run_CHOICE(int argc, char** argv) {
     else if(!strcmp(lAnswer, "1")) {m_GDateUiO->G_STATE = "S_DATE_SHOW"; GConfig()->SetData("G_DATE_ID", lAnswer);}
     else if(!strcmp(lAnswer, "2")) {m_GDateUiO->G_STATE = "S_TIME_SHOW"; GConfig()->SetData("G_DATE_ID", lAnswer);}
     else if(!strcmp(lAnswer, "3")) {m_GDateUiO->G_STATE = "S_DATE_TIME_SHOW"; GConfig()->SetData("G_DATE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "4")) {m_GDateUiO->G_STATE = "S_DATE_LETTER_SHOW"; GConfig()->SetData("G_DATE_ID", lAnswer);}
     //
 }
 //===============================================
 static void GDateUi_Run_DATE_SHOW(int argc, char** argv) {
     printf("\n");
-
+    char lBuffer[B_DATETIME+1];
+    GDate()->Date(lBuffer);
+    printf("%-20s : %s\n", "Date", lBuffer);
     m_GDateUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GDateUi_Run_TIME_SHOW(int argc, char** argv) {
     printf("\n");
-
+    char lBuffer[B_DATETIME+1];
+    GDate()->Time(lBuffer);
+    printf("%-20s : %s\n", "Date", lBuffer);
     m_GDateUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GDateUi_Run_DATE_TIME_SHOW(int argc, char** argv) {
     printf("\n");
-
+    char lBuffer[B_DATETIME+1];
+    GDate()->DateTime(lBuffer);
+    printf("%-20s : %s\n", "Date", lBuffer);
+    m_GDateUiO->G_STATE = "S_SAVE";
+}
+//===============================================
+static void GDateUi_Run_DATE_LETTER_SHOW(int argc, char** argv) {
+    printf("\n");
+    char lBuffer[B_DATETIME+1];
+    GDate()->DateLetter(lBuffer);
+    printf("%-20s : %s\n", "Date", lBuffer);
     m_GDateUiO->G_STATE = "S_SAVE";
 }
 //===============================================
@@ -137,7 +155,7 @@ static void GDateUi_Run_LOAD(int argc, char** argv) {
 static void GDateUi_Run_QUIT(int argc, char** argv) {
     printf("\n");
     printf("C_QUIT (Oui/[N]on) ? ");
-    char lAnswer[B_ANSWER+1]; fgets(lAnswer, B_ANSWER, stdin); lAnswer[strlen(lAnswer)-1] = 0;
+    char lAnswer[B_ANSWER+1]; GManager()->ReadLine(lAnswer, B_ANSWER);
     if(!strcmp(lAnswer, "-q")) {m_GDateUiO->G_STATE = "S_END";}
     else if(!strcmp(lAnswer, "-i")) {m_GDateUiO->G_STATE = "S_INIT";}
     else if(!strcmp(lAnswer, "-a")) {m_GDateUiO->G_STATE = "S_ADMIN";}

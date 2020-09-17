@@ -12,6 +12,7 @@ struct _GDateO {
     void (*Date)(char* buffer);
     void (*Time)(char* buffer);
     void (*DateTime)(char* buffer);
+    void (*DateLetter)(char* buffer);
 };
 //===============================================
 GDateO* GDate_New();
