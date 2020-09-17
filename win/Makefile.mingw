@@ -19,7 +19,7 @@ GCFLAGS = \
     -std=gnu18 \
     -W -Wall \
     -Wno-unused-parameter \
-    -Wno-unused-function \
+    -Wno-format-overflow \
 
 all: clean_exe compile run
 

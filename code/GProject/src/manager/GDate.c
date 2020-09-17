@@ -4,12 +4,12 @@
 //===============================================
 static GDateO* m_GDateO = 0;
 //===============================================
-const char * G_MONTH_MAP[] = { 
+static char * G_MONTH_MAP[] = { 
 "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet",
 "Août", "Septembre", "Octobre", "Novembre", "Decembre"
 };
 //===============================================
-const char * G_DAY_MAP[] = {
+static char * G_DAY_MAP[] = {
 "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
 };
 //===============================================
