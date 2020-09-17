@@ -30,6 +30,11 @@ GOpenCVO* GOpenCV() {
 }
 //===============================================
 static void GOpenCV_Test(int argc, char** argv) {
-    printf("lancement du test du programme\n");
+    IplImage *img = cvLoadImage("box.png", 1);
+    cvNamedWindow("Example1", CV_WINDOW_AUTOSIZE);
+    cvShowImage("Example1", img);
+    cvWaitKey(0);
+    cvReleaseImage(&img);
+    cvDestroyWindow("Example1");
 }
 //===============================================

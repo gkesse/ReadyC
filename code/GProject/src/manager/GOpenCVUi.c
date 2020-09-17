@@ -100,7 +100,7 @@ static void GOpenCVUi_Run_CHOICE(int argc, char** argv) {
 //===============================================
 static void GOpenCVUi_Run_TEST(int argc, char** argv) {
     printf("\n");
-    printf("lancement du test GTK...\n");
+    GOpenCV()->Test(argc, argv);
     m_GOpenCVUiO->G_STATE = "S_SAVE";
 }
 //===============================================
