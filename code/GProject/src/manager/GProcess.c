@@ -3,6 +3,7 @@
 #include "GSQLiteUi.h"
 #include "GDateUi.h"
 #include "GGtkUi.h"
+#include "GOpenCVUi.h"
 #include "GConfig.h"
 #include "GManager.h"
 //===============================================
@@ -128,13 +129,13 @@ static void GProcess_Run_CHOICE(int argc, char** argv) {
     if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GProcessO->G_STATE = "S_END";}
     //
-    else if(!strcmp(lAnswer, "20")) {m_GProcessO->G_STATE = "S_GTK"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
-    else if(!strcmp(lAnswer, "21")) {m_GProcessO->G_STATE = "S_OPENCV"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
-    //
     else if(!strcmp(lAnswer, "1")) {m_GProcessO->G_STATE = "S_DATE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     else if(!strcmp(lAnswer, "2")) {m_GProcessO->G_STATE = "S_THREAD"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     else if(!strcmp(lAnswer, "3")) {m_GProcessO->G_STATE = "S_SOCKET"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     else if(!strcmp(lAnswer, "4")) {m_GProcessO->G_STATE = "S_FILE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
+    //
+    else if(!strcmp(lAnswer, "10")) {m_GProcessO->G_STATE = "S_GTK"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "11")) {m_GProcessO->G_STATE = "S_OPENCV"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     //
     else if(!strcmp(lAnswer, "20")) {m_GProcessO->G_STATE = "S_SQLITE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     else if(!strcmp(lAnswer, "21")) {m_GProcessO->G_STATE = "S_MYSQL"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
@@ -174,7 +175,7 @@ static void GProcess_Run_GTK(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Run_OPENCV(int argc, char** argv) {
-    GSQLiteUi()->Run(argc, argv);
+    GOpenCVUi()->Run(argc, argv);
     m_GProcessO->G_STATE = "S_SAVE";
 }
 //===============================================

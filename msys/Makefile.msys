@@ -18,14 +18,14 @@ GLIBS = \
     -lws2_32 -lgsoap2 \
     -lsqlite3 -lmysqlclient -ldbus-1 -lgsoap \
     -lgtk-win32-2.0 -lgdk-win32-2.0 -lgdi32 -limm32 -lshell32 -lole32 -Wl,-luuid -lpangocairo-1.0 -lm -lgdi32 -lpangoft2-1.0 -lm -lpangowin32-1.0 -lm -lusp10 -lgdi32 -lpango-1.0 -lm -lfribidi -lthai -ldatrie -latk-1.0 -lcairo -lz -lpixman-1 -lm -pthread -lfontconfig -liconv -lexpat -lfreetype -lbz2 -lharfbuzz -lm -lusp10 -lgdi32 -lrpcrt4 -ldwrite -lgraphite2 -lbrotlidec -lbrotlicommon -lpng16 -lz -lgdk_pixbuf-2.0 -lm -lgio-2.0 -pthread -lintl -lshlwapi -ldnsapi -liphlpapi -lws2_32 -lgmodule-2.0 -pthread -lintl -lz -lgobject-2.0 -pthread -lintl -lffi -lglib-2.0 -lintl -lws2_32 -lole32 -lwinmm -lshlwapi -pthread -lm -lpcre \
-    -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_aruco -lopencv_bgsegm -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_photo -lopencv_fuzzy -lopencv_hdf -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_ovis -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_sfm -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ml -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core -lopengl32 -lglu32 \
+    -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs \
     
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
     $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c)) \
 
 GCFLAGS = \
-    -std=gnu18 \
+    -std=gnu99 \
     -W -Wall \
     -Wno-unused-parameter \
     
