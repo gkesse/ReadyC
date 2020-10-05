@@ -175,7 +175,9 @@ static void GProcessUi_Run_GTK(int argc, char** argv) {
 }
 //===============================================
 static void GProcessUi_Run_OPENCV(int argc, char** argv) {
+#if defined(__WIN32)
     GOpenCVUi()->Run(argc, argv);
+#endif
     m_GProcessUiO->G_STATE = "S_SAVE";
 }
 //===============================================

@@ -32,7 +32,7 @@ $(GBUILD)/%.o: $(GSRC)/manager/%.c
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
 run:
 	@echo
-	@$(GTARGET)
+	@$(GTARGET) $(args)
 	@echo
 clean_exe:
 	rm -f $(GBIN)/*

@@ -1,43 +1,19 @@
 //===============================================
-#ifndef _GManagerUnix_
-#define _GManagerUnix_
+#ifndef _GManagerWin_
+#define _GManagerWin_
 //===============================================
-#include "GInclude.h"
+#include "GManager.h"
 //===============================================
-typedef struct _GManagerUnixO GManagerUnixO;
+typedef struct _GManagerWinO GManagerWinO;
 //===============================================
-typedef struct _sGManagerUnix sGManagerUnix;
-typedef struct _sGSQLite sGSQLite;
-typedef struct _sGJson sGJson;
-//===============================================
-struct _GManagerUnixO {
+struct _GManagerWinO {
+    void* parent;
     void (*Delete)();
-    sGManagerUnix* (*DataGet)();
-    // global
-    void (*Test)(int argc, char** argv);
-    // terminal
-    void (*Printf)(const char* format, ...);
-    void (*ReadLine)(char* buffer, int size);
-    // data
-    sGManagerUnix* m_mgr;
 };
 //===============================================
-struct _sGManagerUnix {
-    sGSQLite* sqlite;
-    sGJson* json;
-};
-//===============================================
-struct _sGSQLite {
-    char* file;
-};
-//===============================================
-struct _sGJson {
-    char* file;
-};
-//===============================================
-GManagerUnixO* GManagerUnix_New();
-void GManagerUnix_Delete();
-GManagerUnixO* GManagerUnix();
+GManagerO* GManagerWin_New();
+void GManagerWin_Delete();
+GManagerO* GManagerWin();
 //===============================================
 #endif
 //===============================================

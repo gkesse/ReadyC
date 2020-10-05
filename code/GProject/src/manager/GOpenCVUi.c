@@ -5,6 +5,8 @@
 #include "GManager.h"
 #include "GOpenCV.h"
 //===============================================
+#if defined(_GUSE_OPENCV_ON_)
+//===============================================
 #define B_ANSWER (256)
 #define B_OPENCVTIME (256)
 //===============================================
@@ -125,4 +127,6 @@ static void GOpenCVUi_Run_QUIT(int argc, char** argv) {
     else if(!strcmp(lAnswer, "n")) {m_GOpenCVUiO->G_STATE = "S_INIT";}
     else if(!strcmp(lAnswer, "")) {m_GOpenCVUiO->G_STATE = "S_INIT";}
 }
+//===============================================
+#endif
 //===============================================

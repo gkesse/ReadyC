@@ -2,6 +2,8 @@
 #include "GOpenCV.h"
 #include "GManager.h"
 //===============================================
+#if defined(_GUSE_OPENCV_ON_)
+//===============================================
 static GOpenCVO* m_GOpenCVO = 0;
 //===============================================
 static void GOpenCV_Test(int argc, char** argv);
@@ -37,4 +39,6 @@ static void GOpenCV_Test(int argc, char** argv) {
     cvReleaseImage(&img);
     cvDestroyWindow("Example1");
 }
+//===============================================
+#endif
 //===============================================
