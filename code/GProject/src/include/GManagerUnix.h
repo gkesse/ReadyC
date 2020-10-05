@@ -1,19 +1,19 @@
 //===============================================
-#ifndef _GManagerWin_
-#define _GManagerWin_
+#ifndef _GManagerUnix_
+#define _GManagerUnix_
 //===============================================
 #include "GManager.h"
 //===============================================
-typedef struct _GManagerWinO GManagerWinO;
+typedef struct _GManagerUnixO GManagerUnixO;
 //===============================================
-struct _GManagerWinO {
+struct _GManagerUnixO {
     void* parent;
     void (*Delete)();
 };
 //===============================================
-GManagerO* GManagerWin_New();
-void GManagerWin_Delete();
-GManagerO* GManagerWin();
+GManagerO* GManagerUnix_New();
+void GManagerUnix_Delete();
+GManagerO* GManagerUnix();
 //===============================================
 #endif
 //===============================================

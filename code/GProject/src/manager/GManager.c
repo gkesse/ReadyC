@@ -1,5 +1,6 @@
 //===============================================
 #include "GManager.h"
+#include "GManagerUnix.h"
 #include "GManagerWin.h"
 //===============================================
 // obj
@@ -37,7 +38,9 @@ void GManager_Delete() {
 }
 //===============================================
 GManagerO* GManager() {
-#if defined(__WIN32)
+#if defined(__unix)
+    return GManagerUnix();
+#elif defined(__WIN32)
     return GManagerWin();
 #endif
     return 0;

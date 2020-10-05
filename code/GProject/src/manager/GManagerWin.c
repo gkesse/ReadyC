@@ -1,38 +1,38 @@
 //===============================================
-#include "GManagerUnix.h"
+#include "GManagerWin.h"
 //===============================================
-static GManagerO* m_GManagerUnixO = 0;
+static GManagerO* m_GManagerWinO = 0;
 //===============================================
-static void GManagerUnix_Init(GManagerO* obj);
+static void GManagerWin_Init(GManagerO* obj);
 //===============================================
-GManagerO* GManagerUnix_New() {
+GManagerO* GManagerWin_New() {
     GManagerO* lParent = GManager_New();
-    GManagerUnixO* lChild = (GManagerUnixO*)malloc(sizeof(GManagerUnixO));
+    GManagerWinO* lChild = (GManagerWinO*)malloc(sizeof(GManagerWinO));
     
     lChild->parent = lParent;
     
-    GManagerUnix_Init(lParent);
+    GManagerWin_Init(lParent);
     
     lParent->child = lChild;
-    lParent->Delete = GManagerUnix_Delete;
+    lParent->Delete = GManagerWin_Delete;
     return lParent;
 }
 //===============================================
-void GManagerUnix_Delete() {
+void GManagerWin_Delete() {
     GManager_Delete();
-    m_GManagerUnixO = 0;
+    m_GManagerWinO = 0;
 }
 //===============================================
-GManagerO* GManagerUnix() {
-    if(m_GManagerUnixO == 0) {
-        m_GManagerUnixO = GManagerUnix_New();
+GManagerO* GManagerWin() {
+    if(m_GManagerWinO == 0) {
+        m_GManagerWinO = GManagerWin_New();
     }
-    return m_GManagerUnixO;
+    return m_GManagerWinO;
 }
 //===============================================
 // obj
 //===============================================
-static void GManagerUnix_Init(GManagerO* obj) {
+static void GManagerWin_Init(GManagerO* obj) {
     // sqlite
     strcpy(obj->m_mgr->sqlite->db_path, "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\win\\.CONFIG_O.dat");
     // json
