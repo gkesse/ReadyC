@@ -2,26 +2,7 @@
 #ifndef _GInclude_
 #define _GInclude_
 //===============================================
-#if defined(__WIN32)
-//===============================================
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <time.h>
-#include <stdarg.h>
-#include <signal.h>
-#include <winsock2.h>
-#include <windows.h>
-#include <process.h>
-#include <conio.h>
-//===============================================
-#include <sqlite3.h>
-#include <opencv2/core/core_c.h>
-#include <opencv2/highgui/highgui_c.h>
-//#include <opencv2/imgcodecs/imgcodecs_c.h>
-//===============================================
-#elif defined(__unix)
+#if defined(__unix)
 //===============================================
 #define _GUSE_OPENCV_OFF_
 //===============================================
@@ -49,6 +30,27 @@
 #include <sys/types.h>
 //===============================================
 #include <sqlite3.h>
+//===============================================
+#elif defined(__WIN32)
+//===============================================
+#define _GUSE_OPENCV_ON_
+//===============================================
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <time.h>
+#include <stdarg.h>
+#include <signal.h>
+#include <winsock2.h>
+#include <windows.h>
+#include <process.h>
+#include <conio.h>
+//===============================================
+#include <sqlite3.h>
+#include <opencv2/core/core_c.h>
+#include <opencv2/highgui/highgui_c.h>
+//#include <opencv2/imgcodecs/imgcodecs_c.h>
 //===============================================
 #endif
 //===============================================
