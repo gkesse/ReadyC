@@ -8,6 +8,7 @@ static GManagerO* m_GManagerWinO = 0;
 // obj
 static void GManagerWin_Init(GManagerO* obj);
 static void GManagerWin_HomePathObj(GManagerO* obj);
+static void GManagerWin_DataPathObj(GManagerO* obj);
 //===============================================
 // shell
 static void GManagerWin_Shell(char* command, char* output, int size, int shift);
@@ -42,9 +43,12 @@ GManagerO* GManagerWin() {
 // obj
 //===============================================
 static void GManagerWin_Init(GManagerO* obj) {
+    // app
+    strcpy(obj->m_mgr->app->data_path, ".readyc\\data");
+    GManagerWin_HomePathObj(obj);
+    GManagerWin_DataPathObj(obj);
     // sqlite
     strcpy(obj->m_mgr->sqlite->db_path, "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\win\\.CONFIG_O.dat");
-    GManagerWin_HomePathObj(obj);
     // json
     strcpy(obj->m_mgr->json->file, "C:\\Users\\Admin\\.readydev\\readyc\\data\\json\\menu.json");
 }
@@ -55,6 +59,12 @@ static void GManagerWin_HomePathObj(GManagerO* obj) {
     echo %%HOMEDRIVE%%\%%HOMEPATH%%\
     ");
     GManagerWin_Shell(lCommand, obj->m_mgr->app->home_path, B_HOME_PATH, 1);
+}
+//===============================================
+static void GManagerWin_DataPathObj(GManagerO* obj) {
+    char lDataPath[B_DATA_PATH+1];
+    sprintf(lDataPath, "%s\\%s", obj->m_mgr->app->home_path, obj->m_mgr->app->data_path);
+    strcpy(obj->m_mgr->app->data_path, lDataPath);
 }
 //===============================================
 // shell
