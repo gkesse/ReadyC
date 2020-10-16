@@ -42,6 +42,6 @@ static void GProcess_Run(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_Test(int argc, char** argv) {
-    printf("%s\n", __FUNCTION__);
+    GManager()->Test(argc, argv);
 }
 //===============================================

@@ -30,7 +30,10 @@ GManagerO* GManager_New() {
     
     GManager_Init(lObj);
     
+    // global
     lObj->Delete = GManager_Delete;
+    lObj->Test = GManager_Test;
+    // terminal
     lObj->Printf = GManager_Printf;
     lObj->ReadLine = GManager_ReadLine;
     return lObj;
@@ -64,16 +67,6 @@ static void GManager_Init(GManagerO* obj) {
     obj->m_mgr->json = (sGJson*)malloc(sizeof(sGJson));
     obj->m_mgr->json->file = (char*)malloc(sizeof(char)*(B_PATH+1));
     sprintf(obj->m_mgr->json->file, "%s", B_JSON_FILE);
-}
-//===============================================
-// terminal
-//===============================================
-static void GManager_Printf(const char* format, ...) {
-    va_list lArgs;
-    va_start (lArgs, format);
-    vprintf (format, lArgs);
-    fflush(stdout); 
-    va_end (lArgs);
 }
 //===============================================
 // global
