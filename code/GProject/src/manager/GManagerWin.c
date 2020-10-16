@@ -44,20 +44,18 @@ GManagerO* GManagerWin() {
 //===============================================
 static void GManagerWin_Init(GManagerO* obj) {
     // app
-    strcpy(obj->m_mgr->app->data_path, ".readyc\\data");
     GManagerWin_HomePathObj(obj);
+    strcpy(obj->m_mgr->app->data_path, ".readyc\\data");
     GManagerWin_DataPathObj(obj);
     // sqlite
     strcpy(obj->m_mgr->sqlite->db_path, "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\win\\.CONFIG_O.dat");
     // json
-    strcpy(obj->m_mgr->json->file, "C:\\Users\\Admin\\.readydev\\readyc\\data\\json\\menu.json");
+    sprintf(obj->m_mgr->json->file, "%s\\json\\menu.json", obj->m_mgr->app->data_path);
 }
 //===============================================
 static void GManagerWin_HomePathObj(GManagerO* obj) {
     char lCommand[B_COMMAND+1];
-    sprintf(lCommand, "\
-    echo %%HOMEDRIVE%%\%%HOMEPATH%%\
-    ");
+    sprintf(lCommand, "echo %%HOMEDRIVE%%\%%HOMEPATH%%");
     GManagerWin_Shell(lCommand, obj->m_mgr->app->home_path, B_HOME_PATH, 1);
 }
 //===============================================
