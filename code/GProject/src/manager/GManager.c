@@ -2,6 +2,7 @@
 #include "GManager.h"
 #include "GManagerUnix.h"
 #include "GManagerWin.h"
+#include "GMap.h"
 //===============================================
 #define B_STRING (256)
 #define B_TO_LOWER (256)
@@ -90,6 +91,7 @@ static void GManager_Init(GManagerO* obj) {
 //===============================================
 static void GManager_Test(int argc, char** argv) {
     GManager()->DataShow();
+    GManager()->SplitGet("1000;2000;3000", 0, ";", 1);
 }
 //===============================================
 static void GManager_DataShow() {
@@ -202,7 +204,13 @@ static int GManager_SplitCount(char* strIn, char* sep) {
 }
 //===============================================
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
-
+    int lCount = 1;
+    const char* lTmp = strIn;
+    while((lTmp = strstr(lTmp, sep))) {
+       lCount++;
+       lTmp++;
+    }
+    return lCount;
 }
 //===============================================
 static void GManager_Replace(char* strIn, char* strOut, const char* pattern, const char* replace) {
