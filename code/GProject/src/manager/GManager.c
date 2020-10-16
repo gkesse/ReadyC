@@ -15,12 +15,15 @@
 //===============================================
 static GManagerO* m_GManagerO = 0;
 //===============================================
-static sGManager* GManager_DataGet();
-static void GManager_DataClear();
+// obj
+static void GManager_Init(GManagerO* obj);
+//===============================================
+// global
+static void GManager_Test(int argc, char** argv);
+//===============================================
+// terminal
 static void GManager_Printf(const char* format, ...);
 static void GManager_ReadLine(char* buffer, int size);
-//===============================================
-static void GManager_Init(GManagerO* obj);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
@@ -28,8 +31,6 @@ GManagerO* GManager_New() {
     GManager_Init(lObj);
     
     lObj->Delete = GManager_Delete;
-    lObj->DataGet = GManager_DataGet;
-    lObj->DataClear = GManager_DataClear;
     lObj->Printf = GManager_Printf;
     lObj->ReadLine = GManager_ReadLine;
     return lObj;
@@ -50,6 +51,8 @@ GManagerO* GManager() {
     return m_GManagerO;
 }
 //===============================================
+// obj
+//===============================================
 static void GManager_Init(GManagerO* obj) {
     // manager
     obj->m_mgr = (sGManager*)malloc(sizeof(sGManager));
@@ -63,20 +66,23 @@ static void GManager_Init(GManagerO* obj) {
     sprintf(obj->m_mgr->json->file, "%s", B_JSON_FILE);
 }
 //===============================================
-static sGManager* GManager_DataGet() {
-    return m_GManagerO->m_mgr;
+// terminal
+//===============================================
+static void GManager_Printf(const char* format, ...) {
+    va_list lArgs;
+    va_start (lArgs, format);
+    vprintf (format, lArgs);
+    fflush(stdout); 
+    va_end (lArgs);
 }
 //===============================================
-static void GManager_DataClear() {
-    // sqlite
-    free(m_GManagerO->m_mgr->sqlite->file);
-    free(m_GManagerO->m_mgr->sqlite);
-    // json
-    free(m_GManagerO->m_mgr->json->file);
-    free(m_GManagerO->m_mgr->json);
-    // manager
-    free(m_GManagerO->m_mgr);
+// global
+//===============================================
+static void GManager_Test(int argc, char** argv) {
+    printf("oooooooooooo\n");
 }
+//===============================================
+// terminal
 //===============================================
 static void GManager_Printf(const char* format, ...) {
     va_list lArgs;

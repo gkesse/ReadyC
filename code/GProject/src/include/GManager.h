@@ -13,9 +13,12 @@ typedef struct _sGJson sGJson;
 struct _GManagerO {
     void (*Delete)();
     sGManager* (*DataGet)();
-    void (*DataClear)();
+    // global
+    void (*Test)(int argc, char** argv);
+    // terminal
     void (*Printf)(const char* format, ...);
     void (*ReadLine)(char* buffer, int size);
+    // data
     sGManager* m_mgr;
 };
 //===============================================
