@@ -51,6 +51,9 @@ GManagerO* GManager() {
 static void GManager_Init(GManagerO* obj) {
     // manager
     obj->m_mgr = (sGManager*)malloc(sizeof(sGManager));
+    // app
+    obj->m_mgr->app = (sGApp*)malloc(sizeof(sGApp));
+    strcpy(obj->m_mgr->app->app_name, "ReadyApp");
     // sqlite
     obj->m_mgr->sqlite = (sGSQLite*)malloc(sizeof(sGSQLite));
     strcpy(obj->m_mgr->sqlite->db_path, "UNKNOWN");
@@ -67,6 +70,12 @@ static void GManager_Test(int argc, char** argv) {
 //===============================================
 static void GManager_DataShow() {
     int lWidth = -50;
+    printf("\n");
+    printf("#================================================\n");
+    printf("[info] GManager()->m_mgr->app\n");
+    printf("#================================================\n");
+    printf("\n");
+    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->app_name", GManager()->m_mgr->app->app_name);
     printf("\n");
     printf("#================================================\n");
     printf("[info] GManager()->m_mgr->sqlite\n");

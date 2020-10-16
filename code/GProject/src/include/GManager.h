@@ -4,12 +4,14 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
+#define B_APP_NAME (64)
 #define B_SQLITE_DB (256)
 #define B_JSON_FILE (256)
 //===============================================
 typedef struct _GManagerO GManagerO;
 //===============================================
 typedef struct _sGManager sGManager;
+typedef struct _sGApp sGApp;
 typedef struct _sGSQLite sGSQLite;
 typedef struct _sGJson sGJson;
 //===============================================
@@ -27,8 +29,13 @@ struct _GManagerO {
 };
 //===============================================
 struct _sGManager {
+    sGApp* app;
     sGSQLite* sqlite;
     sGJson* json;
+};
+//===============================================
+struct _sGApp {
+    char app_name[B_APP_NAME+1];
 };
 //===============================================
 struct _sGSQLite {
