@@ -5,6 +5,7 @@
 #include "GInclude.h"
 //===============================================
 #define B_APP_NAME (64)
+#define B_HOME_PATH (256)
 #define B_SQLITE_DB (256)
 #define B_JSON_FILE (256)
 //===============================================
@@ -36,6 +37,7 @@ struct _sGManager {
 //===============================================
 struct _sGApp {
     char app_name[B_APP_NAME+1];
+    char home_path[B_HOME_PATH+1];
 };
 //===============================================
 struct _sGSQLite {
