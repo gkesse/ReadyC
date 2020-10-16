@@ -5,8 +5,8 @@
 #include "GInclude.h"
 //===============================================
 #define GDECLARE_LIST(GPREFIX, GDATA) \
-        typedef struct _GListO_##GPREFIX##_##GDATA GListO_##GPREFIX##_##GDATA; \
         typedef struct _GListNodeO_##GPREFIX##_##GDATA GListNodeO_##GPREFIX##_##GDATA; \
+        typedef struct _GListO_##GPREFIX##_##GDATA GListO_##GPREFIX##_##GDATA; \
         typedef int (*GLIST_EQUAL_DATA_##GPREFIX##_##GDATA)(GDATA data1, char* data2); \
         typedef void (*GLIST_SHOW_##GPREFIX##_##GDATA)(int index, GDATA data); \
         typedef void (*GLIST_REMOVE_##GPREFIX##_##GDATA)(GDATA data); \

@@ -73,7 +73,7 @@ static void GConfig_Remove(char* key) {
 static void GConfig_SetData(char* key, char* value) {
     char* lValue = GManager()->Copy(value);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
-    lDataMap->SetData(lDataMap, key, lValue, GMap_EqualChar);
+    lDataMap->SetData(lDataMap, key, lValue, GMap_EqualChar, 1);
 }
 //===============================================
 static char* GConfig_GetData(char* key) {
