@@ -3,8 +3,8 @@
 //===============================================
 #include "GConfig.h"
 #include "GMap.h"
-#include "GStringMgr.h"
-#include "GSQLiteMgr.h"
+#include "GSQLite.h"
+#include "GManager.h"
 //===============================================
 #define B_VALUE (256)
 #define B_QUERY (256)
@@ -71,7 +71,7 @@ static void GConfig_Remove(char* key) {
 }
 //===============================================
 static void GConfig_SetData(char* key, char* value) {
-    char* lValue = GStringMgr()->Copy(value);
+    char* lValue = GManager()->Copy(value);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
     lDataMap->SetData(lDataMap, key, lValue, GMap_EqualChar);
 }
@@ -96,7 +96,7 @@ static void GConfig_LoadData(char* key) {
     select CONFIG_VALUE from CONFIG_C \
     where CONFIG_KEY = '%s' \
     ", key);
-    GSQLiteMgr()->QueryValue(lQuery, lValue);
+    GSQLite()->QueryValue(lQuery, lValue);
     GConfig_SetData(key, lValue);
 }
 //===============================================
@@ -107,7 +107,7 @@ static int GConfig_CheckData(char* key) {
     select count(*) from CONFIG_C \
     where CONFIG_KEY = '%s' \
     ", key);
-    GSQLiteMgr()->QueryValue(lQuery, lValue);
+    GSQLite()->QueryValue(lQuery, lValue);
     int lCount = atoi(lValue);
     return lCount;
 }
@@ -118,7 +118,7 @@ static void GConfig_InsertData(char* key, char* value) {
     insert into CONFIG_C (CONFIG_KEY, CONFIG_VALUE)\
     values ('%s', '%s') \
     ", key, value);
-    GSQLiteMgr()->QueryWrite(lQuery);
+    GSQLite()->QueryWrite(lQuery);
 }
 //===============================================
 static void GConfig_UpdateData(char* key, char* value) {
@@ -128,7 +128,7 @@ static void GConfig_UpdateData(char* key, char* value) {
     set CONFIG_VALUE = '%s' \
     where CONFIG_KEY = '%s' \
     ", value, key);
-    GSQLiteMgr()->QueryWrite(lQuery);
+    GSQLite()->QueryWrite(lQuery);
 }
 //===============================================
 static int GConfig_Size() {

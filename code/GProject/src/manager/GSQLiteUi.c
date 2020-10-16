@@ -1,7 +1,7 @@
 //===============================================
 #include "GSQLiteUi.h"
 #include "GProcess.h"
-#include "GSQLiteMgr.h"
+#include "GSQLite.h"
 #include "GConfig.h"
 #include "GManager.h"
 //===============================================
@@ -125,7 +125,7 @@ static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv) {
     where type='table' \
     ");
     
-    GSQLiteMgr()->QueryShow(lQuery, "20;30", 25);
+    GSQLite()->QueryShow(lQuery, "20;30", 25);
     
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
@@ -140,7 +140,7 @@ static void GSQLiteUi_Run_CONIG_CREATE(int argc, char** argv) {
     CONFIG_VALUE text \
     )");
     
-    GSQLiteMgr()->QueryWrite(lQuery);
+    GSQLite()->QueryWrite(lQuery);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
@@ -152,7 +152,7 @@ static void GSQLiteUi_Run_CONIG_DELETE(int argc, char** argv) {
     drop table CONFIG_C ( \
     )");
     
-    GSQLiteMgr()->QueryWrite(lQuery);
+    GSQLite()->QueryWrite(lQuery);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
@@ -164,7 +164,7 @@ static void GSQLiteUi_Run_CONIG_SHOW(int argc, char** argv) {
     select * from CONFIG_C \
     ");
     
-    GSQLiteMgr()->QueryShow(lQuery, "20;30", 25);
+    GSQLite()->QueryShow(lQuery, "20;30", 25);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================

@@ -26,6 +26,14 @@ struct _GManagerO {
     // terminal
     void (*Printf)(const char* format, ...);
     void (*ReadLine)(char* buffer, int size);
+    // string
+    char* (*Copy)(char* strIn);
+    void (*ToUpper)(char* strIn, char* strOut);
+    void (*ToLower)(char* strIn, char* strOut);
+    void (*Trim)(char* strIn, char* strOut);
+    int (*SplitCount)(char* strIn, char* sep);
+    void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
+    void (*Replace)(char* strIn, char* strOut, const char* pattern, const char* replace);
     // data
     sGManager* m_mgr;
 };
@@ -35,6 +43,10 @@ struct _sGManager {
     sGSQLite* sqlite;
     sGJson* json;
 };
+//===============================================
+GManagerO* GManager_New();
+void GManager_Delete();
+GManagerO* GManager();
 //===============================================
 struct _sGApp {
     char app_name[B_APP_NAME+1];
@@ -49,10 +61,6 @@ struct _sGSQLite {
 struct _sGJson {
     char file[B_JSON_FILE+1];
 };
-//===============================================
-GManagerO* GManager_New();
-void GManager_Delete();
-GManagerO* GManager();
 //===============================================
 #endif
 //===============================================

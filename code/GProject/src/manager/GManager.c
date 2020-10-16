@@ -3,6 +3,11 @@
 #include "GManagerUnix.h"
 #include "GManagerWin.h"
 //===============================================
+#define B_STRING (256)
+#define B_TO_LOWER (256)
+#define B_TO_UPPER (256)
+#define B_TRIM (256)
+//===============================================
 // obj
 static void GManager_Init(GManagerO* obj);
 //===============================================
@@ -13,6 +18,16 @@ static void GManager_DataShow();
 // terminal
 static void GManager_Printf(const char* format, ...);
 static void GManager_ReadLine(char* buffer, int size);
+// string
+static char* GManager_Copy(char* strIn);
+static void GManager_ToUpper(char* strIn, char* strOut);
+static void GManager_ToLower(char* strIn, char* strOut);
+static void GManager_Trim(char* strIn, char* strOut);
+static char* GManager_TrimLeft(char* strIn);
+static char* GManager_TrimRight(char* strIn);
+static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
+static int GManager_SplitCount(char* strIn, char* sep);
+static void GManager_Replace(char* strIn, char* strOut, const char* pattern, const char* replace);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
@@ -27,6 +42,14 @@ GManagerO* GManager_New() {
     // terminal
     lObj->Printf = GManager_Printf;
     lObj->ReadLine = GManager_ReadLine;
+    // string
+    lObj->Copy = GManager_Copy;
+    lObj->ToUpper = GManager_ToUpper;
+    lObj->ToLower = GManager_ToLower;
+    lObj->Trim = GManager_Trim;
+    lObj->SplitCount = GManager_SplitCount;
+    lObj->SplitGet = GManager_SplitGet;
+    lObj->Replace = GManager_Replace;
     return lObj;
 }
 //===============================================
@@ -108,5 +131,81 @@ static void GManager_ReadLine(char* buffer, int size) {
     fflush(stdout); 
     fgets(buffer, size, stdin); 
     buffer[strlen(buffer)-1] = 0;
+}
+//===============================================
+// string
+//===============================================
+static char* GManager_Copy(char* strIn) {
+    int lSize = strlen(strIn);
+    char* lStrOut = (char*)malloc(sizeof(char)*(lSize+1));
+    strcpy(lStrOut, strIn);
+    return lStrOut;
+}
+//===============================================
+static void GManager_ToUpper(char* strIn, char* strOut) {
+    char lStrIn[B_TO_UPPER+1];
+    char lStrOut[B_TO_UPPER+1];
+    int i = 0;    
+    strcpy(lStrIn, strIn);
+    while(1) {
+        char lChar = lStrIn[i];
+        if(lChar == 0) break;
+        lStrOut[i] = toupper(lChar);
+        i++;
+    }    
+    lStrOut[i] = 0;    
+    strcpy(strOut, lStrOut);
+}
+//===============================================
+static void GManager_ToLower(char* strIn, char* strOut) {
+    char lStrIn[B_TO_LOWER+1];
+    char lStrOut[B_TO_LOWER+1];
+    int i = 0;
+    strcpy(lStrIn, strIn);
+    while(1) {
+        char lChar = lStrIn[i];
+        if(lChar == 0) break;
+        lStrOut[i] = tolower(lChar);
+        i++;
+    }
+    lStrOut[i] = 0;
+    strcpy(strOut, lStrOut);
+}
+//===============================================
+static void GManager_Trim(char* strIn, char* strOut) {
+    char lStrIn[B_TRIM+1];
+    strcpy(lStrIn, strIn);
+    char* lStrOut = GManager_TrimRight(GManager_TrimLeft(lStrIn));
+    strcpy(strOut, lStrOut);
+}
+//===============================================
+static char* GManager_TrimLeft(char* strIn) {
+    while(isspace(*strIn)) strIn++;
+    return strIn;
+}
+//===============================================
+static char* GManager_TrimRight(char* strIn) {
+    char* lBack = strIn + strlen(strIn);
+    while(isspace(*--lBack));
+    *(lBack+1) = '\0';
+    return strIn;
+}
+//===============================================
+static int GManager_SplitCount(char* strIn, char* sep) {
+    int lCount = 1;
+    const char* lTmp = strIn;
+    while((lTmp = strstr(lTmp, sep))) {
+       lCount++;
+       lTmp++;
+    }
+    return lCount;
+}
+//===============================================
+static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
+
+}
+//===============================================
+static void GManager_Replace(char* strIn, char* strOut, const char* pattern, const char* replace) {
+
 }
 //===============================================
