@@ -33,6 +33,9 @@ GManagerO* GManagerWin() {
 // obj
 //===============================================
 static void GManagerWin_Init(GManagerO* obj) {
-    
+    // sqlite
+    strcpy(obj->m_mgr->sqlite->db_path, "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\win\\.CONFIG_O.dat");
+    // json
+    strcpy(obj->m_mgr->json->file, "C:\\Users\\Admin\\.readydev\\readyc\\data\\json\\menu.json");
 }
 //===============================================
