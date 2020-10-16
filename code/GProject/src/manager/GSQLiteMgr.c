@@ -133,8 +133,7 @@ static void GSQLiteMgr_Test(int argc, char** argv) {
 } 
 //===============================================
 static void* GSQLiteMgr_Open() {
-    sGManager* lMgr = GManager()->DataGet();
-    sGSQLite* lSQLite = lMgr->sqlite;
+    sGSQLite* lSQLite = GManager()->m_mgr->sqlite;
     sqlite3* lDb;
 	int lOk = sqlite3_open(lSQLite->file, &lDb);
 	if(lOk != SQLITE_OK) {printf("[GSQLiteMgr] erreur ouverture bdd : GSQLiteMgr_Open : %s\n", lSQLite->file); exit(0);}

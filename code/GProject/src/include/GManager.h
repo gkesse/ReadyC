@@ -18,6 +18,7 @@ struct _GManagerO {
     void* child;
     void (*Delete)();
     void (*Test)(int argc, char** argv);
+    void (*DataShow)();
     // terminal
     void (*Printf)(const char* format, ...);
     void (*ReadLine)(char* buffer, int size);
@@ -31,11 +32,11 @@ struct _sGManager {
 };
 //===============================================
 struct _sGSQLite {
-    char* file[B_SQLITE_FILE+1];
+    char file[B_SQLITE_FILE+1];
 };
 //===============================================
 struct _sGJson {
-    char* file[B_JSON_FILE+1];
+    char file[B_JSON_FILE+1];
 };
 //===============================================
 GManagerO* GManager_New();
