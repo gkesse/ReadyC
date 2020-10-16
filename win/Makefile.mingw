@@ -12,7 +12,7 @@ GLIBS = \
     -LC:\Users\Admin\Downloads\Programs\ReadyLib\dev\sqlite\3.29.0\mingw\lib \
     -LC:\Users\Admin\Downloads\Programs\ReadyLib\dev\opencv\2.4.13\mingw\lib \
     -lsqlite3 \
-    -lopencv_highgui2413 -lopencv_core2413 -lopencv_imgproc2413 \
+    -lopencv_core2413 -lopencv_highgui2413 -lopencv_imgproc2413 \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
@@ -38,7 +38,7 @@ $(GBUILD)/%.o: $(GSRC)/manager/%.c
 	gcc $(GCFLAGS) -c $< -o $@ $(GINCS)
 run:
 	@echo.
-	@$(GTARGET)
+	@$(GTARGET) $(args)
 	@echo.
 clean_exe:
 	del /q $(GBIN)\*

@@ -9,7 +9,7 @@ typedef struct _GProcessO GProcessO;
 struct _GProcessO {
     void (*Delete)();
     void (*Run)(int argc, char** argv);
-    char* G_STATE;
+    void (*Test)(int argc, char** argv);
 };
 //===============================================
 GProcessO* GProcess_New();

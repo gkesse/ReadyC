@@ -29,6 +29,7 @@ GCFLAGS = \
     -std=gnu18 \
     -W -Wall \
     -Wno-unused-parameter \
+    -Wno-unused-function \
     
 all: clean compile run
  
