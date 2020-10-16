@@ -4,6 +4,9 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
+#define B_SQLITE_FILE (256)
+#define B_JSON_FILE (256)
+//===============================================
 typedef struct _GManagerO GManagerO;
 //===============================================
 typedef struct _sGManager sGManager;
@@ -11,9 +14,9 @@ typedef struct _sGSQLite sGSQLite;
 typedef struct _sGJson sGJson;
 //===============================================
 struct _GManagerO {
-    void (*Delete)();
-    sGManager* (*DataGet)();
     // global
+    void* child;
+    void (*Delete)();
     void (*Test)(int argc, char** argv);
     // terminal
     void (*Printf)(const char* format, ...);
@@ -28,11 +31,11 @@ struct _sGManager {
 };
 //===============================================
 struct _sGSQLite {
-    char* file;
+    char* file[B_SQLITE_FILE+1];
 };
 //===============================================
 struct _sGJson {
-    char* file;
+    char* file[B_JSON_FILE+1];
 };
 //===============================================
 GManagerO* GManager_New();
