@@ -4,7 +4,7 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
-#define B_SQLITE_FILE (256)
+#define B_SQLITE_DB (256)
 #define B_JSON_FILE (256)
 //===============================================
 typedef struct _GManagerO GManagerO;
@@ -32,7 +32,7 @@ struct _sGManager {
 };
 //===============================================
 struct _sGSQLite {
-    char file[B_SQLITE_FILE+1];
+    char db_path[B_SQLITE_DB+1];
 };
 //===============================================
 struct _sGJson {

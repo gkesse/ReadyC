@@ -50,7 +50,7 @@ static void GManager_Init(GManagerO* obj) {
     obj->m_mgr = (sGManager*)malloc(sizeof(sGManager));
     // sqlite
     obj->m_mgr->sqlite = (sGSQLite*)malloc(sizeof(sGSQLite));
-    strcpy(obj->m_mgr->sqlite->file, "UNKNOWN");
+    strcpy(obj->m_mgr->sqlite->db_path, "UNKNOWN");
     // json
     obj->m_mgr->json = (sGJson*)malloc(sizeof(sGJson));
     strcpy(obj->m_mgr->json->file, "UNKNOWN");
@@ -66,8 +66,16 @@ static void GManager_DataShow() {
     int lWidth = -50;
     printf("\n");
     printf("#================================================\n");
-    printf("[info] ooooooooooooo\n");
+    printf("[info] GManager()->m_mgr->sqlite\n");
     printf("#================================================\n");
+    printf("\n");
+    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->sqlite->db_path", GManager()->m_mgr->sqlite->db_path);
+    printf("\n");
+    printf("#================================================\n");
+    printf("[info] GManager()->m_mgr->json\n");
+    printf("#================================================\n");
+    printf("\n");
+    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->json->file", GManager()->m_mgr->json->file);
     printf("\n");
 }
 //===============================================
