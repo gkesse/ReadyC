@@ -78,6 +78,7 @@ static void GManager_DataShow() {
     printf("\n");
     printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->app_name", GManager()->m_mgr->app->app_name);
     printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->home_path", GManager()->m_mgr->app->home_path);
+    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->data_path", GManager()->m_mgr->app->data_path);
     printf("\n");
     printf("#================================================\n");
     printf("[info] GManager()->m_mgr->sqlite\n");
