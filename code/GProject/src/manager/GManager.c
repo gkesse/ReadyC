@@ -8,6 +8,7 @@
 #define B_TO_LOWER (256)
 #define B_TO_UPPER (256)
 #define B_TRIM (256)
+#define B_SPLIT (256)
 //===============================================
 // obj
 static void GManager_Init(GManagerO* obj);
@@ -91,7 +92,6 @@ static void GManager_Init(GManagerO* obj) {
 //===============================================
 static void GManager_Test(int argc, char** argv) {
     GManager()->DataShow();
-    GManager()->SplitGet("1000;2000;3000", 0, ";", 1);
 }
 //===============================================
 static void GManager_DataShow() {
@@ -197,20 +197,32 @@ static int GManager_SplitCount(char* strIn, char* sep) {
     int lCount = 1;
     const char* lTmp = strIn;
     while((lTmp = strstr(lTmp, sep))) {
-       lCount++;
-       lTmp++;
+        lCount++;
+        lTmp++;
     }
     return lCount;
 }
 //===============================================
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
     int lCount = 1;
-    const char* lTmp = strIn;
+    char lStrIn[B_SPLIT+1];
+    strcpy(lStrIn, strIn);
+    char* lTmp = lStrIn;
+    char* lStart = lTmp;
+    char* lEnd = lTmp;
+    int lLast = 1;
     while((lTmp = strstr(lTmp, sep))) {
-       lCount++;
-       lTmp++;
+        lStart = lEnd;
+        lEnd = lTmp;
+        if(lCount > index) {lLast = 0; break;}
+        lCount++;
+        lTmp++;
     }
-    return lCount;
+    
+    if(lLast == 0) *lEnd = 0;
+    else lStart = lEnd;
+    if(index > 0) lStart++;
+    strcpy(strOut, lStart);
 }
 //===============================================
 static void GManager_Replace(char* strIn, char* strOut, const char* pattern, const char* replace) {
