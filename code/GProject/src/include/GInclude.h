@@ -4,7 +4,7 @@
 //===============================================
 #if defined(__unix)
 //===============================================
-#define _GUSE_OPENCV_OFF_
+#define _GUSE_OPENCV_ON_
 //===============================================
 #define _GNU_SOURCE
 #define _USE_MATH_DEFINES
@@ -30,6 +30,8 @@
 #include <sys/types.h>
 //===============================================
 #include <sqlite3.h>
+#include <opencv2/core/core_c.h>
+#include <opencv2/highgui/highgui_c.h>
 //===============================================
 #elif defined(__WIN32)
 //===============================================
@@ -48,9 +50,7 @@
 #include <conio.h>
 //===============================================
 #include <sqlite3.h>
-#include <opencv2/core/core_c.h>
-#include <opencv2/highgui/highgui_c.h>
-//#include <opencv2/imgcodecs/imgcodecs_c.h>
+                                       //#include <opencv2/imgcodecs/imgcodecs_c.h>
 //===============================================
 #endif
 //===============================================
