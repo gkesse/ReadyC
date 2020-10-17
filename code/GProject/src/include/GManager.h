@@ -52,6 +52,7 @@ struct _sGApp {
     char app_name[B_APP_NAME+1];
     char home_path[B_HOME_PATH+1];
     char data_path[B_DATA_PATH+1];
+    char debug_file[B_DATA_PATH+1];
 };
 //===============================================
 struct _sGSQLite {

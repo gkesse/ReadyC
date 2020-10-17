@@ -47,6 +47,7 @@ static void GManagerWin_Init(GManagerO* obj) {
     GManagerWin_HomePathObj(obj);
     strcpy(obj->m_mgr->app->data_path, ".readyc\\data");
     GManagerWin_DataPathObj(obj);
+    strcpy(obj->m_mgr->app->data_path, "\\debug\\debug.txt");
     // sqlite
     strcpy(obj->m_mgr->sqlite->db_path, "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\win\\.CONFIG_O.dat");
     // json

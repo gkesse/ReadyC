@@ -81,6 +81,7 @@ static void GManager_Init(GManagerO* obj) {
     obj->m_mgr->app = (sGApp*)malloc(sizeof(sGApp));
     strcpy(obj->m_mgr->app->app_name, "ReadyApp");
     strcpy(obj->m_mgr->app->home_path, "UNKNOWN");
+    strcpy(obj->m_mgr->app->debug_file, "UNKNOWN");
     // sqlite
     obj->m_mgr->sqlite = (sGSQLite*)malloc(sizeof(sGSQLite));
     strcpy(obj->m_mgr->sqlite->db_path, "UNKNOWN");
@@ -105,6 +106,7 @@ static void GManager_DataShow() {
     printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->app_name", GManager()->m_mgr->app->app_name);
     printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->home_path", GManager()->m_mgr->app->home_path);
     printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->data_path", GManager()->m_mgr->app->data_path);
+    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->debug_file", GManager()->m_mgr->app->debug_file);
     printf("\n");
     printf("#================================================\n");
     printf("[info] GManager()->m_mgr->sqlite\n");
