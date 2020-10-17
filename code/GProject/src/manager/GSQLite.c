@@ -135,7 +135,7 @@ static void* GSQLite_Open() {
     sGSQLite* lSQLite = GManager()->m_mgr->sqlite;
     sqlite3* lDb;
 	int lOk = sqlite3_open(lSQLite->db_path, &lDb);
-	if(lOk != SQLITE_OK) {printf("[error] %s : sqlite3_open : %s\n", __FUNCTION__, lSQLite->db_path); exit(0);}
+	if(lOk != SQLITE_OK) {printf("[error] %s : sqlite3_open : %s\n", __FUNCTION__, lSQLite->db_path);}
     return lDb; 
 }
 //===============================================
@@ -143,7 +143,7 @@ static void GSQLite_Exec(void* onExec, void* params, char* sqlQuery) {
 	sqlite3* lDb = GSQLite_Open();
     char* lError;
 	int lOk = sqlite3_exec(lDb, sqlQuery, onExec, params, &lError);
-	if(lOk != SQLITE_OK) {printf("[GSQLite] erreur execution : GSQLite_Exec : %s\n", lError); exit(0);}
+	if(lOk != SQLITE_OK) {printf("[error] %s : %s\n", __FUNCTION__, lError);}
     sqlite3_close(lDb);
 }
 //===============================================

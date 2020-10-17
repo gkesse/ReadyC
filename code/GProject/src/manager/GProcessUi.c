@@ -1,7 +1,6 @@
 //===============================================
 #include "GProcessUi.h"
 #include "GSQLiteUi.h"
-#include "GDateUi.h"
 #include "GGtkUi.h"
 #include "GOpenCVUi.h"
 #include "GConfig.h"
@@ -19,8 +18,6 @@ static void GProcessUi_Run_CHOICE(int argc, char** argv);
 static void GProcessUi_Run_SAVE(int argc, char** argv);
 static void GProcessUi_Run_LOAD(int argc, char** argv);
 //===============================================
-static void GProcessUi_Run_DATE(int argc, char** argv);
-static void GProcessUi_Run_THREAD(int argc, char** argv);
 static void GProcessUi_Run_SOCKET(int argc, char** argv);
 static void GProcessUi_Run_FILE(int argc, char** argv);
 //===============================================
@@ -66,8 +63,6 @@ static void GProcessUi_Run(int argc, char** argv) {
         else if(!strcmp(m_GProcessUiO->G_STATE, "S_METHOD")) {GProcessUi_Run_METHOD(argc, argv);}
         else if(!strcmp(m_GProcessUiO->G_STATE, "S_CHOICE")) {GProcessUi_Run_CHOICE(argc, argv);}
         //
-        else if(!strcmp(m_GProcessUiO->G_STATE, "S_DATE")) {GProcessUi_Run_DATE(argc, argv);}
-        else if(!strcmp(m_GProcessUiO->G_STATE, "S_THREAD")) {GProcessUi_Run_THREAD(argc, argv);}
         else if(!strcmp(m_GProcessUiO->G_STATE, "S_SOCKET")) {GProcessUi_Run_SOCKET(argc, argv);}
         else if(!strcmp(m_GProcessUiO->G_STATE, "S_FILE")) {GProcessUi_Run_FILE(argc, argv);}
         //
@@ -129,8 +124,6 @@ static void GProcessUi_Run_CHOICE(int argc, char** argv) {
     if(!strcmp(lAnswer, "")) {strcpy(lAnswer, lLast);}
     if(!strcmp(lAnswer, "-q")) {m_GProcessUiO->G_STATE = "S_END";}
     //
-    else if(!strcmp(lAnswer, "1")) {m_GProcessUiO->G_STATE = "S_DATE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
-    else if(!strcmp(lAnswer, "2")) {m_GProcessUiO->G_STATE = "S_THREAD"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     else if(!strcmp(lAnswer, "3")) {m_GProcessUiO->G_STATE = "S_SOCKET"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     else if(!strcmp(lAnswer, "4")) {m_GProcessUiO->G_STATE = "S_FILE"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     //
@@ -147,16 +140,6 @@ static void GProcessUi_Run_CHOICE(int argc, char** argv) {
     else if(!strcmp(lAnswer, "31")) {m_GProcessUiO->G_STATE = "S_DBUS"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     else if(!strcmp(lAnswer, "32")) {m_GProcessUiO->G_STATE = "S_ZEROMQ"; GConfig()->SetData("G_ADMIN_ID", lAnswer);}
     //
-}
-//===============================================
-static void GProcessUi_Run_DATE(int argc, char** argv) {
-    GSQLiteUi()->Run(argc, argv);
-    m_GProcessUiO->G_STATE = "S_SAVE";
-}
-//===============================================
-static void GProcessUi_Run_THREAD(int argc, char** argv) {
-    GSQLiteUi()->Run(argc, argv);
-    m_GProcessUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GProcessUi_Run_SOCKET(int argc, char** argv) {

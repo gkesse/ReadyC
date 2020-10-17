@@ -22,6 +22,7 @@ struct _GManagerO {
     void* child;
     void (*Delete)();
     void (*Test)(int argc, char** argv);
+    void (*Main)();
     void (*DataShow)();
     // terminal
     void (*Printf)(const char* format, ...);
@@ -33,7 +34,11 @@ struct _GManagerO {
     void (*Trim)(char* strIn, char* strOut);
     int (*SplitCount)(char* strIn, char* sep);
     void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
-    void (*Replace)(char* strIn, char* strOut, const char* pattern, const char* replace);
+    void (*Replace)(char* strIn, char* strOut, char* pattern, char* replace);
+    // date
+    void (*Date)(char* buffer);
+    // trace
+    void (*Trace)(int key, ...);
     // data
     sGManager* m_mgr;
 };
@@ -52,6 +57,10 @@ struct _sGApp {
     char app_name[B_APP_NAME+1];
     char home_path[B_HOME_PATH+1];
     char data_path[B_DATA_PATH+1];
+    char trace_file[B_DATA_PATH+1];
+    int trace_on;
+    char* trace_mode;
+    int date_on;
 };
 //===============================================
 struct _sGSQLite {
