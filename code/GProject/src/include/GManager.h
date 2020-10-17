@@ -33,7 +33,7 @@ struct _GManagerO {
     void (*Trim)(char* strIn, char* strOut);
     int (*SplitCount)(char* strIn, char* sep);
     void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
-    void (*Replace)(char* strIn, char* strOut, const char* pattern, const char* replace);
+    void (*Replace)(char* strIn, char* strOut, char* pattern, char* replace);
     // data
     sGManager* m_mgr;
 };

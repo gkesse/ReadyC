@@ -9,6 +9,7 @@
 #define B_TO_UPPER (256)
 #define B_TRIM (256)
 #define B_SPLIT (256)
+#define B_REPLACE (256)
 //===============================================
 // obj
 static void GManager_Init(GManagerO* obj);
@@ -29,7 +30,7 @@ static char* GManager_TrimLeft(char* strIn);
 static char* GManager_TrimRight(char* strIn);
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
 static int GManager_SplitCount(char* strIn, char* sep);
-static void GManager_Replace(char* strIn, char* strOut, const char* pattern, const char* replace);
+static void GManager_Replace(char* strIn, char* strOut, char* pattern, char* replace);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
@@ -92,6 +93,7 @@ static void GManager_Init(GManagerO* obj) {
 //===============================================
 static void GManager_Test(int argc, char** argv) {
     GManager()->DataShow();
+    GManager()->Replace("1000 TIRET 2000 TIRET 3000", 0, "TIRET", "---");
 }
 //===============================================
 static void GManager_DataShow() {
@@ -225,7 +227,25 @@ static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
     strcpy(strOut, lStart);
 }
 //===============================================
-static void GManager_Replace(char* strIn, char* strOut, const char* pattern, const char* replace) {
-
+static void GManager_Replace(char* strIn, char* strOut, char* pattern, char* replace) {
+    char lStrIn[B_REPLACE+1];
+    char lStrOut[B_REPLACE+1];
+    char* lpStrIn = lStrIn;
+    char* lpStrOut = lStrOut;
+    strcpy(lStrIn, strIn);
+    char* lTmp = lStrIn;
+    int lLength;
+    int lPattern = strlen(pattern);
+    int lReplace = strlen(replace);
+    printf("[%s]...\n", lStrIn);
+    while((lTmp = strstr(lTmp, pattern))) {
+        lLength = lTmp - lpStrIn;
+        strncpy(lpStrOut, lpStrIn, lLength); lpStrOut += lLength; *lpStrOut = 0;
+        strncpy(lpStrOut, replace, lReplace); lpStrOut += lReplace; *lpStrOut = 0;
+        lpStrIn += lLength + lPattern;
+        lTmp++;
+    }
+    strcpy(lpStrOut, lpStrIn);
+    printf("[%s]...\n", lStrOut);
 }
 //===============================================
