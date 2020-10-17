@@ -93,7 +93,6 @@ static void GManager_Init(GManagerO* obj) {
 //===============================================
 static void GManager_Test(int argc, char** argv) {
     GManager()->DataShow();
-    GManager()->Replace("1000 TIRET 2000 TIRET 3000", 0, "TIRET", "---");
 }
 //===============================================
 static void GManager_DataShow() {
@@ -237,7 +236,6 @@ static void GManager_Replace(char* strIn, char* strOut, char* pattern, char* rep
     int lLength;
     int lPattern = strlen(pattern);
     int lReplace = strlen(replace);
-    printf("[%s]...\n", lStrIn);
     while((lTmp = strstr(lTmp, pattern))) {
         lLength = lTmp - lpStrIn;
         strncpy(lpStrOut, lpStrIn, lLength); lpStrOut += lLength; *lpStrOut = 0;
@@ -246,6 +244,6 @@ static void GManager_Replace(char* strIn, char* strOut, char* pattern, char* rep
         lTmp++;
     }
     strcpy(lpStrOut, lpStrIn);
-    printf("[%s]...\n", lStrOut);
+    strcpy(strOut, lStrOut);
 }
 //===============================================
