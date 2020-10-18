@@ -365,6 +365,7 @@ static void GManager_TraceFile(char* data) {
 }
 //===============================================
 static void GManager_TraceTerminal(char* data) {
+    sGApp* lApp = GManager()->m_mgr->app;
     int lCount = GManager_SplitCount(data, "\n");
     char lData[B_STRING+1];
     char lFormat[B_STRING+1];
