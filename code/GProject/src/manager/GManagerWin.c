@@ -45,8 +45,8 @@ GManagerO* GManagerWin() {
 //===============================================
 static void GManagerWin_Init(GManagerO* obj) {
     // app
-    strcpy(obj->m_mgr->app->data_path, ".readyc\\data");
-    strcpy(obj->m_mgr->app->debug_file, "debug\\debug.txt");
+    strcpy(obj->m_mgr->app->data_path, ".readydev\\readyc\\data");
+    strcpy(obj->m_mgr->app->trace_file, "debug\\debug.txt");
     GManagerWin_HomePathObj(obj);
     GManagerWin_DataPathObj(obj);
     GManagerWin_DebugFileObj(obj);
@@ -70,8 +70,8 @@ static void GManagerWin_DataPathObj(GManagerO* obj) {
 //===============================================
 static void GManagerWin_DebugFileObj(GManagerO* obj) {
     char lDataPath[B_DATA_PATH+1];
-    sprintf(lDataPath, "%s\\%s", obj->m_mgr->app->data_path, obj->m_mgr->app->debug_file);
-    strcpy(obj->m_mgr->app->debug_file, lDataPath);
+    sprintf(lDataPath, "%s\\%s", obj->m_mgr->app->data_path, obj->m_mgr->app->trace_file);
+    strcpy(obj->m_mgr->app->trace_file, lDataPath);
 }
 //===============================================
 // shell

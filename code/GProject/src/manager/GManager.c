@@ -10,12 +10,16 @@
 #define B_TRIM (256)
 #define B_SPLIT (256)
 #define B_REPLACE (256)
+#define B_TRACE_MSG (1024)
+//===============================================
+typedef int (*GTRACE_FUNC)(char* buffer, int index, void* obj);
 //===============================================
 // obj
 static void GManager_Init(GManagerO* obj);
 //===============================================
 // global
 static void GManager_Test(int argc, char** argv);
+static void GManager_Main();
 static void GManager_DataShow();
 //===============================================
 // terminal
@@ -31,6 +35,12 @@ static char* GManager_TrimRight(char* strIn);
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
 static int GManager_SplitCount(char* strIn, char* sep);
 static void GManager_Replace(char* strIn, char* strOut, char* pattern, char* replace);
+// date
+static void GManager_Date(char* buffer);
+// trace
+static void GManager_Trace(int key, ...);
+static void GManager_TraceFile(char* data);
+static void GManager_TraceTerminal(char* data);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
@@ -41,6 +51,7 @@ GManagerO* GManager_New() {
     lObj->child = 0;
     lObj->Delete = GManager_Delete;
     lObj->Test = GManager_Test;
+    lObj->Main = GManager_Main;
     lObj->DataShow = GManager_DataShow;
     // terminal
     lObj->Printf = GManager_Printf;
@@ -53,6 +64,11 @@ GManagerO* GManager_New() {
     lObj->SplitCount = GManager_SplitCount;
     lObj->SplitGet = GManager_SplitGet;
     lObj->Replace = GManager_Replace;
+    // date
+    lObj->Date = GManager_Date;    
+    // trace
+    lObj->Trace = GManager_Trace;    
+    //
     return lObj;
 }
 //===============================================
@@ -81,7 +97,10 @@ static void GManager_Init(GManagerO* obj) {
     obj->m_mgr->app = (sGApp*)malloc(sizeof(sGApp));
     strcpy(obj->m_mgr->app->app_name, "ReadyApp");
     strcpy(obj->m_mgr->app->home_path, "UNKNOWN");
-    strcpy(obj->m_mgr->app->debug_file, "UNKNOWN");
+    strcpy(obj->m_mgr->app->trace_file, "UNKNOWN");
+    obj->m_mgr->app->trace_on = 1;
+    obj->m_mgr->app->trace_mode = "file";
+    obj->m_mgr->app->date_on = 1;
     // sqlite
     obj->m_mgr->sqlite = (sGSQLite*)malloc(sizeof(sGSQLite));
     strcpy(obj->m_mgr->sqlite->db_path, "UNKNOWN");
@@ -93,33 +112,34 @@ static void GManager_Init(GManagerO* obj) {
 // global
 //===============================================
 static void GManager_Test(int argc, char** argv) {
+    char lBuffer[256];
     GManager()->DataShow();
+    GManager()->Date(lBuffer);
+}
+//===============================================
+static void GManager_Main() {
+    GManager()->Trace(3, "#================================================", 0);
+    GManager()->Trace(3, "[info] main()", 0);
+    GManager()->Trace(3, "#================================================", 0);
 }
 //===============================================
 static void GManager_DataShow() {
     int lWidth = -50;
-    printf("\n");
-    printf("#================================================\n");
-    printf("[info] GManager()->m_mgr->app\n");
-    printf("#================================================\n");
-    printf("\n");
-    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->app_name", GManager()->m_mgr->app->app_name);
-    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->home_path", GManager()->m_mgr->app->home_path);
-    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->data_path", GManager()->m_mgr->app->data_path);
-    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->app->debug_file", GManager()->m_mgr->app->debug_file);
-    printf("\n");
-    printf("#================================================\n");
-    printf("[info] GManager()->m_mgr->sqlite\n");
-    printf("#================================================\n");
-    printf("\n");
-    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->sqlite->db_path", GManager()->m_mgr->sqlite->db_path);
-    printf("\n");
-    printf("#================================================\n");
-    printf("[info] GManager()->m_mgr->json\n");
-    printf("#================================================\n");
-    printf("\n");
-    printf("[info] %*s : %s\n", lWidth, "GManager()->m_mgr->json->file", GManager()->m_mgr->json->file);
-    printf("\n");
+    GManager()->Trace(3, "[info] GManager()->m_mgr->app", 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()-> m_mgr->app->app_name", 3, " : ", 3, GManager()->m_mgr->app->app_name, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->app->home_path", 3, " : ", 3, GManager()->m_mgr->app->home_path, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->app->data_path", 3, " : ", 3, GManager()->m_mgr->app->data_path, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->app->trace_file", 3, " : ", 3, GManager()->m_mgr->app->trace_file, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->app->trace_on", 3, " : ", 1, GManager()->m_mgr->app->trace_on, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->app->trace_mode", 3, " : ", 3, GManager()->m_mgr->app->trace_mode, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->app->date_on", 3, " : ", 1, GManager()->m_mgr->app->date_on, 0);
+    GManager()->Trace(3, "", 0);
+    GManager()->Trace(3, "[info] GManager()->m_mgr->sqlite", 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->sqlite->db_path", 3, " : ", 3, GManager()->m_mgr->sqlite->db_path, 0);
+    GManager()->Trace(3, "", 0);
+    GManager()->Trace(3, "[info] GManager()->m_mgr->json", 0);
+    GManager()->Trace(3, "", 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->json->file", 3, " : ", 3, GManager()->m_mgr->json->file, 0);
 }
 //===============================================
 // terminal
@@ -247,5 +267,116 @@ static void GManager_Replace(char* strIn, char* strOut, char* pattern, char* rep
     }
     strcpy(lpStrOut, lpStrIn);
     strcpy(strOut, lStrOut);
+}
+//===============================================
+// date
+//===============================================
+static void GManager_Date(char* buffer) {
+    time_t lTime;
+    time(&lTime);
+    struct tm* lTimeInfo = localtime(&lTime);
+    int lDay = lTimeInfo->tm_mday;
+    int lMonth = lTimeInfo->tm_mon + 1;
+    int lYear = lTimeInfo->tm_year + 1900;
+    int lHour = lTimeInfo->tm_hour;
+    int lMin = lTimeInfo->tm_min;
+    int lSec = lTimeInfo->tm_sec;
+    sprintf(buffer, "%02d/%02d/%04d %02d:%02d:%02d", lDay, lMonth, lYear, lHour, lMin, lSec);
+}
+//===============================================
+// trace
+//===============================================
+static void GManager_Trace(int key, ...) {
+    sGApp* lApp = GManager()->m_mgr->app;
+    if(lApp->trace_on == 0) return;
+    char lBuffer[B_TRACE_MSG+1];
+    int lIndex = 0;
+
+    va_list lArgs;
+    va_start(lArgs, key);
+    int lType = key;
+    while(1) {
+        // off
+        if(lType == 0) break;
+        // int
+        if(lType == 1) {
+            int lData = va_arg(lArgs, int);
+            lIndex += sprintf(&lBuffer[lIndex], "%d", lData);
+        }
+        // int - width
+        else if(lType == 10) {
+            int lWidth = va_arg(lArgs, int);
+            int lData = va_arg(lArgs, int);
+            lIndex += sprintf(&lBuffer[lIndex], "%*d", lWidth, lData);
+        }
+        // double 
+        else if(lType == 2) {
+            double lData = va_arg(lArgs, double);
+            lIndex += sprintf(&lBuffer[lIndex], "%f", lData);
+        }
+        // double - width
+        else if(lType == 20) {
+            int lWidth = va_arg(lArgs, int);
+            double lData = va_arg(lArgs, double);
+            lIndex += sprintf(&lBuffer[lIndex], "%.*f", lWidth, lData);
+        }
+        // string
+        else if(lType == 3) {
+            char* lData = va_arg(lArgs, char*);
+            lIndex += sprintf(&lBuffer[lIndex], "%s", lData);
+        }
+        // string - width
+        else if(lType == 30) {
+            int lWidth = va_arg(lArgs, int);
+            char* lData = va_arg(lArgs, char*);
+            lIndex += sprintf(&lBuffer[lIndex], "%*s", lWidth, lData);
+        }
+        // struct
+        else if(lType == 4) {
+            GTRACE_FUNC onLogFunc = (GTRACE_FUNC)va_arg(lArgs, void*);
+            void* lObj = va_arg(lArgs, void*);
+            lIndex += onLogFunc(lBuffer, lIndex, lObj);
+        }
+        lType = va_arg(lArgs, int);
+    }
+    va_end(lArgs);
+    // write
+    if(!strcmp(lApp->trace_mode, "file")) GManager_TraceFile(lBuffer);
+    else if(!strcmp(lApp->trace_mode, "stdout")) GManager_TraceTerminal(lBuffer);
+}
+//===============================================
+static void GManager_TraceFile(char* data) {
+    sGApp* lApp = GManager()->m_mgr->app;
+    int lCount = GManager_SplitCount(data, "\n");
+    char lData[B_STRING+1];
+    char lFormat[B_STRING+1];
+    char lDate[B_STRING+1];
+    
+    GManager_Date(lDate);
+
+    FILE* lpFile = fopen(lApp->trace_file , "a+");
+    for(int i = 0; i < lCount; i++) {
+        GManager_SplitGet(data, lData, "\n", i);
+        if(lApp->date_on == 1) sprintf(lFormat, "%s | %s", lDate, lData);
+        else sprintf(lFormat, "%s", lData);
+        fprintf(lpFile, "%s\n", lFormat);
+    }
+    fclose(lpFile);
+}
+//===============================================
+static void GManager_TraceTerminal(char* data) {
+    int lCount = GManager_SplitCount(data, "\n");
+    char lData[B_STRING+1];
+    char lFormat[B_STRING+1];
+    char lDate[B_STRING+1];
+    
+    GManager_Date(lDate);
+
+    for(int i = 0; i < lCount; i++) {
+        GManager_SplitGet(data, lData, "\n", i);
+        if(lApp->date_on == 1) sprintf(lFormat, "%s | %s", lDate, lData);
+        else sprintf(lFormat, "%s", lData);
+        fprintf(stdout, "%s\n", lFormat);
+    }
 }
 //===============================================
