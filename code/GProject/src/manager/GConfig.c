@@ -67,18 +67,18 @@ static void GConfig_Clear() {
 //===============================================
 static void GConfig_Remove(char* key) {
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
-    lDataMap->Remove(lDataMap, key, GMap_EqualChar);
+    lDataMap->Remove(lDataMap, key, lDataMap->EqualChar);
 }
 //===============================================
 static void GConfig_SetData(char* key, char* value) {
     char* lValue = GManager()->Copy(value);
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
-    lDataMap->SetData(lDataMap, key, lValue, GMap_EqualChar, 1);
+    lDataMap->SetData(lDataMap, key, lValue, lDataMap->EqualChar, 1);
 }
 //===============================================
 static char* GConfig_GetData(char* key) {
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
-    char* lValue = lDataMap->GetData(lDataMap, key, GMap_EqualChar);
+    char* lValue = lDataMap->GetData(lDataMap, key, lDataMap->EqualChar);
     if(lValue == 0) lValue = "";
     return lValue;
 }
@@ -138,6 +138,6 @@ static int GConfig_Size() {
 //===============================================
 static void GConfig_Show() {
     GMapO(GConfig, GCHAR_PTR, GVOID_PTR)* lDataMap = m_GConfigO->m_dataMap;
-    lDataMap->Show(lDataMap, GMap_ShowChar);
+    lDataMap->Show(lDataMap, lDataMap->ShowChar);
 }
 //===============================================

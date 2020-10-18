@@ -12,6 +12,9 @@
 #define B_REPLACE (256)
 #define B_TRACE_MSG (1024)
 //===============================================
+GDECLARE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
+//===============================================
 typedef int (*GTRACE_FUNC)(char* buffer, int index, void* obj);
 //===============================================
 // obj
@@ -112,9 +115,9 @@ static void GManager_Init(GManagerO* obj) {
 // global
 //===============================================
 static void GManager_Test(int argc, char** argv) {
-    char lBuffer[256];
     GManager()->DataShow();
-    GManager()->Date(lBuffer);
+    GMapO(GManager, GCHAR_PTR, GVOID_PTR)* lMap = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
+    lMap->SetData(lMap, "name", "Gerard KESSE", lMap->EqualChar, 0);
 }
 //===============================================
 static void GManager_Main() {

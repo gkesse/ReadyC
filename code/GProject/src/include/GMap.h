@@ -5,6 +5,7 @@
 #include "GInclude.h"
 //===============================================
 #define GDECLARE_MAP(GPREFIX, GKEY, GVALUE) \
+        \
         typedef struct _GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE; \
         typedef struct _GMapO_##GPREFIX##_##GKEY##_##GVALUE GMapO_##GPREFIX##_##GKEY##_##GVALUE; \
         typedef int (*GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE)(GKEY key1, GKEY key2); \
@@ -24,6 +25,8 @@
             void (*Remove)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
             int (*Size)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
             void (*Show)(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GMAP_EQUAL_##GPREFIX##_##GKEY##_##GVALUE on_show); \
+            int (*EqualChar)(char* key1, char* key2); \
+            void (*ShowChar)(char* key, void* value); \
             GMapNodeO_##GPREFIX##_##GKEY##_##GVALUE* m_head; \
         }; \
         \
@@ -35,7 +38,9 @@
         static void GMap_SetData_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GVALUE value, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal, int is_remove); \
         static GVALUE GMap_GetData_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GKEY key, GMAP_EQUAL_KEY_##GPREFIX##_##GKEY##_##GVALUE equal); \
         static int GMap_Size_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj); \
-        static void GMap_Show_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GMAP_EQUAL_##GPREFIX##_##GKEY##_##GVALUE on_show);
+        static void GMap_Show_##GPREFIX##_##GKEY##_##GVALUE(GMapO_##GPREFIX##_##GKEY##_##GVALUE* obj, GMAP_EQUAL_##GPREFIX##_##GKEY##_##GVALUE on_show); \
+        static int GMap_EqualChar_##GPREFIX##_##GKEY##_##GVALUE(char* key1, char* key2); \
+        static void GMap_ShowChar_##GPREFIX##_##GKEY##_##GVALUE(char* key, void* value);
 //===============================================
 #define GDEFINE_MAP(GPREFIX, GKEY, GVALUE) \
         \
@@ -49,6 +54,8 @@
             lObj->GetData = GMap_GetData_##GPREFIX##_##GKEY##_##GVALUE; \
             lObj->Size = GMap_Size_##GPREFIX##_##GKEY##_##GVALUE; \
             lObj->Show = GMap_Show_##GPREFIX##_##GKEY##_##GVALUE; \
+            lObj->EqualChar = GMap_EqualChar_##GPREFIX##_##GKEY##_##GVALUE; \
+            lObj->ShowChar = GMap_ShowChar_##GPREFIX##_##GKEY##_##GVALUE; \
             \
             lObj->m_head = 0; \
             return lObj; \
@@ -159,6 +166,15 @@
                 on_show(lKey, lValue); \
                 lNext = lNext->m_next; \
             } \
+        } \
+        \
+        static int GMap_EqualChar_##GPREFIX##_##GKEY##_##GVALUE(char* key1, char* key2) { \
+            if(!strcmp(key1, key2)) return 1; \
+            return 0; \
+        } \
+        \
+        static void GMap_ShowChar_##GPREFIX##_##GKEY##_##GVALUE(char* key, void* value) { \
+            printf("%*s : %s\n", -30, key, (char*)value); \
         }
 //===============================================
 #define GMap_New(GPREFIX, GKEY, GVALUE) \
@@ -175,27 +191,6 @@
 //===============================================
 typedef char* GCHAR_PTR;
 typedef void* GVOID_PTR;
-//===============================================
-#if defined(_GMAP_SHOW_CHAR_)
-//===============================================
-static int GMap_EqualChar(char* key1, char* key2);
-//===============================================
-static int GMap_EqualChar(char* key1, char* key2) {
-    if(!strcmp(key1, key2)) return 1;
-    return 0;
-}
-//===============================================
-#endif
-//===============================================
-#if defined(_GMAP_SHOW_CHAR_)
-//===============================================
-static void GMap_ShowChar(char* key, void* value);
-//===============================================
-static void GMap_ShowChar(char* key, void* value) {
-    printf("%s = %s\n", key, (char*)value);
-}
-//===============================================
-#endif
 //===============================================
 #endif
 //===============================================
