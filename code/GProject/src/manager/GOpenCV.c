@@ -48,15 +48,13 @@ static void GOpenCV_Test(int argc, char** argv) {
 //===============================================
 static void GOpenCV_Open() {
     sGOpenCV* lOpenCV = GManager()->m_mgr->opencv;
-    
+
     lOpenCV->win_img = cvCreateImage(cvSize(lOpenCV->win_width, lOpenCV->win_height), IPL_DEPTH_8U, 3);
     lOpenCV->bg_img = cvCreateImage(cvSize(lOpenCV->win_width, lOpenCV->win_height), IPL_DEPTH_8U, 3);
 
     cvSet(lOpenCV->bg_img, lOpenCV->bg_color, 0);
     cvCopy(lOpenCV->bg_img, lOpenCV->win_img, 0);
-
-    cvNamedWindow(lOpenCV->win_title, CV_WINDOW_AUTOSIZE);
-
+    
     HANDLE lAns = CreateThread(0, 0, GOpenCV_OnOpen, 0, 0, &lOpenCV->thread_id);
     
     if(!lAns) {
@@ -65,6 +63,10 @@ static void GOpenCV_Open() {
 }
 //===============================================
 DWORD WINAPI GOpenCV_OnOpen(LPVOID params) {    
+    sGOpenCV* lOpenCV = GManager()->m_mgr->opencv;
+
+    cvNamedWindow(lOpenCV->win_title, CV_WINDOW_AUTOSIZE);
+
     while(1) {
         if(lOpenCV->run_me == 0) break;
         cvShowImage(lOpenCV->win_title, lOpenCV->win_img);
@@ -72,7 +74,8 @@ DWORD WINAPI GOpenCV_OnOpen(LPVOID params) {
         if(lKey == 'q') break;
     }
     
-    cvReleaseImage(&lOpenCV->img_bg);
+    cvReleaseImage(&lOpenCV->win_img);
+    cvReleaseImage(&lOpenCV->bg_img);
     cvDestroyWindow(lOpenCV->win_title);
     return 0;
 }
