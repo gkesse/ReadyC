@@ -110,6 +110,14 @@ static void GManager_Init(GManagerO* obj) {
     // json
     obj->m_mgr->json = (sGJson*)malloc(sizeof(sGJson));
     strcpy(obj->m_mgr->json->file, "UNKNOWN");
+    // opencv
+    obj->m_mgr->opencv = (sGOpenCV*)malloc(sizeof(sGOpenCV));
+    strcpy(obj->m_mgr->opencv->win_title, obj->m_mgr->app->app_name);
+    obj->m_mgr->opencv->win_width = 640;
+    obj->m_mgr->opencv->win_height = 480;
+    obj->m_mgr->opencv->bg_color = CV_RGB(20, 0, 0);
+    obj->m_mgr->opencv->run_me = 1;
+    obj->m_mgr->opencv->delay = 30;
 }
 //===============================================
 // global

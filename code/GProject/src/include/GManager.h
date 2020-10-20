@@ -9,6 +9,7 @@
 #define B_DATA_PATH (256)
 #define B_SQLITE_DB (256)
 #define B_JSON_FILE (256)
+#define B_WIN_TITLE (256)
 //===============================================
 typedef struct _GManagerO GManagerO;
 //===============================================
@@ -16,6 +17,7 @@ typedef struct _sGManager sGManager;
 typedef struct _sGApp sGApp;
 typedef struct _sGSQLite sGSQLite;
 typedef struct _sGJson sGJson;
+typedef struct _sGOpenCV sGOpenCV;
 //===============================================
 struct _GManagerO {
     // global
@@ -51,6 +53,7 @@ struct _sGManager {
     sGApp* app;
     sGSQLite* sqlite;
     sGJson* json;
+    sGOpenCV* opencv;
 };
 //===============================================
 struct _sGApp {
@@ -69,6 +72,22 @@ struct _sGSQLite {
 //===============================================
 struct _sGJson {
     char file[B_JSON_FILE+1];
+};
+//===============================================
+struct _sGOpenCV {
+    char win_title[B_WIN_TITLE+1];
+    int win_width;
+    int win_height;
+    IplImage* win_img;
+    IplImage* bg_img;
+    CvScalar bg_color;
+    int delay;
+    int run_me;
+#if defined(__unix)
+    pthread_t thread_id;
+#elif defined(__WIN32)
+    DWORD thread_id;
+#endif
 };
 //===============================================
 #endif

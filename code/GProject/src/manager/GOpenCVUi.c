@@ -1,9 +1,9 @@
 //===============================================
 #include "GOpenCVUi.h"
+#include "GOpenCV.h"
 #include "GProcess.h"
 #include "GConfig.h"
 #include "GManager.h"
-#include "GOpenCV.h"
 //===============================================
 #if defined(_GUSE_OPENCV_ON_)
 //===============================================
@@ -106,12 +106,14 @@ static void GOpenCVUi_Run_CHOICE(int argc, char** argv) {
 //===============================================
 static void GOpenCVUi_Run_OPEN(int argc, char** argv) {
     GManager()->Trace(3, "[info] ouverture de l'application : ok", 0);
-    m_GProcessUiO->G_STATE = "S_SAVE";
+    GOpenCV()->Open();
+    m_GOpenCVUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GOpenCVUi_Run_CLOSE(int argc, char** argv) {
     GManager()->Trace(3, "[info] fermeture de l'application : ok", 0);
-    m_GProcessUiO->G_STATE = "S_SAVE";
+    GOpenCV()->Close();
+    m_GOpenCVUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GOpenCVUi_Run_SAVE(int argc, char** argv) {
