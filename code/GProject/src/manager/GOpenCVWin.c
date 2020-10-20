@@ -2,7 +2,7 @@
 #include "GOpenCVWin.h"
 #include "GManager.h"
 //===============================================
-#if defined(__unix)
+#if defined(__WIN32)
 //===============================================
 static GOpenCVO* m_GOpenCVWinO = 0;
 //===============================================
