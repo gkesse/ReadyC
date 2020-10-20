@@ -43,15 +43,15 @@ struct _GManagerO {
     sGManager* m_mgr;
 };
 //===============================================
+GManagerO* GManager_New();
+void GManager_Delete();
+GManagerO* GManager();
+//===============================================
 struct _sGManager {
     sGApp* app;
     sGSQLite* sqlite;
     sGJson* json;
 };
-//===============================================
-GManagerO* GManager_New();
-void GManager_Delete();
-GManagerO* GManager();
 //===============================================
 struct _sGApp {
     char app_name[B_APP_NAME+1];

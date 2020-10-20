@@ -22,7 +22,8 @@ static void GOpenCVUi_Run_SAVE(int argc, char** argv);
 static void GOpenCVUi_Run_LOAD(int argc, char** argv);
 static void GOpenCVUi_Run_QUIT(int argc, char** argv);
 //===============================================
-static void GOpenCVUi_Run_TEST(int argc, char** argv);
+static void GOpenCVUi_Run_OPEN(int argc, char** argv);
+static void GOpenCVUi_Run_CLOSE(int argc, char** argv);
 //===============================================
 GOpenCVUiO* GOpenCVUi_New() {
     GOpenCVUiO* lObj = (GOpenCVUiO*)malloc(sizeof(GOpenCVUiO));
@@ -54,7 +55,8 @@ static void GOpenCVUi_Run(int argc, char** argv) {
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_METHOD")) {GOpenCVUi_Run_METHOD(argc, argv);}
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_CHOICE")) {GOpenCVUi_Run_CHOICE(argc, argv);}
         //
-        else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_TEST")) {GOpenCVUi_Run_TEST(argc, argv);}
+        else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_OPEN")) {GOpenCVUi_Run_OPEN(argc, argv);}
+        else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_CLOSE")) {GOpenCVUi_Run_CLOSE(argc, argv);}
         //
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_SAVE")) {GOpenCVUi_Run_SAVE(argc, argv);}
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_LOAD")) {GOpenCVUi_Run_LOAD(argc, argv);}
@@ -82,7 +84,8 @@ static void GOpenCVUi_Run_INIT(int argc, char** argv) {
 static void GOpenCVUi_Run_METHOD(int argc, char** argv) {
     printf("\n");
     printf("C_OPENCV :\n");
-    printf("\t%-2s : %s\n", "1", "lancer un test");
+    printf("\t%-2s : %s\n", "1", "ouvrir l'application");
+    printf("\t%-2s : %s\n", "2", "fermer l'application");
     printf("\n");
     m_GOpenCVUiO->G_STATE = "S_CHOICE";
 }
@@ -96,14 +99,19 @@ static void GOpenCVUi_Run_CHOICE(int argc, char** argv) {
     else if(!strcmp(lAnswer, "-i")) {m_GOpenCVUiO->G_STATE = "S_INIT";}
     else if(!strcmp(lAnswer, "-a")) {m_GOpenCVUiO->G_STATE = "S_ADMIN";}
     //
-    else if(!strcmp(lAnswer, "1")) {m_GOpenCVUiO->G_STATE = "S_TEST"; GConfig()->SetData("G_OPENCV_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "1")) {m_GOpenCVUiO->G_STATE = "S_OPEN"; GConfig()->SetData("G_OPENCV_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "2")) {m_GOpenCVUiO->G_STATE = "S_CLOSE"; GConfig()->SetData("G_OPENCV_ID", lAnswer);}
     //
 }
 //===============================================
-static void GOpenCVUi_Run_TEST(int argc, char** argv) {
-    printf("\n");
-    GOpenCV()->Test(argc, argv);
-    m_GOpenCVUiO->G_STATE = "S_SAVE";
+static void GOpenCVUi_Run_OPEN(int argc, char** argv) {
+    GManager()->Trace(3, "[info] ouverture de l'application : ok", 0);
+    m_GProcessUiO->G_STATE = "S_SAVE";
+}
+//===============================================
+static void GOpenCVUi_Run_CLOSE(int argc, char** argv) {
+    GManager()->Trace(3, "[info] fermeture de l'application : ok", 0);
+    m_GProcessUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GOpenCVUi_Run_SAVE(int argc, char** argv) {

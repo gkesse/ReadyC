@@ -32,6 +32,7 @@
 #include <sqlite3.h>
 #include <opencv2/core/core_c.h>
 #include <opencv2/highgui/highgui_c.h>
+#include <opencv2/imgcodecs/imgcodecs_c.h>
 //===============================================
 #elif defined(__WIN32)
 //===============================================
@@ -50,7 +51,9 @@
 #include <conio.h>
 //===============================================
 #include <sqlite3.h>
-                                       //#include <opencv2/imgcodecs/imgcodecs_c.h>
+#include <opencv2/core/core_c.h>
+#include <opencv2/highgui/highgui_c.h>
+#include <opencv2/imgcodecs/imgcodecs_c.h>
 //===============================================
 #endif
 //===============================================
