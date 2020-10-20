@@ -112,7 +112,6 @@ static void GOpenCVUi_Run_OPEN(int argc, char** argv) {
 //===============================================
 static void GOpenCVUi_Run_CLOSE(int argc, char** argv) {
     GManager()->Trace(3, "[info] fermeture de l'application : ok", 0);
-    GOpenCV()->Close();
     m_GOpenCVUiO->G_STATE = "S_SAVE";
 }
 //===============================================

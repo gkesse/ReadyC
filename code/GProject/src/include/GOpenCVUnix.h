@@ -1,22 +1,24 @@
 //===============================================
-#ifndef _GOpenCV_
-#define _GOpenCV_
+#ifndef _GOpenCVUnix_
+#define _GOpenCVUnix_
 //===============================================
-#include "GInclude.h"
+#include "GOpenCV.h"
 //===============================================
-typedef struct _GOpenCVO GOpenCVO;
+#if defined(__unix)
 //===============================================
-struct _GOpenCVO {
-    void* child;
+typedef struct _GOpenCVUnixO GOpenCVUnixO;
+//===============================================
+struct _GOpenCVUnixO {
+    void* parent;
     void (*Delete)(); 
-    void (*Test)(int argc, char** argv);
     void (*Open)();
-    void (*OnOpen)();
 };
 //===============================================
-GOpenCVO* GOpenCV_New();
-void GOpenCV_Delete();
-GOpenCVO* GOpenCV();
+GOpenCVO* GOpenCVUnix_New();
+void GOpenCVUnix_Delete();
+GOpenCVO* GOpenCVUnix();
+//===============================================
+#endif
 //===============================================
 #endif
 //===============================================
