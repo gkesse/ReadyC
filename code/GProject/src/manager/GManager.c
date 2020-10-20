@@ -104,10 +104,11 @@ static void GManager_Init(GManagerO* obj) {
     obj->m_mgr->app->trace_on = 1;
     obj->m_mgr->app->trace_mode = "file";
     obj->m_mgr->app->date_on = 1;
+    obj->m_mgr->app->col_width = -50;
     // sqlite
     obj->m_mgr->sqlite = (sGSQLite*)malloc(sizeof(sGSQLite));
     strcpy(obj->m_mgr->sqlite->db_path, "UNKNOWN");
-    // json
+    // json 
     obj->m_mgr->json = (sGJson*)malloc(sizeof(sGJson));
     strcpy(obj->m_mgr->json->file, "UNKNOWN");
     // opencv
@@ -118,6 +119,9 @@ static void GManager_Init(GManagerO* obj) {
     obj->m_mgr->opencv->bg_color = CV_RGB(20, 0, 0);
     obj->m_mgr->opencv->run_me = 1;
     obj->m_mgr->opencv->delay = 30;
+    obj->m_mgr->opencv->state = "close";
+    obj->m_mgr->opencv->load_img = 0;
+    obj->m_mgr->opencv->ratio_img = 0;
 }
 //===============================================
 // global
@@ -135,7 +139,7 @@ static void GManager_Main() {
 }
 //===============================================
 static void GManager_DataShow() {
-    int lWidth = -50;
+    int lWidth = GManager()->m_mgr->app->col_width;
     GManager()->Trace(3, "[info] GManager()->m_mgr->app", 0);
     GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()-> m_mgr->app->app_name", 3, " : ", 3, GManager()->m_mgr->app->app_name, 0);
     GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->app->home_path", 3, " : ", 3, GManager()->m_mgr->app->home_path, 0);
@@ -149,8 +153,14 @@ static void GManager_DataShow() {
     GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->sqlite->db_path", 3, " : ", 3, GManager()->m_mgr->sqlite->db_path, 0);
     GManager()->Trace(3, "", 0);
     GManager()->Trace(3, "[info] GManager()->m_mgr->json", 0);
-    GManager()->Trace(3, "", 0);
     GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->json->file", 3, " : ", 3, GManager()->m_mgr->json->file, 0);
+    GManager()->Trace(3, "", 0);
+    GManager()->Trace(3, "[info] GManager()->m_mgr->opencv", 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->opencv->win_width", 3, " : ", 1, GManager()->m_mgr->opencv->win_width, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->opencv->win_height", 3, " : ", 1, GManager()->m_mgr->opencv->win_height, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->opencv->load_img->width", 3, " : ", 1, GManager()->m_mgr->opencv->load_img->width, 0);
+    GManager()->Trace(3, "[info] ", 30, lWidth, "GManager()->m_mgr->opencv->load_img->height", 3, " : ", 1, GManager()->m_mgr->opencv->load_img->height, 0);
+    GManager()->Trace(3, "", 0);
 }
 //===============================================
 // terminal

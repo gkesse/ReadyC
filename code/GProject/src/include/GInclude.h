@@ -52,6 +52,7 @@
 #include <sqlite3.h>
 #include <opencv2/core/core_c.h>
 #include <opencv2/highgui/highgui_c.h>
+#include <opencv2/imgproc/imgproc_c.h>
 //===============================================
 #endif
 //===============================================

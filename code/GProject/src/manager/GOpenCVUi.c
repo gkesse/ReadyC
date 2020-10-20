@@ -24,6 +24,8 @@ static void GOpenCVUi_Run_QUIT(int argc, char** argv);
 //===============================================
 static void GOpenCVUi_Run_OPEN(int argc, char** argv);
 static void GOpenCVUi_Run_CLOSE(int argc, char** argv);
+static void GOpenCVUi_Run_BG_COLOR_UPDATE(int argc, char** argv);
+static void GOpenCVUi_Run_IMAGE_LOAD(int argc, char** argv);
 //===============================================
 GOpenCVUiO* GOpenCVUi_New() {
     GOpenCVUiO* lObj = (GOpenCVUiO*)malloc(sizeof(GOpenCVUiO));
@@ -57,6 +59,8 @@ static void GOpenCVUi_Run(int argc, char** argv) {
         //
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_OPEN")) {GOpenCVUi_Run_OPEN(argc, argv);}
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_CLOSE")) {GOpenCVUi_Run_CLOSE(argc, argv);}
+        else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_BG_COLOR_UPDATE")) {GOpenCVUi_Run_BG_COLOR_UPDATE(argc, argv);}
+        else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_IMAGE_LOAD")) {GOpenCVUi_Run_IMAGE_LOAD(argc, argv);}
         //
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_SAVE")) {GOpenCVUi_Run_SAVE(argc, argv);}
         else if(!strcmp(m_GOpenCVUiO->G_STATE, "S_LOAD")) {GOpenCVUi_Run_LOAD(argc, argv);}
@@ -86,6 +90,8 @@ static void GOpenCVUi_Run_METHOD(int argc, char** argv) {
     printf("C_OPENCV :\n");
     printf("\t%-2s : %s\n", "1", "ouvrir l'application");
     printf("\t%-2s : %s\n", "2", "fermer l'application");
+    printf("\t%-2s : %s\n", "3", "changer la couleur de fond");
+    printf("\t%-2s : %s\n", "4", "charger une image");
     printf("\n");
     m_GOpenCVUiO->G_STATE = "S_CHOICE";
 }
@@ -101,17 +107,59 @@ static void GOpenCVUi_Run_CHOICE(int argc, char** argv) {
     //
     else if(!strcmp(lAnswer, "1")) {m_GOpenCVUiO->G_STATE = "S_OPEN"; GConfig()->SetData("G_OPENCV_ID", lAnswer);}
     else if(!strcmp(lAnswer, "2")) {m_GOpenCVUiO->G_STATE = "S_CLOSE"; GConfig()->SetData("G_OPENCV_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "3")) {m_GOpenCVUiO->G_STATE = "S_BG_COLOR_UPDATE"; GConfig()->SetData("G_OPENCV_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "4")) {m_GOpenCVUiO->G_STATE = "S_IMAGE_LOAD"; GConfig()->SetData("G_OPENCV_ID", lAnswer);}
     //
 }
 //===============================================
 static void GOpenCVUi_Run_OPEN(int argc, char** argv) {
-    GManager()->Trace(3, "[info] ouverture de l'application : ok", 0);
-    GOpenCV()->Open();
+    sGOpenCV* lOpenCV = GManager()->m_mgr->opencv;
+    if(!strcmp(lOpenCV->state, "close")) {
+        printf("\n[info] ouverture de l'application\n");
+        GOpenCV()->Open();
+        lOpenCV->state = "open";
+    }
+    else {
+        printf("\n[error] ouverture de l'application\n");
+    }
     m_GOpenCVUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GOpenCVUi_Run_CLOSE(int argc, char** argv) {
-    GManager()->Trace(3, "[info] fermeture de l'application : ok", 0);
+    sGOpenCV* lOpenCV = GManager()->m_mgr->opencv;
+    if(strcmp(lOpenCV->state, "close")) {
+        printf("\n[info] fermeture de l'application\n");
+        lOpenCV->run_me = 0;
+        lOpenCV->state = "close";
+    }
+    else {
+        printf("\n[error] fermeture de l'application\n");
+    }
+    m_GOpenCVUiO->G_STATE = "S_SAVE";
+}
+//===============================================
+static void GOpenCVUi_Run_BG_COLOR_UPDATE(int argc, char** argv) {
+    sGOpenCV* lOpenCV = GManager()->m_mgr->opencv;
+    if(strcmp(lOpenCV->state, "close")) {
+        printf("\n[info] modification de la couleur de fond\n");
+        lOpenCV->bg_color = CV_RGB(0, 255, 255);
+        GOpenCV()->UpdateBgColor();
+    }
+    else {
+        printf("\n[error] modification de la couleur de fond\n");
+    }
+    m_GOpenCVUiO->G_STATE = "S_SAVE";
+}
+//===============================================
+static void GOpenCVUi_Run_IMAGE_LOAD(int argc, char** argv) {
+    sGOpenCV* lOpenCV = GManager()->m_mgr->opencv;
+    if(strcmp(lOpenCV->state, "close")) {
+        printf("\n[info] chargement de l'image\n");
+        GOpenCV()->LoadImage();
+    }
+    else {
+        printf("\n[error] chargement de l'image\n");
+    }
     m_GOpenCVUiO->G_STATE = "S_SAVE";
 }
 //===============================================

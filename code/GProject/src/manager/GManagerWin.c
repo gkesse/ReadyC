@@ -54,6 +54,8 @@ static void GManagerWin_Init(GManagerO* obj) {
     strcpy(obj->m_mgr->sqlite->db_path, "C:\\Users\\Admin\\Downloads\\Programs\\ReadyBin\\win\\.CONFIG_O.dat");
     // json
     sprintf(obj->m_mgr->json->file, "%s\\json\\menu.json", obj->m_mgr->app->data_path);
+    // opencv
+    strcpy(obj->m_mgr->opencv->load_img_file, "C:\\Users\\Admin\\Downloads\\zPaint\\maths.png");
 }
 //===============================================
 static void GManagerWin_HomePathObj(GManagerO* obj) {

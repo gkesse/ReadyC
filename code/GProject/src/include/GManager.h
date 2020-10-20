@@ -10,6 +10,7 @@
 #define B_SQLITE_DB (256)
 #define B_JSON_FILE (256)
 #define B_WIN_TITLE (256)
+#define B_LOAD_IMAGE (256)
 //===============================================
 typedef struct _GManagerO GManagerO;
 //===============================================
@@ -64,6 +65,7 @@ struct _sGApp {
     int trace_on;
     char* trace_mode;
     int date_on;
+    int col_width;
 };
 //===============================================
 struct _sGSQLite {
@@ -76,13 +78,20 @@ struct _sGJson {
 //===============================================
 struct _sGOpenCV {
     char win_title[B_WIN_TITLE+1];
+    int win_x;
+    int win_y;
     int win_width;
     int win_height;
     IplImage* win_img;
+    CvRect win_roi;
     IplImage* bg_img;
     CvScalar bg_color;
+    IplImage* load_img;
+    char load_img_file[B_LOAD_IMAGE+1];
+    IplImage* ratio_img;
     int delay;
     int run_me;
+    char* state;
 #if defined(__unix)
     pthread_t thread_id;
 #elif defined(__WIN32)

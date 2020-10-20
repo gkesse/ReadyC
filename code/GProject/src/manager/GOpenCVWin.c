@@ -36,11 +36,7 @@ GOpenCVO* GOpenCVWin() {
 static void GOpenCVWin_Open() {
     sGOpenCV* lOpenCV = GManager()->m_mgr->opencv;
 
-    lOpenCV->win_img = cvCreateImage(cvSize(lOpenCV->win_width, lOpenCV->win_height), IPL_DEPTH_8U, 3);
-    lOpenCV->bg_img = cvCreateImage(cvSize(lOpenCV->win_width, lOpenCV->win_height), IPL_DEPTH_8U, 3);
-
-    cvSet(lOpenCV->bg_img, lOpenCV->bg_color, 0);
-    cvCopy(lOpenCV->bg_img, lOpenCV->win_img, 0);
+    m_GOpenCVWinO->Init();
     
     HANDLE lAns = CreateThread(0, 0, GOpenCV_OnOpen, 0, 0, &lOpenCV->thread_id);
     

@@ -12,6 +12,10 @@ struct _GOpenCVO {
     void (*Test)(int argc, char** argv);
     void (*Open)();
     void (*OnOpen)();
+    void (*Init)();
+    void (*Free)();
+    void (*UpdateBgColor)();
+    void (*LoadImage)();
 };
 //===============================================
 GOpenCVO* GOpenCV_New();
