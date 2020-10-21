@@ -2,6 +2,7 @@
 #include "GWidget.h"
 // widget
 #include "GListBox.h"
+#include "GAddressBar.h"
 // window
 #include "GWindow.h"
 // page
@@ -18,6 +19,7 @@ GWidget::~GWidget() {
 GWidget* GWidget::Create(QString key, QWidget* parent) {
     // listbox
     if(key == "listbox") return new GListBox(parent);
+    if(key == "address_bar") return new GAddressBar(parent);
     // window
     if(key == "window") return new GWindow(parent);
     // page

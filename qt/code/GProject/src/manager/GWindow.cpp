@@ -6,6 +6,8 @@ GWindow::GWindow(QWidget* parent) : GWidget(parent) {
     setObjectName("GWindow");
     sGQt* lQt = GManager::Instance()->getData()->qt;
 
+    m_addressBar = GWidget::Create("address_bar");
+
     lQt->page_map = new QStackedWidget;
 
     addPage("home", GWidget::Create("home"), 1);
@@ -13,6 +15,7 @@ GWindow::GWindow(QWidget* parent) : GWidget(parent) {
     addPage("home/builder", GWidget::Create("builder"));
 
     m_mainLayout = new QVBoxLayout;
+    m_mainLayout->addWidget(m_addressBar);
     m_mainLayout->addWidget(lQt->page_map);
     m_mainLayout->setMargin(0);
     m_mainLayout->setSpacing(0);

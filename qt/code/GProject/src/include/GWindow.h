@@ -16,6 +16,7 @@ public:
 
 private:
     QVBoxLayout* m_mainLayout;
+    GWidget* m_addressBar;
 };
 //===============================================
 #endif

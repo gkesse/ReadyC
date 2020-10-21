@@ -11,20 +11,11 @@ public:
     GAddressBar(QWidget* parent = 0);
     virtual ~GAddressBar();
  
-public:
-    void addItem(QString key, QString text);
-    void addItem(QString key, QString text, QIcon icon);
-    void addItem(QString key, QString text, QIcon icon, int width, int height);
-
-public slots:
-    void slotItemClick();
-
 private:
-    QVBoxLayout* m_mainLayout;
-    QScrollArea* m_scrollArea;
-    QFrame* m_scrollWidget;
-    QVBoxLayout* m_scrollLayout;
-    QMap<QWidget*, QString> m_widgetId;
+    QHBoxLayout* m_mainLayout;
+    QPushButton* m_icon;
+    QLineEdit* m_address;
+    QPushButton* m_goto;
 };
 //===============================================
 #endif
