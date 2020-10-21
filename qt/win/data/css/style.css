@@ -1,0 +1,35 @@
+/*===============================================*/
+/* common */
+/*===============================================*/
+/* QWidget */
+QWidget, QWidget * {
+    background-color: #202011;
+    font-family: "Allan";
+    font-size: 25px;
+    color: white;
+    border: none;
+}
+/*===============================================*/
+/* custom */
+/*===============================================*/
+/* GWindow */
+QFrame#GWindow {
+    padding: 10px;
+}
+/*-----------------------------------------------*/
+/* GListBox */
+QFrame#GListBox {
+    border: 1px solid #ffffff;
+    padding: 10px;
+}
+QFrame#GListBox QPushButton#item {
+    text-align: left;
+    padding: 5px 10px;
+}
+QFrame#GListBox QPushButton#item:hover {
+    background-color: #414133;
+}
+QFrame#GListBox QPushButton#item:pressed {
+    background-color: transparent;
+}
+/*===============================================*/
