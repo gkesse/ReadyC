@@ -32,4 +32,13 @@ QFrame#GListBox QPushButton#item:hover {
 QFrame#GListBox QPushButton#item:pressed {
     background-color: transparent;
 }
+/*-----------------------------------------------*/
+/* GAddressBar */
+QFrame#GAddressBar {
+    padding: 10px 0px;
+}
+QFrame#GAddressBar QLineEdit#address {
+    background-color: #414133;
+    border-radius: 5px;
+}
 /*===============================================*/
