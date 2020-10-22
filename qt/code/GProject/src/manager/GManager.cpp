@@ -94,8 +94,13 @@ void GManager::loadFont() {
 //===============================================
 void GManager::setCurrentPage(QString key) {
     int lPageId = m_mgr->qt->page_id.value(key, -1);
-    if(lPageId == -1) return;
+    if(lPageId == -1) {
+        m_mgr->qt->address->setText(m_mgr->qt->address_url);
+        return;
+    }
     m_mgr->qt->page_map->setCurrentIndex(lPageId);
+    m_mgr->qt->address->setText(key);
+    m_mgr->qt->address_url = key;
 }
 
 //===============================================

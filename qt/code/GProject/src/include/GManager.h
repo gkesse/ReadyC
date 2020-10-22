@@ -53,6 +53,8 @@ struct _sGQt {
     QString font_list;
     QStackedWidget* page_map;
     QMap<QString, int> page_id;
+    QLineEdit* address;
+    QString address_url;
     int icon;
     QColor icon_color;
     int width;

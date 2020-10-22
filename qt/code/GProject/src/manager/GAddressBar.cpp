@@ -4,7 +4,8 @@
 //===============================================
 GAddressBar::GAddressBar(QWidget* parent) : GWidget(parent) {
     setObjectName("GAddressBar");
-    
+    sGQt* lQt = GManager::Instance()->getData()->qt;
+
     m_icon = new QPushButton;
     m_icon->setObjectName("icon");
     m_icon->setIcon(GManager::Instance()->loadPicto(fa::home, "white"));
@@ -28,6 +29,8 @@ GAddressBar::GAddressBar(QWidget* parent) : GWidget(parent) {
     m_mainLayout->setSpacing(5);
 
     setLayout(m_mainLayout);
+
+    lQt->address = m_address;
 
     connect(m_goto, SIGNAL(clicked()), this, SLOT(slotRunClick()));
 }
