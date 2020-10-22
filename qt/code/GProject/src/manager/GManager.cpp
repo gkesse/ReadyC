@@ -31,6 +31,10 @@ GManager::GManager() {
     m_mgr->menu_icon->icon_size = 50;
     m_mgr->menu_icon->col_max = 5;
     m_mgr->menu_icon->default_icon = fa::home;
+    // page
+    m_mgr->page = new sGPage;
+    m_mgr->page->icon_color = "white";
+    m_mgr->page->icon_size = 25;
     // qt_awesoome
     m_QtAwesome = new QtAwesome(qApp);
 }

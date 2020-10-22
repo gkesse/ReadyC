@@ -11,6 +11,7 @@ HEADERS +=\
     $$PWD/include/GWidget.h \
     $$PWD/include/GListBox.h \
     $$PWD/include/GAddressBar.h \
+    $$PWD/include/GAddressList.h \
     $$PWD/include/GWindow.h \
     $$PWD/include/GHome.h \
 
@@ -20,5 +21,6 @@ SOURCES +=\
     $$PWD/manager/GWidget.cpp \
     $$PWD/manager/GListBox.cpp \
     $$PWD/manager/GAddressBar.cpp \
+    $$PWD/manager/GAddressList.cpp \
     $$PWD/manager/GWindow.cpp \
     $$PWD/manager/GHome.cpp \

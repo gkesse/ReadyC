@@ -6,7 +6,7 @@ GWindow::GWindow(QWidget* parent) : GWidget(parent) {
     setObjectName("GWindow");
     sGQt* lQt = GManager::Instance()->getData()->qt;
 
-    m_addressBar = GWidget::Create("address_bar");
+    m_addressBar = GWidget::Create("addressbar");
 
     lQt->page_map = new QStackedWidget;
 

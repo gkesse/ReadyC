@@ -3,6 +3,7 @@
 // widget
 #include "GListBox.h"
 #include "GAddressBar.h"
+#include "GAddressList.h"
 // window
 #include "GWindow.h"
 // page
@@ -19,7 +20,8 @@ GWidget::~GWidget() {
 GWidget* GWidget::Create(QString key, QWidget* parent) {
     // listbox
     if(key == "listbox") return new GListBox(parent);
-    if(key == "address_bar") return new GAddressBar(parent);
+    if(key == "addressbar") return new GAddressBar(parent);
+    if(key == "addresslist") return new GAddressList(parent);
     // window
     if(key == "window") return new GWindow(parent);
     // page
@@ -32,6 +34,8 @@ void GWidget::addItem(QString key, QString text) {}
 void GWidget::addItem(QString key, QString text, QIcon icon) {}
 void GWidget::addItem(QString key, QString text, QIcon icon, int width, int height) {}
 void GWidget::addPage(QString key, QWidget* widget) {}
+void GWidget::setAddress(QString address) {}
 //===============================================
+void GWidget::slotRunClick() {}
 void GWidget::slotItemClick() {}
 //===============================================

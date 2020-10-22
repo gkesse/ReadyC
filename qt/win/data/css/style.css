@@ -40,5 +40,11 @@ QFrame#GAddressBar {
 QFrame#GAddressBar QLineEdit#address {
     background-color: #414133;
     border-radius: 5px;
+    padding: 2px 5px;
+}
+/*-----------------------------------------------*/
+/* GAddressList */
+QFrame#GAddressList {
+
 }
 /*===============================================*/

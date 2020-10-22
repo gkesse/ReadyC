@@ -17,8 +17,10 @@ public:
     virtual void addItem(QString key, QString text, QIcon icon);
     virtual void addItem(QString key, QString text, QIcon icon, int width, int height);
     virtual void addPage(QString key, QWidget* widget);
+    virtual void setAddress(QString address);
 
 public slots:
+    virtual void slotRunClick();
     virtual void slotItemClick();
 
 signals:

@@ -9,6 +9,7 @@ typedef struct _sGApp sGApp;
 typedef struct _sGQt sGQt;
 typedef struct _sGTitleBar sGTitleBar;
 typedef struct _sGMenuIcon sGMenuIcon;
+typedef struct _sGPage sGPage;
 //===============================================
 class GManager {
 private:
@@ -39,6 +40,7 @@ struct _sGManager {
     sGQt* qt;
     sGTitleBar* title_bar;
     sGMenuIcon* menu_icon;
+    sGPage* page;
 };
 //===============================================
 struct _sGApp {
@@ -74,6 +76,11 @@ struct _sGMenuIcon {
     int icon_size;
     int col_max;
     int default_icon;
+};
+//===============================================
+struct _sGPage {
+    QColor icon_color;
+    int icon_size;
 };
 //===============================================
 #endif

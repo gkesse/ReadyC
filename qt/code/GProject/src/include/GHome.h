@@ -13,6 +13,7 @@ public:
     
 private:
     QVBoxLayout* m_mainLayout;
+    GWidget* m_addressList;
     GWidget* m_workspace;
 };
 //===============================================
