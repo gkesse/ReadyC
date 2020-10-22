@@ -35,6 +35,7 @@ GManager::GManager() {
     m_mgr->page = new sGPage;
     m_mgr->page->icon_color = "white";
     m_mgr->page->icon_size = 25;
+    m_mgr->page->list_icon = fa::book;
     // qt_awesoome
     m_QtAwesome = new QtAwesome(qApp);
 }

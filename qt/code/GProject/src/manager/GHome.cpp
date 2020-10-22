@@ -5,14 +5,15 @@
 GHome::GHome(QWidget* parent) : GWidget(parent) {
     setObjectName("GHome");
     sGQt* lQt = GManager::Instance()->getData()->qt;
+    sGPage* lPage = GManager::Instance()->getData()->page;
 
     m_addressList = GWidget::Create("addresslist");
     m_addressList->setAddress("home/opencv/show_image");
 
     m_workspace = GWidget::Create("listbox");
-    m_workspace->addItem("home", "Accueil", GManager::Instance()->loadPicto(fa::book, "white"), 25, 25);
-    m_workspace->addItem("home/opencv", "OpenCV", GManager::Instance()->loadPicto(fa::book, "white"), 25, 25);
-    m_workspace->addItem("home/builder", "Builder", GManager::Instance()->loadPicto(fa::book, "white"), 25, 25);
+    m_workspace->addItem("home", "Accueil", GManager::Instance()->loadPicto(lPage->list_icon, lPage->icon_color), lPage->icon_size, lPage->icon_size);
+    m_workspace->addItem("home/opencv", "OpenCV", GManager::Instance()->loadPicto(lPage->list_icon, lPage->icon_color), lPage->icon_size, lPage->icon_size);
+    m_workspace->addItem("home/builder", "Builder", GManager::Instance()->loadPicto(lPage->list_icon, lPage->icon_color), lPage->icon_size, lPage->icon_size);
 
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->addWidget(m_addressList);

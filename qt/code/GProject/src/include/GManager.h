@@ -83,6 +83,7 @@ struct _sGMenuIcon {
 struct _sGPage {
     QColor icon_color;
     int icon_size;
+    int list_icon;
 };
 //===============================================
 #endif
