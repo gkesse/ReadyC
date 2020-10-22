@@ -15,7 +15,6 @@ public:
     void setAddress(QString address);
 
 public slots:
-    void slotRunClick();
     void slotItemClick();
 
 private:
