@@ -27,7 +27,7 @@ public:
     void listFont();
     void loadFont();
     // page
-    void setCuurentPage(QString key);
+    void setCurrentPage(QString key);
 
 private:
     static GManager* m_instance;

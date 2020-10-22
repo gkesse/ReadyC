@@ -10,7 +10,10 @@ class GAddressBar : public GWidget {
 public:
     GAddressBar(QWidget* parent = 0);
     virtual ~GAddressBar();
- 
+
+public slots:
+    void slotRunClick();
+
 private:
     QHBoxLayout* m_mainLayout;
     QPushButton* m_icon;

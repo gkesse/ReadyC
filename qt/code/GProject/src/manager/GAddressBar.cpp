@@ -28,6 +28,8 @@ GAddressBar::GAddressBar(QWidget* parent) : GWidget(parent) {
     m_mainLayout->setSpacing(5);
 
     setLayout(m_mainLayout);
+
+    connect(m_goto, SIGNAL(clicked()), this, SLOT(slotRunClick()));
 }
 //===============================================
 GAddressBar::~GAddressBar() {
@@ -35,6 +37,7 @@ GAddressBar::~GAddressBar() {
 }
 //===============================================
 void GAddressBar::slotRunClick() {
-
+    QString lAddress = m_address->text();
+    GManager::Instance()->setCurrentPage(lAddress);
 }
 //===============================================

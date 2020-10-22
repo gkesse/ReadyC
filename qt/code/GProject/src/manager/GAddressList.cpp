@@ -57,6 +57,6 @@ void GAddressList::setAddress(QString address) {
 void GAddressList::slotItemClick() {
     QWidget* lWidget = qobject_cast<QWidget*>(sender());
     QString lWidgetId = m_widgetId[lWidget];
-    GManager::Instance()->setCuurentPage(lWidgetId);
+    GManager::Instance()->setCurrentPage(lWidgetId);
 }
 //===============================================

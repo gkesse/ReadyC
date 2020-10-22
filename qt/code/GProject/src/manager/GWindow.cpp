@@ -35,7 +35,7 @@ void GWindow::addPage(QString key, QWidget* widget, int index) {
     lQt->page_id[key] = lQt->page_map->count();
     lQt->page_map->addWidget(widget);
     if(index == 1) {
-        GManager::Instance()->setCuurentPage(key);
+        GManager::Instance()->setCurrentPage(key);
     }
 }
 //===============================================

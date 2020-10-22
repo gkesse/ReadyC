@@ -66,7 +66,7 @@ void GListBox::addItem(QString key, QString text, QIcon icon, int width, int hei
 void GListBox::slotItemClick() {
     QWidget* lWidget = qobject_cast<QWidget*>(sender());
     QString lWidgetId = m_widgetId[lWidget];
-    GManager::Instance()->setCuurentPage(lWidgetId);
+    GManager::Instance()->setCurrentPage(lWidgetId);
     emit emitItemClick();
 }
 //===============================================

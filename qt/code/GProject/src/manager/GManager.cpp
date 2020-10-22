@@ -92,7 +92,7 @@ void GManager::loadFont() {
 //===============================================
 // font
 //===============================================
-void GManager::setCuurentPage(QString key) {
+void GManager::setCurrentPage(QString key) {
     int lPageId = m_mgr->qt->page_id.value(key, -1);
     if(lPageId == -1) return;
     m_mgr->qt->page_map->setCurrentIndex(lPageId);
