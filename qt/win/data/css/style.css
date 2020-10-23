@@ -47,6 +47,12 @@ QFrame#GInsertBox {
     border: 1px solid #ffaa33;
     padding: 0px;
 }
+QFrame#GInsertBox QMenu#menu {
+    background-color: #222244;
+}
+QFrame#GInsertBox QMenu#menu:selected {
+    background-color: #424264;
+}
 /*-----------------------------------------------*/
 /* GInsertItem */
 QFrame#GInsertItem, QFrame#GInsertItem * {
