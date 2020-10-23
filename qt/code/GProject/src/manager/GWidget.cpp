@@ -26,7 +26,7 @@ GWidget* GWidget::Create(QString key, QWidget* parent) {
     if(key == "listbox") return new GListBox(parent);
     if(key == "insertbox") return new GInsertBox(parent);
     if(key == "insertitem") return new GInsertItem(parent);
-    if(key == "menu") return new GInsertItem(parent);
+    if(key == "addressbar") return new GAddressBar(parent);
     if(key == "addresslist") return new GAddressList(parent);
     // window
     if(key == "window") return new GWindow(parent);
