@@ -68,5 +68,6 @@ void GListBox::slotItemClick() {
     QString lWidgetId = m_widgetId[lWidget];
     GManager::Instance()->setCurrentPage(lWidgetId);
     emit emitItemClick();
+    qDebug() << lWidgetId;
 }
 //===============================================

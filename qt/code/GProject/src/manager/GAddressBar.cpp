@@ -32,6 +32,7 @@ GAddressBar::GAddressBar(QWidget* parent) : GWidget(parent) {
 
     lQt->address = m_address;
 
+    connect(m_address, SIGNAL(returnPressed()), this, SLOT(slotRunClick()));
     connect(m_goto, SIGNAL(clicked()), this, SLOT(slotRunClick()));
 }
 //===============================================

@@ -8,6 +8,7 @@ QWidget, QWidget * {
     font-size: 25px;
     color: white;
     border: none;
+    min-width: 0px;
 }
 /*===============================================*/
 /* custom */
@@ -33,8 +34,34 @@ QFrame#GListBox QPushButton#item:pressed {
     background-color: transparent;
 }
 /*-----------------------------------------------*/
+/* GInsertBox */
+QFrame#GInsertBox, QFrame#GInsertBox * {
+    background-color: transparent;
+}
+QFrame#GInsertBox {
+    border: 1px solid #ffaa33;
+    padding: 0px;
+}
+/*-----------------------------------------------*/
+/* GInsertItem */
+QFrame#GInsertItem * {
+    background-color: transparent;
+}
+QFrame#GInsertItem {
+    background-color: #ff4133;
+    border: 1px solid transparent;
+    margin: 10px;
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 100px;
+}
+QFrame#GInsertItem QLabel#label {
+    font-size: 20px;
+}
+/*-----------------------------------------------*/
 /* GAddressBar */
 QFrame#GAddressBar {
+    background-color: transparent;
     padding: 10px 0px;
 }
 QFrame#GAddressBar QLineEdit#address {
@@ -44,7 +71,7 @@ QFrame#GAddressBar QLineEdit#address {
 }
 /*-----------------------------------------------*/
 /* GAddressList */
-QFrame#GAddressList {
-
+QFrame#GAddressList, QFrame#GAddressList * {
+    background-color: transparent;
 }
 /*===============================================*/

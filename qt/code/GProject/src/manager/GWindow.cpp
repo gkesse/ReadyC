@@ -10,9 +10,9 @@ GWindow::GWindow(QWidget* parent) : GWidget(parent) {
 
     lQt->page_map = new QStackedWidget;
 
-    addPage("home", GWidget::Create("home"), 1);
+    addPage("home", GWidget::Create("home"));
     addPage("home/opencv", GWidget::Create("opencv"));
-    addPage("home/builder", GWidget::Create("builder"));
+    addPage("home/builder", GWidget::Create("builder"), 1);
 
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->addWidget(m_addressBar);
