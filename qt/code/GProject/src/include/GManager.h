@@ -84,6 +84,8 @@ struct _sGPage {
     QColor icon_color;
     int icon_size;
     int list_icon;
+    QString menu_id;
+    int menu_index;
 };
 //===============================================
 #endif

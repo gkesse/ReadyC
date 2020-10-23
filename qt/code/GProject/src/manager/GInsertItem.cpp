@@ -20,6 +20,13 @@ GInsertItem::GInsertItem(QWidget* parent) : GWidget(parent) {
     m_icon = new QPushButton(m_label);
     m_icon->setObjectName("icon");
 
+    m_menu = new GMenu(this);
+    m_menu->setObjectName("menu");
+    m_menu->addAction("select", "Sélectionner l'élément", GManager::Instance()->loadPicto(fa::check, "white"));
+    m_menu->addAction("delete", "Supprimer l'élément", GManager::Instance()->loadPicto(fa::trash, "white"));
+
+    m_index = -1;
+
     m_mainLayout = new QVBoxLayout;
     m_mainLayout->addWidget(m_label);
     m_mainLayout->setMargin(0);
@@ -47,12 +54,21 @@ void GInsertItem::setContent(QString text, QIcon icon, int iconSize) {
     m_iconSize = iconSize;
 }
 //===============================================
+void GInsertItem::setIndex(int index) {
+    m_index = index;
+}
+//===============================================
 void GInsertItem::slotCheckClick(bool ok) {
-    qDebug() << ok;
+
 }
 //===============================================
 void GInsertItem::slotSettingClick() {
-
+    sGPage* lPage = GManager::Instance()->getData()->page;
+    QPoint lPos = QCursor::pos();
+    QString lAction = m_menu->open(lPos);
+    lPage->menu_id = lAction;
+    lPage->menu_index = m_index;
+    emit emitItemClick();
 }
 //===============================================
 void GInsertItem::resizeEvent(QResizeEvent* event) {

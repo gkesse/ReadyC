@@ -26,7 +26,7 @@ GWidget* GWidget::Create(QString key, QWidget* parent) {
     if(key == "listbox") return new GListBox(parent);
     if(key == "insertbox") return new GInsertBox(parent);
     if(key == "insertitem") return new GInsertItem(parent);
-    if(key == "addressbar") return new GAddressBar(parent);
+    if(key == "menu") return new GInsertItem(parent);
     if(key == "addresslist") return new GAddressList(parent);
     // window
     if(key == "window") return new GWindow(parent);
@@ -41,9 +41,13 @@ GWidget* GWidget::Create(QString key, QWidget* parent) {
 void GWidget::addItem(QString key, QString text) {}
 void GWidget::addItem(QString key, QString text, QIcon icon) {}
 void GWidget::addItem(QString key, QString text, QIcon icon, int width, int height) {}
-void GWidget::addItem(QWidget* widget) {}
+void GWidget::addItem(GWidget *widget) {}
+void GWidget::addAction(QString key, QString text) {}
+void GWidget::addAction(QString key, QString text, QIcon icon) {}
 void GWidget::addPage(QString key, QWidget* widget) {}
+QString GWidget::open(QPoint pos) {return QString();}
 void GWidget::setAddress(QString address) {}
+void GWidget::setIndex(int index) {}
 void GWidget::setContent(QString text) {}
 void GWidget::setContent(QString text, QIcon icon, int iconSize) {}
 //===============================================
@@ -51,4 +55,5 @@ void GWidget::slotRunClick() {}
 void GWidget::slotItemClick() {}
 void GWidget::slotCheckClick(bool ok) {}
 void GWidget::slotSettingClick() {}
+void GWidget::slotContextMenu(QPoint pos) {}
 //===============================================

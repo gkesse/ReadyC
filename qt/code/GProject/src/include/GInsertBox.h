@@ -3,6 +3,7 @@
 #define _GInsertBox_
 //===============================================
 #include "GWidget.h"
+#include "GMenu.h"
 //===============================================
 class GInsertBox : public GWidget {
     Q_OBJECT
@@ -12,14 +13,21 @@ public:
     virtual ~GInsertBox();
 
 public:
-    void addItem(QWidget* widget);
+    void addItem(GWidget *widget);
+
+public:
+    void slotItemClick();
+    void slotContextMenu(QPoint pos);
 
 private:
     QVBoxLayout* m_mainLayout;
     QScrollArea* m_scrollArea;
     QFrame* m_scrollWidget;
     QVBoxLayout* m_scrollLayout;
-    QMap<QWidget*, QString> m_widgetId;
+    QMap<int, QWidget*> m_widgetId;
+    int m_index;
+    int m_count;
+    GMenu* m_menu;
 };
 //===============================================
 #endif

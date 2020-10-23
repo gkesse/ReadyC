@@ -16,9 +16,13 @@ public:
     virtual void addItem(QString key, QString text);
     virtual void addItem(QString key, QString text, QIcon icon);
     virtual void addItem(QString key, QString text, QIcon icon, int width, int height);
-    virtual void addItem(QWidget* widget);
+    virtual void addItem(GWidget* widget);
+    virtual void addAction(QString key, QString text);
+    virtual void addAction(QString key, QString text, QIcon icon);
     virtual void addPage(QString key, QWidget* widget);
+    virtual QString open(QPoint pos);
     virtual void setAddress(QString address);
+    virtual void setIndex(int index);
     virtual void setContent(QString text);
     virtual void setContent(QString text, QIcon icon, int iconSize);
 
@@ -27,6 +31,7 @@ public slots:
     virtual void slotItemClick();
     virtual void slotCheckClick(bool ok);
     virtual void slotSettingClick();
+    virtual void slotContextMenu(QPoint pos);
 
 signals:
     void emitItemClick();

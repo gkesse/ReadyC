@@ -18,6 +18,11 @@ QFrame#GWindow {
     padding: 10px;
 }
 /*-----------------------------------------------*/
+/* GBuilder */
+QFrame#GBuilder {
+    padding: 10px;
+}
+/*-----------------------------------------------*/
 /* GListBox */
 QFrame#GListBox {
     border: 1px solid #ffffff;
@@ -44,12 +49,13 @@ QFrame#GInsertBox {
 }
 /*-----------------------------------------------*/
 /* GInsertItem */
-QFrame#GInsertItem * {
+QFrame#GInsertItem, QFrame#GInsertItem * {
     background-color: transparent;
 }
 QFrame#GInsertItem {
-    background-color: #ff4133;
-    border: 1px solid transparent;
+    background-color: #644242;
+}
+QFrame#GInsertItem {
     margin: 10px;
     min-width: 100px;
     max-width: 100px;
@@ -57,6 +63,12 @@ QFrame#GInsertItem {
 }
 QFrame#GInsertItem QLabel#label {
     font-size: 20px;
+}
+QFrame#GInsertItem QMenu#menu {
+    background-color: #222244;
+}
+QFrame#GInsertItem QMenu#menu:selected {
+    background-color: #424264;
 }
 /*-----------------------------------------------*/
 /* GAddressBar */

@@ -3,6 +3,7 @@
 #define _GInsertItem_
 //===============================================
 #include "GWidget.h"
+#include "GMenu.h"
 //===============================================
 class GInsertItem : public GWidget {
     Q_OBJECT
@@ -14,6 +15,7 @@ public:
 public:
     void setContent(QString text);
     void setContent(QString text, QIcon icon, int iconSize);
+    void setIndex(int index);
 
 public slots:
     void slotCheckClick(bool ok);
@@ -29,6 +31,9 @@ private:
     QPushButton* m_setting;
     QPushButton* m_icon;
     int m_iconSize;
+    GMenu* m_menu;
+    QMap<QAction*, QString> m_actionId;
+    int m_index;
 };
 //===============================================
 #endif

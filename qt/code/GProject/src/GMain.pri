@@ -12,6 +12,8 @@ HEADERS +=\
     $$PWD/include/GListBox.h \
     $$PWD/include/GInsertBox.h \
     $$PWD/include/GInsertItem.h \
+    $$PWD/include/GImageView.h \
+    $$PWD/include/GMenu.h \
     $$PWD/include/GAddressBar.h \
     $$PWD/include/GAddressList.h \
     $$PWD/include/GWindow.h \
@@ -26,6 +28,8 @@ SOURCES +=\
     $$PWD/manager/GListBox.cpp \
     $$PWD/manager/GInsertBox.cpp \
     $$PWD/manager/GInsertItem.cpp \
+    $$PWD/manager/GImageView.cpp \
+    $$PWD/manager/GMenu.cpp \
     $$PWD/manager/GAddressBar.cpp \
     $$PWD/manager/GAddressList.cpp \
     $$PWD/manager/GWindow.cpp \
