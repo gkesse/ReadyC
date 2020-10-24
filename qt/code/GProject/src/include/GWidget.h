@@ -25,6 +25,7 @@ public:
     virtual void setIndex(int index);
     virtual void setContent(QString text);
     virtual void setContent(QString text, QIcon icon, int iconSize);
+    virtual int getIndex();
 
 public slots:
     virtual void slotRunClick();

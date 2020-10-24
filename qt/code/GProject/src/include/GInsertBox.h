@@ -14,6 +14,7 @@ public:
 
 public:
     void addItem(GWidget *widget);
+    int getIndex();
 
 public:
     void slotItemClick();

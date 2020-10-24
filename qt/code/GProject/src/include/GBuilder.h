@@ -11,6 +11,9 @@ public:
     GBuilder(QWidget* parent = 0);
     virtual ~GBuilder();
     
+public slots:
+    void slotItemClick();
+
 private:
     QVBoxLayout* m_mainLayout;
     GWidget* m_widget;

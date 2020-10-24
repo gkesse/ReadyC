@@ -50,6 +50,7 @@ void GWidget::setAddress(QString address) {}
 void GWidget::setIndex(int index) {}
 void GWidget::setContent(QString text) {}
 void GWidget::setContent(QString text, QIcon icon, int iconSize) {}
+int GWidget::getIndex() {return 0;}
 //===============================================
 void GWidget::slotRunClick() {}
 void GWidget::slotItemClick() {}

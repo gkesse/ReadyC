@@ -49,6 +49,10 @@ void GInsertBox::addItem(GWidget* widget) {
     connect(widget, SIGNAL(emitItemClick()), this, SLOT(slotItemClick()));
 }
 //===============================================
+int GInsertBox::getIndex() {
+    return m_index;
+}
+//===============================================
 void GInsertBox::slotItemClick() {
     sGPage* lPage = GManager::Instance()->getData()->page;
     if(lPage->menu_id == "delete") {
@@ -59,8 +63,10 @@ void GInsertBox::slotItemClick() {
 }
 //===============================================
 void GInsertBox::slotContextMenu(QPoint pos) {
+    sGPage* lPage = GManager::Instance()->getData()->page;
     QPoint lPos = QCursor::pos();
     QString lActionId = m_menu->open(lPos);
-    qDebug() << lActionId;
+    lPage->menu_id = lActionId;
+    emit emitItemClick();
 }
 //===============================================
