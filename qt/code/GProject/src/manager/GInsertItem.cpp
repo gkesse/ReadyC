@@ -9,20 +9,27 @@ GInsertItem::GInsertItem(QWidget* parent) : GWidget(parent) {
     m_label->setObjectName("label");
     m_label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    m_check = new QCheckBox(m_label);
+    m_checkFlag = false;
+
+    m_check = new QPushButton(m_label);
     m_check->setObjectName("check");
+    m_check->setIcon(GManager::Instance()->loadPicto(fa::check, "white"));
     m_check->move(5, 5);
+    m_check->setVisible(m_checkFlag);
+    m_widgetId[m_check] = "check";
 
     m_setting = new QPushButton(m_label);
     m_setting->setObjectName("setting");
     m_setting->setIcon(GManager::Instance()->loadPicto(fa::cog, "white"));
+    m_setting->setVisible(false);
+    m_widgetId[m_setting] = "setting";
 
     m_icon = new QPushButton(m_label);
     m_icon->setObjectName("icon");
 
     m_menu = new GMenu(this);
     m_menu->setObjectName("menu");
-    m_menu->addAction("select", "Sélectionner l'élément", GManager::Instance()->loadPicto(fa::check, "white"));
+    m_menu->addAction("select", "Sélectionner/Désélectionner l'élément", GManager::Instance()->loadPicto(fa::check, "white"));
     m_menu->addAction("delete", "Supprimer l'élément", GManager::Instance()->loadPicto(fa::trash, "white"));
 
     m_index = -1;
@@ -34,8 +41,11 @@ GInsertItem::GInsertItem(QWidget* parent) : GWidget(parent) {
 
     setLayout(m_mainLayout);
 
-    connect(m_check, SIGNAL(clicked(bool)), this, SLOT(slotCheckClick(bool)));
-    connect(m_setting, SIGNAL(clicked()), this, SLOT(slotSettingClick()));
+    setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(m_check, SIGNAL(clicked()), this, SLOT(slotItemClick()));
+    connect(m_setting, SIGNAL(clicked()), this, SLOT(slotItemClick()));
+    connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotContextMenu(QPoint)));
 }
 //===============================================
 GInsertItem::~GInsertItem() {
@@ -58,14 +68,29 @@ void GInsertItem::setIndex(int index) {
     m_index = index;
 }
 //===============================================
-void GInsertItem::slotCheckClick(bool ok) {
-
+void GInsertItem::slotItemClick() {
+    QWidget* lWidget = qobject_cast<QWidget*>(sender());
+    QString lWidgetId = m_widgetId[lWidget];
+    if(lWidgetId == "check") {
+        m_checkFlag = !m_checkFlag;
+        m_check->setVisible(m_checkFlag);
+    }
+    else if(lWidgetId == "setting") {
+        slotContextMenu(QPoint());
+    }
 }
 //===============================================
-void GInsertItem::slotSettingClick() {
+void GInsertItem::slotContextMenu(QPoint pos) {
     sGPage* lPage = GManager::Instance()->getData()->page;
     QPoint lPos = QCursor::pos();
     QString lAction = m_menu->open(lPos);
+
+    if(lAction == "select") {
+        m_checkFlag = !m_checkFlag;
+        m_check->setVisible(m_checkFlag);
+        return;
+    }
+
     lPage->menu_id = lAction;
     lPage->menu_index = m_index;
     emit emitItemClick();

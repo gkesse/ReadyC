@@ -18,8 +18,8 @@ public:
     void setIndex(int index);
 
 public slots:
-    void slotCheckClick(bool ok);
-    void slotSettingClick();
+    void slotItemClick();
+    void slotContextMenu(QPoint pos);
 
 protected:
     void resizeEvent(QResizeEvent* event);
@@ -27,12 +27,14 @@ protected:
 private:
     QVBoxLayout* m_mainLayout;
     QLabel* m_label;
-    QCheckBox* m_check;
+    QPushButton* m_check;
     QPushButton* m_setting;
     QPushButton* m_icon;
-    int m_iconSize;
     GMenu* m_menu;
     QMap<QAction*, QString> m_actionId;
+    QMap<QWidget*, QString> m_widgetId;
+    bool m_checkFlag;
+    int m_iconSize;
     int m_index;
 };
 //===============================================

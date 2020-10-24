@@ -34,10 +34,20 @@ GBuilder::~GBuilder() {
 }
 //===============================================
 void GBuilder::slotItemClick() {
-    int lIndex = m_widget->getIndex();
-    QString lText = QString("New %1").arg(lIndex+1);
-    GWidget* lItem = GWidget::Create("insertitem");
-    lItem->setContent(lText, GManager::Instance()->loadPicto(fa::cameraretro, "white"), 40);
-    m_widget->addItem(lItem);
+    sGPage* lPage = GManager::Instance()->getData()->page;
+    if(lPage->menu_id == "add") {
+        int lIndex = m_widget->getIndex();
+        QString lText = QString("Add %1").arg(lIndex+1);
+        GWidget* lItem = GWidget::Create("insertitem");
+        lItem->setContent(lText, GManager::Instance()->loadPicto(fa::cameraretro, "white"), 40);
+        m_widget->addItem(lItem);
+    }
+    else if(lPage->menu_id ==  "insert") {
+        int lIndex = m_widget->getIndex();
+        QString lText = QString("Insert %1").arg(lIndex+1);
+        GWidget* lItem = GWidget::Create("insertitem");
+        lItem->setContent(lText, GManager::Instance()->loadPicto(fa::cameraretro, "white"), 40);
+        m_widget->addItem(lItem, 0);
+    }
 }
 //===============================================

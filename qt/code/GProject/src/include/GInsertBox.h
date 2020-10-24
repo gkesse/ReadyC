@@ -14,6 +14,7 @@ public:
 
 public:
     void addItem(GWidget *widget);
+    void addItem(GWidget *widget, int index);
     int getIndex();
 
 public:

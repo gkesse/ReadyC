@@ -19,6 +19,7 @@ GInsertBox::GInsertBox(QWidget* parent) : GWidget(parent) {
 
     m_menu = new GMenu(this);
     m_menu->addAction("add", "Ajouter un élément", GManager::Instance()->loadPicto(fa::plus, "white"));
+    m_menu->addAction("insert", "Insérer un élément", GManager::Instance()->loadPicto(fa::pluscircle, "white"));
 
     m_index = 0;
     m_count = 0;
@@ -42,10 +43,17 @@ GInsertBox::~GInsertBox() {
 //===============================================
 void GInsertBox::addItem(GWidget* widget) {
     m_scrollLayout->addWidget(widget);
-    m_index++;
+    m_index++; m_count++;
     m_widgetId[m_index] = widget;
     widget->setIndex(m_index);
-    m_count++;
+    connect(widget, SIGNAL(emitItemClick()), this, SLOT(slotItemClick()));
+}
+//===============================================
+void GInsertBox::addItem(GWidget* widget, int index) {
+    m_scrollLayout->insertWidget(index, widget);
+    m_index++; m_count++;
+    m_widgetId[m_index] = widget;
+    widget->setIndex(m_index);
     connect(widget, SIGNAL(emitItemClick()), this, SLOT(slotItemClick()));
 }
 //===============================================
@@ -59,6 +67,7 @@ void GInsertBox::slotItemClick() {
         QWidget* lWidget = m_widgetId[lPage->menu_index];
         m_scrollLayout->removeWidget(lWidget);
         delete lWidget;
+        m_count--;
     }
 }
 //===============================================

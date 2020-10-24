@@ -41,7 +41,8 @@ GWidget* GWidget::Create(QString key, QWidget* parent) {
 void GWidget::addItem(QString key, QString text) {}
 void GWidget::addItem(QString key, QString text, QIcon icon) {}
 void GWidget::addItem(QString key, QString text, QIcon icon, int width, int height) {}
-void GWidget::addItem(GWidget *widget) {}
+void GWidget::addItem(GWidget* widget) {}
+void GWidget::addItem(GWidget* widget, int index) {}
 void GWidget::addAction(QString key, QString text) {}
 void GWidget::addAction(QString key, QString text, QIcon icon) {}
 void GWidget::addPage(QString key, QWidget* widget) {}
@@ -54,7 +55,5 @@ int GWidget::getIndex() {return 0;}
 //===============================================
 void GWidget::slotRunClick() {}
 void GWidget::slotItemClick() {}
-void GWidget::slotCheckClick(bool ok) {}
-void GWidget::slotSettingClick() {}
 void GWidget::slotContextMenu(QPoint pos) {}
 //===============================================
