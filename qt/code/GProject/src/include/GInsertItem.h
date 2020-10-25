@@ -17,6 +17,9 @@ public:
     void setContent(QString text, QIcon icon, int iconSize);
     void setIndex(int index);
 
+private:
+    void setSelectText(int ok);
+
 public slots:
     void slotItemClick();
     void slotContextMenu(QPoint pos);

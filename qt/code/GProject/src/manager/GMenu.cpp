@@ -22,9 +22,19 @@ void GMenu::addAction(QString key, QString text, QIcon icon) {
     m_actionId[lAction] = key;
 }
 //===============================================
+void GMenu::addAction(QString key, QString text, QIcon icon, bool check) {
+    QAction* lAction = m_menu->addAction(text);
+    lAction->setChecked(check);
+    m_actionId[lAction] = key;
+}
+//===============================================
+void GMenu::setContent(QString text) {
+    m_action->setText(text);
+}
+//===============================================
 QString GMenu::open(QPoint pos) {
-    QAction* lAction = m_menu->exec(pos);
-    QString lActionId = m_actionId[lAction];
+    m_action = m_menu->exec(pos);
+    QString lActionId = m_actionId[m_action];
     return lActionId;
 }
 //===============================================

@@ -29,7 +29,7 @@ GInsertItem::GInsertItem(QWidget* parent) : GWidget(parent) {
 
     m_menu = new GMenu(this);
     m_menu->setObjectName("menu");
-    m_menu->addAction("select", "Sélectionner/Désélectionner l'élément", GManager::Instance()->loadPicto(fa::check, "white"));
+    m_menu->addAction("select", "Sélectionner l'élément", GManager::Instance()->loadPicto(fa::check, "white"), true);
     m_menu->addAction("delete", "Supprimer l'élément", GManager::Instance()->loadPicto(fa::trash, "white"));
 
     m_index = -1;
@@ -68,6 +68,12 @@ void GInsertItem::setIndex(int index) {
     m_index = index;
 }
 //===============================================
+void GInsertItem::setSelectText(int ok) {
+    QString lText = "Sélectionner l'élément";
+    if(ok) {lText = "Désélectionner l'élément";}
+    m_menu->setContent(lText);
+}
+//===============================================
 void GInsertItem::slotItemClick() {
     QWidget* lWidget = qobject_cast<QWidget*>(sender());
     QString lWidgetId = m_widgetId[lWidget];
@@ -88,6 +94,7 @@ void GInsertItem::slotContextMenu(QPoint pos) {
     if(lAction == "select") {
         m_checkFlag = !m_checkFlag;
         m_check->setVisible(m_checkFlag);
+        setSelectText(m_checkFlag);
         return;
     }
 

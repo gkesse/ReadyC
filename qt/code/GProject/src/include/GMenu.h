@@ -12,12 +12,15 @@ public:
     virtual ~GMenu();
 
 public:
+    QString open(QPoint pos);
     void addAction(QString key, QString text);
     void addAction(QString key, QString text, QIcon icon);
-    QString open(QPoint pos);
+    void addAction(QString key, QString text, QIcon icon, bool check);
+    void setContent(QString text);
 
 private:
     QMenu* m_menu;
+    QAction* m_action;
     QMap<QAction*, QString> m_actionId;
 };
 //===============================================
