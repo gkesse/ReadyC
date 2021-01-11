@@ -5,7 +5,7 @@
 static void GWindowGtk_destroy(GtkWidget* obj, gpointer params);
 static gboolean GWindowGtk_delete_event(GtkWidget* obj, GdkEvent* event, gpointer params);
 //===============================================
-GtkWidget* GWindowGtk_New() {
+GWidget* GWindowGtk_New() {
     sGApp* lApp = GManager()->GetData()->app;
     GWindowGtk* lWidget = gtk_type_new(GWindowGtk_Get_Type());
     
@@ -23,7 +23,7 @@ GtkWidget* GWindowGtk_New() {
     g_signal_connect(G_OBJECT(lWidget), "destroy", G_CALLBACK(GWindowGtk_destroy), NULL);
     g_signal_connect(G_OBJECT(lWidget), "delete_event", G_CALLBACK(GWindowGtk_delete_event), NULL);
                     
-    return GTK_WIDGET(lWidget);
+    return GWidget_Obj(lWidget);
 }
 //===============================================
 GtkType GWindowGtk_Get_Type() {

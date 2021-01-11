@@ -3,6 +3,7 @@
 #define _GWindow_
 //===============================================
 #include "GInclude.h"
+#include "GWidget.h"
 //===============================================
 G_BEGIN_DECLS
 //===============================================
@@ -17,14 +18,14 @@ typedef struct _GWindow GWindow;
 typedef struct _GWindowClass GWindowClass;
 //===============================================
 struct _GWindow {
-    GtkBox parent;
+    GWidget parent;
 };
 //===============================================
 struct _GWindowClass {
-    GtkBoxClass parent_class;
+    GWidgetClass parent_class;
 };
 //===============================================
-GtkWidget* GWindow_New();
+GWidget* GWindow_New();
 GtkType GWindow_Get_Type();
 //===============================================
 G_END_DECLS

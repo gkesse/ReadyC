@@ -32,7 +32,7 @@ GtkWidget* GTitleBar_New() {
     GtkWidget* lMainLayout = gtk_hbox_new(0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lLogo, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lAppName, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lTitle, 1, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), lTitle, 1, 1, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lFullscreen, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lMinimize, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lMaximize, 0, 0, 0);

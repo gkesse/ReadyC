@@ -3,6 +3,7 @@
 #define _GAddressKey_
 //===============================================
 #include "GInclude.h"
+#include "GWidget.h"
 //===============================================
 G_BEGIN_DECLS
 //===============================================
@@ -17,14 +18,14 @@ typedef struct _GAddressKey GAddressKey;
 typedef struct _GAddressKeyClass GAddressKeyClass;
 //===============================================
 struct _GAddressKey {
-    GtkBox parent;
+    GWidget parent;
 };
 //===============================================
 struct _GAddressKeyClass {
-    GtkBoxClass parent_class;
+    GWidgetClass parent_class;
 };
 //===============================================
-GtkWidget* GAddressKey_New();
+GWidget* GAddressKey_New();
 GtkType GAddressKey_Get_Type();
 //===============================================
 G_END_DECLS
