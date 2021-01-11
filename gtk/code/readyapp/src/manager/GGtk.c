@@ -27,8 +27,7 @@ GGtkO* GGtk() {
 static void GGtk_Run(int argc, char** argv) {
     gtk_init(&argc, &argv);
 
-    GWidgetO* lWindow = GWidget("window");
-    gtk_widget_show_all(lWindow->widget);
+    GWidget("window");
 
     gtk_main();
 }

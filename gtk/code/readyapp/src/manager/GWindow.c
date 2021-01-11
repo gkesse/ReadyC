@@ -36,8 +36,6 @@ static void GWindow_Widget(GWidgetO* obj) {
     lAddressKey->SetContent(lAddressKey, "home/debug/clear");
 
     GWidgetO* lWorkspace = GWidget("stackwidget");
-    lWorkspace->AddWidget(lWorkspace, GWidget("titlebar")->widget);
-    lWorkspace->AddWidget(lWorkspace, GWidget("titlebar")->widget);
     
     GtkWidget* lMainLayout = gtk_vbox_new(0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lTitleBar->widget, 0, 0, 0);
@@ -46,6 +44,10 @@ static void GWindow_Widget(GWidgetO* obj) {
     gtk_box_pack_start(GTK_BOX(lMainLayout), lWorkspace->widget, 1, 1, 0);
 
     gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
+    gtk_widget_show_all(lWidget);
+
+    lWorkspace->AddWidget(lWorkspace, GWidget("titlebar")->widget);
+    lWorkspace->AddWidget(lWorkspace, GWidget("addressbar")->widget);
 
     gtk_window_set_title(GTK_WINDOW(lWidget), lApp->app_name);
     gtk_container_set_border_width(GTK_CONTAINER(lWidget), 0);
