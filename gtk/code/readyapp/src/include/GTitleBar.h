@@ -3,31 +3,16 @@
 #define _GTitleBar_
 //===============================================
 #include "GInclude.h"
+#include "GWidget.h"
 //===============================================
-G_BEGIN_DECLS
+typedef struct _GTitleBarO GTitleBarO;
 //===============================================
-#define GTitleBar_Obj(obj) \
-    GTK_CHECK_CAST(obj, GTitleBar_Get_Type(), GTitleBar)
-#define GTitleBar_Class(klass) \
-    GTK_CHECK_CLASS_CAST(klass, GTitleBar_Get_Type(), GTitleBarClass)
-#define Is_GTitleBar(obj) \
-    GTK_CHECK_TYPE(obj, GTitleBar_Get_Type())
-//===============================================
-typedef struct _GTitleBar GTitleBar;
-typedef struct _GTitleBarClass GTitleBarClass;
-//===============================================
-struct _GTitleBar {
-    GtkBox parent;
+struct _GTitleBarO {
+    void* parent;
 };
 //===============================================
-struct _GTitleBarClass {
-    GtkBoxClass parent_class;
-};
-//===============================================
-GtkWidget* GTitleBar_New();
-GtkType GTitleBar_Get_Type();
-//===============================================
-G_END_DECLS
+GWidgetO* GTitleBar_New();
+void GTitleBar_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================

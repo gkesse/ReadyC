@@ -22,7 +22,7 @@ GCFLAGS = \
     #-Wno-unused-function \
     #-Wno-return-type \
     
-all: clean compile run
+all: clean_exe compile run
  
 compile: $(GOBJS)
 	@if ! [ -d $(GBIN) ] ; then mkdir -p $(GBIN) ; fi

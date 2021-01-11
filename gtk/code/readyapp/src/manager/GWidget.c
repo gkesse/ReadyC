@@ -7,35 +7,24 @@
 #include "GStackWidget.h"
 // page
 #include "GWindow.h"
-#include "GWindowGtk.h"
 //===============================================
-static void GWidget_SetContent(GWidget* widget, char* text);
+static void GWidget_SetContent(GWidgetO* obj);
 //===============================================
-GtkWidget* GWidget_New() {
-    GWidget* lWidget = gtk_type_new(GWidget_Get_Type());
-    lWidget->SetContent = GWidget_SetContent;
-    return GTK_WIDGET(lWidget);
+GWidgetO* GWidget_New() {
+    GWidgetO* lObj = (GWidgetO*)malloc(sizeof(GWidgetO));
+    lObj->child = 0;
+    lObj->widget = gtk_vbox_new(0, 0);
+    lObj->Delete = GWidget_Delete;
+    lObj->SetContent = GWidget_SetContent;
+    return lObj;
 }
 //===============================================
-GtkType GWidget_Get_Type() {
-    static GtkType lGWidgetType = 0;
-    if(!lGWidgetType) {
-        static const GtkTypeInfo lGWidgetInfo = {
-            "GWidget",
-            sizeof(GWidget),
-            sizeof(GWidgetClass),
-          (GtkClassInitFunc) NULL,
-          (GtkObjectInitFunc) NULL,
-            NULL,
-            NULL,
-          (GtkClassInitFunc) NULL
-        };
-        lGWidgetType = gtk_type_unique(gtk_widget_get_type(), &lGWidgetInfo);
-    }
-    return lGWidgetType;
+void GWidget_Delete(GWidgetO* obj) {
+    free(obj->child);
+    free(obj);
 }
 //===============================================
-GtkWidget* GWidget_Create(char* key) {
+GWidgetO* GWidget(const char* key) {
     // widget
     if(!strcmp(key, "widget")) {return GWidget_New();}
     if(!strcmp(key, "titlebar")) {return GTitleBar_New();}
@@ -44,14 +33,11 @@ GtkWidget* GWidget_Create(char* key) {
     if(!strcmp(key, "stackwidget")) {return GStackWidget_New();}
     // page
     if(!strcmp(key, "window")) {return GWindow_New();}
-    if(!strcmp(key, "windowgtk")) {return GWindowGtk_New();}
     // default
     return GWidget_New();
 }
 //===============================================
 // method
 //===============================================
-static void GWidget_SetContent(GWidget* widget, char* text) {
-    printf("hhhhhhhhhhhok\n");
-}
+static void GWidget_SetContent(GWidgetO* obj) {}
 //===============================================

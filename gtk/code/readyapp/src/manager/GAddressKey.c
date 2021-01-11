@@ -1,36 +1,44 @@
 //===============================================
 #include "GAddressKey.h"
-#include "GManager.h"
 //===============================================
-GtkWidget* GAddressKey_New() {
-    GAddressKey* lWidget = gtk_type_new(GAddressKey_Get_Type());
+static void GAddressKey_Widget(GWidgetO* obj);
+//===============================================
+GWidgetO* GAddressKey_New() {
+    GWidgetO* lParent = GWidget("widget");
+    GAddressKeyO* lChild = (GAddressKeyO*)malloc(sizeof(GAddressKeyO));
     
-    GtkWidget* lLabel = gtk_label_new(0);
-    gtk_label_set_text(GTK_LABEL(lLabel), "GAddressKey");
+    lChild->parent = lParent;    
+    lParent->child = lChild;
     
-    GtkWidget* lMainLayout = gtk_vbox_new(0, 0);
-    gtk_box_pack_start_defaults(GTK_BOX(lMainLayout), lLabel);
+    GAddressKey_Widget(lParent);
     
-    gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
-    
-    return GTK_WIDGET(lWidget);
+    lParent->Delete = GAddressKey_Delete;
+    return lParent;
 }
 //===============================================
-GtkType GAddressKey_Get_Type() {
-    static GtkType lGAddressKeyType = 0;
-    if(!lGAddressKeyType) {
-        static const GtkTypeInfo lGAddressKeyInfo = {
-            "GAddressKey",
-            sizeof(GAddressKey),
-            sizeof(GAddressKeyClass),
-          (GtkClassInitFunc) NULL,
-          (GtkObjectInitFunc) NULL,
-            NULL,
-            NULL,
-          (GtkClassInitFunc) NULL
-        };
-        lGAddressKeyType = gtk_type_unique(gtk_hbox_get_type(), &lGAddressKeyInfo);
-    }
-    return lGAddressKeyType;
+void GAddressKey_Delete(GWidgetO* obj) {
+    GWidget_Delete(obj);
+}
+//===============================================
+// method
+//===============================================
+static void GAddressKey_Widget(GWidgetO* obj) {
+    GtkWidget* lWidget = gtk_hbox_new(0, 0);
+    obj->widget = lWidget;
+        
+    GtkWidget* lIcon = gtk_button_new();
+    gtk_button_set_label(GTK_BUTTON(lIcon), "lIcon");
+    
+    GtkWidget* lEdit = gtk_entry_new();
+    
+    GtkWidget* lGoTo = gtk_button_new();
+    gtk_button_set_label(GTK_BUTTON(lGoTo), "lGoTo");
+    
+    GtkWidget* lMainLayout = gtk_hbox_new(0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), lIcon, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), lEdit, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), lGoTo, 0, 0, 0);
+    
+    gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
 }
 //===============================================

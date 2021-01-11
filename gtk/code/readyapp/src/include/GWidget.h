@@ -4,33 +4,20 @@
 //===============================================
 #include "GInclude.h"
 //===============================================
-G_BEGIN_DECLS
+typedef struct _GWidgetO GWidgetO;
 //===============================================
-#define GWidget_Obj(obj) \
-    GTK_CHECK_CAST(obj, GWidget_Get_Type(), GWidget)
-#define GWidget_Class(klass) \
-    GTK_CHECK_CLASS_CAST(klass, GWidget_Get_Type(), GWidgetClass)
-#define Is_GWidget(obj) \
-    GTK_CHECK_TYPE(obj, GWidget_Get_Type())
-//===============================================
-typedef struct _GWidget GWidget;
-typedef struct _GWidgetClass GWidgetClass;
-//===============================================
-struct _GWidget {
-    GtkWidget parent;
-    void(*SetContent)(GWidget* widget, char* text);
+struct _GWidgetO {
+    void* child;
+    //
+    void (*Delete)(GWidgetO* obj);
+    void (*SetContent)(GWidgetO* obj);
+    //
+    GtkWidget* widget;
 };
 //===============================================
-struct _GWidgetClass {
-    GtkWidgetClass parent_class;
-};
-//===============================================
-GtkWidget* GWidget_New();
-GtkType GWidget_Get_Type();
-//===============================================
-GtkWidget* GWidget_Create(char* key);
-//===============================================
-G_END_DECLS
+GWidgetO* GWidget_New();
+void GWidget_Delete(GWidgetO* obj);
+GWidgetO* GWidget(const char* key);
 //===============================================
 #endif
 //===============================================
