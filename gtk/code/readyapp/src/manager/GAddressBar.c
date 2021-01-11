@@ -5,11 +5,18 @@
 GtkWidget* GAddressBar_New() {
     GAddressBar* lWidget = gtk_type_new(GAddressBar_Get_Type());
     
-    GtkWidget* lLabel = gtk_label_new(0);
-    gtk_label_set_text(GTK_LABEL(lLabel), "GAddressBar");
+    GtkWidget* lIcon = gtk_button_new();
+    gtk_button_set_label(GTK_BUTTON(lIcon), "lIcon");
     
-    GtkWidget* lMainLayout = gtk_vbox_new(1, 5);
-    gtk_box_pack_start_defaults(GTK_BOX(lMainLayout), lLabel);
+    GtkWidget* lEdit = gtk_entry_new ();
+    
+    GtkWidget* lGoTo = gtk_button_new();
+    gtk_button_set_label(GTK_BUTTON(lGoTo), "lGoTo");
+    
+    GtkWidget* lMainLayout = gtk_hbox_new(0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), lIcon, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), lEdit, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), lGoTo, 0, 0, 0);
     
     gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
     
@@ -29,7 +36,7 @@ GtkType GAddressBar_Get_Type() {
             NULL,
            (GtkClassInitFunc) NULL
         };
-        lGAddressBarType = gtk_type_unique(gtk_vbox_get_type(), &lGAddressBarInfo);
+        lGAddressBarType = gtk_type_unique(gtk_hbox_get_type(), &lGAddressBarInfo);
     }
     return lGAddressBarType;
 }
