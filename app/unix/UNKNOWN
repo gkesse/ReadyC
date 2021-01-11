@@ -1,0 +1,67 @@
+17/10/2020 02:19:04 | #================================================
+17/10/2020 02:19:04 | [info] main()
+17/10/2020 02:19:04 | #================================================
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->app
+17/10/2020 02:19:04 | [info] GManager()-> m_mgr->app->app_name                  : ReadyApp
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->app->home_path                  : UNKNOWN
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->app->data_path                  : 
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->app->trace_file                 : UNKNOWN
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->app->trace_on                   : 1
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->app->trace_mode                 : file
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->app->date_on                    : 1
+17/10/2020 02:19:04 | 
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->sqlite
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->sqlite->db_path                 : /home/osboxes/Programs/ReadyBin/unix/.CONFIG_O.dat
+17/10/2020 02:19:04 | 
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->json
+17/10/2020 02:19:04 | 
+17/10/2020 02:19:04 | [info] GManager()->m_mgr->json->file                      : /home/osboxes/.readydev/readyc/data/json/menu.json
+17/10/2020 02:19:40 | #================================================
+17/10/2020 02:19:40 | [info] main()
+17/10/2020 02:19:40 | #================================================
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->app
+17/10/2020 02:19:40 | [info] GManager()-> m_mgr->app->app_name                  : ReadyApp
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->app->home_path                  : UNKNOWN
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->app->data_path                  : 
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->app->trace_file                 : UNKNOWN
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->app->trace_on                   : 1
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->app->trace_mode                 : file
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->app->date_on                    : 1
+17/10/2020 02:19:40 | 
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->sqlite
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->sqlite->db_path                 : /home/osboxes/Programs/ReadyBin/unix/.CONFIG_O.dat
+17/10/2020 02:19:40 | 
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->json
+17/10/2020 02:19:40 | 
+17/10/2020 02:19:40 | [info] GManager()->m_mgr->json->file                      : /home/osboxes/.readydev/readyc/data/json/menu.json
+17/10/2020 02:19:51 | #================================================
+17/10/2020 02:19:51 | [info] main()
+17/10/2020 02:19:51 | #================================================
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->app
+17/10/2020 02:19:51 | [info] GManager()-> m_mgr->app->app_name                  : ReadyApp
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->app->home_path                  : UNKNOWN
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->app->data_path                  : 
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->app->trace_file                 : UNKNOWN
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->app->trace_on                   : 1
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->app->trace_mode                 : file
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->app->date_on                    : 1
+17/10/2020 02:19:51 | 
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->sqlite
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->sqlite->db_path                 : /home/osboxes/Programs/ReadyBin/unix/.CONFIG_O.dat
+17/10/2020 02:19:51 | 
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->json
+17/10/2020 02:19:51 | 
+17/10/2020 02:19:51 | [info] GManager()->m_mgr->json->file                      : /home/osboxes/.readydev/readyc/data/json/menu.json
+17/10/2020 02:20:05 | #================================================
+17/10/2020 02:20:05 | [info] main()
+17/10/2020 02:20:05 | #================================================
+17/10/2020 02:21:47 | #================================================
+17/10/2020 02:21:47 | [info] main()
+17/10/2020 02:21:47 | #================================================
+17/10/2020 02:29:51 | #================================================
+17/10/2020 02:29:51 | [info] main()
+17/10/2020 02:29:51 | #================================================
+20/10/2020 02:40:04 | #================================================
+20/10/2020 02:40:04 | [info] main()
+20/10/2020 02:40:04 | #================================================
+20/10/2020 02:40:14 | [info] ouverture de l'application : ok
