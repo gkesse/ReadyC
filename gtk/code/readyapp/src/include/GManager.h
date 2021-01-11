@@ -13,6 +13,9 @@ struct _GManagerO {
     void (*Delete)();
     // data
     sGManager* (*GetData)();
+    // string
+    int (*SplitCount)(char* strIn, char* sep);
+    void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
     // struct
     sGManager* mgr;
 };
@@ -33,6 +36,8 @@ struct _sGApp {
     // win
     int win_width;
     int win_height;
+    // string
+    char format[256];
 };
 //===============================================
 #endif

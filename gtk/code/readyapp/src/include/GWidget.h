@@ -10,7 +10,7 @@ struct _GWidgetO {
     void* child;
     //
     void (*Delete)(GWidgetO* obj);
-    void (*SetContent)(GWidgetO* obj);
+    void (*SetContent)(GWidgetO* obj, char* text);
     //
     GtkWidget* widget;
 };

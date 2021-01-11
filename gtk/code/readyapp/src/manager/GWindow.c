@@ -33,7 +33,9 @@ static void GWindow_Widget(GWidgetO* obj) {
     GWidgetO* lAddressBar = GWidget("addressbar");
     GWidgetO* lAddressKey = GWidget("addresskey");
     GWidgetO* lWorkspace = GWidget("stackwidget");
-        
+    
+    lAddressKey->SetContent(lAddressKey, "home/debug/clear");
+    
     GtkWidget* lMainLayout = gtk_vbox_new(0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lTitleBar->widget, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lAddressBar->widget, 0, 0, 0);

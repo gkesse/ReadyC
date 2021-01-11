@@ -8,7 +8,7 @@
 // page
 #include "GWindow.h"
 //===============================================
-static void GWidget_SetContent(GWidgetO* obj);
+static void GWidget_SetContent(GWidgetO* obj, char* text);
 //===============================================
 GWidgetO* GWidget_New() {
     GWidgetO* lObj = (GWidgetO*)malloc(sizeof(GWidgetO));
@@ -39,5 +39,5 @@ GWidgetO* GWidget(const char* key) {
 //===============================================
 // method
 //===============================================
-static void GWidget_SetContent(GWidgetO* obj) {}
+static void GWidget_SetContent(GWidgetO* obj, char* text) {}
 //===============================================
