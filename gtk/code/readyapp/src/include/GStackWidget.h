@@ -9,6 +9,8 @@ typedef struct _GStackWidgetO GStackWidgetO;
 //===============================================
 struct _GStackWidgetO {
     void* parent;
+    int count;
+    int currentIndex;
 };
 //===============================================
 GWidgetO* GStackWidget_New();

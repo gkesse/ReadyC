@@ -50,15 +50,12 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     GtkWidget* lClose = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lClose), "lClose");
     
-    GtkWidget* lMainLayout = gtk_hbox_new(0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lLogo, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lAppName, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lTitle, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lFullscreen, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lMinimize, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lMaximize, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lClose, 0, 0, 0);
-    
-    gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
+    gtk_box_pack_start(GTK_BOX(lWidget), lLogo, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lAppName, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lTitle, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lFullscreen, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lMinimize, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lMaximize, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lClose, 0, 0, 0);    
 }
 //===============================================

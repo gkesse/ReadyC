@@ -34,11 +34,8 @@ static void GAddressBar_Widget(GWidgetO* obj) {
     GtkWidget* lGoTo = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lGoTo), "lGoTo");
     
-    GtkWidget* lMainLayout = gtk_hbox_new(0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lIcon, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lEdit, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lGoTo, 0, 0, 0);
-    
-    gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
+    gtk_box_pack_start(GTK_BOX(lWidget), lIcon, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lEdit, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lGoTo, 0, 0, 0);
 }
 //===============================================
