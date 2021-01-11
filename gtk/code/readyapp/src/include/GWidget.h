@@ -18,21 +18,17 @@ typedef struct _GWidgetClass GWidgetClass;
 //===============================================
 struct _GWidget {
     GtkWidget parent;
-    GtkBox parent2;
-    GtkWindow parent3;
-    void (*SetContent)(GWidget* widget, char* text);
+    void(*SetContent)(GWidget* widget, char* text);
 };
 //===============================================
 struct _GWidgetClass {
     GtkWidgetClass parent_class;
-    GtkBoxClass parent_class2;
-    GtkWindowClass parent_class3;
 };
 //===============================================
-GWidget* GWidget_New();
+GtkWidget* GWidget_New();
 GtkType GWidget_Get_Type();
 //===============================================
-GWidget* GWidget_Create(char* key);
+GtkWidget* GWidget_Create(char* key);
 //===============================================
 G_END_DECLS
 //===============================================

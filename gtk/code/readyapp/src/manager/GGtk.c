@@ -7,7 +7,7 @@ static GGtkO* m_GGtkO = 0;
 static void GGtk_Run(int argc, char** argv);
 //===============================================
 GGtkO* GGtk_New() {
-    GGtkO* lObj = (GGtkO*)malloc(sizeof(GGtkO));
+    GGtkO* lObj =(GGtkO*)malloc(sizeof(GGtkO));
     lObj->Delete = GGtk_Delete;
     lObj->Run = GGtk_Run;
     return lObj;
@@ -25,11 +25,11 @@ GGtkO* GGtk() {
 }
 //===============================================
 static void GGtk_Run(int argc, char** argv) {
-    gtk_init (&argc, &argv);
+    gtk_init(&argc, &argv);
 
-    GWidget* lWindow = GWidget_Create("windowgtk");
-    gtk_widget_show_all(GTK_WIDGET(lWindow));
+    GtkWidget* lWindow = GWidget_Create("windowgtk");
+    gtk_widget_show_all(lWindow);
 
-    gtk_main ();
+    gtk_main();
 }
 //===============================================

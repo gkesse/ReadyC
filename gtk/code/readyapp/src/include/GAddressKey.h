@@ -18,14 +18,14 @@ typedef struct _GAddressKey GAddressKey;
 typedef struct _GAddressKeyClass GAddressKeyClass;
 //===============================================
 struct _GAddressKey {
-    GWidget parent;
+    GtkBox parent;
 };
 //===============================================
 struct _GAddressKeyClass {
-    GWidgetClass parent_class;
+    GtkBoxClass parent_class;
 };
 //===============================================
-GWidget* GAddressKey_New();
+GtkWidget* GAddressKey_New();
 GtkType GAddressKey_Get_Type();
 //===============================================
 G_END_DECLS

@@ -18,14 +18,14 @@ typedef struct _GWindow GWindow;
 typedef struct _GWindowClass GWindowClass;
 //===============================================
 struct _GWindow {
-    GWidget parent;
+    GtkBox parent;
 };
 //===============================================
 struct _GWindowClass {
-    GWidgetClass parent_class;
+    GtkBoxClass parent_class;
 };
 //===============================================
-GWidget* GWindow_New();
+GtkWidget* GWindow_New();
 GtkType GWindow_Get_Type();
 //===============================================
 G_END_DECLS

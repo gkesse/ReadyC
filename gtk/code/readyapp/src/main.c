@@ -1,7 +1,7 @@
 //===============================================
 #include "GProcess.h"
 //===============================================
-int main (int argc, char** argv) {
+int main(int argc, char** argv) {
     GProcess()->Run(argc, argv);
     return 0;
 }

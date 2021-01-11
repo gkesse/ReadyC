@@ -2,7 +2,7 @@
 #include "GAddressKey.h"
 #include "GManager.h"
 //===============================================
-GWidget* GAddressKey_New() {
+GtkWidget* GAddressKey_New() {
     GAddressKey* lWidget = gtk_type_new(GAddressKey_Get_Type());
     
     GtkWidget* lLabel = gtk_label_new(0);
@@ -13,7 +13,7 @@ GWidget* GAddressKey_New() {
     
     gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
     
-    return GWidget_Obj(lWidget);
+    return GTK_WIDGET(lWidget);
 }
 //===============================================
 GtkType GAddressKey_Get_Type() {
@@ -23,11 +23,11 @@ GtkType GAddressKey_Get_Type() {
             "GAddressKey",
             sizeof(GAddressKey),
             sizeof(GAddressKeyClass),
-           (GtkClassInitFunc) NULL,
-           (GtkObjectInitFunc) NULL,
+          (GtkClassInitFunc) NULL,
+          (GtkObjectInitFunc) NULL,
             NULL,
             NULL,
-           (GtkClassInitFunc) NULL
+          (GtkClassInitFunc) NULL
         };
         lGAddressKeyType = gtk_type_unique(gtk_hbox_get_type(), &lGAddressKeyInfo);
     }

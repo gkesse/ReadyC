@@ -8,7 +8,7 @@ GtkWidget* GAddressBar_New() {
     GtkWidget* lIcon = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lIcon), "lIcon");
     
-    GtkWidget* lEdit = gtk_entry_new ();
+    GtkWidget* lEdit = gtk_entry_new();
     
     GtkWidget* lGoTo = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lGoTo), "lGoTo");
@@ -30,11 +30,11 @@ GtkType GAddressBar_Get_Type() {
             "GAddressBar",
             sizeof(GAddressBar),
             sizeof(GAddressBarClass),
-           (GtkClassInitFunc) NULL,
-           (GtkObjectInitFunc) NULL,
+          (GtkClassInitFunc) NULL,
+          (GtkObjectInitFunc) NULL,
             NULL,
             NULL,
-           (GtkClassInitFunc) NULL
+          (GtkClassInitFunc) NULL
         };
         lGAddressBarType = gtk_type_unique(gtk_hbox_get_type(), &lGAddressBarInfo);
     }
