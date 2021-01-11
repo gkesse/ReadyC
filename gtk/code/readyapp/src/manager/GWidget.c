@@ -9,6 +9,7 @@
 #include "GWindow.h"
 //===============================================
 static void GWidget_SetContent(GWidgetO* obj, char* text);
+static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget);
 //===============================================
 GWidgetO* GWidget_New() {
     GWidgetO* lObj = (GWidgetO*)malloc(sizeof(GWidgetO));
@@ -16,6 +17,7 @@ GWidgetO* GWidget_New() {
     lObj->widget = gtk_vbox_new(0, 0);
     lObj->Delete = GWidget_Delete;
     lObj->SetContent = GWidget_SetContent;
+    lObj->AddWidget = GWidget_AddWidget;
     return lObj;
 }
 //===============================================
@@ -40,4 +42,5 @@ GWidgetO* GWidget(const char* key) {
 // method
 //===============================================
 static void GWidget_SetContent(GWidgetO* obj, char* text) {}
+static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {}
 //===============================================

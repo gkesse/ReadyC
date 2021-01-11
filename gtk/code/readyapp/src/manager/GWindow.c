@@ -31,10 +31,13 @@ static void GWindow_Widget(GWidgetO* obj) {
     
     GWidgetO* lTitleBar = GWidget("titlebar");
     GWidgetO* lAddressBar = GWidget("addressbar");
-    GWidgetO* lAddressKey = GWidget("addresskey");
-    GWidgetO* lWorkspace = GWidget("stackwidget");
     
+    GWidgetO* lAddressKey = GWidget("addresskey");
     lAddressKey->SetContent(lAddressKey, "home/debug/clear");
+
+    GWidgetO* lWorkspace = GWidget("stackwidget");
+    lWorkspace->AddWidget(lWorkspace, GWidget("titlebar")->widget);
+    lWorkspace->AddWidget(lWorkspace, GWidget("titlebar")->widget);
     
     GtkWidget* lMainLayout = gtk_vbox_new(0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lTitleBar->widget, 0, 0, 0);

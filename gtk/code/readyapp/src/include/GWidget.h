@@ -11,6 +11,7 @@ struct _GWidgetO {
     //
     void (*Delete)(GWidgetO* obj);
     void (*SetContent)(GWidgetO* obj, char* text);
+    void (*AddWidget)(GWidgetO* obj, GtkWidget* widget);
     //
     GtkWidget* widget;
 };

@@ -2,6 +2,7 @@
 #include "GStackWidget.h"
 //===============================================
 static void GStackWidget_Widget(GWidgetO* obj);
+static void GStackWidget_AddWidget(GWidgetO* obj, GtkWidget* widget);
 //===============================================
 GWidgetO* GStackWidget_New() {
     GWidgetO* lParent = GWidget("widget");
@@ -13,6 +14,7 @@ GWidgetO* GStackWidget_New() {
     GStackWidget_Widget(lParent);
     
     lParent->Delete = GStackWidget_Delete;
+    lParent->AddWidget = GStackWidget_AddWidget;
     return lParent;
 }
 //===============================================
@@ -23,22 +25,11 @@ void GStackWidget_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GStackWidget_Widget(GWidgetO* obj) {
-    GtkWidget* lWidget = gtk_hbox_new(0, 0);
+    GtkWidget* lWidget = gtk_vbox_new(1, 0);
     obj->widget = lWidget;
-        
-    GtkWidget* lIcon = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(lIcon), "lIcon");
-    
-    GtkWidget* lEdit = gtk_entry_new();
-    
-    GtkWidget* lGoTo = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(lGoTo), "lGoTo");
-    
-    GtkWidget* lMainLayout = gtk_hbox_new(0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lIcon, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lEdit, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), lGoTo, 0, 0, 0);
-    
-    gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
+}
+//===============================================
+static void GStackWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {
+    gtk_box_pack_start(GTK_BOX(obj->widget), widget, 0, 0, 0);
 }
 //===============================================
