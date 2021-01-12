@@ -10,20 +10,15 @@ GDEFINE_MAP(GWindow, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static void GWindow_Widget(GWidgetO* obj);
 static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault);
-static void GWindow_SetPage(GWidgetO* obj, char* key);
 //===============================================
-static void GWindow_destroy(GtkWidget* obj, gpointer params);
-static gboolean GWindow_delete_event(GtkWidget* obj, GdkEvent* event, gpointer params);
+static void GWindow_OnDestroy(GtkWidget* obj, gpointer params);
+static gboolean GWindow_OnDeleteEvent(GtkWidget* obj, GdkEvent* event, gpointer params);
 //===============================================
 GWidgetO* GWindow_New() {
     GWidgetO* lParent = GWidget("widget");
     GWindowO* lChild = (GWindowO*)malloc(sizeof(GWindowO));
     
-    lChild->parent = lParent;
-    lChild->pageMap = 0;
-    lChild->pageId = GMap_New(GWindow, GCHAR_PTR, GVOID_PTR)();
-    lChild->titleMap = GMap_New(GWindow, GCHAR_PTR, GVOID_PTR)();
-    
+    lChild->parent = lParent;    
     lParent->child = lChild;
     
     GWindow_Widget(lParent);
@@ -40,7 +35,6 @@ void GWindow_Delete(GWidgetO* obj) {
 //===============================================
 static void GWindow_Widget(GWidgetO* obj) {
     sGApp* lApp = GManager()->GetData()->app;
-    GWindowO* lChild = obj->child;
     GtkWidget* lWidget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     obj->widget = lWidget;
     
@@ -51,7 +45,7 @@ static void GWindow_Widget(GWidgetO* obj) {
     lApp->address_key = lAddressKey;
 
     GWidgetO* lWorkspace = GWidget("stackwidget");
-    lChild->pageMap = (void*)lWorkspace;
+    lApp->page_map = lWorkspace;
     
     GtkWidget* lMainLayout = gtk_vbox_new(0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lTitleBar->widget, 0, 0, 0);
@@ -68,44 +62,31 @@ static void GWindow_Widget(GWidgetO* obj) {
     GWindow_AddPage(obj, "home/opencv", "OpenCV", GWidget("opencv")->widget, 0);
     GWindow_AddPage(obj, "home/debug", "Debug", GWidget("debug")->widget, 0);
     
-    GWindow_SetPage(obj, "home/login");
+    GManager()->SetPage("home/debug");
 
     gtk_window_set_title(GTK_WINDOW(lWidget), lApp->app_name);
     gtk_container_set_border_width(GTK_CONTAINER(lWidget), 0);
     gtk_widget_set_size_request(GTK_WIDGET(lWidget), lApp->win_width, lApp->win_height);
     
-    g_signal_connect(G_OBJECT(lWidget), "destroy", G_CALLBACK(GWindow_destroy), NULL);
-    g_signal_connect(G_OBJECT(lWidget), "delete_event", G_CALLBACK(GWindow_delete_event), NULL);
+    g_signal_connect(G_OBJECT(lWidget), "destroy", G_CALLBACK(GWindow_OnDestroy), NULL);
+    g_signal_connect(G_OBJECT(lWidget), "delete_event", G_CALLBACK(GWindow_OnDeleteEvent), NULL);
 }
 //===============================================
 static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault) {
-    GWindowO* lChild = obj->child;
-    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lPageId = lChild->pageId;
-    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lTitleMap = lChild->titleMap;
-    int lCount = lChild->pageMap->Count(lChild->pageMap);
+    sGApp* lApp = GManager()->GetData()->app;
+    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lPageId = lApp->page_id;
+    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
+    int lCount = lApp->page_map->Count(lApp->page_map);
     lPageId->SetData(lPageId, key, (void*)lCount, GMAP_EQUAL_CHAR);
     lTitleMap->SetData(lTitleMap, key, title, GMAP_EQUAL_CHAR);
-    lChild->pageMap->AddWidget(lChild->pageMap, widget);
+    lApp->page_map->AddWidget(lApp->page_map, widget);
 }
 //===============================================
-static void GWindow_SetPage(GWidgetO* obj, char* key) {
-    sGApp* lApp = GManager()->GetData()->app;
-    GWindowO* lChild = obj->child;
-    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lPageId = lChild->pageId;
-    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lTitleMap = lChild->titleMap;
-    int lPageIndex = (int)lPageId->GetData(lPageId, key, GMAP_EQUAL_CHAR);
-    char* lTitle = (char*)lTitleMap->GetData(lTitleMap, key, GMAP_EQUAL_CHAR);
-    lChild->pageMap->SetCurrentIndex(lChild->pageMap, lPageIndex);
-    gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
-    lApp->address_key->SetContent(lApp->address_key, key);
-    gtk_widget_show_all(lApp->address_key->widget);
-}
-//===============================================
-static void GWindow_destroy(GtkWidget* obj, gpointer params) {
+static void GWindow_OnDestroy(GtkWidget* obj, gpointer params) {
     gtk_main_quit();
 }
 //===============================================
-static gboolean GWindow_delete_event(GtkWidget* obj, GdkEvent* event, gpointer params) {
+static gboolean GWindow_OnDeleteEvent(GtkWidget* obj, GdkEvent* event, gpointer params) {
     return 0;
 }
 //===============================================

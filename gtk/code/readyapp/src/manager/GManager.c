@@ -1,5 +1,11 @@
 //===============================================
+#define _GMAP_EQUAL_CHAR_
+//===============================================
 #include "GManager.h"
+#include "GMap.h"
+//===============================================
+GDECLARE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
 //===============================================
 #define B_SPLIT (256)
 //===============================================
@@ -13,6 +19,10 @@ static sGManager* GManager_GetData();
 static char* GManager_Copy(char* strIn);
 static int GManager_SplitCount(char* strIn, char* sep);
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
+// page
+static void GManager_SetPage(char* address);
+// layout
+static void GManager_ClearLayout(GtkWidget* layout);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
@@ -24,6 +34,11 @@ GManagerO* GManager_New() {
     lObj->Copy = GManager_Copy;
     lObj->SplitCount = GManager_SplitCount;
     lObj->SplitGet = GManager_SplitGet;
+    // page
+    lObj->SetPage = GManager_SetPage;
+    // layout
+    lObj->ClearLayout = GManager_ClearLayout;
+    // obj
     return lObj;
 }
 //===============================================
@@ -48,6 +63,8 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->app_name = "ReadyApp";
     obj->mgr->app->win_width = 640;
     obj->mgr->app->win_height = 480;
+    obj->mgr->app->page_id = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
+    obj->mgr->app->title_map = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
 }
 //===============================================
 // data
@@ -108,5 +125,30 @@ static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
         }
     }
     strOut[lOut] = 0;
+}
+//===============================================
+// page
+//===============================================
+static void GManager_SetPage(char* address) {
+    sGApp* lApp = GManager()->GetData()->app;
+    GMapO(GManager, GCHAR_PTR, GVOID_PTR)* lPageId = lApp->page_id;
+    GMapO(GManager, GCHAR_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
+    int lPageIndex = (int)lPageId->GetData(lPageId, address, GMAP_EQUAL_CHAR);
+    char* lTitle = (char*)lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
+    lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
+    gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
+    lApp->address_key->SetContent(lApp->address_key, address);
+    gtk_widget_show_all(lApp->address_key->widget);
+}
+//===============================================
+// layout
+//===============================================
+static void GManager_ClearLayout(GtkWidget* layout) {
+    sGApp* lApp = GManager()->GetData()->app;
+    GList* lChildren = gtk_container_get_children(GTK_CONTAINER(layout));
+    for(GList* lChild = lChildren; lChild != 0; lChild = g_list_next(lChild)) {
+        gtk_widget_destroy(GTK_WIDGET(lChild->data));
+    }
+    g_list_free(lChildren);
 }
 //===============================================

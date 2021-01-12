@@ -18,6 +18,10 @@ struct _GManagerO {
     char* (*Copy)(char* strIn);
     int (*SplitCount)(char* strIn, char* sep);
     void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
+    // page
+    void (*SetPage)(char* address);
+    // layout
+    void (*ClearLayout)(GtkWidget* layout);
     // struct
     sGManager* mgr;
 };
@@ -42,8 +46,12 @@ struct _sGApp {
     char format[256];
     // title
     GtkWidget* title;
+    void* title_map;
     // address
     GWidgetO* address_key;
+    // page
+    GWidgetO* page_map;
+    void* page_id;
 };
 //===============================================
 #endif

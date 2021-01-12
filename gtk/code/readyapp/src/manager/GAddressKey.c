@@ -3,8 +3,8 @@
 #include "GMap.h"
 #include "GManager.h"
 //===============================================
-GDECLARE_MAP(GAddressKey, GCHAR_PTR, GCHAR_PTR)
-GDEFINE_MAP(GAddressKey, GCHAR_PTR, GCHAR_PTR)
+GDECLARE_MAP(GAddressKey, GCHAR_PTR, GVOID_PTR)
+GDEFINE_MAP(GAddressKey, GCHAR_PTR, GVOID_PTR)
 //===============================================
 static void GAddressKey_Widget(GWidgetO* obj);
 static void GAddressKey_SetContent(GWidgetO* obj, char* text);
@@ -16,7 +16,7 @@ GWidgetO* GAddressKey_New() {
     GAddressKeyO* lChild = (GAddressKeyO*)malloc(sizeof(GAddressKeyO));
     
     lChild->parent = lParent;
-    lChild->widgetMap = GMap_New(GAddressKey, GCHAR_PTR, GCHAR_PTR)();
+    lChild->widgetMap = GMap_New(GAddressKey, GCHAR_PTR, GVOID_PTR)();
     lParent->child = lChild;
     
     GAddressKey_Widget(lParent);
@@ -40,8 +40,9 @@ static void GAddressKey_Widget(GWidgetO* obj) {
 // method
 //===============================================
 static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
+    GManager()->ClearLayout(obj->widget);
     GAddressKeyO* lChild = obj->child;
-    GMapO(GAddressKey, GCHAR_PTR, GCHAR_PTR)* lWidgetMap = lChild->widgetMap;
+    GMapO(GAddressKey, GCHAR_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
     int lCount = GManager()->SplitCount(text, "/");
     char lKey[256];
     char lKeyId[256];
@@ -57,7 +58,6 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
 
         if(i != 0) {sprintf(lKeyId, "%s/", lKeyId);}
         sprintf(lKeyId, "%s%s", lKeyId, lKey);
-        printf("%s\n", lKeyId);
         GtkWidget* lButton = gtk_button_new();
         gtk_button_set_label(GTK_BUTTON(lButton), lKey);
         gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);
@@ -69,8 +69,8 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
 static void GAddressKey_OnItemClick(GtkWidget* widget, gpointer params) {
     GWidgetO* lObj = (GWidgetO*)params;
     GAddressKeyO* lChild = lObj->child;
-    GMapO(GAddressKey, GCHAR_PTR, GCHAR_PTR)* lWidgetMap = lChild->widgetMap;
+    GMapO(GAddressKey, GCHAR_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
     char* lPageId = (char*)lWidgetMap->GetData(lWidgetMap, (void*)widget, 0);
-    printf("%s\n", lPageId);
+    GManager()->SetPage(lPageId);
 }
 //===============================================
