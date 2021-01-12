@@ -24,6 +24,7 @@ void GTitleBar_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GTitleBar_Widget(GWidgetO* obj) {
+    sGApp* lApp = GManager()->GetData()->app;
     GtkWidget* lWidget = gtk_hbox_new(0, 0);
     obj->widget = lWidget;
     
@@ -34,6 +35,7 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     gtk_button_set_label(GTK_BUTTON(lAppName), "lAppName");
     
     GtkWidget* lTitle = gtk_label_new(0);
+    lApp->title = lTitle;
     gtk_label_set_text(GTK_LABEL(lTitle), "lTitle");
 
     GtkWidget* lConnect = gtk_button_new();

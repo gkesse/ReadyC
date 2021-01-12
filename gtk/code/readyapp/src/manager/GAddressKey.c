@@ -1,15 +1,22 @@
 //===============================================
 #include "GAddressKey.h"
+#include "GMap.h"
 #include "GManager.h"
+//===============================================
+GDECLARE_MAP(GAddressKey, GCHAR_PTR, GCHAR_PTR)
+GDEFINE_MAP(GAddressKey, GCHAR_PTR, GCHAR_PTR)
 //===============================================
 static void GAddressKey_Widget(GWidgetO* obj);
 static void GAddressKey_SetContent(GWidgetO* obj, char* text);
+//===============================================
+static void GAddressKey_OnItemClick(GtkWidget* widget, gpointer params);
 //===============================================
 GWidgetO* GAddressKey_New() {
     GWidgetO* lParent = GWidget("widget");
     GAddressKeyO* lChild = (GAddressKeyO*)malloc(sizeof(GAddressKeyO));
     
-    lChild->parent = lParent;    
+    lChild->parent = lParent;
+    lChild->widgetMap = GMap_New(GAddressKey, GCHAR_PTR, GCHAR_PTR)();
     lParent->child = lChild;
     
     GAddressKey_Widget(lParent);
@@ -33,18 +40,37 @@ static void GAddressKey_Widget(GWidgetO* obj) {
 // method
 //===============================================
 static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
-    sGApp* lApp = GManager()->GetData()->app;
+    GAddressKeyO* lChild = obj->child;
+    GMapO(GAddressKey, GCHAR_PTR, GCHAR_PTR)* lWidgetMap = lChild->widgetMap;
     int lCount = GManager()->SplitCount(text, "/");
+    char lKey[256];
+    char lKeyId[256];
+    lKeyId[0] = 0;
     for(int i = 0; i < lCount; i++) {
         if(i != 0) {
             GtkWidget* lButton = gtk_button_new();
             gtk_button_set_label(GTK_BUTTON(lButton), ">");
             gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);    
         }
-        GManager()->SplitGet(text, lApp->format, "/", i);
+        
+        GManager()->SplitGet(text, lKey, "/", i);
+
+        if(i != 0) {sprintf(lKeyId, "%s/", lKeyId);}
+        sprintf(lKeyId, "%s%s", lKeyId, lKey);
+        printf("%s\n", lKeyId);
         GtkWidget* lButton = gtk_button_new();
-        gtk_button_set_label(GTK_BUTTON(lButton), lApp->format);
-        gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);    
+        gtk_button_set_label(GTK_BUTTON(lButton), lKey);
+        gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);
+        lWidgetMap->SetData(lWidgetMap, (void*)lButton, GManager()->Copy(lKeyId), 0);
+        g_signal_connect(G_OBJECT(lButton), "clicked", G_CALLBACK(GAddressKey_OnItemClick), obj);
     }
+}
+//===============================================
+static void GAddressKey_OnItemClick(GtkWidget* widget, gpointer params) {
+    GWidgetO* lObj = (GWidgetO*)params;
+    GAddressKeyO* lChild = lObj->child;
+    GMapO(GAddressKey, GCHAR_PTR, GCHAR_PTR)* lWidgetMap = lChild->widgetMap;
+    char* lPageId = (char*)lWidgetMap->GetData(lWidgetMap, (void*)widget, 0);
+    printf("%s\n", lPageId);
 }
 //===============================================

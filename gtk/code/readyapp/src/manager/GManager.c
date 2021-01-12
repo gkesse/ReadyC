@@ -10,6 +10,7 @@ static void GManager_Init(GManagerO* obj);
 // data
 static sGManager* GManager_GetData();
 // string
+static char* GManager_Copy(char* strIn);
 static int GManager_SplitCount(char* strIn, char* sep);
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
 //===============================================
@@ -20,6 +21,7 @@ GManagerO* GManager_New() {
     // data
     lObj->GetData = GManager_GetData;
     // string
+    lObj->Copy = GManager_Copy;
     lObj->SplitCount = GManager_SplitCount;
     lObj->SplitGet = GManager_SplitGet;
     return lObj;
@@ -55,6 +57,13 @@ static sGManager* GManager_GetData() {
 }
 //===============================================
 // string
+//===============================================
+static char* GManager_Copy(char* strIn) {
+    int lSize = strlen(strIn);
+    char* lStr = (char*)malloc(sizeof(char)*(lSize+1));
+    strcpy(lStr, strIn);
+    return lStr;
+}
 //===============================================
 static int GManager_SplitCount(char* strIn, char* sep) {
     int lPos = 0;

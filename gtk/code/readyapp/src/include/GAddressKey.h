@@ -9,6 +9,7 @@ typedef struct _GAddressKeyO GAddressKeyO;
 //===============================================
 struct _GAddressKeyO {
     void* parent;
+    void* widgetMap;
 };
 //===============================================
 GWidgetO* GAddressKey_New();

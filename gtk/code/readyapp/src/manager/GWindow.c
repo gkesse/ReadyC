@@ -39,16 +39,16 @@ void GWindow_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GWindow_Widget(GWidgetO* obj) {
-    GWindowO* lChild = obj->child;
     sGApp* lApp = GManager()->GetData()->app;
+    GWindowO* lChild = obj->child;
     GtkWidget* lWidget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     obj->widget = lWidget;
     
     GWidgetO* lTitleBar = GWidget("titlebar");
     GWidgetO* lAddressBar = GWidget("addressbar");
-    
+
     GWidgetO* lAddressKey = GWidget("addresskey");
-    lAddressKey->SetContent(lAddressKey, "home/debug/clear");
+    lApp->address_key = lAddressKey;
 
     GWidgetO* lWorkspace = GWidget("stackwidget");
     lChild->pageMap = (void*)lWorkspace;
@@ -62,9 +62,13 @@ static void GWindow_Widget(GWidgetO* obj) {
     gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
     gtk_widget_show_all(lWidget);
 
-    GWindow_AddPage(obj, "home", "Accueil", GWidget("titlebar")->widget, 0);
-    GWindow_AddPage(obj, "home/debug", "Accueil", GWidget("addressbar")->widget, 1);
-    GWindow_SetPage(obj, "home/debug");
+    GWindow_AddPage(obj, "home", "Accueil", GWidget("home")->widget, 1);
+    GWindow_AddPage(obj, "home/login", "Connexion", GWidget("login")->widget, 0);
+    GWindow_AddPage(obj, "home/sqlite", "SQLite", GWidget("sqlite")->widget, 0);
+    GWindow_AddPage(obj, "home/opencv", "OpenCV", GWidget("opencv")->widget, 0);
+    GWindow_AddPage(obj, "home/debug", "Debug", GWidget("debug")->widget, 0);
+    
+    GWindow_SetPage(obj, "home/login");
 
     gtk_window_set_title(GTK_WINDOW(lWidget), lApp->app_name);
     gtk_container_set_border_width(GTK_CONTAINER(lWidget), 0);
@@ -85,12 +89,16 @@ static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* wi
 }
 //===============================================
 static void GWindow_SetPage(GWidgetO* obj, char* key) {
+    sGApp* lApp = GManager()->GetData()->app;
     GWindowO* lChild = obj->child;
     GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lPageId = lChild->pageId;
     GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lTitleMap = lChild->titleMap;
     int lPageIndex = (int)lPageId->GetData(lPageId, key, GMAP_EQUAL_CHAR);
     char* lTitle = (char*)lTitleMap->GetData(lTitleMap, key, GMAP_EQUAL_CHAR);
     lChild->pageMap->SetCurrentIndex(lChild->pageMap, lPageIndex);
+    gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
+    lApp->address_key->SetContent(lApp->address_key, key);
+    gtk_widget_show_all(lApp->address_key->widget);
 }
 //===============================================
 static void GWindow_destroy(GtkWidget* obj, gpointer params) {

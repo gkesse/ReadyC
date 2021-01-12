@@ -3,6 +3,7 @@
 #define _GManager_
 //===============================================
 #include "GInclude.h"
+#include "GWidget.h"
 //===============================================
 typedef struct _GManagerO GManagerO;
 //===============================================
@@ -14,6 +15,7 @@ struct _GManagerO {
     // data
     sGManager* (*GetData)();
     // string
+    char* (*Copy)(char* strIn);
     int (*SplitCount)(char* strIn, char* sep);
     void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
     // struct
@@ -38,6 +40,10 @@ struct _sGApp {
     int win_height;
     // string
     char format[256];
+    // title
+    GtkWidget* title;
+    // address
+    GWidgetO* address_key;
 };
 //===============================================
 #endif
