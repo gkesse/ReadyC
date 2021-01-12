@@ -11,6 +11,7 @@ struct _GStackWidgetO {
     void* parent;
     int count;
     int currentIndex;
+    void* widgetMap;
 };
 //===============================================
 GWidgetO* GStackWidget_New();

@@ -10,6 +10,7 @@
 //===============================================
 static void GWidget_SetContent(GWidgetO* obj, char* text);
 static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget);
+static void GWidget_SetCurrentIndex(GWidgetO* obj, int index);
 //===============================================
 GWidgetO* GWidget_New() {
     GWidgetO* lObj = (GWidgetO*)malloc(sizeof(GWidgetO));
@@ -18,6 +19,7 @@ GWidgetO* GWidget_New() {
     lObj->Delete = GWidget_Delete;
     lObj->SetContent = GWidget_SetContent;
     lObj->AddWidget = GWidget_AddWidget;
+    lObj->SetCurrentIndex = GWidget_SetCurrentIndex;
     return lObj;
 }
 //===============================================
@@ -43,4 +45,5 @@ GWidgetO* GWidget(const char* key) {
 //===============================================
 static void GWidget_SetContent(GWidgetO* obj, char* text) {}
 static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {}
+static void GWidget_SetCurrentIndex(GWidgetO* obj, int index) {}
 //===============================================

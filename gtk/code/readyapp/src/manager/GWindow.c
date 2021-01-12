@@ -24,6 +24,8 @@ void GWindow_Delete(GWidgetO* obj) {
     GWidget_Delete(obj);
 }
 //===============================================
+// method
+//===============================================
 static void GWindow_Widget(GWidgetO* obj) {
     sGApp* lApp = GManager()->GetData()->app;
     GtkWidget* lWidget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -48,6 +50,7 @@ static void GWindow_Widget(GWidgetO* obj) {
 
     lWorkspace->AddWidget(lWorkspace, GWidget("titlebar")->widget);
     lWorkspace->AddWidget(lWorkspace, GWidget("addressbar")->widget);
+    lWorkspace->SetCurrentIndex(lWorkspace, 0);
 
     gtk_window_set_title(GTK_WINDOW(lWidget), lApp->app_name);
     gtk_container_set_border_width(GTK_CONTAINER(lWidget), 0);
@@ -56,8 +59,6 @@ static void GWindow_Widget(GWidgetO* obj) {
     g_signal_connect(G_OBJECT(lWidget), "destroy", G_CALLBACK(GWindow_destroy), NULL);
     g_signal_connect(G_OBJECT(lWidget), "delete_event", G_CALLBACK(GWindow_delete_event), NULL);
 }
-//===============================================
-// method
 //===============================================
 static void GWindow_destroy(GtkWidget* obj, gpointer params) {
     gtk_main_quit();
