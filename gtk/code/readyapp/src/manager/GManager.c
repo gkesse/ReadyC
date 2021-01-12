@@ -144,7 +144,6 @@ static void GManager_SetPage(char* address) {
 // layout
 //===============================================
 static void GManager_ClearLayout(GtkWidget* layout) {
-    sGApp* lApp = GManager()->GetData()->app;
     GList* lChildren = gtk_container_get_children(GTK_CONTAINER(layout));
     for(GList* lChild = lChildren; lChild != 0; lChild = g_list_next(lChild)) {
         gtk_widget_destroy(GTK_WIDGET(lChild->data));
