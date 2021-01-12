@@ -61,8 +61,8 @@ static void GManager_Init(GManagerO* obj) {
     // app
     obj->mgr->app = (sGApp*)malloc(sizeof(sGApp));
     obj->mgr->app->app_name = "ReadyApp";
-    obj->mgr->app->win_width = 640;
-    obj->mgr->app->win_height = 480;
+    obj->mgr->app->win_width = 600;
+    obj->mgr->app->win_height = 330;
     obj->mgr->app->page_id = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
     obj->mgr->app->title_map = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
 }
