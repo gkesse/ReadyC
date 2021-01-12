@@ -10,6 +10,7 @@ typedef struct _GListBoxO GListBoxO;
 struct _GListBoxO {
     void* parent;
     void* widgetMap;
+    GtkWidget* layout;
 };
 //===============================================
 GWidgetO* GListBox_New();

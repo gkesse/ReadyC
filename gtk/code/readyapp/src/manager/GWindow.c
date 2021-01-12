@@ -60,10 +60,8 @@ static void GWindow_Widget(GWidgetO* obj) {
     GWindow_AddPage(obj, "home/login", "Connexion", GWidget("login")->widget, 0);
     GWindow_AddPage(obj, "home/sqlite", "SQLite", GWidget("sqlite")->widget, 0);
     GWindow_AddPage(obj, "home/opencv", "OpenCV", GWidget("opencv")->widget, 0);
-    GWindow_AddPage(obj, "home/debug", "Debug", GWidget("debug")->widget, 0);
+    GWindow_AddPage(obj, "home/debug", "Debug", GWidget("debug")->widget, 1);
     
-    GManager()->SetPage("home/debug");
-
     gtk_window_set_title(GTK_WINDOW(lWidget), lApp->app_name);
     gtk_container_set_border_width(GTK_CONTAINER(lWidget), 0);
     gtk_widget_set_size_request(GTK_WIDGET(lWidget), lApp->win_width, lApp->win_height);
@@ -80,6 +78,7 @@ static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* wi
     lPageId->SetData(lPageId, key, (void*)lCount, GMAP_EQUAL_CHAR);
     lTitleMap->SetData(lTitleMap, key, title, GMAP_EQUAL_CHAR);
     lApp->page_map->AddWidget(lApp->page_map, widget);
+    if(isDefault == 1) {GManager()->SetPage(key);}
 }
 //===============================================
 static void GWindow_OnDestroy(GtkWidget* obj, gpointer params) {

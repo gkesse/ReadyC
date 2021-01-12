@@ -8,6 +8,7 @@ GDEFINE_MAP(GListBox, GVOID_PTR, GVOID_PTR)
 //===============================================
 static void GListBox_Widget(GWidgetO* obj);
 static void GListBox_AddItem(GWidgetO* obj, char* key, char* text);
+static void GListBox_End(GWidgetO* obj);
 //===============================================
 static void GListBox_OnItemClick(GtkWidget* widget, gpointer params);
 //===============================================
@@ -24,6 +25,7 @@ GWidgetO* GListBox_New() {
     
     lParent->Delete = GListBox_Delete;
     lParent->AddItem = GListBox_AddItem;
+    lParent->End = GListBox_End;
     return lParent;
 }
 //===============================================
@@ -46,6 +48,11 @@ static void GListBox_AddItem(GWidgetO* obj, char* key, char* text) {
     gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);
     lWidgetMap->SetData(lWidgetMap, lButton, key, 0);
     g_signal_connect(G_OBJECT(lButton), "clicked", G_CALLBACK(GListBox_OnItemClick), obj);
+}
+//===============================================
+static void GListBox_End(GWidgetO* obj) {
+    printf("GListBox_End\n");
+    gtk_box_pack_start(GTK_BOX(obj->widget), gtk_vbox_new(0, 0), 1, 1, 0);
 }
 //===============================================
 // callback
