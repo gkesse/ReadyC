@@ -13,6 +13,7 @@ struct _GWidgetO {
     void (*SetContent)(GWidgetO* obj, char* text);
     void (*AddWidget)(GWidgetO* obj, GtkWidget* widget);
     void (*SetCurrentIndex)(GWidgetO* obj, int index);
+    int (*Count)(GWidgetO* obj);
     //
     GtkWidget* widget;
 };

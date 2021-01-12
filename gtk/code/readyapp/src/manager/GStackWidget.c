@@ -8,6 +8,7 @@ GDEFINE_MAP(GStackWidget, GVOID_PTR, GVOID_PTR)
 static void GStackWidget_Widget(GWidgetO* obj);
 static void GStackWidget_AddWidget(GWidgetO* obj, GtkWidget* widget);
 static void GStackWidget_SetCurrentIndex(GWidgetO* obj, int index);
+static int GStackWidget_Count(GWidgetO* obj);
 //===============================================
 GWidgetO* GStackWidget_New() {
     GWidgetO* lParent = GWidget("widget");
@@ -25,6 +26,7 @@ GWidgetO* GStackWidget_New() {
     lParent->Delete = GStackWidget_Delete;
     lParent->AddWidget = GStackWidget_AddWidget;
     lParent->SetCurrentIndex = GStackWidget_SetCurrentIndex;
+    lParent->Count = GStackWidget_Count;
     return lParent;
 }
 //===============================================
@@ -57,5 +59,10 @@ static void GStackWidget_SetCurrentIndex(GWidgetO* obj, int index) {
     lChild->currentIndex = index;
     lWidget = lWidgetMap->GetData(lWidgetMap, (void*)lChild->currentIndex, 0);
     gtk_widget_show_all(lWidget);
+}
+//===============================================
+static int GStackWidget_Count(GWidgetO* obj) {
+    GStackWidgetO* lChild = obj->child;
+    return lChild->count;
 }
 //===============================================
