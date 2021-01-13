@@ -22,6 +22,8 @@ struct _GManagerO {
     void (*SetPage)(char* address);
     // layout
     void (*ClearLayout)(GtkWidget* layout);
+    // widget
+    void (*BgColor)(GtkWidget* widget, char* color);
     // struct
     sGManager* mgr;
 };
@@ -54,6 +56,8 @@ struct _sGApp {
     void* page_id;
     // widget
     char* widget_id;
+    // color
+    char* bg_color;
 };
 //===============================================
 #endif

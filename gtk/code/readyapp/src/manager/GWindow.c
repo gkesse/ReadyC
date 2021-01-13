@@ -37,6 +37,7 @@ static void GWindow_Widget(GWidgetO* obj) {
     sGApp* lApp = GManager()->GetData()->app;
     GtkWidget* lWidget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     obj->widget = lWidget;
+    GManager()->BgColor(lWidget, "#103030");
     
     GWidgetO* lTitleBar = GWidget("titlebar");
     GWidgetO* lAddressBar = GWidget("addressbar");

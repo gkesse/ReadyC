@@ -23,6 +23,8 @@ static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
 static void GManager_SetPage(char* address);
 // layout
 static void GManager_ClearLayout(GtkWidget* layout);
+// widget
+static void GManager_BgColor(GtkWidget* widget, char* color);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
@@ -38,7 +40,9 @@ GManagerO* GManager_New() {
     lObj->SetPage = GManager_SetPage;
     // layout
     lObj->ClearLayout = GManager_ClearLayout;
-    // obj
+    // widget
+    lObj->BgColor = GManager_BgColor;
+    // return
     return lObj;
 }
 //===============================================
@@ -65,6 +69,7 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->win_height = 330;
     obj->mgr->app->page_id = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
     obj->mgr->app->title_map = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
+    obj->mgr->app->bg_color = "#103030";
 }
 //===============================================
 // data
@@ -149,5 +154,13 @@ static void GManager_ClearLayout(GtkWidget* layout) {
         gtk_widget_destroy(GTK_WIDGET(lChild->data));
     }
     g_list_free(lChildren);
+}
+//===============================================
+// widget
+//===============================================
+static void GManager_BgColor(GtkWidget* widget, char* color) {
+    GdkColor lColor;
+    gdk_color_parse(color, &lColor);
+    gtk_widget_modify_bg(widget, GTK_STATE_NORMAL, &lColor);
 }
 //===============================================
