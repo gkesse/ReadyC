@@ -9,7 +9,6 @@ typedef struct _GHomeO GHomeO;
 //===============================================
 struct _GHomeO {
     void* parent;
-    void* widgetMap;
 };
 //===============================================
 GWidgetO* GHome_New();

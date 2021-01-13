@@ -15,8 +15,12 @@ struct _GWidgetO {
     void (*SetCurrentIndex)(GWidgetO* obj, int index);
     int (*Count)(GWidgetO* obj);
     void (*AddItem)(GWidgetO* obj, char* key, char* text);
+    void (*AddItemClick)(GWidgetO* obj, GWidgetO* obs);
+    void (*EmitItemClick)(GWidgetO* obj);
+    void (*OnItemClick)(GWidgetO* obj);
     //
     GtkWidget* widget;
+    void* item_map;
 };
 //===============================================
 GWidgetO* GWidget_New();

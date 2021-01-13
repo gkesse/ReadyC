@@ -65,8 +65,6 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
     }
 }
 //===============================================
-// callback
-//===============================================
 static void GAddressKey_OnItemClick(GtkWidget* widget, gpointer params) {
     GWidgetO* lObj = (GWidgetO*)params;
     GAddressKeyO* lChild = lObj->child;

@@ -52,6 +52,8 @@ struct _sGApp {
     // page
     GWidgetO* page_map;
     void* page_id;
+    // widget
+    char* widget_id;
 };
 //===============================================
 #endif

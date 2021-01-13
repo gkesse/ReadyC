@@ -148,7 +148,6 @@
                 lSize++; \
                 lNext = lNext->m_next; \
             } \
-            printf("[GMap] Size: %d\n", lSize); \
             return lSize; \
         } \
         \

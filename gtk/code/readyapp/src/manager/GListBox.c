@@ -48,13 +48,13 @@ static void GListBox_AddItem(GWidgetO* obj, char* key, char* text) {
     g_signal_connect(G_OBJECT(lButton), "clicked", G_CALLBACK(GListBox_OnItemClick), obj);
 }
 //===============================================
-// callback
-//===============================================
 static void GListBox_OnItemClick(GtkWidget* widget, gpointer params) {
+    sGApp* lApp = GManager()->GetData()->app;
     GWidgetO* lObj = (GWidgetO*)params;
     GListBoxO* lChild = lObj->child;
     GMapO(GListBox, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
-    char* lKey = (char*)lWidgetMap->GetData(lWidgetMap, widget, 0);
-    GManager()->SetPage(lKey);
+    char* lWidgetId = lWidgetMap->GetData(lWidgetMap, widget, 0);
+    lApp->widget_id = lWidgetId;
+    lObj->EmitItemClick(lObj);
 }
 //===============================================
