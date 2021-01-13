@@ -37,7 +37,7 @@ void GStackWidget_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GStackWidget_Widget(GWidgetO* obj) {
-    GtkWidget* lWidget = gtk_vbox_new(1, 0);
+    GtkWidget* lWidget = gtk_vbox_new(0, 0);
     obj->widget = lWidget;
 }
 //===============================================

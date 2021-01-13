@@ -34,7 +34,7 @@ void GHome_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GHome_Widget(GWidgetO* obj) {
-    GtkWidget* lWidget = gtk_vbox_new(0, 0);
+    GtkWidget* lWidget = gtk_vbox_new(1, 0);
     obj->widget = lWidget;
 
     GWidgetO* lListBox = GWidget("listbox");
@@ -42,10 +42,8 @@ static void GHome_Widget(GWidgetO* obj) {
     lListBox->AddItem(lListBox, "home/sqlite", "SQLite");
     lListBox->AddItem(lListBox, "home/opencv", "OpenCV");
     lListBox->AddItem(lListBox, "home/debug", "Debug");
-    lListBox->End(lListBox);
     
     gtk_box_pack_start(GTK_BOX(lWidget), lListBox->widget, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lWidget), gtk_vbox_new(0, 0), 1, 1, 0);
 }
 //===============================================
 static void GHome_AddItem(GWidgetO* obj, char* key, char* text) {

@@ -60,7 +60,7 @@ static void GWindow_Widget(GWidgetO* obj) {
     GWindow_AddPage(obj, "home/login", "Connexion", GWidget("login")->widget, 0);
     GWindow_AddPage(obj, "home/sqlite", "SQLite", GWidget("sqlite")->widget, 0);
     GWindow_AddPage(obj, "home/opencv", "OpenCV", GWidget("opencv")->widget, 0);
-    GWindow_AddPage(obj, "home/debug", "Debug", GWidget("debug")->widget, 1);
+    GWindow_AddPage(obj, "home/debug", "Debug", GWidget("debug")->widget, 0);
     
     gtk_window_set_title(GTK_WINDOW(lWidget), lApp->app_name);
     gtk_container_set_border_width(GTK_CONTAINER(lWidget), 0);
