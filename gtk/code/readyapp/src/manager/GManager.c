@@ -7,7 +7,7 @@
 GDECLARE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
 //===============================================
-#define B_SPLIT (256)
+#define B_SPLIT(256)
 //===============================================
 static GManagerO* m_GManagerO = 0;
 //===============================================
@@ -24,10 +24,16 @@ static void GManager_SetPage(char* address);
 // layout
 static void GManager_ClearLayout(GtkWidget* layout);
 // widget
-static void GManager_BgColor(GtkWidget* widget, char* color);
+static void GManager_SetColor(char* key, GtkWidget* widget, char* color, int state);
+// font
+static void GManager_SetFont(GtkWidget* widget, char* font);
+// style
+static void GManager_LoadStyle();
+// env
+static char* GManager_GetEnv(char* key);
 //===============================================
 GManagerO* GManager_New() {
-    GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
+    GManagerO* lObj =(GManagerO*)malloc(sizeof(GManagerO));
     GManager_Init(lObj);
     lObj->Delete = GManager_Delete;
     // data
@@ -41,7 +47,13 @@ GManagerO* GManager_New() {
     // layout
     lObj->ClearLayout = GManager_ClearLayout;
     // widget
-    lObj->BgColor = GManager_BgColor;
+    lObj->SetColor = GManager_SetColor;
+    // font
+    lObj->SetFont = GManager_SetFont;
+    // style
+    lObj->LoadStyle = GManager_LoadStyle;
+    // env
+    lObj->GetEnv = GManager_GetEnv;
     // return
     return lObj;
 }
@@ -61,15 +73,16 @@ GManagerO* GManager() {
 //===============================================
 static void GManager_Init(GManagerO* obj) {
     // manager
-    obj->mgr = (sGManager*)malloc(sizeof(sGManager));
+    obj->mgr =(sGManager*)malloc(sizeof(sGManager));
     // app
-    obj->mgr->app = (sGApp*)malloc(sizeof(sGApp));
+    obj->mgr->app =(sGApp*)malloc(sizeof(sGApp));
     obj->mgr->app->app_name = "ReadyApp";
     obj->mgr->app->win_width = 600;
     obj->mgr->app->win_height = 330;
     obj->mgr->app->page_id = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
     obj->mgr->app->title_map = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
     obj->mgr->app->bg_color = "#103030";
+    obj->mgr->app->style_path = GManager_GetEnv("GSTYLE_PATH");
 }
 //===============================================
 // data
@@ -82,7 +95,7 @@ static sGManager* GManager_GetData() {
 //===============================================
 static char* GManager_Copy(char* strIn) {
     int lSize = strlen(strIn);
-    char* lStr = (char*)malloc(sizeof(char)*(lSize+1));
+    char* lStr =(char*)malloc(sizeof(char)*(lSize+1));
     strcpy(lStr, strIn);
     return lStr;
 }
@@ -138,8 +151,8 @@ static void GManager_SetPage(char* address) {
     sGApp* lApp = GManager()->GetData()->app;
     GMapO(GManager, GCHAR_PTR, GVOID_PTR)* lPageId = lApp->page_id;
     GMapO(GManager, GCHAR_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
-    int lPageIndex = (int)lPageId->GetData(lPageId, address, GMAP_EQUAL_CHAR);
-    char* lTitle = (char*)lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
+    int lPageIndex =(int)lPageId->GetData(lPageId, address, GMAP_EQUAL_CHAR);
+    char* lTitle =(char*)lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
     lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
     gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
     lApp->address_key->SetContent(lApp->address_key, address);
@@ -158,9 +171,42 @@ static void GManager_ClearLayout(GtkWidget* layout) {
 //===============================================
 // widget
 //===============================================
-static void GManager_BgColor(GtkWidget* widget, char* color) {
-    GdkColor lColor;
-    gdk_color_parse(color, &lColor);
-    gtk_widget_modify_bg(widget, GTK_STATE_NORMAL, &lColor);
+static void GManager_SetColor(char* key, GtkWidget* widget, char* color, int state) {
+    if(!strcmp(key, "bg")) {
+        GdkRGBA lColor;
+        gdk_rgba_parse(&lColor, color);
+        gtk_widget_override_background_color(widget, state, &lColor);
+    }
+    else if(!strcmp(key, "fg")) {
+        GdkColor lColor;
+        gdk_color_parse(color, &lColor);
+        gtk_widget_modify_fg(widget, state, &lColor);
+    }
 }
 //===============================================
+// font
+//===============================================
+static void GManager_SetFont(GtkWidget* widget, char* font) {
+    PangoFontDescription* lFont = pango_font_description_from_string(font);
+    gtk_widget_modify_font(widget, lFont);
+    pango_font_description_free(lFont);
+}
+//===============================================
+// style
+//===============================================
+static void GManager_LoadStyle() {
+    sGApp* lApp = GManager()->GetData()->app;
+    GtkCssProvider* lCssProvider = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(lCssProvider, lApp->style_path, 0);
+    gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_USER); 
+    gtk_style_context_save(context);
+}
+//===============================================
+// env
+//===============================================
+static char* GManager_GetEnv(char* key) {
+    char* lValue = getenv(key);
+    return lValue;
+}
+//===============================================
+char * getenv( const char * varName );

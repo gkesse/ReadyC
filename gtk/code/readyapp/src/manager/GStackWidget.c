@@ -12,7 +12,7 @@ static int GStackWidget_Count(GWidgetO* obj);
 //===============================================
 GWidgetO* GStackWidget_New() {
     GWidgetO* lParent = GWidget("widget");
-    GStackWidgetO* lChild = (GStackWidgetO*)malloc(sizeof(GStackWidgetO));
+    GStackWidgetO* lChild =(GStackWidgetO*)malloc(sizeof(GStackWidgetO));
     
     lChild->parent = lParent;
     lChild->count = 0;
@@ -45,8 +45,8 @@ static void GStackWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {
     GStackWidgetO* lChild = obj->child;
     GMapO(GStackWidget, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
     gtk_box_pack_start(GTK_BOX(obj->widget), widget, 0, 0, 0);
-    lWidgetMap->SetData(lWidgetMap, (void*)lChild->count, widget, 0);
-    gtk_widget_hide_all(widget);
+    lWidgetMap->SetData(lWidgetMap,(void*)lChild->count, widget, 0);
+    gtk_widget_hide(widget);
     if(lChild->count == lChild->currentIndex) {gtk_widget_show_all(widget);}
     lChild->count++;
 }
@@ -54,10 +54,10 @@ static void GStackWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {
 static void GStackWidget_SetCurrentIndex(GWidgetO* obj, int index) {
     GStackWidgetO* lChild = obj->child;
     GMapO(GStackWidget, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
-    GtkWidget* lWidget = lWidgetMap->GetData(lWidgetMap, (void*)lChild->currentIndex, 0);
-    gtk_widget_hide_all(lWidget);
+    GtkWidget* lWidget = lWidgetMap->GetData(lWidgetMap,(void*)lChild->currentIndex, 0);
+    gtk_widget_hide(lWidget);
     lChild->currentIndex = index;
-    lWidget = lWidgetMap->GetData(lWidgetMap, (void*)lChild->currentIndex, 0);
+    lWidget = lWidgetMap->GetData(lWidgetMap,(void*)lChild->currentIndex, 0);
     gtk_widget_show_all(lWidget);
 }
 //===============================================

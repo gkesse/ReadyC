@@ -1,6 +1,7 @@
 //===============================================
 #include "GGtk.h"
 #include "GWidget.h"
+#include "GManager.h"
 //===============================================
 static GGtkO* m_GGtkO = 0;
 //===============================================
@@ -27,6 +28,7 @@ GGtkO* GGtk() {
 static void GGtk_Run(int argc, char** argv) {
     gtk_init(&argc, &argv);
 
+    GManager()->LoadStyle();
     GWidget("window");
 
     gtk_main();

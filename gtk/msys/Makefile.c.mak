@@ -5,10 +5,10 @@ GTARGET = $(GBIN)/rdc
 
 GINCS = \
     -I$(GSRC)/include \
-    `pkg-config --cflags gtk+-2.0` \
+    `pkg-config --cflags gtk+-3.0` \
     
 GLIBS = \
-    `pkg-config --libs gtk+-2.0` \
+    `pkg-config --libs gtk+-3.0` \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \

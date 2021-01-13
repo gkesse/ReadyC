@@ -6,7 +6,7 @@ static void GTitleBar_Widget(GWidgetO* obj);
 //===============================================
 GWidgetO* GTitleBar_New() {
     GWidgetO* lParent = GWidget("widget");
-    GTitleBarO* lChild = (GTitleBarO*)malloc(sizeof(GTitleBarO));
+    GTitleBarO* lChild =(GTitleBarO*)malloc(sizeof(GTitleBarO));
     
     lChild->parent = lParent;    
     lParent->child = lChild;
@@ -30,6 +30,9 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     
     GtkWidget* lLogo = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lLogo), "lLogo");
+    GManager()->SetColor("bg", lLogo, "red", GTK_STATE_NORMAL);
+    GManager()->SetColor("fg", lLogo, "orange", GTK_STATE_NORMAL);
+    GManager()->SetFont(lLogo, "Allan 20");
     
     GtkWidget* lAppName = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lAppName), "lAppName");
@@ -37,6 +40,8 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     GtkWidget* lTitle = gtk_label_new(0);
     lApp->title = lTitle;
     gtk_label_set_text(GTK_LABEL(lTitle), "lTitle");
+    GManager()->SetColor("fg", lTitle, "white", GTK_STATE_NORMAL);
+    GManager()->SetFont(lTitle, "Allan 20");
 
     GtkWidget* lConnect = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lConnect), "lConnect");
