@@ -173,8 +173,8 @@ static void GManager_SetPage(char* address) {
     sGApp* lApp = GManager()->GetData()->app;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
-    int lPageIndex =(int)lPageId->GetData(lPageId, address, GMAP_EQUAL_CHAR);
-    char* lTitle =(char*)lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
+    int lPageIndex = (int)lPageId->GetData(lPageId, address, GMAP_EQUAL_CHAR);
+    char* lTitle = lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
     lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
     gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
     lApp->address_key->SetContent(lApp->address_key, address);

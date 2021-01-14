@@ -5,8 +5,8 @@
 #include "GMap.h"
 #include "GManager.h"
 //===============================================
-GDECLARE_MAP(GWindow, GCHAR_PTR, GVOID_PTR)
-GDEFINE_MAP(GWindow, GCHAR_PTR, GVOID_PTR)
+GDECLARE_MAP(GWindow, GVOID_PTR, GVOID_PTR)
+GDEFINE_MAP(GWindow, GVOID_PTR, GVOID_PTR)
 //===============================================
 static void GWindow_Widget(GWidgetO* obj);
 static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault);
@@ -73,8 +73,8 @@ static void GWindow_Widget(GWidgetO* obj) {
 //===============================================
 static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault) {
     sGApp* lApp = GManager()->GetData()->app;
-    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lPageId = lApp->page_id;
-    GMapO(GWindow, GCHAR_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
+    GMapO(GWindow, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
+    GMapO(GWindow, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
     int lCount = lApp->page_map->Count(lApp->page_map);
     lPageId->SetData(lPageId, key, (void*)lCount, GMAP_EQUAL_CHAR);
     lTitleMap->SetData(lTitleMap, key, title, GMAP_EQUAL_CHAR);

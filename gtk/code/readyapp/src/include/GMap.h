@@ -179,7 +179,7 @@ typedef void* GVOID_PTR;
 static int GMAP_EQUAL_CHAR(void* key1, void* key2);
 //===============================================
 static int GMAP_EQUAL_CHAR(void* key1, void* key2) {
-    int lStrcmp = strcmp((char*)key1, (char*key2);
+    int lStrcmp = strcmp((char*)key1, (char*)key2);
     if(lStrcmp == 0) return 1;
     return 0;
 }
