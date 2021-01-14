@@ -31,6 +31,9 @@ static void GManager_SetFont(GtkWidget* widget, char* font);
 static void GManager_LoadStyle();
 // env
 static char* GManager_GetEnv(char* key);
+// img
+static void GManager_LoadImg();
+static void GManager_SetImg(GtkWidget* widget);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj =(GManagerO*)malloc(sizeof(GManagerO));
@@ -54,6 +57,9 @@ GManagerO* GManager_New() {
     lObj->LoadStyle = GManager_LoadStyle;
     // env
     lObj->GetEnv = GManager_GetEnv;
+    // img
+    lObj->LoadImg = GManager_LoadImg;
+    lObj->SetImg = GManager_SetImg;
     // return
     return lObj;
 }
@@ -83,6 +89,7 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->title_map = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
     obj->mgr->app->bg_color = "#103030";
     obj->mgr->app->style_path = GManager_GetEnv("GSTYLE_PATH");
+    obj->mgr->app->img_path = GManager_GetEnv("GIMG_PATH");
 }
 //===============================================
 // data
@@ -209,4 +216,16 @@ static char* GManager_GetEnv(char* key) {
     return lValue;
 }
 //===============================================
-char * getenv( const char * varName );
+// img
+//===============================================
+static void GManager_LoadImg() {
+    sGApp* lApp = GManager()->GetData()->app;
+    printf("%s\n", lApp->img_path);
+}
+//===============================================
+static void GManager_SetImg(GtkWidget* widget) {
+    sGApp* lApp = GManager()->GetData()->app;
+    GtkWidget* lImage = gtk_image_new_from_file("C:/Users/Admin/Downloads/Programs/ReadyC/data/img/logo_flat.png");
+    gtk_button_set_image(GTK_BUTTON(widget),lImage);
+}
+//===============================================

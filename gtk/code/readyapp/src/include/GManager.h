@@ -30,6 +30,9 @@ struct _GManagerO {
     void (*LoadStyle)();
     // env
     char* (*GetEnv)(char* key);
+    // img
+    void (*LoadImg)();
+    void (*SetImg)(GtkWidget* widget);
     // struct
     sGManager* mgr;
 };
@@ -66,6 +69,8 @@ struct _sGApp {
     char* bg_color;
     // style
     char* style_path;
+    // img
+    char* img_path;
 };
 //===============================================
 #endif

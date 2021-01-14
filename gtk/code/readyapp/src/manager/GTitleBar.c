@@ -32,6 +32,7 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     GtkWidget* lLogo = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lLogo), "lLogo");
     gtk_widget_set_name(lLogo, "logo");
+    GManager()->SetImg(lLogo);
     
     GtkWidget* lAppName = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lAppName), "lAppName");

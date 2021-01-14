@@ -29,6 +29,7 @@ static void GGtk_Run(int argc, char** argv) {
     gtk_init(&argc, &argv);
 
     GManager()->LoadStyle();
+    GManager()->LoadImg();
     GWidget("window");
 
     gtk_main();

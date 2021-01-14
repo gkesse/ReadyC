@@ -9,8 +9,6 @@
     font-family: Allan;
     font-size: 20px;
     color: #ffffff;
-    font-weight: normal;
-    font-style: normal;
     outline: none;
     min-width: 0px;
     min-height: 0px;
@@ -20,7 +18,7 @@
 /* ============================================== */
 /* GTitleBar */
 #GTitleBar {
-    border: 1px solid lime;
+
 }
 #GTitleBar #logo * {
     background-color: red;
