@@ -224,8 +224,9 @@ static void GManager_LoadImg() {
 }
 //===============================================
 static void GManager_SetImg(GtkWidget* widget) {
-    sGApp* lApp = GManager()->GetData()->app;
-    GtkWidget* lImage = gtk_image_new_from_file("C:/Users/Admin/Downloads/Programs/ReadyC/data/img/logo_flat.png");
-    gtk_button_set_image(GTK_BUTTON(widget),lImage);
+    //sGApp* lApp = GManager()->GetData()->app;
+    GtkWidget* lImage = gtk_image_new_from_file("logo_flat.png");
+    gtk_button_set_image(GTK_BUTTON(widget), lImage);
+    g_object_set(gtk_settings_get_default(), "gtk-button-images", TRUE, NULL);
 }
 //===============================================
