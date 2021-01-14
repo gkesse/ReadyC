@@ -7,7 +7,7 @@
 GDECLARE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
 GDEFINE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
 //===============================================
-#define B_SPLIT(256)
+#define B_SPLIT (256)
 //===============================================
 static GManagerO* m_GManagerO = 0;
 //===============================================
@@ -198,8 +198,8 @@ static void GManager_LoadStyle() {
     sGApp* lApp = GManager()->GetData()->app;
     GtkCssProvider* lCssProvider = gtk_css_provider_new();
     gtk_css_provider_load_from_path(lCssProvider, lApp->style_path, 0);
-    gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_USER); 
-    gtk_style_context_save(context);
+    GdkScreen* lScreen = gdk_screen_get_default();
+    gtk_style_context_add_provider_for_screen(lScreen, GTK_STYLE_PROVIDER(lCssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION); 
 }
 //===============================================
 // env

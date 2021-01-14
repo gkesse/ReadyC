@@ -27,12 +27,11 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     sGApp* lApp = GManager()->GetData()->app;
     GtkWidget* lWidget = gtk_hbox_new(0, 0);
     obj->widget = lWidget;
+    gtk_widget_set_name(lWidget, "GTitleBar");
     
     GtkWidget* lLogo = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lLogo), "lLogo");
-    GManager()->SetColor("bg", lLogo, "red", GTK_STATE_NORMAL);
-    GManager()->SetColor("fg", lLogo, "orange", GTK_STATE_NORMAL);
-    GManager()->SetFont(lLogo, "Allan 20");
+    gtk_widget_set_name(lLogo, "logo");
     
     GtkWidget* lAppName = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lAppName), "lAppName");
@@ -40,8 +39,6 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     GtkWidget* lTitle = gtk_label_new(0);
     lApp->title = lTitle;
     gtk_label_set_text(GTK_LABEL(lTitle), "lTitle");
-    GManager()->SetColor("fg", lTitle, "white", GTK_STATE_NORMAL);
-    GManager()->SetFont(lTitle, "Allan 20");
 
     GtkWidget* lConnect = gtk_button_new();
     gtk_button_set_label(GTK_BUTTON(lConnect), "lConnect");

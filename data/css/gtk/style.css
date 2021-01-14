@@ -1,0 +1,31 @@
+/* ============================================== */
+/* common */
+/* ============================================== */
+* {
+    background-color: #103030;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    font-family: Allan;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: normal;
+    font-style: normal;
+    outline: none;
+    min-width: 0px;
+    min-height: 0px;
+}
+/* ============================================== */
+/* custom */
+/* ============================================== */
+/* GTitleBar */
+#GTitleBar {
+    border: 1px solid lime;
+}
+#GTitleBar #logo * {
+    background-color: red;
+}
+#GTitleBar #logo:hover * {
+    background-color: green;
+}
+/* ============================================== */

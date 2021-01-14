@@ -11,25 +11,25 @@ typedef struct _sGManager sGManager;
 typedef struct _sGApp sGApp;
 //===============================================
 struct _GManagerO {
-    void(*Delete)();
+    void (*Delete)();
     // data
-    sGManager*(*GetData)();
+    sGManager* (*GetData)();
     // string
-    char*(*Copy)(char* strIn);
-    int(*SplitCount)(char* strIn, char* sep);
-    void(*SplitGet)(char* strIn, char* strOut, char* sep, int index);
+    char* (*Copy)(char* strIn);
+    int (*SplitCount)(char* strIn, char* sep);
+    void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
     // page
-    void(*SetPage)(char* address);
+    void (*SetPage)(char* address);
     // layout
-    void(*ClearLayout)(GtkWidget* layout);
+    void (*ClearLayout)(GtkWidget* layout);
     // widget
-    void(*SetColor)(char* key, GtkWidget* widget, char* color, int state);
+    void (*SetColor)(char* key, GtkWidget* widget, char* color, int state);
     // font
-    void(*SetFont)(GtkWidget* widget, char* font);
+    void (*SetFont)(GtkWidget* widget, char* font);
     // style
-    void(*LoadStyle)();
+    void (*LoadStyle)();
     // env
-    char*(*GetEnv)(char* key);
+    char* (*GetEnv)(char* key);
     // struct
     sGManager* mgr;
 };
