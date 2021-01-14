@@ -176,10 +176,10 @@ typedef void* GVOID_PTR;
 //===============================================
 #if defined(_GMAP_EQUAL_CHAR_)
 //===============================================
-static int GMAP_EQUAL_CHAR(char* key1, char* key2);
+static int GMAP_EQUAL_CHAR(void* key1, void* key2);
 //===============================================
-static int GMAP_EQUAL_CHAR(char* key1, char* key2) {
-    int lStrcmp = strcmp(key1, key2);
+static int GMAP_EQUAL_CHAR(void* key1, void* key2) {
+    int lStrcmp = strcmp((char*)key1, (char*key2);
     if(lStrcmp == 0) return 1;
     return 0;
 }
@@ -188,10 +188,10 @@ static int GMAP_EQUAL_CHAR(char* key1, char* key2) {
 //===============================================
 #if defined(_GMAP_SHOW_CHAR_)
 //===============================================
-static void GMAP_SHOW_CHAR(char* key, void* value);
+static void GMAP_SHOW_CHAR(void* key, void* value);
 //===============================================
-static void GMAP_SHOW_CHAR(char* key, void* value) {
-    printf("%s = %s\n", key, (char*)value);
+static void GMAP_SHOW_CHAR(void* key, void* value) {
+    printf("%s = %s\n", (char*)key, (char*)value);
 }
 //===============================================
 #endif

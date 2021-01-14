@@ -14,6 +14,7 @@ struct _GManagerO {
     void (*Delete)();
     // data
     sGManager* (*GetData)();
+    void (*LoadData)();
     // string
     char* (*Copy)(char* strIn);
     int (*SplitCount)(char* strIn, char* sep);
@@ -33,6 +34,9 @@ struct _GManagerO {
     // img
     void (*LoadImg)();
     void (*SetImg)(GtkWidget* widget);
+    // picto
+    void (*LoadPicto)();
+    char* (*GetPicto)(char* key);
     // struct
     sGManager* mgr;
 };
@@ -71,6 +75,8 @@ struct _sGApp {
     char* style_path;
     // img
     char* img_path;
+    // picto
+    void* picto_map;
 };
 //===============================================
 #endif

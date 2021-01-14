@@ -2,10 +2,11 @@
 #define _GMAP_EQUAL_CHAR_
 //===============================================
 #include "GManager.h"
+#include "GPicto.h"
 #include "GMap.h"
 //===============================================
-GDECLARE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
-GDEFINE_MAP(GManager, GCHAR_PTR, GVOID_PTR)
+GDECLARE_MAP(GManager, GVOID_PTR, GVOID_PTR)
+GDEFINE_MAP(GManager, GVOID_PTR, GVOID_PTR)
 //===============================================
 #define B_SPLIT (256)
 //===============================================
@@ -15,6 +16,7 @@ static GManagerO* m_GManagerO = 0;
 static void GManager_Init(GManagerO* obj);
 // data
 static sGManager* GManager_GetData();
+static void GManager_LoadData();
 // string
 static char* GManager_Copy(char* strIn);
 static int GManager_SplitCount(char* strIn, char* sep);
@@ -34,6 +36,9 @@ static char* GManager_GetEnv(char* key);
 // img
 static void GManager_LoadImg();
 static void GManager_SetImg(GtkWidget* widget);
+// picto
+static void GManager_LoadPicto();
+static char* GManager_GetPicto(char* key);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj =(GManagerO*)malloc(sizeof(GManagerO));
@@ -41,6 +46,7 @@ GManagerO* GManager_New() {
     lObj->Delete = GManager_Delete;
     // data
     lObj->GetData = GManager_GetData;
+    lObj->LoadData = GManager_LoadData;
     // string
     lObj->Copy = GManager_Copy;
     lObj->SplitCount = GManager_SplitCount;
@@ -60,6 +66,9 @@ GManagerO* GManager_New() {
     // img
     lObj->LoadImg = GManager_LoadImg;
     lObj->SetImg = GManager_SetImg;
+    // picto
+    lObj->LoadPicto = GManager_LoadPicto;
+    lObj->GetPicto = GManager_GetPicto;
     // return
     return lObj;
 }
@@ -85,17 +94,23 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->app_name = "ReadyApp";
     obj->mgr->app->win_width = 600;
     obj->mgr->app->win_height = 330;
-    obj->mgr->app->page_id = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
-    obj->mgr->app->title_map = GMap_New(GManager, GCHAR_PTR, GVOID_PTR)();
+    obj->mgr->app->page_id = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
+    obj->mgr->app->title_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
     obj->mgr->app->bg_color = "#103030";
     obj->mgr->app->style_path = GManager_GetEnv("GSTYLE_PATH");
     obj->mgr->app->img_path = GManager_GetEnv("GIMG_PATH");
+    obj->mgr->app->picto_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
 }
 //===============================================
 // data
 //===============================================
 static sGManager* GManager_GetData() {
     return m_GManagerO->mgr;
+}
+//===============================================
+static void GManager_LoadData() {
+    g_object_set(gtk_settings_get_default(), "gtk-button-images", 1, NULL);
+    g_object_set(gtk_settings_get_default(), "gtk-show-unicode-menu", 1, NULL);
 }
 //===============================================
 // string
@@ -156,8 +171,8 @@ static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
 //===============================================
 static void GManager_SetPage(char* address) {
     sGApp* lApp = GManager()->GetData()->app;
-    GMapO(GManager, GCHAR_PTR, GVOID_PTR)* lPageId = lApp->page_id;
-    GMapO(GManager, GCHAR_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
+    GMapO(GManager, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
+    GMapO(GManager, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
     int lPageIndex =(int)lPageId->GetData(lPageId, address, GMAP_EQUAL_CHAR);
     char* lTitle =(char*)lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
     lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
@@ -225,8 +240,20 @@ static void GManager_LoadImg() {
 //===============================================
 static void GManager_SetImg(GtkWidget* widget) {
     //sGApp* lApp = GManager()->GetData()->app;
-    GtkWidget* lImage = gtk_image_new_from_file("logo_flat.png");
+    GdkPixbuf* lPixbuf = gdk_pixbuf_new_from_file("logo_flat.png", NULL);
+    lPixbuf = gdk_pixbuf_scale_simple(lPixbuf, 20, 20, GDK_INTERP_BILINEAR);
+    GtkWidget* lImage = gtk_image_new();
+    gtk_image_set_from_pixbuf(GTK_IMAGE(lImage), lPixbuf);
     gtk_button_set_image(GTK_BUTTON(widget), lImage);
-    g_object_set(gtk_settings_get_default(), "gtk-button-images", TRUE, NULL);
+}
+//===============================================
+// picto
+//===============================================
+static void GManager_LoadPicto() {
+    GPicto()->Load();
+}
+//===============================================
+static char* GManager_GetPicto(char* key) {
+    return GPicto()->Get(key);
 }
 //===============================================
