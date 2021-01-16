@@ -30,6 +30,7 @@
 #GWindow #workspace {
     border-radius: 5px;
     border: 1px solid #ffffff;
+    padding: 1px;
 }
 /* ============================================== */
 /* GTitleBar */
@@ -62,14 +63,14 @@
 #GListBox * {
 
 }
-#GListBox #item #layout {
-    padding: 2px 5px;
+#GListBox #item #row {
+    padding: 5px 10px;
 }
-#GListBox #item:hover #layout {
+#GListBox #item:hover #row {
     border-radius: 5px;
 }
-#GListBox #item:hover #layout,
-#GListBox #item:hover #layout * {
+#GListBox #item:hover #row,
+#GListBox #item:hover #row * {
     background-color: @app_lg_color;
 }
 /* ============================================== */

@@ -20,7 +20,7 @@ static void GWidget_SetContent(GWidgetO* obj, char* text);
 static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget);
 static void GWidget_SetCurrentIndex(GWidgetO* obj, int index);
 static int GWidget_Count(GWidgetO* obj);
-static void GWidget_AddItem(GWidgetO* obj, char* key, char* text);
+static void GWidget_AddItem(GWidgetO* obj, char* key, char* text, char* icon);
 static void GWidget_AddItemClick(GWidgetO* obj, GWidgetO* obs);
 static void GWidget_EmitItemClick(GWidgetO* obj);
 static void GWidget_OnItemClick(GWidgetO* obj);
@@ -85,6 +85,6 @@ static void GWidget_SetContent(GWidgetO* obj, char* text) {}
 static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {}
 static void GWidget_SetCurrentIndex(GWidgetO* obj, int index) {}
 static int GWidget_Count(GWidgetO* obj) {return 0;}
-static void GWidget_AddItem(GWidgetO* obj, char* key, char* text) {}
+static void GWidget_AddItem(GWidgetO* obj, char* key, char* text, char* icon) {}
 static void GWidget_OnItemClick(GWidgetO* obj) {}
 //===============================================

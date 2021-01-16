@@ -33,10 +33,10 @@ static void GHome_Widget(GWidgetO* obj) {
 
     GWidgetO* lListBox = GWidget("listbox");
     lListBox->AddItemClick(lListBox, obj);
-    lListBox->AddItem(lListBox, "home/login", "Connexion");
-    lListBox->AddItem(lListBox, "home/sqlite", "SQLite");
-    lListBox->AddItem(lListBox, "home/opencv", "OpenCV");
-    lListBox->AddItem(lListBox, "home/debug", "Debug");
+    lListBox->AddItem(lListBox, "home/login", "Connexion", "user");
+    lListBox->AddItem(lListBox, "home/sqlite", "SQLite", "database");
+    lListBox->AddItem(lListBox, "home/opencv", "OpenCV", "camera");
+    lListBox->AddItem(lListBox, "home/debug", "Debug", "filetexto");
     
     gtk_box_pack_start(GTK_BOX(lWidget), lListBox->widget, 0, 0, 0);
 }

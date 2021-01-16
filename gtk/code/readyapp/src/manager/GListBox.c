@@ -7,7 +7,7 @@ GDECLARE_MAP(GListBox, GVOID_PTR, GVOID_PTR)
 GDEFINE_MAP(GListBox, GVOID_PTR, GVOID_PTR)
 //===============================================
 static void GListBox_Widget(GWidgetO* obj);
-static void GListBox_AddItem(GWidgetO* obj, char* key, char* text);
+static void GListBox_AddItem(GWidgetO* obj, char* key, char* text, char* icon);
 //===============================================
 static void GListBox_OnItemClick(GtkWidget* widget, gpointer params);
 //===============================================
@@ -39,14 +39,14 @@ static void GListBox_Widget(GWidgetO* obj) {
     gtk_widget_set_name(lWidget, "GListBox");
 }
 //===============================================
-static void GListBox_AddItem(GWidgetO* obj, char* key, char* text) {
+static void GListBox_AddItem(GWidgetO* obj, char* key, char* text, char* icon) {
     GListBoxO* lChild = obj->child;
     GMapO(GListBox, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
     GtkWidget* lItem = gtk_button_new();
     gtk_widget_set_name(lItem, "item");
     GtkWidget* lLayout = gtk_hbox_new(0, 0);
-    gtk_widget_set_name(lLayout, "layout");
-    GtkWidget* lButton = GManager()->Button("user", text, 5, 0);
+    gtk_widget_set_name(lLayout, "row");
+    GtkWidget* lButton = GManager()->Button(icon, text, 5, 0);
     gtk_box_pack_start(GTK_BOX(lLayout), lButton, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lLayout), gtk_hbox_new(0, 0), 1, 1, 0);
     gtk_container_add(GTK_CONTAINER(lItem), lLayout);
