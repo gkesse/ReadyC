@@ -6,6 +6,7 @@ export "GPROJECT_SRC=${GPROJECT_PATH}/gtk/code/readyapp/src"
 export "GDATA_PATH=${GPROJECT_PATH}/data"
 export "GSTYLE_PATH=${GDATA_PATH}/css/gtk/style.css"
 export "GIMG_PATH=${GDATA_PATH}/img"
+export "GPATH_SEP=//"
 #================================================
 export "GPACMAN_PACKAGE_INSTALL=mingw-w64-i686-gtk3"
 export "GPKGCONFIG_PACKAGE_SEARCH=gtk"

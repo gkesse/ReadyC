@@ -8,7 +8,7 @@
 GDECLARE_MAP(GManager, GVOID_PTR, GVOID_PTR)
 GDEFINE_MAP(GManager, GVOID_PTR, GVOID_PTR)
 //===============================================
-#define B_SPLIT (256)
+#define B_STRING (256)
 //===============================================
 static GManagerO* m_GManagerO = 0;
 //===============================================
@@ -18,7 +18,7 @@ static void GManager_Init(GManagerO* obj);
 static sGManager* GManager_GetData();
 static void GManager_LoadData();
 // string
-static char* GManager_Copy(char* strIn);
+static char* GManager_CopyStr(const char* strIn);
 static int GManager_SplitCount(char* strIn, char* sep);
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
 // page
@@ -35,20 +35,26 @@ static void GManager_LoadStyle();
 static char* GManager_GetEnv(char* key);
 // img
 static void GManager_LoadImg();
-static void GManager_SetImg(GtkWidget* widget);
+static GtkWidget* GManager_GetImg(char* img, int scale, int width, int height);
 // picto
 static void GManager_LoadPicto();
 static char* GManager_GetPicto(char* key);
+// button
+static GtkWidget* GManager_Button(char* icon, char* text, int space);
+static GtkWidget* GManager_Button2(char* img, int scale, int width, int height, char* text, int space);
+// sapce
+static GtkWidget* GManager_SpaceH(int space);
+static GtkWidget* GManager_SpaceV(int space);
 //===============================================
 GManagerO* GManager_New() {
-    GManagerO* lObj =(GManagerO*)malloc(sizeof(GManagerO));
+    GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
     GManager_Init(lObj);
     lObj->Delete = GManager_Delete;
     // data
     lObj->GetData = GManager_GetData;
     lObj->LoadData = GManager_LoadData;
     // string
-    lObj->Copy = GManager_Copy;
+    lObj->CopyStr = GManager_CopyStr;
     lObj->SplitCount = GManager_SplitCount;
     lObj->SplitGet = GManager_SplitGet;
     // page
@@ -65,10 +71,16 @@ GManagerO* GManager_New() {
     lObj->GetEnv = GManager_GetEnv;
     // img
     lObj->LoadImg = GManager_LoadImg;
-    lObj->SetImg = GManager_SetImg;
+    lObj->GetImg = GManager_GetImg;
     // picto
     lObj->LoadPicto = GManager_LoadPicto;
     lObj->GetPicto = GManager_GetPicto;
+    // button
+    lObj->Button = GManager_Button;
+    lObj->Button2 = GManager_Button2;
+    // space
+    lObj->SpaceH = GManager_SpaceH;
+    lObj->SpaceV = GManager_SpaceV;
     // return
     return lObj;
 }
@@ -88,9 +100,9 @@ GManagerO* GManager() {
 //===============================================
 static void GManager_Init(GManagerO* obj) {
     // manager
-    obj->mgr =(sGManager*)malloc(sizeof(sGManager));
+    obj->mgr = (sGManager*)malloc(sizeof(sGManager));
     // app
-    obj->mgr->app =(sGApp*)malloc(sizeof(sGApp));
+    obj->mgr->app = (sGApp*)malloc(sizeof(sGApp));
     obj->mgr->app->app_name = "ReadyApp";
     obj->mgr->app->win_width = 600;
     obj->mgr->app->win_height = 330;
@@ -99,7 +111,9 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->bg_color = "#103030";
     obj->mgr->app->style_path = GManager_GetEnv("GSTYLE_PATH");
     obj->mgr->app->img_path = GManager_GetEnv("GIMG_PATH");
+    obj->mgr->app->img_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
     obj->mgr->app->picto_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
+    obj->mgr->app->path_sep = GManager_GetEnv("GPATH_SEP");
 }
 //===============================================
 // data
@@ -110,14 +124,13 @@ static sGManager* GManager_GetData() {
 //===============================================
 static void GManager_LoadData() {
     g_object_set(gtk_settings_get_default(), "gtk-button-images", 1, NULL);
-    g_object_set(gtk_settings_get_default(), "gtk-show-unicode-menu", 1, NULL);
 }
 //===============================================
 // string
 //===============================================
-static char* GManager_Copy(char* strIn) {
+static char* GManager_CopyStr(const char* strIn) {
     int lSize = strlen(strIn);
-    char* lStr =(char*)malloc(sizeof(char)*(lSize+1));
+    char* lStr = (char*)malloc(sizeof(char)*(lSize+1));
     strcpy(lStr, strIn);
     return lStr;
 }
@@ -141,7 +154,7 @@ static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
     int lOut = 0;
     int lCount = 0;
     int lFlag = 0;
-    char strIn2[B_SPLIT+1];
+    char strIn2[B_STRING+1];
     strcpy(strIn2, strIn);
 
     while(strIn2[lPos] != 0) {
@@ -235,16 +248,31 @@ static char* GManager_GetEnv(char* key) {
 //===============================================
 static void GManager_LoadImg() {
     sGApp* lApp = GManager()->GetData()->app;
-    printf("%s\n", lApp->img_path);
+    GDir* lDir = g_dir_open(lApp->img_path, 0, NULL);
+    GMapO(GManager, GVOID_PTR, GVOID_PTR)* lImgMap = lApp->img_map;
+    if(lDir != 0) {
+        while(1) {
+            const char* lName = g_dir_read_name(lDir);
+            if(lName == 0) break;
+            char lFile[B_STRING+1];
+            sprintf(lFile, "%s%s%s", lApp->img_path, lApp->path_sep, lName);
+            char* lNameId = GManager()->CopyStr(lName);
+            char* lFileId = GManager()->CopyStr(lFile);
+            lImgMap->SetData(lImgMap, lNameId, lFileId, GMAP_EQUAL_CHAR);
+        }
+    }
+    g_dir_close(lDir);
 }
 //===============================================
-static void GManager_SetImg(GtkWidget* widget) {
-    //sGApp* lApp = GManager()->GetData()->app;
-    GdkPixbuf* lPixbuf = gdk_pixbuf_new_from_file("logo_flat.png", NULL);
-    lPixbuf = gdk_pixbuf_scale_simple(lPixbuf, 20, 20, GDK_INTERP_BILINEAR);
+static GtkWidget* GManager_GetImg(char* img, int scale, int width, int height) {
+    sGApp* lApp = GManager()->GetData()->app;
+    GMapO(GManager, GVOID_PTR, GVOID_PTR)* lImgMap = lApp->img_map;
+    char* lImgFile = lImgMap->GetData(lImgMap, img, GMAP_EQUAL_CHAR);
+    GdkPixbuf* lPixbuf = gdk_pixbuf_new_from_file(lImgFile, NULL);
+    if(scale != 0) lPixbuf = gdk_pixbuf_scale_simple(lPixbuf, width, height, GDK_INTERP_BILINEAR);
     GtkWidget* lImage = gtk_image_new();
     gtk_image_set_from_pixbuf(GTK_IMAGE(lImage), lPixbuf);
-    gtk_button_set_image(GTK_BUTTON(widget), lImage);
+    return lImage;
 }
 //===============================================
 // picto
@@ -255,5 +283,55 @@ static void GManager_LoadPicto() {
 //===============================================
 static char* GManager_GetPicto(char* key) {
     return GPicto()->Get(key);
+}
+//===============================================
+// button
+//===============================================
+static GtkWidget* GManager_Button(char* icon, char* text, int space) {
+    GtkWidget* lButton = gtk_button_new();
+    gtk_button_set_relief(GTK_BUTTON(lButton), GTK_RELIEF_NONE);
+    GtkWidget* lLayout = gtk_hbox_new(0, 0);
+    gtk_widget_set_name(lLayout, "layout");
+    GtkWidget *lIcon, *lText;
+    if(icon != 0) lIcon = gtk_label_new(0);
+    if(text != 0) lText = gtk_label_new(0);
+    if(icon != 0) GManager()->SetFont(lIcon, "FontAwesome");
+    if(icon != 0) gtk_label_set_markup(GTK_LABEL(lIcon), GManager()->GetPicto(icon));
+    if(text != 0) gtk_label_set_text(GTK_LABEL(lText), text);
+    if(icon != 0) gtk_box_pack_start(GTK_BOX(lLayout), lIcon, 0, 0, 0);
+    if(space != 0) gtk_box_pack_start(GTK_BOX(lLayout), GManager()->SpaceH(space), 0, 0, 0);
+    if(text != 0) gtk_box_pack_start(GTK_BOX(lLayout), lText, 1, 1, 0);
+    gtk_container_add(GTK_CONTAINER(lButton), lLayout);
+    return lButton;
+}
+//===============================================
+static GtkWidget* GManager_Button2(char* img, int scale, int width, int height, char* text, int space) {
+    GtkWidget* lButton = gtk_button_new();
+    gtk_button_set_relief(GTK_BUTTON(lButton), GTK_RELIEF_NONE);
+    GtkWidget* lLayout = gtk_hbox_new(0, 0);
+    gtk_widget_set_name(lLayout, "layout");
+    GtkWidget *lImg, *lText;
+    if(img != 0) lImg = GManager()->GetImg(img, scale, width, height);
+    if(text != 0) lText = gtk_label_new(0);
+    if(text != 0) gtk_label_set_text(GTK_LABEL(lText), text);
+    if(img != 0) gtk_box_pack_start(GTK_BOX(lLayout), lImg, 0, 0, 0);
+    if(space != 0) gtk_box_pack_start(GTK_BOX(lLayout), GManager()->SpaceH(space), 0, 0, 0);
+    if(text != 0) gtk_box_pack_start(GTK_BOX(lLayout), lText, 1, 1, 0);
+    gtk_container_add(GTK_CONTAINER(lButton), lLayout);
+    return lButton;
+}
+//===============================================
+// space
+//===============================================
+static GtkWidget* GManager_SpaceH(int space) {
+    GtkWidget* lSpace = gtk_hbox_new(0, 0);
+    gtk_widget_set_margin_left(lSpace, space);
+    return lSpace;
+}
+//===============================================
+static GtkWidget* GManager_SpaceV(int space) {
+    GtkWidget* lSpace = gtk_vbox_new(0, 0);
+    gtk_widget_set_margin_top(lSpace, space);
+    return lSpace;
 }
 //===============================================

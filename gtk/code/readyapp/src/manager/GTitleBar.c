@@ -6,7 +6,7 @@ static void GTitleBar_Widget(GWidgetO* obj);
 //===============================================
 GWidgetO* GTitleBar_New() {
     GWidgetO* lParent = GWidget("widget");
-    GTitleBarO* lChild =(GTitleBarO*)malloc(sizeof(GTitleBarO));
+    GTitleBarO* lChild = (GTitleBarO*)malloc(sizeof(GTitleBarO));
     
     lChild->parent = lParent;    
     lParent->child = lChild;
@@ -29,46 +29,32 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     obj->widget = lWidget;
     gtk_widget_set_name(lWidget, "GTitleBar");
     
-    GtkWidget* lLogo = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(lLogo), "lLogo");
-    gtk_widget_set_name(lLogo, "logo");
-    GManager()->SetImg(lLogo);
-    
-    GtkWidget* lAppName = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(lAppName), "lAppName");
-    
+    GtkWidget* lLogo = GManager()->Button2("logo_flat.png", 1, 20, 20, lApp->app_name, 5);
+
     GtkWidget* lTitle = gtk_label_new(0);
     lApp->title = lTitle;
-    gtk_label_set_text(GTK_LABEL(lTitle), "lTitle");
+    gtk_label_set_text(GTK_LABEL(lTitle), lApp->app_name);
 
-    GtkWidget* lConnect = gtk_label_new(0);
-    GManager()->SetFont(lConnect, "FontAwesome");
-    //gtk_label_set_use_markup(GTK_LABEL(GTK_BIN(lConnect)->child), TRUE);
-    //gtk_label_set_use_markup(GTK_LABEL(lConnect), "<i>\uf015</i>");
-    gtk_label_set_markup(GTK_LABEL(lConnect), "\uf015");
-    
-    GtkWidget* lFullscreen = gtk_button_new();
-    GtkWidget* lFullscreenLabel = gtk_label_new(0);
-    gtk_label_set_markup(GTK_LABEL(lFullscreenLabel), GManager()->GetPicto("addressbook"));
-    gtk_container_add(GTK_CONTAINER(lFullscreen), lFullscreenLabel);
-    GManager()->SetFont(lFullscreenLabel, "FontAwesome");
-    
-    GtkWidget* lMinimize = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(lMinimize), "lMinimize");
-    
-    GtkWidget* lMaximize = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(lMaximize), "lMaximize");
-    
-    GtkWidget* lClose = gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(lClose), "lClose");
+    GtkWidget* lConnect = GManager()->Button("user", "Se Connecter", 5);
+    gtk_widget_set_name(lConnect, "connect");
+    gtk_widget_set_name(GTK_WIDGET(lConnect), "connect");
+    GtkWidget* lFullscreen = GManager()->Button("eye", 0, 0);
+    GtkWidget* lMinimize = GManager()->Button("windowminimize", 0, 0);
+    GtkWidget* lMaximize = GManager()->Button("windowmaximize", 0, 0);
+    GtkWidget* lClose = GManager()->Button("times", 0, 0);
     
     gtk_box_pack_start(GTK_BOX(lWidget), lLogo, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lWidget), lAppName, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(5), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), lTitle, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(5), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), lConnect, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), lFullscreen, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), lMinimize, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), lMaximize, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), lClose, 0, 0, 0);    
 }
 //===============================================

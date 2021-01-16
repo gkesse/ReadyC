@@ -16,7 +16,7 @@ struct _GManagerO {
     sGManager* (*GetData)();
     void (*LoadData)();
     // string
-    char* (*Copy)(char* strIn);
+    char* (*CopyStr)(const char* strIn);
     int (*SplitCount)(char* strIn, char* sep);
     void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
     // page
@@ -33,10 +33,16 @@ struct _GManagerO {
     char* (*GetEnv)(char* key);
     // img
     void (*LoadImg)();
-    void (*SetImg)(GtkWidget* widget);
+    GtkWidget* (*GetImg)(char* img, int scale, int width, int height);
     // picto
     void (*LoadPicto)();
     char* (*GetPicto)(char* key);
+    // button
+    GtkWidget* (*Button)(char* icon, char* text, int space);
+    GtkWidget* (*Button2)(char* img, int scale, int width, int height, char* text, int space);
+    // space
+    GtkWidget* (*SpaceH)(int space);
+    GtkWidget* (*SpaceV)(int space);
     // struct
     sGManager* mgr;
 };
@@ -75,8 +81,11 @@ struct _sGApp {
     char* style_path;
     // img
     char* img_path;
+    void* img_map;
     // picto
     void* picto_map;
+    // path
+    char* path_sep;
 };
 //===============================================
 #endif

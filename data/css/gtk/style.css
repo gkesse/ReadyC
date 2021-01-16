@@ -1,14 +1,20 @@
 /* ============================================== */
+/* define-color */
+/* ============================================== */
+@define-color app_bg_color #103030;
+@define-color app_fg_color #ffffff;
+@define-color app_lg_color #406060;
+/* ============================================== */
 /* common */
 /* ============================================== */
 * {
-    background-color: #103030;
+    background-color: @app_bg_color;
     border: none;
     padding: 0px;
     margin: 0px;
     font-family: Allan;
     font-size: 20px;
-    color: #ffffff;
+    color: @app_fg_color;
     outline: none;
     min-width: 0px;
     min-height: 0px;
@@ -16,14 +22,22 @@
 /* ============================================== */
 /* custom */
 /* ============================================== */
+/* GWindow */
+#GWindow {
+    padding: 10px;
+}
+/* ============================================== */
 /* GTitleBar */
 #GTitleBar {
 
 }
-#GTitleBar #logo * {
-    background-color: red;
+#GTitleBar #connect #layout {
+    border-radius: 5px;
+    padding: 2px 5px;
 }
-#GTitleBar #logo:hover * {
-    background-color: green;
+#GTitleBar #connect #layout,
+#GTitleBar #connect #layout * {
+    background-color: @app_lg_color;
+    background-color: @app_lg_color;
 }
 /* ============================================== */

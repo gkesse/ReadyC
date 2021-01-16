@@ -60,7 +60,7 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
         GtkWidget* lButton = gtk_button_new();
         gtk_button_set_label(GTK_BUTTON(lButton), lKey);
         gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);
-        lWidgetMap->SetData(lWidgetMap, (void*)lButton, GManager()->Copy(lKeyId), 0);
+        lWidgetMap->SetData(lWidgetMap, (void*)lButton, GManager()->CopyStr(lKeyId), 0);
         g_signal_connect(G_OBJECT(lButton), "clicked", G_CALLBACK(GAddressKey_OnItemClick), obj);
     }
 }

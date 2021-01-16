@@ -37,7 +37,7 @@ static void GWindow_Widget(GWidgetO* obj) {
     sGApp* lApp = GManager()->GetData()->app;
     GtkWidget* lWidget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     obj->widget = lWidget;
-    GManager()->SetColor("bg", lWidget, lApp->bg_color, GTK_STATE_NORMAL);
+    gtk_widget_set_name(lWidget, "window");
     
     GWidgetO* lTitleBar = GWidget("titlebar");
     GWidgetO* lAddressBar = GWidget("addressbar");
@@ -49,9 +49,13 @@ static void GWindow_Widget(GWidgetO* obj) {
     lApp->page_map = lWorkspace;
     
     GtkWidget* lMainLayout = gtk_vbox_new(0, 0);
+    gtk_widget_set_name(lMainLayout, "GWindow");
     gtk_box_pack_start(GTK_BOX(lMainLayout), lTitleBar->widget, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), GManager()->SpaceV(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lAddressBar->widget, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), GManager()->SpaceV(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lAddressKey->widget, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), GManager()->SpaceV(5), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lWorkspace->widget, 1, 1, 0);
 
     gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
