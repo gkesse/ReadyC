@@ -56,7 +56,7 @@ GWidgetO* GWidget(const char* key) {
     if(!strcmp(key, "widget")) {return GWidget_New();}
     if(!strcmp(key, "titlebar")) {return GTitleBar_New();}
     if(!strcmp(key, "addressbar")) {return GAddressBar_New();}
-    if(!strcmp(key, "addresskey")) {return GWidget_New();}
+    if(!strcmp(key, "addresskey")) {return GAddressKey_New();}
     if(!strcmp(key, "stackwidget")) {return GStackWidget_New();}
     if(!strcmp(key, "listbox")) {return GListBox_New();}
     // page
@@ -84,7 +84,8 @@ static void GWidget_EmitItemClick(GWidgetO* obj) {
 //===============================================
 // interface
 //===============================================
-static void GWidget_SetContent(GWidgetO* obj, char* text) {}
+static void GWidget_SetContent(GWidgetO* obj, char* text) {    printf("GWidget_SetContentoooooooooooooooooooooo\n");
+}
 static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {}
 static void GWidget_SetCurrentIndex(GWidgetO* obj, int index) {}
 static int GWidget_Count(GWidgetO* obj) {return 0;}

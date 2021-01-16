@@ -190,7 +190,7 @@ static void GManager_SetPage(char* address) {
     char* lTitle = lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
     lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
     gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
-    lApp->address_key->SetContent(lApp->address_key, address);
+    lApp->address_key->SetContent(lApp->address_key, "home/login");
     gtk_entry_set_text(GTK_ENTRY(lApp->address_bar), address);
     gtk_widget_show_all(lApp->address_key->widget);
 }

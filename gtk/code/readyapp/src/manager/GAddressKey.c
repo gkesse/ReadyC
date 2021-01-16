@@ -19,11 +19,12 @@ GWidgetO* GAddressKey_New() {
     lChild->widgetMap = GMap_New(GAddressKey, GCHAR_PTR, GVOID_PTR)();
     
     lParent->child = lChild;
-    
+
     GAddressKey_Widget(lParent);
     
     lParent->Delete = GAddressKey_Delete;
     lParent->SetContent = GAddressKey_SetContent;
+    lParent->OnItemClick = GAddressKey_OnItemClick;
     return lParent;
 }
 //===============================================
@@ -36,6 +37,7 @@ void GAddressKey_Delete(GWidgetO* obj) {
 static void GAddressKey_Widget(GWidgetO* obj) {
     GtkWidget* lWidget = gtk_hbox_new(0, 0);
     obj->widget = lWidget;
+    gtk_widget_set_name(lWidget, "GAddressKey");
 }
 //===============================================
 static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
@@ -61,7 +63,7 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
         GtkWidget* lButton = GManager()->Button(0, lKey, 0, 0);
         gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);
         lWidgetMap->SetData(lWidgetMap, (void*)lButton, GManager()->CopyStr(lKeyId), 0);
-        g_signal_connect(G_OBJECT(lButton), "clicked", G_CALLBACK(GAddressKey_OnItemClick), obj);
+        g_signal_connect(G_OBJECT(lButton), "clicked", G_CALLBACK(obj->OnItemClick), obj);
     }
 }
 //===============================================
