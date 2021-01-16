@@ -28,6 +28,7 @@
     padding: 10px;
 }
 #GWindow #workspace {
+    border-radius: 5px;
     border: 1px solid #ffffff;
 }
 /* ============================================== */
@@ -61,9 +62,11 @@
 #GListBox * {
 
 }
+#GListBox #item #layout {
+    padding: 2px 5px;
+}
 #GListBox #item:hover #layout {
     border-radius: 5px;
-    padding: 2px 5px;
 }
 #GListBox #item:hover #layout,
 #GListBox #item:hover #layout * {
