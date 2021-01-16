@@ -20,13 +20,13 @@ GWidgetO* GStackWidget_New() {
     lChild->widgetMap = GMap_New(GStackWidget, GVOID_PTR, GVOID_PTR)();
     
     lParent->child = lChild;
-    
-    GStackWidget_Widget(lParent);
-    
+        
     lParent->Delete = GStackWidget_Delete;
     lParent->AddWidget = GStackWidget_AddWidget;
     lParent->SetCurrentIndex = GStackWidget_SetCurrentIndex;
     lParent->Count = GStackWidget_Count;
+
+    GStackWidget_Widget(lParent);
     return lParent;
 }
 //===============================================

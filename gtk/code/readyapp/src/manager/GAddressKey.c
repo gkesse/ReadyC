@@ -3,8 +3,8 @@
 #include "GMap.h"
 #include "GManager.h"
 //===============================================
-GDECLARE_MAP(GAddressKey, GCHAR_PTR, GVOID_PTR)
-GDEFINE_MAP(GAddressKey, GCHAR_PTR, GVOID_PTR)
+GDECLARE_MAP(GAddressKey, GVOID_PTR, GVOID_PTR)
+GDEFINE_MAP(GAddressKey, GVOID_PTR, GVOID_PTR)
 //===============================================
 static void GAddressKey_Widget(GWidgetO* obj);
 static void GAddressKey_SetContent(GWidgetO* obj, char* text);
@@ -16,15 +16,14 @@ GWidgetO* GAddressKey_New() {
     GAddressKeyO* lChild = (GAddressKeyO*)malloc(sizeof(GAddressKeyO));
     
     lChild->parent = lParent;
-    lChild->widgetMap = GMap_New(GAddressKey, GCHAR_PTR, GVOID_PTR)();
+    lChild->widgetMap = GMap_New(GAddressKey, GVOID_PTR, GVOID_PTR)();
     
     lParent->child = lChild;
-
-    GAddressKey_Widget(lParent);
-    
     lParent->Delete = GAddressKey_Delete;
     lParent->SetContent = GAddressKey_SetContent;
     lParent->OnItemClick = GAddressKey_OnItemClick;
+    
+    GAddressKey_Widget(lParent);
     return lParent;
 }
 //===============================================
@@ -43,7 +42,7 @@ static void GAddressKey_Widget(GWidgetO* obj) {
 static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
     GManager()->ClearLayout(obj->widget);
     GAddressKeyO* lChild = obj->child;
-    GMapO(GAddressKey, GCHAR_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
+    GMapO(GAddressKey, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
     int lCount = GManager()->SplitCount(text, "/");
     char lKey[256];
     char lKeyId[256];
@@ -70,7 +69,7 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
 static void GAddressKey_OnItemClick(GtkWidget* widget, gpointer params) {
     GWidgetO* lObj = (GWidgetO*)params;
     GAddressKeyO* lChild = lObj->child;
-    GMapO(GAddressKey, GCHAR_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
+    GMapO(GAddressKey, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
     char* lPageId = (char*)lWidgetMap->GetData(lWidgetMap, (void*)widget, 0);
     GManager()->SetPage(lPageId);
 }

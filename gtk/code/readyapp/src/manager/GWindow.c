@@ -18,12 +18,12 @@ GWidgetO* GWindow_New() {
     GWidgetO* lParent = GWidget("widget");
     GWindowO* lChild = (GWindowO*)malloc(sizeof(GWindowO));
     
-    lChild->parent = lParent;    
+    lChild->parent = lParent;
+    
     lParent->child = lChild;
+    lParent->Delete = GWindow_Delete;
     
     GWindow_Widget(lParent);
-    
-    lParent->Delete = GWindow_Delete;
     return lParent;
 }
 //===============================================

@@ -1,19 +1,18 @@
 //===============================================
-#ifndef _GAddressBar_
-#define _GAddressBar_
+#ifndef _GLogin_
+#define _GLogin_
 //===============================================
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
-typedef struct _GAddressBarO GAddressBarO;
+typedef struct _GLoginO GLoginO;
 //===============================================
-struct _GAddressBarO {
+struct _GLoginO {
     void* parent;
-    void* widgetMap;
 };
 //===============================================
-GWidgetO* GAddressBar_New();
-void GAddressBar_Delete(GWidgetO* obj);
+GWidgetO* GLogin_New();
+void GLogin_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================

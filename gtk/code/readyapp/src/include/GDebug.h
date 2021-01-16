@@ -1,19 +1,18 @@
 //===============================================
-#ifndef _GAddressBar_
-#define _GAddressBar_
+#ifndef _GDebug_
+#define _GDebug_
 //===============================================
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
-typedef struct _GAddressBarO GAddressBarO;
+typedef struct _GDebugO GDebugO;
 //===============================================
-struct _GAddressBarO {
+struct _GDebugO {
     void* parent;
-    void* widgetMap;
 };
 //===============================================
-GWidgetO* GAddressBar_New();
-void GAddressBar_Delete(GWidgetO* obj);
+GWidgetO* GDebug_New();
+void GDebug_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================

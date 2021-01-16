@@ -9,6 +9,10 @@
 // page
 #include "GWindow.h"
 #include "GHome.h"
+#include "GLogin.h"
+#include "GSQLiteUi.h"
+#include "GOpenCVUi.h"
+#include "GDebug.h"
 //===============================================
 #include "GList.h"
 #include "GManager.h"
@@ -62,6 +66,10 @@ GWidgetO* GWidget(const char* key) {
     // page
     if(!strcmp(key, "window")) {return GWindow_New();}
     if(!strcmp(key, "home")) {return GHome_New();}
+    if(!strcmp(key, "login")) {return GLogin_New();}
+    if(!strcmp(key, "sqlite")) {return GSQLiteUi_New();}
+    if(!strcmp(key, "opencv")) {return GOpenCVUi_New();}
+    if(!strcmp(key, "debug")) {return GDebug_New();}
     // default
     return GWidget_New();
 }

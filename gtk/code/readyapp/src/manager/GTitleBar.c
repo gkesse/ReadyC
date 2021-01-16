@@ -10,10 +10,10 @@ GWidgetO* GTitleBar_New() {
     
     lChild->parent = lParent;    
     lParent->child = lChild;
+        
+    lParent->Delete = GTitleBar_Delete;
     
     GTitleBar_Widget(lParent);
-    
-    lParent->Delete = GTitleBar_Delete;
     return lParent;
 }
 //===============================================

@@ -12,12 +12,11 @@ GWidgetO* GHome_New() {
     
     lChild->parent = lParent;
     
-    lParent->child = lChild;
-    
-    GHome_Widget(lParent);
-    
+    lParent->child = lChild;    
     lParent->Delete = GHome_Delete;
     lParent->OnItemClickObs = GHome_OnItemClickObs;
+    
+    GHome_Widget(lParent);
     return lParent;
 }
 //===============================================

@@ -19,11 +19,10 @@ GWidgetO* GListBox_New() {
     lChild->widgetMap = GMap_New(GListBox, GVOID_PTR, GVOID_PTR)();
     
     lParent->child = lChild;
-    
-    GListBox_Widget(lParent);
-    
     lParent->Delete = GListBox_Delete;
     lParent->AddItem = GListBox_AddItem;
+
+    GListBox_Widget(lParent);
     return lParent;
 }
 //===============================================

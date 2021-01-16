@@ -1,19 +1,18 @@
 //===============================================
-#ifndef _GAddressBar_
-#define _GAddressBar_
+#ifndef _GSQLiteUi_
+#define _GSQLiteUi_
 //===============================================
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
-typedef struct _GAddressBarO GAddressBarO;
+typedef struct _GSQLiteUiO GSQLiteUiO;
 //===============================================
-struct _GAddressBarO {
+struct _GSQLiteUiO {
     void* parent;
-    void* widgetMap;
 };
 //===============================================
-GWidgetO* GAddressBar_New();
-void GAddressBar_Delete(GWidgetO* obj);
+GWidgetO* GSQLiteUi_New();
+void GSQLiteUi_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================

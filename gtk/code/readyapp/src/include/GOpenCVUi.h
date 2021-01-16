@@ -1,19 +1,18 @@
 //===============================================
-#ifndef _GAddressBar_
-#define _GAddressBar_
+#ifndef _GOpenCVUi_
+#define _GOpenCVUi_
 //===============================================
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
-typedef struct _GAddressBarO GAddressBarO;
+typedef struct _GOpenCVUiO GOpenCVUiO;
 //===============================================
-struct _GAddressBarO {
+struct _GOpenCVUiO {
     void* parent;
-    void* widgetMap;
 };
 //===============================================
-GWidgetO* GAddressBar_New();
-void GAddressBar_Delete(GWidgetO* obj);
+GWidgetO* GOpenCVUi_New();
+void GOpenCVUi_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================
