@@ -78,7 +78,7 @@ static void GWidget_EmitItemClick(GWidgetO* obj) {
     int lSize = lItemMap->Size(lItemMap);
     for(int i = 0; i < lSize; i++) {
         GWidgetO* lObj = lItemMap->GetData(lItemMap, i);
-        lObj->OnItemClick(lObj);
+        lObj->OnItemClickObs(lObj);
     }
 }
 //===============================================

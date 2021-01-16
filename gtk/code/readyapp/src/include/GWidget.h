@@ -18,7 +18,7 @@ struct _GWidgetO {
     void (*AddItemClick)(GWidgetO* obj, GWidgetO* obs);
     void (*EmitItemClick)(GWidgetO* obj);
     void (*OnItemClickObs)(GWidgetO* obj);
-    void (*OnItemClick)(GWidgetO* obj);
+    void (*OnItemClick)(GtkWidget* widget, gpointer params);
     //
     GtkWidget* widget;
     void* item_map;
