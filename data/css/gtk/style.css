@@ -18,9 +18,7 @@
     outline: none;
     min-width: 0px;
     min-height: 0px;
-}
-*:hover, *:focus {
-    border: none;
+    box-shadow: none;
 }
 /* ============================================== */
 /* custom */
@@ -52,7 +50,7 @@
 #GAddressBar * {
     background-color: @app_lg_color;
 }
-#GAddressBar entry {
-    border: none;
+#GAddressBar #edit {
+    color: #aaaaaa;
 }
 /* ============================================== */

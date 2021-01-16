@@ -38,7 +38,7 @@ struct _GManagerO {
     void (*LoadPicto)();
     char* (*GetPicto)(char* key);
     // button
-    GtkWidget* (*Button)(char* icon, char* text, int space);
+    GtkWidget* (*Button)(char* icon, char* text, int space, int font);
     GtkWidget* (*Button2)(char* img, int scale, int width, int height, char* text, int space);
     // space
     GtkWidget* (*SpaceH)(int space);

@@ -28,11 +28,11 @@ static void GAddressBar_Widget(GWidgetO* obj) {
     obj->widget = lWidget;
     gtk_widget_set_name(lWidget, "GAddressBar");
 
-    GtkWidget* lIcon = GManager()->Button("home", 0, 0);
+    GtkWidget* lIcon = GManager()->Button("home", 0, 0, 0);
     
     GtkWidget* lEdit = gtk_entry_new();
-    
-    GtkWidget* lGoTo = GManager()->Button("paperplaneo", 0, 0);
+    gtk_widget_set_name(lEdit, "edit");
+    GtkWidget* lGoTo = GManager()->Button("paperplaneo", 0, 0, 0);
     
     gtk_box_pack_start(GTK_BOX(lWidget), lIcon, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(5), 0, 0, 0);

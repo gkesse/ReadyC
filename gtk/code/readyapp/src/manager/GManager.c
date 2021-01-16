@@ -40,7 +40,7 @@ static GtkWidget* GManager_GetImg(char* img, int scale, int width, int height);
 static void GManager_LoadPicto();
 static char* GManager_GetPicto(char* key);
 // button
-static GtkWidget* GManager_Button(char* icon, char* text, int space);
+static GtkWidget* GManager_Button(char* icon, char* text, int space, int font);
 static GtkWidget* GManager_Button2(char* img, int scale, int width, int height, char* text, int space);
 // sapce
 static GtkWidget* GManager_SpaceH(int space);
@@ -287,15 +287,17 @@ static char* GManager_GetPicto(char* key) {
 //===============================================
 // button
 //===============================================
-static GtkWidget* GManager_Button(char* icon, char* text, int space) {
+static GtkWidget* GManager_Button(char* icon, char* text, int space, int font) {
     GtkWidget* lButton = gtk_button_new();
     gtk_button_set_relief(GTK_BUTTON(lButton), GTK_RELIEF_NONE);
     GtkWidget* lLayout = gtk_hbox_new(0, 0);
     gtk_widget_set_name(lLayout, "layout");
     GtkWidget *lIcon, *lText;
+    char lFont[256] = "FontAwesome";
+    if(font != 0) sprintf(lFont, "%s %d", lFont, font);
     if(icon != 0) lIcon = gtk_label_new(0);
     if(text != 0) lText = gtk_label_new(0);
-    if(icon != 0) GManager()->SetFont(lIcon, "FontAwesome");
+    if(icon != 0) GManager()->SetFont(lIcon, lFont);
     if(icon != 0) gtk_label_set_markup(GTK_LABEL(lIcon), GManager()->GetPicto(icon));
     if(text != 0) gtk_label_set_text(GTK_LABEL(lText), text);
     if(icon != 0) gtk_box_pack_start(GTK_BOX(lLayout), lIcon, 0, 0, 0);

@@ -35,13 +35,12 @@ static void GTitleBar_Widget(GWidgetO* obj) {
     lApp->title = lTitle;
     gtk_label_set_text(GTK_LABEL(lTitle), lApp->app_name);
 
-    GtkWidget* lConnect = GManager()->Button("user", "Se Connecter", 5);
+    GtkWidget* lConnect = GManager()->Button("user", "Se Connecter", 5, 0);
     gtk_widget_set_name(lConnect, "connect");
-    gtk_widget_set_name(GTK_WIDGET(lConnect), "connect");
-    GtkWidget* lFullscreen = GManager()->Button("eye", 0, 0);
-    GtkWidget* lMinimize = GManager()->Button("windowminimize", 0, 0);
-    GtkWidget* lMaximize = GManager()->Button("windowmaximize", 0, 0);
-    GtkWidget* lClose = GManager()->Button("times", 0, 0);
+    GtkWidget* lFullscreen = GManager()->Button("eye", 0, 0, 0);
+    GtkWidget* lMinimize = GManager()->Button("windowminimize", 0, 0, 0);
+    GtkWidget* lMaximize = GManager()->Button("windowmaximize", 0, 0, 0);
+    GtkWidget* lClose = GManager()->Button("times", 0, 0, 0);
     
     gtk_box_pack_start(GTK_BOX(lWidget), lLogo, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lWidget), GManager()->SpaceH(5), 0, 0, 0);
