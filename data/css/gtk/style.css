@@ -52,4 +52,7 @@
 #GAddressBar * {
     background-color: @app_lg_color;
 }
+#GAddressBar entry {
+    border: none;
+}
 /* ============================================== */
