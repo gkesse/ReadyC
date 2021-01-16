@@ -19,6 +19,9 @@
     min-width: 0px;
     min-height: 0px;
 }
+*:hover, *:focus {
+    border: none;
+}
 /* ============================================== */
 /* custom */
 /* ============================================== */
@@ -38,6 +41,15 @@
 #GTitleBar #connect #layout,
 #GTitleBar #connect #layout * {
     background-color: @app_lg_color;
+}
+/* ============================================== */
+/* GAddressBar */
+#GAddressBar {
+    background-color: @app_lg_color;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+#GAddressBar * {
     background-color: @app_lg_color;
 }
 /* ============================================== */

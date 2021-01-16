@@ -37,7 +37,6 @@ static void GWindow_Widget(GWidgetO* obj) {
     sGApp* lApp = GManager()->GetData()->app;
     GtkWidget* lWidget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     obj->widget = lWidget;
-    gtk_widget_set_name(lWidget, "window");
     
     GWidgetO* lTitleBar = GWidget("titlebar");
     GWidgetO* lAddressBar = GWidget("addressbar");
