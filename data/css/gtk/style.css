@@ -57,3 +57,16 @@
     color: #aaaaaa;
 }
 /* ============================================== */
+/* GListBox */
+#GListBox * {
+
+}
+#GListBox #item:hover #layout {
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+#GListBox #item:hover #layout,
+#GListBox #item:hover #layout * {
+    background-color: @app_lg_color;
+}
+/* ============================================== */

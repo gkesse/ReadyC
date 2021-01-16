@@ -55,7 +55,7 @@ static void GWindow_Widget(GWidgetO* obj) {
     gtk_box_pack_start(GTK_BOX(lMainLayout), lAddressBar->widget, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), GManager()->SpaceV(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lAddressKey->widget, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(lMainLayout), GManager()->SpaceV(5), 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(lMainLayout), GManager()->SpaceV(10), 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(lMainLayout), lWorkspace->widget, 1, 1, 0);
 
     gtk_container_add(GTK_CONTAINER(lWidget), lMainLayout);
