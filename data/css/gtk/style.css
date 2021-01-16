@@ -27,6 +27,9 @@
 #GWindow {
     padding: 10px;
 }
+#GWindow #workspace {
+    border: 1px solid #ffffff;
+}
 /* ============================================== */
 /* GTitleBar */
 #GTitleBar {

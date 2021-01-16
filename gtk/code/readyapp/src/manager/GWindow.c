@@ -46,6 +46,7 @@ static void GWindow_Widget(GWidgetO* obj) {
 
     GWidgetO* lWorkspace = GWidget("stackwidget");
     lApp->page_map = lWorkspace;
+    gtk_widget_set_name(lWorkspace->widget, "workspace");
     
     GtkWidget* lMainLayout = gtk_vbox_new(0, 0);
     gtk_widget_set_name(lMainLayout, "GWindow");

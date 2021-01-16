@@ -48,8 +48,10 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
     lKeyId[0] = 0;
     for(int i = 0; i < lCount; i++) {
         if(i != 0) {
-            GtkWidget* lButton = GManager()->Button("chevronright", 0, 0, 10);
+            GtkWidget* lButton = GManager()->Button("chevronright", 0, 0, 12);
+            gtk_box_pack_start(GTK_BOX(obj->widget), GManager()->SpaceH(5), 0, 0, 0);
             gtk_box_pack_start(GTK_BOX(obj->widget), lButton, 0, 0, 0);    
+            gtk_box_pack_start(GTK_BOX(obj->widget), GManager()->SpaceH(5), 0, 0, 0);
         }
         
         GManager()->SplitGet(text, lKey, "/", i);
