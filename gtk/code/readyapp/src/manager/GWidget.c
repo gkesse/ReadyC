@@ -23,7 +23,8 @@ static int GWidget_Count(GWidgetO* obj);
 static void GWidget_AddItem(GWidgetO* obj, char* key, char* text, char* icon);
 static void GWidget_AddItemClick(GWidgetO* obj, GWidgetO* obs);
 static void GWidget_EmitItemClick(GWidgetO* obj);
-static void GWidget_OnItemClick(GWidgetO* obj);
+static void GWidget_OnItemClickObs(GWidgetO* obj);
+static void GWidget_OnItemClick(GtkWidget* widget, gpointer params);
 //===============================================
 GWidgetO* GWidget_New() {
     GWidgetO* lObj = (GWidgetO*)malloc(sizeof(GWidgetO));
@@ -40,6 +41,7 @@ GWidgetO* GWidget_New() {
     lObj->AddItem = GWidget_AddItem;
     lObj->AddItemClick = GWidget_AddItemClick;
     lObj->EmitItemClick = GWidget_EmitItemClick;
+    lObj->OnItemClickObs = GWidget_OnItemClickObs;
     lObj->OnItemClick = GWidget_OnItemClick;
     return lObj;
 }
@@ -54,7 +56,7 @@ GWidgetO* GWidget(const char* key) {
     if(!strcmp(key, "widget")) {return GWidget_New();}
     if(!strcmp(key, "titlebar")) {return GTitleBar_New();}
     if(!strcmp(key, "addressbar")) {return GAddressBar_New();}
-    if(!strcmp(key, "addresskey")) {return GAddressKey_New();}
+    if(!strcmp(key, "addresskey")) {return GWidget_New();}
     if(!strcmp(key, "stackwidget")) {return GStackWidget_New();}
     if(!strcmp(key, "listbox")) {return GListBox_New();}
     // page
@@ -70,6 +72,7 @@ static void GWidget_AddItemClick(GWidgetO* obj, GWidgetO* obs) {
     GListO(GWidget, GVOID_PTR)* lItemMap = obj->item_map;
     lItemMap->AddData(lItemMap, obs);
 }
+//===============================================
 static void GWidget_EmitItemClick(GWidgetO* obj) {
     GListO(GWidget, GVOID_PTR)* lItemMap = obj->item_map;
     int lSize = lItemMap->Size(lItemMap);
@@ -86,5 +89,6 @@ static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {}
 static void GWidget_SetCurrentIndex(GWidgetO* obj, int index) {}
 static int GWidget_Count(GWidgetO* obj) {return 0;}
 static void GWidget_AddItem(GWidgetO* obj, char* key, char* text, char* icon) {}
-static void GWidget_OnItemClick(GWidgetO* obj) {}
+static void GWidget_OnItemClickObs(GWidgetO* obj) {}
+static void GWidget_OnItemClick(GtkWidget* widget, gpointer params) {}
 //===============================================

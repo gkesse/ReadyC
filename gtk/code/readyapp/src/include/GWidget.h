@@ -17,6 +17,7 @@ struct _GWidgetO {
     void (*AddItem)(GWidgetO* obj, char* key, char* text, char* icon);
     void (*AddItemClick)(GWidgetO* obj, GWidgetO* obs);
     void (*EmitItemClick)(GWidgetO* obj);
+    void (*OnItemClickObs)(GWidgetO* obj);
     void (*OnItemClick)(GWidgetO* obj);
     //
     GtkWidget* widget;

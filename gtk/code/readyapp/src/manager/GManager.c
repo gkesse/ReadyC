@@ -191,6 +191,7 @@ static void GManager_SetPage(char* address) {
     lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
     gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
     lApp->address_key->SetContent(lApp->address_key, address);
+    gtk_entry_set_text(GTK_ENTRY(lApp->address_bar), address);
     gtk_widget_show_all(lApp->address_key->widget);
 }
 //===============================================

@@ -69,6 +69,7 @@ struct _sGApp {
     GtkWidget* title;
     void* title_map;
     // address
+    GtkWidget* address_bar;
     GWidgetO* address_key;
     // page
     GWidgetO* page_map;

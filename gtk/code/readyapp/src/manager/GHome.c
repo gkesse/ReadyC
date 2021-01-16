@@ -4,7 +4,7 @@
 //===============================================
 static void GHome_Widget(GWidgetO* obj);
 //===============================================
-static void GHome_OnItemClick(GWidgetO* obj);
+static void GHome_OnItemClickObs(GWidgetO* obj);
 //===============================================
 GWidgetO* GHome_New() {
     GWidgetO* lParent = GWidget("widget");
@@ -17,7 +17,7 @@ GWidgetO* GHome_New() {
     GHome_Widget(lParent);
     
     lParent->Delete = GHome_Delete;
-    lParent->OnItemClick = GHome_OnItemClick;
+    lParent->OnItemClickObs = GHome_OnItemClickObs;
     return lParent;
 }
 //===============================================
@@ -41,7 +41,7 @@ static void GHome_Widget(GWidgetO* obj) {
     gtk_box_pack_start(GTK_BOX(lWidget), lListBox->widget, 0, 0, 0);
 }
 //===============================================
-static void GHome_OnItemClick(GWidgetO* obj) {
+static void GHome_OnItemClickObs(GWidgetO* obj) {
     sGApp* lApp = GManager()->GetData()->app;
     char* lWidgetId = lApp->widget_id;
     GManager()->SetPage(lWidgetId);
