@@ -8,7 +8,7 @@
         typedef struct _GListNodeO_##GPREFIX##_##GDATA GListNodeO_##GPREFIX##_##GDATA; \
         typedef struct _GListO_##GPREFIX##_##GDATA GListO_##GPREFIX##_##GDATA; \
         typedef int (*GLIST_EQUAL_DATA_##GPREFIX##_##GDATA)(GDATA data1, char* data2); \
-        typedef void (*GLIST_SHOW_##GPREFIX##_##GDATA)(int index, GDATA data); \
+        typedef void (*GLIST_SHOW_##GPREFIX##_##GDATA)(int index, GDATA data, void* params); \
         typedef void (*GLIST_REMOVE_##GPREFIX##_##GDATA)(GDATA data); \
         \
         struct _GListNodeO_##GPREFIX##_##GDATA { \
@@ -28,7 +28,7 @@
             int (*CountData)(GListO_##GPREFIX##_##GDATA* obj, char* data, GLIST_EQUAL_DATA_##GPREFIX##_##GDATA equal); \
             int (*Size)(GListO_##GPREFIX##_##GDATA* obj); \
             void (*Show)(GListO_##GPREFIX##_##GDATA* obj, GLIST_SHOW_##GPREFIX##_##GDATA show); \
-            void (*ShowChar)(int index, void* value); \
+            void (*ShowChar)(int index, void* value, void* params); \
             GListNodeO_##GPREFIX##_##GDATA* m_head; \
         }; \
         \
@@ -45,7 +45,7 @@
         static int GList_CountData_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, char* data, GLIST_EQUAL_DATA_##GPREFIX##_##GDATA equal); \
         static int GList_Size_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj); \
         static void GList_Show_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_SHOW_##GPREFIX##_##GDATA show); \
-        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value);
+        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value, void* params);
 //===============================================
 #define GDEFINE_LIST(GPREFIX, GDATA) \
         \
@@ -229,14 +229,18 @@
             \
             while(lNext != 0) { \
                 GDATA lData = lNext->m_data; \
-                show(lIndex, lData); \
+                show(lIndex, lData, obj); \
                 lNext = lNext->m_next; \
                 lIndex++; \
             } \
         } \
         \
-        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value) { \
-            printf("%*s", 20, (char*)value); \
+        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value, void* params) { \
+            GListO(GPREFIX, GDATA)* lObj = params; \
+            int lSize = lObj->Size(lObj); \
+            if(index != 0) printf(" ; "); \
+            printf("%s", (char*)value); \
+            if((index + 1) == lSize) printf("\n"); \
         }
 //===============================================
 #define GList_New(GPREFIX, GDATA) \

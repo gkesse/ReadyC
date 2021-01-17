@@ -2,9 +2,13 @@
 #include "GManager.h"
 #include "GPicto.h"
 #include "GMap.h"
+#include "GList.h"
 //===============================================
 GDECLARE_MAP(GManager, GVOID_PTR, GVOID_PTR)
 GDEFINE_MAP(GManager, GVOID_PTR, GVOID_PTR)
+//===============================================
+GDECLARE_LIST(GManager, GVOID_PTR)
+GDEFINE_LIST(GManager, GVOID_PTR)
 //===============================================
 #define B_STRING (256)
 //===============================================
@@ -18,6 +22,10 @@ static void GManager_LoadData();
 static char* GManager_CopyStr(const char* strIn);
 static int GManager_SplitCount(char* strIn, char* sep);
 static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
+static void* GManager_Split(char* strIn, char* sep);
+static char* GManager_Trim(char* strIn);
+static char* GManager_TrimLeft(char* strIn);
+static char* GManager_TrimRight(char* strIn);
 // page
 static void GManager_SetPage(char* address);
 // layout
@@ -57,6 +65,10 @@ GManagerO* GManager_New() {
     lObj->CopyStr = GManager_CopyStr;
     lObj->SplitCount = GManager_SplitCount;
     lObj->SplitGet = GManager_SplitGet;
+    lObj->Split = GManager_Split;
+    lObj->Trim = GManager_Trim;
+    lObj->TrimLeft = GManager_TrimLeft;
+    lObj->TrimRight = GManager_TrimRight;
     // page
     lObj->SetPage = GManager_SetPage;
     // layout
@@ -181,6 +193,38 @@ static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
     }
     strOut[lOut] = 0;
 }
+//===============================================
+static void* GManager_Split(char* strIn, char* sep) {
+    char* lStrIn = GManager()->CopyStr(strIn);
+    char* lPtr = strtok(lStrIn, sep);
+    GListO(GManager, GVOID_PTR)* lData = GList_New(GManager, GVOID_PTR)();
+    while(1) {
+        if(lPtr == 0) break;
+        lData->AddData(lData, GManager()->Trim(lPtr));
+        lPtr = strtok(NULL, sep);
+    }
+    free(lStrIn);
+    return lData;
+}
+//===============================================
+static char* GManager_Trim(char* strIn) {     
+    return GManager_TrimRight(GManager_TrimLeft(strIn));  
+} 
+//===============================================
+static char* GManager_TrimLeft(char* strIn) {     
+    while(isspace(*strIn)) strIn++;     
+    return strIn; 
+}  
+//===============================================
+static char* GManager_TrimRight(char* strIn) {     
+    char* lBack;
+    int lSize = strlen(strIn);
+    if(lSize == 0) return(strIn); 
+    lBack = strIn + lSize;     
+    while(isspace(*--lBack));     
+    *(lBack+1) = 0;     
+    return strIn; 
+}  
 //===============================================
 // page
 //===============================================

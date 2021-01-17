@@ -3,6 +3,15 @@
 #include "GProcessUi.h"
 #include "GSQLite.h"
 #include "GGtk.h"
+#include "GManager.h"
+#include "GMap.h"
+#include "GList.h"
+//===============================================
+GDECLARE_MAP(GProcess, GVOID_PTR, GVOID_PTR)
+GDEFINE_MAP(GProcess, GVOID_PTR, GVOID_PTR)
+//===============================================
+GDECLARE_LIST(GProcess, GVOID_PTR)
+GDEFINE_LIST(GProcess, GVOID_PTR)
 //===============================================
 static GProcessO* m_GProcessO = 0;
 //===============================================
@@ -43,6 +52,8 @@ static void GProcess_RunTest(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_RunUi(int argc, char** argv) {
+    GListO(GProcess,GVOID_PTR)* lData = GManager()->Split("aaa bbb = cccc ddd ;    ffff     = ggg", ";=");
+    lData->Show(lData, lData->ShowChar);
     GSQLite();
     GProcessUi()->Run(argc, argv);
 }
