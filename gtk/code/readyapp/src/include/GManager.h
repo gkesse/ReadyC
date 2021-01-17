@@ -16,12 +16,12 @@ struct _GManagerO {
     void (*LoadData)();
     // string
     char* (*CopyStr)(const char* strIn);
-    int (*SplitCount)(char* strIn, char* sep);
-    void (*SplitGet)(char* strIn, char* strOut, char* sep, int index);
     void* (*Split)(char* strIn, char* sep);
     char* (*Trim)(char* strIn);
     char* (*TrimLeft)(char* strIn);
     char* (*TrimRight)(char* strIn);
+    int (*GetWidth)(char* widthMap, int index, int defaultWidth);
+    int (*IsNumber)(char* strIn);
     // page
     void (*SetPage)(char* address);
     // layout

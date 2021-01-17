@@ -126,17 +126,10 @@ static void GSQLite_QueryShow(char* sqlQuery, char* widthMap, int defaultWidth) 
     sGSQLiteShow lParams = {1, 1, widthMap, defaultWidth, 0};
     GSQLite_Exec(sqlQuery, GSQLite_OnQueryShow, &lParams);
     
-    int lWidthC = GManager()->SplitCount(lParams.widthMap, ";");
-    char lWidthG[256];
-
     if(lParams.colCount > 0) printf("+-");
     for(int i = 0; i < lParams.colCount; i++) {
-        int lWidth = lParams.defaultWidth;
-        if(i < lWidthC) {
-            GManager()->SplitGet(lParams.widthMap, lWidthG, ";", i);
-            lWidth = atoi(lWidthG);
-        }
         if(i != 0) printf("-+-");
+        int lWidth = GManager()->GetWidth(widthMap, i, defaultWidth);
         for(int j = 0; j < lWidth; j++) {
             printf("-");
         }
@@ -178,19 +171,11 @@ static void* GSQLite_QueryMap(char* sqlQuery) {
 //===============================================
 static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char** colName) {
 	sGSQLiteShow* lParams = (sGSQLiteShow*)params;
-
-    int lWidthC = GManager()->SplitCount(lParams->widthMap, ";");
-    char lWidthG[256];
-    
     if(lParams->onHeader == 1) {
         printf("+-");
         for(int i = 0; i < colCount; i++) {
-            int lWidth = lParams->defaultWidth;
-            if(i < lWidthC) {
-                GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
-                lWidth = atoi(lWidthG);
-            }
             if(i != 0) printf("-+-");
+            int lWidth = GManager()->GetWidth(lParams->widthMap, i, lParams->defaultWidth);
             for(int j = 0; j < lWidth; j++) {
                 printf("-");
             }
@@ -201,12 +186,8 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
     if(lParams->onHeader == 1) {
         printf("| ");
         for(int i = 0; i < colCount; i++) {
-            int lWidth = lParams->defaultWidth;
-            if(i < lWidthC) {
-                GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
-                lWidth = atoi(lWidthG);
-            }
             if(i != 0) printf(" | ");
+            int lWidth = GManager()->GetWidth(lParams->widthMap, i, lParams->defaultWidth);
             printf("%-*s", lWidth, colName[i]);
         }
         printf(" |");
@@ -215,12 +196,8 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
     if(lParams->onGrid == 1) {
         printf("+-");
         for(int i = 0; i < colCount; i++) {
-            int lWidth = lParams->defaultWidth;
-            if(i < lWidthC) {
-                GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
-                lWidth = atoi(lWidthG);
-            }
             if(i != 0) printf("-+-");
+            int lWidth = GManager()->GetWidth(lParams->widthMap, i, lParams->defaultWidth);
             for(int j = 0; j < lWidth; j++) {
                 printf("-");
             }
@@ -230,13 +207,9 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
     } 
     printf("| ");
 	for(int i = 0; i < colCount; i++) {
-        int lWidth = lParams->defaultWidth;
-        if(i < lWidthC) {
-            GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
-            lWidth = atoi(lWidthG);
-        }
         char* lColValue = colValue[i] ? colValue[i] : "NULL";
         if(i != 0) printf(" | ");
+        int lWidth = GManager()->GetWidth(lParams->widthMap, i, lParams->defaultWidth);
         printf("%-*s", lWidth, lColValue);
     }
     printf(" |");

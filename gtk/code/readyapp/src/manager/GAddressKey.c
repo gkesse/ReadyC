@@ -1,10 +1,14 @@
 //===============================================
 #include "GAddressKey.h"
 #include "GMap.h"
+#include "GList.h"
 #include "GManager.h"
 //===============================================
 GDECLARE_MAP(GAddressKey, GVOID_PTR, GVOID_PTR)
 GDEFINE_MAP(GAddressKey, GVOID_PTR, GVOID_PTR)
+//===============================================
+GDECLARE_LIST(GAddressKey, GVOID_PTR)
+GDEFINE_LIST(GAddressKey, GVOID_PTR)
 //===============================================
 static void GAddressKey_Widget(GWidgetO* obj);
 static void GAddressKey_SetContent(GWidgetO* obj, char* text);
@@ -43,11 +47,9 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
     GManager()->ClearLayout(obj->widget);
     GAddressKeyO* lChild = obj->child;
     GMapO(GAddressKey, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
-    int lCount = GManager()->SplitCount(text, "/");
-    char lKey[256];
-    char lKeyId[256];
-    lKeyId[0] = 0;
-    for(int i = 0; i < lCount; i++) {
+    GListO(GAddressKey, GVOID_PTR)* lMap = GManager()->Split(text, "/");
+    char lKeyId[256]; lKeyId[0] = 0;
+    for(int i = 0; i < lMap->Size(lMap); i++) {
         if(i != 0) {
             GtkWidget* lButton = GManager()->Button("chevronright", 0, 0, 12);
             gtk_box_pack_start(GTK_BOX(obj->widget), GManager()->SpaceH(5), 0, 0, 0);
@@ -55,7 +57,7 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
             gtk_box_pack_start(GTK_BOX(obj->widget), GManager()->SpaceH(5), 0, 0, 0);
         }
         
-        GManager()->SplitGet(text, lKey, "/", i);
+        char* lKey = lMap->GetData(lMap, i);
 
         if(i != 0) {sprintf(lKeyId, "%s/", lKeyId);}
         sprintf(lKeyId, "%s%s", lKeyId, lKey);
@@ -64,6 +66,7 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
         lWidgetMap->SetData(lWidgetMap, (void*)lButton, GManager()->CopyStr(lKeyId), 0);
         g_signal_connect(G_OBJECT(lButton), "clicked", G_CALLBACK(obj->OnItemClick), obj);
     }
+    lMap->Delete(lMap, 0);
 }
 //===============================================
 static void GAddressKey_OnItemClick(GtkWidget* widget, gpointer params) {

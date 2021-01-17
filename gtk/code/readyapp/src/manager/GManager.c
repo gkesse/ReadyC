@@ -20,12 +20,12 @@ static void GManager_Init(GManagerO* obj);
 static void GManager_LoadData();
 // string
 static char* GManager_CopyStr(const char* strIn);
-static int GManager_SplitCount(char* strIn, char* sep);
-static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index);
 static void* GManager_Split(char* strIn, char* sep);
 static char* GManager_Trim(char* strIn);
 static char* GManager_TrimLeft(char* strIn);
 static char* GManager_TrimRight(char* strIn);
+static int GManager_GetWidth(char* widthMap, int index, int defaultWidth);
+static int GManager_IsNumber(char* strIn);
 // page
 static void GManager_SetPage(char* address);
 // layout
@@ -63,12 +63,12 @@ GManagerO* GManager_New() {
     lObj->LoadData = GManager_LoadData;
     // string
     lObj->CopyStr = GManager_CopyStr;
-    lObj->SplitCount = GManager_SplitCount;
-    lObj->SplitGet = GManager_SplitGet;
     lObj->Split = GManager_Split;
     lObj->Trim = GManager_Trim;
     lObj->TrimLeft = GManager_TrimLeft;
     lObj->TrimRight = GManager_TrimRight;
+    lObj->GetWidth = GManager_GetWidth;
+    lObj->IsNumber = GManager_IsNumber;
     // page
     lObj->SetPage = GManager_SetPage;
     // layout
@@ -149,51 +149,6 @@ static char* GManager_CopyStr(const char* strIn) {
     return lStr;
 }
 //===============================================
-static int GManager_SplitCount(char* strIn, char* sep) {
-    int lPos = 0;
-    int lCount = 0;
-
-    while(strIn[lPos] != 0) {
-        char lChar = strIn[lPos];
-        char* lSearch = strchr(sep, lChar);
-        if(lSearch != 0) lCount++;
-        lPos++;
-    }
-    lCount += 1;
-    return lCount;
-}
-//===============================================
-static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
-    int lPos = 0;
-    int lOut = 0;
-    int lCount = 0;
-    int lFlag = 0;
-    char strIn2[B_STRING+1];
-    strcpy(strIn2, strIn);
-
-    while(strIn2[lPos] != 0) {
-        if(lFlag == 0) {
-            if(lCount == index) lFlag = 1;
-            else lFlag = 2;
-        }
-        if(lFlag == 1) {
-            char lChar = strIn2[lPos];
-            char* lSearch = strchr(sep, lChar);
-            if(lSearch != 0) break;
-            strOut[lOut] = lChar;
-            lPos++; lOut++;
-        }
-        if(lFlag == 2) {
-            char lChar = strIn2[lPos];
-            char* lSearch = strchr(sep, lChar);
-            if(lSearch != 0) lCount++;
-            lPos++;
-            lFlag = 0;
-        }
-    }
-    strOut[lOut] = 0;
-}
-//===============================================
 static void* GManager_Split(char* strIn, char* sep) {
     char* lStrIn = GManager()->CopyStr(strIn);
     char* lPtr = strtok(lStrIn, sep);
@@ -225,6 +180,25 @@ static char* GManager_TrimRight(char* strIn) {
     *(lBack+1) = 0;     
     return strIn; 
 }  
+//===============================================
+static int GManager_GetWidth(char* widthMap, int index, int defaultWidth) {
+    GListO(GManager, GVOID_PTR)* lWidthMap = GManager_Split(widthMap, ";");
+    int lLength = lWidthMap->Size(lWidthMap);
+    if(index >= lLength) {lWidthMap->Delete(lWidthMap, 0); return defaultWidth;}
+    char* lWidthId = lWidthMap->GetData(lWidthMap, index);
+    if(!GManager_IsNumber(lWidthId)) {lWidthMap->Delete(lWidthMap, 0); return defaultWidth;}
+    int lWidth = atoi(lWidthId);
+    lWidthMap->Delete(lWidthMap, 0);
+    return lWidth;
+}
+//===============================================
+static int GManager_IsNumber(char* strIn) {
+    int lSize = strlen(strIn);
+    for(int i = 0; i < lSize; i++) {
+        if(!isdigit(strIn[i])) return 0;
+    }
+    return 1;
+}
 //===============================================
 // page
 //===============================================
