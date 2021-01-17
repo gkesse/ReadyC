@@ -78,11 +78,6 @@ static void GSQLite_Init(GSQLiteO* obj) {
     config_value text\n\
     )");
     obj->QueryWrite(lQuery);
-    // config_data
-    sprintf(lQuery, "\
-    select * from config_data\n\
-    ");
-    obj->QueryShow(lQuery, "20;50", 20);
 }
 //===============================================
 static void* GSQLite_Open() {

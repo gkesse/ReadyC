@@ -20,9 +20,9 @@ static void GSQLiteUi_Run_LOAD(int argc, char** argv);
 static void GSQLiteUi_Run_QUIT(int argc, char** argv);
 //===============================================
 static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv);
-static void GSQLiteUi_Run_config_data_CREATE(int argc, char** argv);
-static void GSQLiteUi_Run_config_data_DROP(int argc, char** argv);
-static void GSQLiteUi_Run_config_data_SHOW(int argc, char** argv);
+static void GSQLiteUi_Run_CONFIG_DATA_CREATE(int argc, char** argv);
+static void GSQLiteUi_Run_CONFIG_DATA_DROP(int argc, char** argv);
+static void GSQLiteUi_Run_CONFIG_DATA_SHOW(int argc, char** argv);
 //===============================================
 GSQLiteUiO* GSQLiteUi_New() {
     GSQLiteUiO* lObj = (GSQLiteUiO*)malloc(sizeof(GSQLiteUiO));
@@ -51,9 +51,9 @@ static void GSQLiteUi_Run(int argc, char** argv) {
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_CHOICE")) {GSQLiteUi_Run_CHOICE(argc, argv);}
         //
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_TABLES_SHOW")) {GSQLiteUi_Run_TABLES_SHOW(argc, argv);}
-        else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_config_data_CREATE")) {GSQLiteUi_Run_config_data_CREATE(argc, argv);}
-        else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_config_data_DROP")) {GSQLiteUi_Run_config_data_DROP(argc, argv);}
-        else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_config_data_SHOW")) {GSQLiteUi_Run_config_data_SHOW(argc, argv);}
+        else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_CONFIG_DATA_CREATE")) {GSQLiteUi_Run_CONFIG_DATA_CREATE(argc, argv);}
+        else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_CONFIG_DATA_DROP")) {GSQLiteUi_Run_CONFIG_DATA_DROP(argc, argv);}
+        else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_CONFIG_DATA_SHOW")) {GSQLiteUi_Run_CONFIG_DATA_SHOW(argc, argv);}
         //
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_SAVE")) {GSQLiteUi_Run_SAVE(argc, argv);}
         else if(!strcmp(m_GSQLiteUiO->G_STATE, "S_LOAD")) {GSQLiteUi_Run_LOAD(argc, argv);}
@@ -74,7 +74,6 @@ static void GSQLiteUi_Run_INIT(int argc, char** argv) {
     printf("\t%-2s : %s\n", "-i", "reinitialiser l'application");
     printf("\t%-2s : %s\n", "-a", "redemarrer l'application");
     printf("\t%-2s : %s\n", "-v", "valider les configurations");
-    printf("\n");
     m_GSQLiteUiO->G_STATE = "S_LOAD";
 }
 //===============================================
@@ -99,9 +98,9 @@ static void GSQLiteUi_Run_CHOICE(int argc, char** argv) {
     else if(!strcmp(lAnswer, "-a")) {m_GSQLiteUiO->G_STATE = "S_ADMIN";}
     //
     else if(!strcmp(lAnswer, "1")) {m_GSQLiteUiO->G_STATE = "S_TABLES_SHOW"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
-    else if(!strcmp(lAnswer, "2")) {m_GSQLiteUiO->G_STATE = "S_config_data_CREATE"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
-    else if(!strcmp(lAnswer, "3")) {m_GSQLiteUiO->G_STATE = "S_config_data_DROP"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
-    else if(!strcmp(lAnswer, "4")) {m_GSQLiteUiO->G_STATE = "S_config_data_SHOW"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "2")) {m_GSQLiteUiO->G_STATE = "S_CONFIG_DATA_CREATE"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "3")) {m_GSQLiteUiO->G_STATE = "S_CONFIG_DATA_DROP"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
+    else if(!strcmp(lAnswer, "4")) {m_GSQLiteUiO->G_STATE = "S_CONFIG_DATA_SHOW"; GConfig()->SetData("G_SQLITE_ID", lAnswer);}
     //
 }
 //===============================================
@@ -110,8 +109,8 @@ static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv) {
     char lQuery[256];
 
     sprintf(lQuery, "\
-    select name from sqlite_master \
-    where type='table' \
+    select name from sqlite_master\n\
+    where type='table'\n\
     ");
     
     GSQLite()->QueryShow(lQuery, "20;30", 25);
@@ -119,38 +118,38 @@ static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv) {
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
-static void GSQLiteUi_Run_config_data_CREATE(int argc, char** argv) {
+static void GSQLiteUi_Run_CONFIG_DATA_CREATE(int argc, char** argv) {
     printf("\n");
     char lQuery[256];
 
     sprintf(lQuery, "\
-    create table config_data ( \
-    CONFIG_KEY text unique not null, \
-    CONFIG_VALUE text \
+    create table if not exists config_data (\n\
+    CONFIG_KEY text unique not null,\n\
+    CONFIG_VALUE text\n\
     )");
     
     GSQLite()->QueryWrite(lQuery);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
-static void GSQLiteUi_Run_config_data_DROP(int argc, char** argv) {
+static void GSQLiteUi_Run_CONFIG_DATA_DROP(int argc, char** argv) {
     printf("\n");
     char lQuery[256];
 
     sprintf(lQuery, "\
-    drop table config_data \
+    drop table config_data\n\
     ");
     
     GSQLite()->QueryWrite(lQuery);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
-static void GSQLiteUi_Run_config_data_SHOW(int argc, char** argv) {
+static void GSQLiteUi_Run_CONFIG_DATA_SHOW(int argc, char** argv) {
     printf("\n");
     char lQuery[256];
 
     sprintf(lQuery, "\
-    select * from config_data \
+    select * from config_data\n\
     ");
     
     GSQLite()->QueryShow(lQuery, "20;30", 25);

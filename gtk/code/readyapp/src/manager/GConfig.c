@@ -80,7 +80,7 @@ static void GConfig_SaveData(char* key) {
 //===============================================
 static void GConfig_LoadData(char* key) {
     char lQuery[256];
-    sprintf(lQuery, "\n\
+    sprintf(lQuery, "\
     select config_value from config_data\n\
     where config_key = '%s'\n\
     ", key);
@@ -91,7 +91,7 @@ static void GConfig_LoadData(char* key) {
 //===============================================
 static int GConfig_CountData(char* key) {
     char lQuery[256];
-    sprintf(lQuery, "\n\
+    sprintf(lQuery, "\
     select count(*) from config_data\n\
     where config_key = '%s'\n\
     ", key);
@@ -103,7 +103,7 @@ static int GConfig_CountData(char* key) {
 //===============================================
 static void GConfig_InsertData(char* key, char* value) {
     char lQuery[256]; lQuery[0] = 0;
-    sprintf(lQuery, "\n\
+    sprintf(lQuery, "\
     insert into config_data (config_key, config_value)\n\
     values ('%s','%s')\n\
     ", key, value);
@@ -112,7 +112,7 @@ static void GConfig_InsertData(char* key, char* value) {
 //===============================================
 static void GConfig_UpdateData(char* key, char* value) {
     char lQuery[256];
-    sprintf(lQuery, "\n\
+    sprintf(lQuery, "\
     update config_data\n\
     set config_value = '%s'\n\
     where config_key = '%s'\n\

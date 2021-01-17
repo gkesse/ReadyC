@@ -52,9 +52,6 @@ static void GProcess_RunTest(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_RunUi(int argc, char** argv) {
-    GListO(GProcess,GVOID_PTR)* lData = GManager()->Split("home/login/account", "/;=");
-    lData->Show(lData, lData->ShowChar);
-    GSQLite();
     GProcessUi()->Run(argc, argv);
 }
 //===============================================
