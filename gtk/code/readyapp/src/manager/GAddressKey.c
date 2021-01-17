@@ -48,6 +48,7 @@ static void GAddressKey_SetContent(GWidgetO* obj, char* text) {
     GAddressKeyO* lChild = obj->child;
     GMapO(GAddressKey, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
     GListO(GAddressKey, GVOID_PTR)* lMap = GManager()->Split(text, "/");
+
     char lKeyId[256]; lKeyId[0] = 0;
     for(int i = 0; i < lMap->Size(lMap); i++) {
         if(i != 0) {

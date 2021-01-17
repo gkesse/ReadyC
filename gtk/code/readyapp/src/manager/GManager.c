@@ -155,7 +155,7 @@ static void* GManager_Split(char* strIn, char* sep) {
     GListO(GManager, GVOID_PTR)* lData = GList_New(GManager, GVOID_PTR)();
     while(1) {
         if(lPtr == 0) break;
-        lData->AddData(lData, GManager()->Trim(lPtr));
+        lData->AddData(lData, GManager_CopyStr(GManager_Trim(lPtr)));
         lPtr = strtok(NULL, sep);
     }
     free(lStrIn);
