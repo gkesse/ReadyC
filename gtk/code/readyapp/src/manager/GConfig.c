@@ -62,7 +62,7 @@ static void GConfig_Remove(char* key) {
 //===============================================
 static void GConfig_SetData(char* key, char* value) {
     GMapO(GConfig, GVOID_PTR, GVOID_PTR)* lDataMap = m_GConfigO->dataMap;
-    lDataMap->SetData(lDataMap, key, value, lDataMap->EqualChar);
+    lDataMap->SetData(lDataMap, key, GManager()->CopyStr(value), lDataMap->EqualChar);
 }
 //===============================================
 static char* GConfig_GetData(char* key) {
@@ -86,6 +86,7 @@ static void GConfig_LoadData(char* key) {
     ", key);
     char* lValue = GSQLite()->QueryValue(lQuery);
     GConfig_SetData(key, lValue);
+    free(lValue);
 }
 //===============================================
 static int GConfig_CountData(char* key) {
@@ -96,15 +97,15 @@ static int GConfig_CountData(char* key) {
     ", key);
     char* lValue = GSQLite()->QueryValue(lQuery);
     int lCount = atoi(lValue);
-    GManager()->Free(lValue);
+    free(lValue);
     return lCount;
 }
 //===============================================
 static void GConfig_InsertData(char* key, char* value) {
-    char lQuery[256];
+    char lQuery[256]; lQuery[0] = 0;
     sprintf(lQuery, "\n\
     insert into config_data (config_key, config_value)\n\
-    values ('%s', '%s')\n\
+    values ('%s','%s')\n\
     ", key, value);
     GSQLite()->QueryWrite(lQuery);
 }

@@ -70,46 +70,19 @@ GSQLiteO* GSQLite() {
 // method
 //===============================================
 static void GSQLite_Init(GSQLiteO* obj) {
-    char lSqlQuery[256];
-    char* lValue;
-    GListO(GSQLite, GVOID_PTR)* lList;
+    char lQuery[256];
     // config_data
-    sprintf(lSqlQuery, "\
+    sprintf(lQuery, "\
     create table if not exists config_data (\n\
     config_key text,\n\
     config_value text\n\
     )");
-    obj->QueryWrite(lSqlQuery);
-    // tables
-    sprintf(lSqlQuery, "\
-    select type, name, tbl_name, rootpage\n\
-    from sqlite_master\n\
+    obj->QueryWrite(lQuery);
+    // config_data
+    sprintf(lQuery, "\
+    select * from config_data\n\
     ");
-    obj->QueryShow(lSqlQuery, "10;20;20;10", 20);
-    // query_value
-    sprintf(lSqlQuery, "\
-    select type, name, tbl_name, rootpage\n\
-    from sqlite_master\n\
-    ");
-    lValue = obj->QueryValue(lSqlQuery);
-    GManager()->Free(lValue);
-    // query_col
-    sprintf(lSqlQuery, "\
-    select type, name, tbl_name, rootpage\n\
-    from sqlite_master\n\
-    ");
-    //
-    lList = obj->QueryCol(lSqlQuery);
-    lList->Show(lList, lList->ShowChar);
-    lList->Delete(lList, 0);
-    //
-    lList = obj->QueryRow(lSqlQuery);
-    lList->Show(lList, lList->ShowChar);
-    lList->Delete(lList, 0);
-    //
-    lList = obj->QueryMap(lSqlQuery);
-    lList->Show(lList, lList->ShowCharMap);
-    lList->DeleteMap(lList, 0);
+    obj->QueryShow(lQuery, "20;50", 20);
 }
 //===============================================
 static void* GSQLite_Open() {
@@ -151,6 +124,7 @@ static void GSQLite_QueryWrite(char* sqlQuery) {
 static void* GSQLite_QueryValue(char* sqlQuery) {
     sGSQLiteData lParams = {0, 0};
     GSQLite_Exec(sqlQuery, GSQLite_OnQueryValue, &lParams);
+    if(lParams.data == 0) lParams.data = GManager()->CopyStr("");
     return lParams.data;
 }
 //===============================================
