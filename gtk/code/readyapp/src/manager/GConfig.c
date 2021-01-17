@@ -6,9 +6,6 @@
 #include "GSQLite.h"
 #include "GManager.h"
 //===============================================
-#define B_VALUE (256)
-#define B_QUERY (256)
-//===============================================
 GDECLARE_MAP(GConfig, GVOID_PTR, GVOID_PTR)
 GDEFINE_MAP(GConfig, GVOID_PTR, GVOID_PTR)
 //===============================================
@@ -84,7 +81,7 @@ static void GConfig_SaveData(char* key) {
 }
 //===============================================
 static void GConfig_LoadData(char* key) {
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
     sprintf(lQuery, "\
     select config_value from config_data \
     where config_key = '%s' \
@@ -94,7 +91,7 @@ static void GConfig_LoadData(char* key) {
 }
 //===============================================
 static int GConfig_CountData(char* key) {
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
     sprintf(lQuery, "\
     select count(*) from config_data \
     where config_key = '%s' \
@@ -106,7 +103,7 @@ static int GConfig_CountData(char* key) {
 }
 //===============================================
 static void GConfig_InsertData(char* key, char* value) {
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
     sprintf(lQuery, "\
     insert into config_data (config_key, config_value)\
     values ('%s', '%s') \
@@ -115,7 +112,7 @@ static void GConfig_InsertData(char* key, char* value) {
 }
 //===============================================
 static void GConfig_UpdateData(char* key, char* value) {
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
     sprintf(lQuery, "\
     update config_data \
     set config_value = '%s' \

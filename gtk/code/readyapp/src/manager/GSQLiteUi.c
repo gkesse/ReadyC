@@ -6,7 +6,6 @@
 #include "GManager.h"
 //===============================================
 #define B_ANSWER (256)
-#define B_QUERY (256)
 //===============================================
 static GSQLiteUiO* m_GSQLiteUiO = 0;
 //===============================================
@@ -108,7 +107,7 @@ static void GSQLiteUi_Run_CHOICE(int argc, char** argv) {
 //===============================================
 static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv) {
     printf("\n");
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
 
     sprintf(lQuery, "\
     select name from sqlite_master \
@@ -122,7 +121,7 @@ static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv) {
 //===============================================
 static void GSQLiteUi_Run_config_data_CREATE(int argc, char** argv) {
     printf("\n");
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
 
     sprintf(lQuery, "\
     create table config_data ( \
@@ -136,7 +135,7 @@ static void GSQLiteUi_Run_config_data_CREATE(int argc, char** argv) {
 //===============================================
 static void GSQLiteUi_Run_config_data_DROP(int argc, char** argv) {
     printf("\n");
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
 
     sprintf(lQuery, "\
     drop table config_data \
@@ -148,7 +147,7 @@ static void GSQLiteUi_Run_config_data_DROP(int argc, char** argv) {
 //===============================================
 static void GSQLiteUi_Run_config_data_SHOW(int argc, char** argv) {
     printf("\n");
-    char lQuery[B_QUERY+1];
+    char lQuery[256];
 
     sprintf(lQuery, "\
     select * from config_data \

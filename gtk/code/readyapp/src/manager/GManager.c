@@ -10,8 +10,6 @@ GDEFINE_MAP(GManager, GVOID_PTR, GVOID_PTR)
 GDECLARE_LIST(GManager, GVOID_PTR)
 GDEFINE_LIST(GManager, GVOID_PTR)
 //===============================================
-#define B_STRING (256)
-//===============================================
 static GManagerO* m_GManagerO = 0;
 //===============================================
 // init
@@ -275,7 +273,7 @@ static void GManager_LoadImg() {
         while(1) {
             const char* lName = g_dir_read_name(lDir);
             if(lName == 0) break;
-            char lFile[B_STRING+1];
+            char lFile[256];
             sprintf(lFile, "%s%s%s", lApp->img_path, lApp->path_sep, lName);
             char* lNameId = GManager()->CopyStr(lName);
             char* lFileId = GManager()->CopyStr(lFile);

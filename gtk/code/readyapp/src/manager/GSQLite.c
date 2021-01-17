@@ -103,7 +103,9 @@ static void GSQLite_Init(GSQLiteO* obj) {
     lList->Show(lList, lList->ShowChar);
     lList->Delete(lList, 0);
     //
-    lList = obj->QueryMap(lSqlQuery);
+    lList = obj->QueryRow(lSqlQuery);
+    lList->Show(lList, lList->ShowChar);
+    lList->Delete(lList, 0);
 }
 //===============================================
 static void* GSQLite_Open() {

@@ -4,10 +4,7 @@
 #include "GConfig.h"
 #include "GManager.h"
 //===============================================
-#if defined(_GUSE_IMAGE_INVERTCV_ON_)
-//===============================================
 #define B_ANSWER (256)
-#define B_IMAGE_INVERTCVTIME (256)
 //===============================================
 static GOpenCVUiO* m_GOpenCVUiO = 0;
 //===============================================
@@ -139,6 +136,4 @@ static void GOpenCVUi_Run_QUIT(int argc, char** argv) {
     else if(!strcmp(lAnswer, "n")) {m_GOpenCVUiO->G_STATE = "S_INIT";}
     else if(!strcmp(lAnswer, "")) {m_GOpenCVUiO->G_STATE = "S_INIT";}
 }
-//===============================================
-#endif
 //===============================================
