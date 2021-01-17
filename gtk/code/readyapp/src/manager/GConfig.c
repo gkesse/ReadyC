@@ -1,6 +1,4 @@
 //===============================================
-#define _GMAP_SHOW_CHAR_
-//===============================================
 #include "GConfig.h"
 #include "GMap.h"
 #include "GSQLite.h"
@@ -82,9 +80,9 @@ static void GConfig_SaveData(char* key) {
 //===============================================
 static void GConfig_LoadData(char* key) {
     char lQuery[256];
-    sprintf(lQuery, "\
-    select config_value from config_data \
-    where config_key = '%s' \
+    sprintf(lQuery, "\n\
+    select config_value from config_data\n\
+    where config_key = '%s'\n\
     ", key);
     char* lValue = GSQLite()->QueryValue(lQuery);
     GConfig_SetData(key, lValue);
@@ -92,9 +90,9 @@ static void GConfig_LoadData(char* key) {
 //===============================================
 static int GConfig_CountData(char* key) {
     char lQuery[256];
-    sprintf(lQuery, "\
-    select count(*) from config_data \
-    where config_key = '%s' \
+    sprintf(lQuery, "\n\
+    select count(*) from config_data\n\
+    where config_key = '%s'\n\
     ", key);
     char* lValue = GSQLite()->QueryValue(lQuery);
     int lCount = atoi(lValue);
@@ -104,19 +102,19 @@ static int GConfig_CountData(char* key) {
 //===============================================
 static void GConfig_InsertData(char* key, char* value) {
     char lQuery[256];
-    sprintf(lQuery, "\
-    insert into config_data (config_key, config_value)\
-    values ('%s', '%s') \
+    sprintf(lQuery, "\n\
+    insert into config_data (config_key, config_value)\n\
+    values ('%s', '%s')\n\
     ", key, value);
     GSQLite()->QueryWrite(lQuery);
 }
 //===============================================
 static void GConfig_UpdateData(char* key, char* value) {
     char lQuery[256];
-    sprintf(lQuery, "\
-    update config_data \
-    set config_value = '%s' \
-    where config_key = '%s' \
+    sprintf(lQuery, "\n\
+    update config_data\n\
+    set config_value = '%s'\n\
+    where config_key = '%s'\n\
     ", value, key);
     GSQLite()->QueryWrite(lQuery);
 }

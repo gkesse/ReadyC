@@ -18,6 +18,7 @@
         \
         struct _GListO_##GPREFIX##_##GDATA { \
             void (*Delete)(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
+            void (*DeleteMap)(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
             void (*Clear)(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
             void (*RemoveIndex)(GListO_##GPREFIX##_##GDATA* obj, int index, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
             void (*RemoveData)(GListO_##GPREFIX##_##GDATA* obj, char* data, GLIST_EQUAL_DATA_##GPREFIX##_##GDATA equal, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
@@ -29,11 +30,13 @@
             int (*Size)(GListO_##GPREFIX##_##GDATA* obj); \
             void (*Show)(GListO_##GPREFIX##_##GDATA* obj, GLIST_SHOW_##GPREFIX##_##GDATA show); \
             void (*ShowChar)(int index, void* value, void* params); \
+            void (*ShowCharMap)(int index, void* value, void* params); \
             GListNodeO_##GPREFIX##_##GDATA* m_head; \
         }; \
         \
         GListO_##GPREFIX##_##GDATA* GList_New_##GPREFIX##_##GDATA(); \
         static void GList_Delete_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
+        static void GList_DeleteMap_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
         static void GList_Clear_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
         static void GList_RemoveIndex_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, int index, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
         static void GList_RemoveData_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, char* data, GLIST_EQUAL_DATA_##GPREFIX##_##GDATA equal, GLIST_REMOVE_##GPREFIX##_##GDATA remove); \
@@ -45,7 +48,8 @@
         static int GList_CountData_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, char* data, GLIST_EQUAL_DATA_##GPREFIX##_##GDATA equal); \
         static int GList_Size_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj); \
         static void GList_Show_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_SHOW_##GPREFIX##_##GDATA show); \
-        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value, void* params);
+        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value, void* params); \
+        static void GList_ShowCharMap_##GPREFIX##_##GDATA(int index, void* value, void* params);
 //===============================================
 #define GDEFINE_LIST(GPREFIX, GDATA) \
         \
@@ -53,6 +57,7 @@
             GListO_##GPREFIX##_##GDATA* lObj = (GListO_##GPREFIX##_##GDATA*)malloc(sizeof(GListO_##GPREFIX##_##GDATA)); \
             \
             lObj->Delete = GList_Delete_##GPREFIX##_##GDATA; \
+            lObj->DeleteMap = GList_DeleteMap_##GPREFIX##_##GDATA; \
             lObj->Clear = GList_Clear_##GPREFIX##_##GDATA; \
             lObj->RemoveIndex = GList_RemoveIndex_##GPREFIX##_##GDATA; \
             lObj->RemoveData = GList_RemoveData_##GPREFIX##_##GDATA; \
@@ -64,6 +69,7 @@
             lObj->Size = GList_Size_##GPREFIX##_##GDATA; \
             lObj->Show = GList_Show_##GPREFIX##_##GDATA; \
             lObj->ShowChar = GList_ShowChar_##GPREFIX##_##GDATA; \
+            lObj->ShowCharMap = GList_ShowCharMap_##GPREFIX##_##GDATA; \
             \
             lObj->m_head = 0; \
             return lObj; \
@@ -71,6 +77,15 @@
         \
         static void GList_Delete_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove) { \
             GList_Clear_##GPREFIX##_##GDATA(obj, remove); \
+            free(obj); \
+        } \
+        \
+        static void GList_DeleteMap_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_REMOVE_##GPREFIX##_##GDATA remove) { \
+            int lSize = obj->Size(obj); \
+            for(int i = 0; i < lSize; i++) { \
+                GListO(GPREFIX, GDATA)* lObj = obj->GetData(obj, i); \
+                lObj->Delete(lObj, remove); \
+            } \
             free(obj); \
         } \
         \
@@ -241,6 +256,15 @@
             if(index != 0) printf(" ; "); \
             printf("%s", (char*)value); \
             if((index + 1) == lSize) printf("\n"); \
+        } \
+        \
+        static void GList_ShowCharMap_##GPREFIX##_##GDATA(int index, void* value, void* params) { \
+            GListO(GPREFIX, GDATA)* lObj = params; \
+            int lSize = lObj->Size(lObj); \
+            for(int i = 0; i < lSize; i++) { \
+                GListO(GPREFIX, GDATA)* lRow = lObj->GetData(lObj, i); \
+                lRow->Show(lRow, lRow->ShowChar); \
+            } \
         }
 //===============================================
 #define GList_New(GPREFIX, GDATA) \
