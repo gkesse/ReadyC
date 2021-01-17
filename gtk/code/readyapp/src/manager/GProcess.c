@@ -52,7 +52,7 @@ static void GProcess_RunTest(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_RunUi(int argc, char** argv) {
-    GListO(GProcess,GVOID_PTR)* lData = GManager()->Split("aaa bbb = cccc ddd ;    ffff     = ggg", ";=");
+    GListO(GProcess,GVOID_PTR)* lData = GManager()->Split("aaa / bbb    /    cccc /ddd /    ffff     = ggg", "/;=");
     lData->Show(lData, lData->ShowChar);
     GSQLite();
     GProcessUi()->Run(argc, argv);
