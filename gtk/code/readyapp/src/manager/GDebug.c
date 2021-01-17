@@ -27,8 +27,10 @@ static void GDebug_Widget(GWidgetO* obj) {
     GtkWidget* lWidget = gtk_vbox_new(1, 0);
     obj->widget = lWidget;
 
-    GtkWidget* lLabel = GManager()->Button(0, "GDebug", 0, 0);
+    GtkWidget* lTextView = gtk_text_view_new();
+    GtkTextBuffer* lBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(lTextView));
+    gtk_text_buffer_set_text(lBuffer, "content", -1);
     
-    gtk_box_pack_start(GTK_BOX(lWidget), lLabel, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(lWidget), lTextView, 1, 1, 0);
 }
 //===============================================

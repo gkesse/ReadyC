@@ -1,6 +1,4 @@
 //===============================================
-#define _GMAP_EQUAL_CHAR_
-//===============================================
 #include "GWindow.h"
 #include "GMap.h"
 #include "GManager.h"
@@ -80,8 +78,8 @@ static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* wi
     GMapO(GWindow, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
     GMapO(GWindow, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
     int lCount = lApp->page_map->Count(lApp->page_map);
-    lPageId->SetData(lPageId, key, (void*)lCount, GMAP_EQUAL_CHAR);
-    lTitleMap->SetData(lTitleMap, key, title, GMAP_EQUAL_CHAR);
+    lPageId->SetData(lPageId, key, (void*)lCount, lTitleMap->EqualChar);
+    lTitleMap->SetData(lTitleMap, key, title, lTitleMap->EqualChar);
     lApp->page_map->AddWidget(lApp->page_map, widget);
     if(isDefault == 1) {GManager()->SetPage(key);}
 }

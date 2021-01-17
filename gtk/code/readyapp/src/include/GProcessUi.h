@@ -1,16 +1,20 @@
 //===============================================
-#ifndef _GInclude_
-#define _GInclude_
+#ifndef _GProcessUi_
+#define _GProcessUi_
 //===============================================
-#if defined(__WIN32)
+#include "GInclude.h"
 //===============================================
-#include <stdio.h>
-#include <stdlib.h>
+typedef struct _GProcessUiO GProcessUiO;
 //===============================================
-#include <gtk/gtk.h>
-#include <sqlite3.h>
+struct _GProcessUiO {
+    void (*Delete)();
+    void (*Run)(int argc, char** argv);
+    char* G_STATE;
+};
 //===============================================
-#endif
+GProcessUiO* GProcessUi_New();
+void GProcessUi_Delete();
+GProcessUiO* GProcessUi();
 //===============================================
 #endif
 //===============================================

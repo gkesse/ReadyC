@@ -6,9 +6,11 @@ GTARGET = $(GBIN)/rdc
 GINCS = \
     -I$(GSRC)/include \
     `pkg-config --cflags gtk+-3.0` \
+    `pkg-config --cflags sqlite3` \
     
 GLIBS = \
     `pkg-config --libs gtk+-3.0` \
+    `pkg-config --libs sqlite3` \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
@@ -19,8 +21,6 @@ GCFLAGS = \
     -W -Wall \
     -Wno-unused-parameter \
     -Wno-deprecated-declarations \
-    #-Wno-unused-function \
-    #-Wno-return-type \
     
 all: clean_exe compile run
  

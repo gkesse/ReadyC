@@ -43,6 +43,8 @@ struct _GManagerO {
     // space
     GtkWidget* (*SpaceH)(int space);
     GtkWidget* (*SpaceV)(int space);
+    // terminal
+    void (*ReadLine)(char* buffer, int size);
     // struct
     sGManager* mgr;
 };
@@ -87,6 +89,8 @@ struct _sGApp {
     void* picto_map;
     // path
     char* path_sep;
+    // sqlite
+    char* sqlite_db_path;
 };
 //===============================================
 #endif

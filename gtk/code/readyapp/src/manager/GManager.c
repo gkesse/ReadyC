@@ -1,6 +1,4 @@
 //===============================================
-#define _GMAP_EQUAL_CHAR_
-//===============================================
 #include "GManager.h"
 #include "GPicto.h"
 #include "GMap.h"
@@ -45,6 +43,8 @@ static GtkWidget* GManager_Button2(char* img, int scale, int width, int height, 
 // sapce
 static GtkWidget* GManager_SpaceH(int space);
 static GtkWidget* GManager_SpaceV(int space);
+// terminal
+static void GManager_ReadLine(char* buffer, int size);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
@@ -81,6 +81,8 @@ GManagerO* GManager_New() {
     // space
     lObj->SpaceH = GManager_SpaceH;
     lObj->SpaceV = GManager_SpaceV;
+    // terminal
+    lObj->ReadLine = GManager_ReadLine;
     // return
     return lObj;
 }
@@ -114,6 +116,7 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->img_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
     obj->mgr->app->picto_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
     obj->mgr->app->path_sep = GManager_GetEnv("GPATH_SEP");
+    obj->mgr->app->sqlite_db_path = GManager_GetEnv("GSQLITE_DB_PATH");
 }
 //===============================================
 // data
@@ -186,8 +189,8 @@ static void GManager_SetPage(char* address) {
     sGApp* lApp = GManager()->GetData()->app;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
-    int lPageIndex = (int)lPageId->GetData(lPageId, address, GMAP_EQUAL_CHAR);
-    char* lTitle = lTitleMap->GetData(lTitleMap, address, GMAP_EQUAL_CHAR);
+    int lPageIndex = (int)lPageId->GetData(lPageId, address, lPageId->EqualChar);
+    char* lTitle = lTitleMap->GetData(lTitleMap, address, lTitleMap->EqualChar);
     lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
     gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
     lApp->address_key->SetContent(lApp->address_key, address);
@@ -259,7 +262,7 @@ static void GManager_LoadImg() {
             sprintf(lFile, "%s%s%s", lApp->img_path, lApp->path_sep, lName);
             char* lNameId = GManager()->CopyStr(lName);
             char* lFileId = GManager()->CopyStr(lFile);
-            lImgMap->SetData(lImgMap, lNameId, lFileId, GMAP_EQUAL_CHAR);
+            lImgMap->SetData(lImgMap, lNameId, lFileId, lImgMap->EqualChar);
         }
     }
     g_dir_close(lDir);
@@ -268,7 +271,7 @@ static void GManager_LoadImg() {
 static GtkWidget* GManager_GetImg(char* img, int scale, int width, int height) {
     sGApp* lApp = GManager()->GetData()->app;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lImgMap = lApp->img_map;
-    char* lImgFile = lImgMap->GetData(lImgMap, img, GMAP_EQUAL_CHAR);
+    char* lImgFile = lImgMap->GetData(lImgMap, img, lImgMap->EqualChar);
     GdkPixbuf* lPixbuf = gdk_pixbuf_new_from_file(lImgFile, NULL);
     if(scale != 0) lPixbuf = gdk_pixbuf_scale_simple(lPixbuf, width, height, GDK_INTERP_BILINEAR);
     GtkWidget* lImage = gtk_image_new();
@@ -336,5 +339,13 @@ static GtkWidget* GManager_SpaceV(int space) {
     GtkWidget* lSpace = gtk_vbox_new(0, 0);
     gtk_widget_set_margin_top(lSpace, space);
     return lSpace;
+}
+//===============================================
+// terminal
+//===============================================
+static void GManager_ReadLine(char* buffer, int size) {
+    fflush(stdout); 
+    fgets(buffer, size, stdin); 
+    buffer[strlen(buffer)-1] = 0;
 }
 //===============================================
