@@ -41,7 +41,7 @@ static void GHome_Widget(GWidgetO* obj) {
 }
 //===============================================
 static void GHome_OnItemClickObs(GWidgetO* obj) {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     char* lWidgetId = lApp->widget_id;
     GManager()->SetPage(lWidgetId);
 }

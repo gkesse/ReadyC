@@ -1,70 +1,58 @@
 //===============================================
 #include "GSQLite.h"
+#include "GList.h"
 #include "GManager.h"
 //===============================================
-#define B_QUERY (256)
-#define B_WIDTH (8)
-#define B_VALUE (256)
+GDECLARE_LIST(GSQLite, GVOID_PTR)
+GDEFINE_LIST(GSQLite, GVOID_PTR)
 //===============================================
 static GSQLiteO* m_GSQLiteO = 0;
 //===============================================
 typedef struct _sGSQLiteShow sGSQLiteShow;
-typedef struct _sGSQLiteValue sGSQLiteValue;
-typedef struct _sGSQLiteCol sGSQLiteCol;
-typedef struct _sGSQLiteRow sGSQLiteRow;
+typedef struct _sGSQLiteData sGSQLiteData;
 //===============================================
 struct _sGSQLiteShow {
     int onHeader;
     int onGrid;
-    char* width;
-    int widthD;
+    char* widthMap;
+    int defaultWidth;
     int colCount;
 };
 //===============================================
-struct _sGSQLiteValue {
-    char* value;
-    int count;
-    int index;
-};
-//===============================================
-struct _sGSQLiteCol{
-    char* col;
-    char* sep;
+struct _sGSQLiteData {
+    void* data;
     int count;
 };
 //===============================================
-struct _sGSQLiteRow {
-    char* row;
-    char* sep;
-    int count;
-    int index;
-};
-//===============================================
-static void GSQLite_Test(int argc, char** argv);
+static void GSQLite_Init(GSQLiteO* obj);
 static void* GSQLite_Open();
-static void GSQLite_Exec(void* onExec, void* params, char* sqlQuery);
+static void GSQLite_Exec(char* sqlQuery, void* onExec, void* params);
 //===============================================
-static void GSQLite_QueryShow(char* sqlQuery, char* width, int widthD);
+static void GSQLite_QueryShow(char* sqlQuery, char* widthMap, int defaultWidth);
 static void GSQLite_QueryWrite(char* sqlQuery);
-static void GSQLite_QueryValue(char* sqlQuery, char* value);
-static void GSQLite_QueryCol(char* sqlQuery, char* col, char* sep);
-static void GSQLite_QueryRow(char* sqlQuery, char* row, char* sep);
+static void* GSQLite_QueryValue(char* sqlQuery);
+static void* GSQLite_QueryCol(char* sqlQuery);
+static void* GSQLite_QueryRow(char* sqlQuery);
+static void* GSQLite_QueryMap(char* sqlQuery);
 //===============================================
 static int GSQLite_OnQueryShow(void* params, int rows, char** values, char** fields);
 static int GSQLite_OnQueryValue(void* params, int rows, char** values, char** fields);
 static int GSQLite_OnQueryCol(void* params, int rows, char** values, char** fields);
 static int GSQLite_OnQueryRow(void* params, int rows, char** values, char** fields);
+static int GSQLite_OnQueryMap(void* params, int rows, char** values, char** fields);
 //===============================================
 GSQLiteO* GSQLite_New() {
 	GSQLiteO* lObj = (GSQLiteO*)malloc(sizeof(GSQLiteO));
 
 	lObj->Delete = GSQLite_Delete;
-	lObj->Test = GSQLite_Test;
 	lObj->QueryShow = GSQLite_QueryShow;
 	lObj->QueryWrite = GSQLite_QueryWrite;
 	lObj->QueryValue = GSQLite_QueryValue;
 	lObj->QueryCol = GSQLite_QueryCol;
 	lObj->QueryRow = GSQLite_QueryRow;
+	lObj->QueryMap = GSQLite_QueryMap;
+    
+    GSQLite_Init(lObj);
 	return lObj;
 }
 //===============================================
@@ -79,53 +67,44 @@ GSQLiteO* GSQLite() {
 	return m_GSQLiteO;
 }
 //===============================================
-static void GSQLite_Test(int argc, char** argv) {
-    char lSqlQuery[B_QUERY+1];
-    char lValue[B_VALUE+1];
-
-    /*sprintf(lSqlQuery, "\
-    insert into CONFIG_DATA (CONFIG_KEY, CONFIG_VALUE)\
-    values ('%s', '%s') \
-    ", "G_MY_KEY", "MY_VALUE");
-    GSQLite()->QueryWrite(lSqlQuery);*/
-
+// method
+//===============================================
+static void GSQLite_Init(GSQLiteO* obj) {
+    char lSqlQuery[256];
+    char* lValue;
+    GListO(GSQLite, GVOID_PTR)* lList;
+    // config_data
     sprintf(lSqlQuery, "\
-    select * from CONFIG_DATA \
-    limit 5 \
-    ");
-    GSQLite()->QueryShow(lSqlQuery, "20;30", 25);
-    printf("\n");
-    
+    create table if not exists config_data (\n\
+    config_key text,\n\
+    config_value text\n\
+    )");
+    obj->QueryWrite(lSqlQuery);
+    // tables
     sprintf(lSqlQuery, "\
-    select CONFIG_VALUE from CONFIG_DATA \
-    where CONFIG_KEY = 'G_DEPOT_ROOT' \
+    select type, name, tbl_name, rootpage\n\
+    from sqlite_master\n\
     ");
-    GSQLite()->QueryValue(lSqlQuery, lValue);
-    printf("%s\n", lValue);
-    printf("\n");
-    
+    obj->QueryShow(lSqlQuery, "10;20;20;10", 20);
+    // query_value
     sprintf(lSqlQuery, "\
-    select CONFIG_KEY from CONFIG_DATA \
-    limit 5 \
+    select type, name, tbl_name, rootpage\n\
+    from sqlite_master\n\
     ");
-    GSQLite()->QueryCol(lSqlQuery, lValue, "|");
-    printf("%s\n", lValue);
-    printf("\n");
-    
+    lValue = obj->QueryValue(lSqlQuery);
+    GManager()->Free(lValue);
+    // query_col
     sprintf(lSqlQuery, "\
-    select * from CONFIG_DATA \
-    where CONFIG_KEY = 'G_MY_KEY' \
+    select type, name, tbl_name, rootpage\n\
+    from sqlite_master\n\
     ");
-    GSQLite()->QueryRow(lSqlQuery, lValue, "|");
-    printf("%s\n", lValue);
-    printf("\n");
-
-    /*sprintf(lSqlQuery, "\
-    delete from CONFIG_DATA\
-    where CONFIG_KEY = '%s' \
-    ", "G_MY_KEY");
-    GSQLite()->QueryWrite(lSqlQuery);*/
-} 
+    //
+    lList = obj->QueryCol(lSqlQuery);
+    lList->Show(lList, lList->ShowChar);
+    lList->Delete(lList, 0);
+    //
+    lList = obj->QueryMap(lSqlQuery);
+}
 //===============================================
 static void* GSQLite_Open() {
     sGApp* lApp = GManager()->mgr->app;
@@ -135,7 +114,7 @@ static void* GSQLite_Open() {
     return lDb; 
 }
 //===============================================
-static void GSQLite_Exec(void* onExec, void* params, char* sqlQuery) {
+static void GSQLite_Exec(char* sqlQuery, void* onExec, void* params) {
 	sqlite3* lDb = GSQLite_Open();
     char* lError;
 	int lOk = sqlite3_exec(lDb, sqlQuery, onExec, params, &lError);
@@ -143,19 +122,18 @@ static void GSQLite_Exec(void* onExec, void* params, char* sqlQuery) {
     sqlite3_close(lDb);
 }
 //===============================================
-static void GSQLite_QueryShow(char* sqlQuery, char* width, int widthD) {
-    sGSQLiteShow lParams = {1, 1, width, widthD, 0};
+static void GSQLite_QueryShow(char* sqlQuery, char* widthMap, int defaultWidth) {
+    sGSQLiteShow lParams = {1, 1, widthMap, defaultWidth, 0};
+    GSQLite_Exec(sqlQuery, GSQLite_OnQueryShow, &lParams);
     
-    GSQLite_Exec(GSQLite_OnQueryShow, &lParams, sqlQuery);
-    
-    int lWidthC = GManager()->SplitCount(lParams.width, ";");
-    char lWidthG[B_WIDTH+1];
+    int lWidthC = GManager()->SplitCount(lParams.widthMap, ";");
+    char lWidthG[256];
 
     if(lParams.colCount > 0) printf("+-");
     for(int i = 0; i < lParams.colCount; i++) {
-        int lWidth = lParams.widthD;
+        int lWidth = lParams.defaultWidth;
         if(i < lWidthC) {
-            GManager()->SplitGet(lParams.width, lWidthG, ";", i);
+            GManager()->SplitGet(lParams.widthMap, lWidthG, ";", i);
             lWidth = atoi(lWidthG);
         }
         if(i != 0) printf("-+-");
@@ -168,38 +146,48 @@ static void GSQLite_QueryShow(char* sqlQuery, char* width, int widthD) {
 }
 //===============================================
 static void GSQLite_QueryWrite(char* sqlQuery) {
-    GSQLite_Exec(0, 0, sqlQuery);
+    GSQLite_Exec(sqlQuery, 0, 0);
 }
 //===============================================
-static void GSQLite_QueryValue(char* sqlQuery, char* value) {
-    sGSQLiteValue lParams = {value, 0, 0};
-    GSQLite_Exec(GSQLite_OnQueryValue, &lParams, sqlQuery);
+static void* GSQLite_QueryValue(char* sqlQuery) {
+    sGSQLiteData lParams = {0, 0};
+    GSQLite_Exec(sqlQuery, GSQLite_OnQueryValue, &lParams);
+    return lParams.data;
 }
 //===============================================
-static void GSQLite_QueryCol(char* sqlQuery, char* col, char* sep) {
-    col[0] = 0;
-    sGSQLiteCol lParams = {col, sep, 0};
-    GSQLite_Exec(GSQLite_OnQueryCol, &lParams, sqlQuery);
+static void* GSQLite_QueryCol(char* sqlQuery) {
+    void* lData = GList_New(GSQLite, GVOID_PTR)();
+    sGSQLiteData lParams = {lData, 0};
+    GSQLite_Exec(sqlQuery, GSQLite_OnQueryCol, &lParams);
+    return lData;
 }
 //===============================================
-static void GSQLite_QueryRow(char* sqlQuery, char* row, char* sep) {
-    row[0] = 0;
-    sGSQLiteRow lParams = {row, sep, 0, 0};
-    GSQLite_Exec(GSQLite_OnQueryRow, &lParams, sqlQuery);
+static void* GSQLite_QueryRow(char* sqlQuery) {
+    void* lData = GList_New(GSQLite, GVOID_PTR)();
+    sGSQLiteData lParams = {lData, 0};
+    GSQLite_Exec(sqlQuery, GSQLite_OnQueryRow, &lParams);
+    return lData;
+}
+//===============================================
+static void* GSQLite_QueryMap(char* sqlQuery) {
+    void* lData = GList_New(GSQLite, GVOID_PTR)();
+    sGSQLiteData lParams = {lData, 0};
+    GSQLite_Exec(sqlQuery, GSQLite_OnQueryMap, &lParams);
+    return lData;
 }
 //===============================================
 static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char** colName) {
 	sGSQLiteShow* lParams = (sGSQLiteShow*)params;
 
-    int lWidthC = GManager()->SplitCount(lParams->width, ";");
-    char lWidthG[B_WIDTH+1];
+    int lWidthC = GManager()->SplitCount(lParams->widthMap, ";");
+    char lWidthG[256];
     
     if(lParams->onHeader == 1) {
         printf("+-");
         for(int i = 0; i < colCount; i++) {
-            int lWidth = lParams->widthD;
+            int lWidth = lParams->defaultWidth;
             if(i < lWidthC) {
-                GManager()->SplitGet(lParams->width, lWidthG, ";", i);
+                GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
                 lWidth = atoi(lWidthG);
             }
             if(i != 0) printf("-+-");
@@ -213,9 +201,9 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
     if(lParams->onHeader == 1) {
         printf("| ");
         for(int i = 0; i < colCount; i++) {
-            int lWidth = lParams->widthD;
+            int lWidth = lParams->defaultWidth;
             if(i < lWidthC) {
-                GManager()->SplitGet(lParams->width, lWidthG, ";", i);
+                GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
                 lWidth = atoi(lWidthG);
             }
             if(i != 0) printf(" | ");
@@ -227,9 +215,9 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
     if(lParams->onGrid == 1) {
         printf("+-");
         for(int i = 0; i < colCount; i++) {
-            int lWidth = lParams->widthD;
+            int lWidth = lParams->defaultWidth;
             if(i < lWidthC) {
-                GManager()->SplitGet(lParams->width, lWidthG, ";", i);
+                GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
                 lWidth = atoi(lWidthG);
             }
             if(i != 0) printf("-+-");
@@ -242,9 +230,9 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
     } 
     printf("| ");
 	for(int i = 0; i < colCount; i++) {
-        int lWidth = lParams->widthD;
+        int lWidth = lParams->defaultWidth;
         if(i < lWidthC) {
-            GManager()->SplitGet(lParams->width, lWidthG, ";", i);
+            GManager()->SplitGet(lParams->widthMap, lWidthG, ";", i);
             lWidth = atoi(lWidthG);
         }
         char* lColValue = colValue[i] ? colValue[i] : "NULL";
@@ -260,34 +248,45 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
 }
 //===============================================
 static int GSQLite_OnQueryValue(void* params, int colCount, char** colValue, char** colName) {
-    sGSQLiteValue* lParams = (sGSQLiteValue*)params;
-    if(lParams->count == lParams->index) {
-        strcpy(lParams->value, colValue[0]);
+    sGSQLiteData* lParams = params;
+    if(lParams->count == 0) {
+        lParams->data = GManager()->CopyStr(colValue[0]);
     }
     lParams->count++;
     return 0;
 }
 //===============================================
 static int GSQLite_OnQueryCol(void* params, int colCount, char** colValue, char** colName) {
-    sGSQLiteCol* lParams = (sGSQLiteCol*)params;
-    if(lParams->count != 0) {
-        strcat(lParams->col, lParams->sep);
-    }
+    sGSQLiteData* lParams = params;
+    GListO(GSQLite, GVOID_PTR)* lData = lParams->data;
     char* lColValue = colValue[0] ? colValue[0] : "NULL";
-    strcat(lParams->col, lColValue);
+    lData->AddData(lData, GManager()->CopyStr(lColValue));
     lParams->count++;
     return 0;
 }
 //===============================================
 static int GSQLite_OnQueryRow(void* params, int colCount, char** colValue, char** colName) {
-    sGSQLiteRow* lParams = (sGSQLiteRow*)params;
-    if(lParams->count == lParams->index) {
+    sGSQLiteData* lParams = params;
+    GListO(GSQLite, GVOID_PTR)* lData = lParams->data;
+    if(lParams->count == 0) {
         for(int i = 0; i < colCount; i++) {
             char* lColValue = colValue[i] ? colValue[i] : "NULL";
-            if(i != 0) strcat(lParams->row, lParams->sep);
-            strcat(lParams->row, lColValue);
+            lData->AddData(lData, GManager()->CopyStr(lColValue));
         }
     }
+    lParams->count++;
+    return 0;
+}
+//===============================================
+static int GSQLite_OnQueryMap(void* params, int colCount, char** colValue, char** colName) {
+    sGSQLiteData* lParams = params;
+    GListO(GSQLite, GVOID_PTR)* lData = lParams->data;
+    GListO(GSQLite, GVOID_PTR)* lRow = GList_New(GSQLite, GVOID_PTR)();
+    for(int i = 0; i < colCount; i++) {
+        char* lColValue = colValue[i] ? colValue[i] : "NULL";
+        lRow->AddData(lRow, GManager()->CopyStr(lColValue));
+    }
+    lData->AddData(lData, lRow);
     lParams->count++;
     return 0;
 }

@@ -8,7 +8,7 @@ GWidgetO* GTitleBar_New() {
     GWidgetO* lParent = GWidget("widget");
     GTitleBarO* lChild = (GTitleBarO*)malloc(sizeof(GTitleBarO));
     
-    lChild->parent = lParent;    
+    lChild->parent = lParent;
     lParent->child = lChild;
         
     lParent->Delete = GTitleBar_Delete;
@@ -24,7 +24,7 @@ void GTitleBar_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GTitleBar_Widget(GWidgetO* obj) {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GtkWidget* lWidget = gtk_hbox_new(0, 0);
     obj->widget = lWidget;
     gtk_widget_set_name(lWidget, "GTitleBar");

@@ -28,6 +28,7 @@
             int (*CountData)(GListO_##GPREFIX##_##GDATA* obj, char* data, GLIST_EQUAL_DATA_##GPREFIX##_##GDATA equal); \
             int (*Size)(GListO_##GPREFIX##_##GDATA* obj); \
             void (*Show)(GListO_##GPREFIX##_##GDATA* obj, GLIST_SHOW_##GPREFIX##_##GDATA show); \
+            void (*ShowChar)(int index, void* value); \
             GListNodeO_##GPREFIX##_##GDATA* m_head; \
         }; \
         \
@@ -43,7 +44,8 @@
         static GDATA GList_GetData_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, int index); \
         static int GList_CountData_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, char* data, GLIST_EQUAL_DATA_##GPREFIX##_##GDATA equal); \
         static int GList_Size_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj); \
-        static void GList_Show_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_SHOW_##GPREFIX##_##GDATA show);
+        static void GList_Show_##GPREFIX##_##GDATA(GListO_##GPREFIX##_##GDATA* obj, GLIST_SHOW_##GPREFIX##_##GDATA show); \
+        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value);
 //===============================================
 #define GDEFINE_LIST(GPREFIX, GDATA) \
         \
@@ -61,6 +63,7 @@
             lObj->CountData = GList_CountData_##GPREFIX##_##GDATA; \
             lObj->Size = GList_Size_##GPREFIX##_##GDATA; \
             lObj->Show = GList_Show_##GPREFIX##_##GDATA; \
+            lObj->ShowChar = GList_ShowChar_##GPREFIX##_##GDATA; \
             \
             lObj->m_head = 0; \
             return lObj; \
@@ -230,6 +233,10 @@
                 lNext = lNext->m_next; \
                 lIndex++; \
             } \
+        } \
+        \
+        static void GList_ShowChar_##GPREFIX##_##GDATA(int index, void* value) { \
+            printf("%*s", 20, (char*)value); \
         }
 //===============================================
 #define GList_New(GPREFIX, GDATA) \
@@ -241,18 +248,7 @@
 #define GListNodeO(GPREFIX, GDATA) \
         GListNodeO_##GPREFIX##_##GDATA
 //===============================================
-typedef char* GCHAR_PTR;
 typedef void* GVOID_PTR;
-//===============================================
-#if defined(_GLIST_SHOW_CHAR_)
-//===============================================
-static void GLIST_SHOW_CHAR(int index, void* value);
-//===============================================
-static void GLIST_SHOW_CHAR(int index, void* value) {
-    printf("%20s", (char*)value);
-}
-//===============================================
-#endif
 //===============================================
 #endif
 //===============================================

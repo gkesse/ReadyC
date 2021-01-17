@@ -13,7 +13,6 @@ static GManagerO* m_GManagerO = 0;
 // init
 static void GManager_Init(GManagerO* obj);
 // data
-static sGManager* GManager_GetData();
 static void GManager_LoadData();
 // string
 static char* GManager_CopyStr(const char* strIn);
@@ -45,13 +44,14 @@ static GtkWidget* GManager_SpaceH(int space);
 static GtkWidget* GManager_SpaceV(int space);
 // terminal
 static void GManager_ReadLine(char* buffer, int size);
+// free
+static void GManager_Free(void* buffer);
 //===============================================
 GManagerO* GManager_New() {
     GManagerO* lObj = (GManagerO*)malloc(sizeof(GManagerO));
-    GManager_Init(lObj);
+
     lObj->Delete = GManager_Delete;
     // data
-    lObj->GetData = GManager_GetData;
     lObj->LoadData = GManager_LoadData;
     // string
     lObj->CopyStr = GManager_CopyStr;
@@ -83,7 +83,10 @@ GManagerO* GManager_New() {
     lObj->SpaceV = GManager_SpaceV;
     // terminal
     lObj->ReadLine = GManager_ReadLine;
+    // free
+    lObj->Free = GManager_Free;
     // return
+    GManager_Init(lObj);
     return lObj;
 }
 //===============================================
@@ -120,10 +123,6 @@ static void GManager_Init(GManagerO* obj) {
 }
 //===============================================
 // data
-//===============================================
-static sGManager* GManager_GetData() {
-    return m_GManagerO->mgr;
-}
 //===============================================
 static void GManager_LoadData() {
     g_object_set(gtk_settings_get_default(), "gtk-button-images", 1, NULL);
@@ -186,7 +185,7 @@ static void GManager_SplitGet(char* strIn, char* strOut, char* sep, int index) {
 // page
 //===============================================
 static void GManager_SetPage(char* address) {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
     int lPageIndex = (int)lPageId->GetData(lPageId, address, lPageId->EqualChar);
@@ -234,7 +233,7 @@ static void GManager_SetFont(GtkWidget* widget, char* font) {
 // style
 //===============================================
 static void GManager_LoadStyle() {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GtkCssProvider* lCssProvider = gtk_css_provider_new();
     gtk_css_provider_load_from_path(lCssProvider, lApp->style_path, 0);
     GdkScreen* lScreen = gdk_screen_get_default();
@@ -251,7 +250,7 @@ static char* GManager_GetEnv(char* key) {
 // img
 //===============================================
 static void GManager_LoadImg() {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GDir* lDir = g_dir_open(lApp->img_path, 0, NULL);
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lImgMap = lApp->img_map;
     if(lDir != 0) {
@@ -269,7 +268,7 @@ static void GManager_LoadImg() {
 }
 //===============================================
 static GtkWidget* GManager_GetImg(char* img, int scale, int width, int height) {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lImgMap = lApp->img_map;
     char* lImgFile = lImgMap->GetData(lImgMap, img, lImgMap->EqualChar);
     GdkPixbuf* lPixbuf = gdk_pixbuf_new_from_file(lImgFile, NULL);
@@ -347,5 +346,11 @@ static void GManager_ReadLine(char* buffer, int size) {
     fflush(stdout); 
     fgets(buffer, size, stdin); 
     buffer[strlen(buffer)-1] = 0;
+}
+//===============================================
+// free
+//===============================================
+static void GManager_Free(void* buffer) {
+    free(buffer);
 }
 //===============================================

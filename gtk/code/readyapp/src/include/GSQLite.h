@@ -9,11 +9,12 @@ typedef struct _GSQLiteO GSQLiteO;
 struct _GSQLiteO {
     void (*Delete)(); 
     void (*Test)(int argc, char** argv);
-    void (*QueryShow)(char* sqlQuery, char* width, int widthD);
+    void (*QueryShow)(char* sqlQuery, char* widthMap, int defaultWidth);
     void (*QueryWrite)(char* sqlQuery);
-    void (*QueryValue)(char* sqlQuery, char* value);
-    void (*QueryCol)(char* sqlQuery, char* row, char* sep);
-    void (*QueryRow)(char* sqlQuery, char* row, char* sep);
+    void* (*QueryValue)(char* sqlQuery);
+    void* (*QueryCol)(char* sqlQuery);
+    void* (*QueryRow)(char* sqlQuery);
+    void* (*QueryMap)(char* sqlQuery);
 };
 //===============================================
 GSQLiteO* GSQLite_New();

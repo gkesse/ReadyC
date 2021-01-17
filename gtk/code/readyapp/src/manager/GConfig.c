@@ -66,9 +66,8 @@ static void GConfig_Remove(char* key) {
 }
 //===============================================
 static void GConfig_SetData(char* key, char* value) {
-    char* lValue = GManager()->CopyStr(value);
     GMapO(GConfig, GVOID_PTR, GVOID_PTR)* lDataMap = m_GConfigO->dataMap;
-    lDataMap->SetData(lDataMap, key, lValue, lDataMap->EqualChar);
+    lDataMap->SetData(lDataMap, key, value, lDataMap->EqualChar);
 }
 //===============================================
 static char* GConfig_GetData(char* key) {
@@ -85,32 +84,31 @@ static void GConfig_SaveData(char* key) {
 }
 //===============================================
 static void GConfig_LoadData(char* key) {
-    char lValue[B_VALUE+1];
     char lQuery[B_QUERY+1];
     sprintf(lQuery, "\
-    select CONFIG_VALUE from CONFIG_C \
-    where CONFIG_KEY = '%s' \
+    select config_value from config_data \
+    where config_key = '%s' \
     ", key);
-    GSQLite()->QueryValue(lQuery, lValue);
+    char* lValue = GSQLite()->QueryValue(lQuery);
     GConfig_SetData(key, lValue);
 }
 //===============================================
 static int GConfig_CountData(char* key) {
-    char lValue[B_VALUE+1];
     char lQuery[B_QUERY+1];
     sprintf(lQuery, "\
-    select count(*) from CONFIG_C \
-    where CONFIG_KEY = '%s' \
+    select count(*) from config_data \
+    where config_key = '%s' \
     ", key);
-    GSQLite()->QueryValue(lQuery, lValue);
+    char* lValue = GSQLite()->QueryValue(lQuery);
     int lCount = atoi(lValue);
+    GManager()->Free(lValue);
     return lCount;
 }
 //===============================================
 static void GConfig_InsertData(char* key, char* value) {
     char lQuery[B_QUERY+1];
     sprintf(lQuery, "\
-    insert into CONFIG_C (CONFIG_KEY, CONFIG_VALUE)\
+    insert into config_data (config_key, config_value)\
     values ('%s', '%s') \
     ", key, value);
     GSQLite()->QueryWrite(lQuery);
@@ -119,9 +117,9 @@ static void GConfig_InsertData(char* key, char* value) {
 static void GConfig_UpdateData(char* key, char* value) {
     char lQuery[B_QUERY+1];
     sprintf(lQuery, "\
-    update CONFIG_C \
-    set CONFIG_VALUE = '%s' \
-    where CONFIG_KEY = '%s' \
+    update config_data \
+    set config_value = '%s' \
+    where config_key = '%s' \
     ", value, key);
     GSQLite()->QueryWrite(lQuery);
 }

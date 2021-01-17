@@ -1,5 +1,7 @@
 //===============================================
 #include "GProcessUi.h"
+#include "GSQLiteUi.h"
+#include "GOpenCVUi.h"
 #include "GConfig.h"
 #include "GManager.h"
 //===============================================
@@ -81,17 +83,17 @@ static void GProcessUi_Run_CHOICE(int argc, char** argv) {
 }
 //===============================================
 static void GProcessUi_Run_SQLITE(int argc, char** argv) {
-    printf("Programme SQLite\n");
+    GSQLiteUi()->Run(argc, argv);
     m_GProcessUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GProcessUi_Run_OPENCV(int argc, char** argv) {
-    printf("Programme OpenCV\n");
+    //GOpenCVUi()->Run(argc, argv);
     m_GProcessUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GProcessUi_Run_SAVE(int argc, char** argv) {
-    //GConfig()->SaveData("G_ADMIN_ID");
+    GConfig()->SaveData("G_ADMIN_ID");
     m_GProcessUiO->G_STATE = "S_END";
 }
 //===============================================

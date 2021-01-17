@@ -1,6 +1,7 @@
 //===============================================
 #include "GProcess.h"
 #include "GProcessUi.h"
+#include "GSQLite.h"
 #include "GGtk.h"
 //===============================================
 static GProcessO* m_GProcessO = 0;
@@ -42,6 +43,7 @@ static void GProcess_RunTest(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_RunUi(int argc, char** argv) {
+    GSQLite();
     GProcessUi()->Run(argc, argv);
 }
 //===============================================

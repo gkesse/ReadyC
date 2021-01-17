@@ -13,7 +13,6 @@ typedef struct _sGApp sGApp;
 struct _GManagerO {
     void (*Delete)();
     // data
-    sGManager* (*GetData)();
     void (*LoadData)();
     // string
     char* (*CopyStr)(const char* strIn);
@@ -45,6 +44,8 @@ struct _GManagerO {
     GtkWidget* (*SpaceV)(int space);
     // terminal
     void (*ReadLine)(char* buffer, int size);
+    // free
+    void (*Free)(void* buffer);
     // struct
     sGManager* mgr;
 };

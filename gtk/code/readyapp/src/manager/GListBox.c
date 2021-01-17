@@ -55,7 +55,7 @@ static void GListBox_AddItem(GWidgetO* obj, char* key, char* text, char* icon) {
 }
 //===============================================
 static void GListBox_OnItemClick(GtkWidget* widget, gpointer params) {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GWidgetO* lObj = (GWidgetO*)params;
     GListBoxO* lChild = lObj->child;
     GMapO(GListBox, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;

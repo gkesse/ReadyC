@@ -32,7 +32,7 @@ void GWindow_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GWindow_Widget(GWidgetO* obj) {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GtkWidget* lWidget = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     obj->widget = lWidget;
     
@@ -74,7 +74,7 @@ static void GWindow_Widget(GWidgetO* obj) {
 }
 //===============================================
 static void GWindow_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault) {
-    sGApp* lApp = GManager()->GetData()->app;
+    sGApp* lApp = GManager()->mgr->app;;
     GMapO(GWindow, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
     GMapO(GWindow, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
     int lCount = lApp->page_map->Count(lApp->page_map);
