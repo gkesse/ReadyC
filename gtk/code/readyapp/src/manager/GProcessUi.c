@@ -56,7 +56,6 @@ static void GProcessUi_Run_INIT(int argc, char** argv) {
     printf("\n");
     printf("C_ADMIN !!!\n");
     printf("\t%-2s : %s\n", "-q", "quitter l'application");
-    printf("\n");
     m_GProcessUiO->G_STATE = "S_LOAD";
 }
 //===============================================

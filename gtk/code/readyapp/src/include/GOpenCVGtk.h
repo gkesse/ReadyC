@@ -1,18 +1,18 @@
 //===============================================
-#ifndef _GOpenCVUi_
-#define _GOpenCVUi_
+#ifndef _GOpenCVGtk_
+#define _GOpenCVGtk_
 //===============================================
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
-typedef struct _GOpenCVUiO GOpenCVUiO;
+typedef struct _GOpenCVGtkO GOpenCVGtkO;
 //===============================================
-struct _GOpenCVUiO {
+struct _GOpenCVGtkO {
     void* parent;
 };
 //===============================================
-GWidgetO* GOpenCVUi_New();
-void GOpenCVUi_Delete(GWidgetO* obj);
+GWidgetO* GOpenCVGtk_New();
+void GOpenCVGtk_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================

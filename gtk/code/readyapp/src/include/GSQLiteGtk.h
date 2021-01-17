@@ -1,18 +1,18 @@
 //===============================================
-#ifndef _GSQLiteUi_
-#define _GSQLiteUi_
+#ifndef _GSQLiteGtk_
+#define _GSQLiteGtk_
 //===============================================
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
-typedef struct _GSQLiteUiO GSQLiteUiO;
+typedef struct _GSQLiteGtkO GSQLiteGtkO;
 //===============================================
-struct _GSQLiteUiO {
+struct _GSQLiteGtkO {
     void* parent;
 };
 //===============================================
-GWidgetO* GSQLiteUi_New();
-void GSQLiteUi_Delete(GWidgetO* obj);
+GWidgetO* GSQLiteGtk_New();
+void GSQLiteGtk_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================
