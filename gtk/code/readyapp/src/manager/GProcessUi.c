@@ -88,7 +88,7 @@ static void GProcessUi_Run_SQLITE(int argc, char** argv) {
 }
 //===============================================
 static void GProcessUi_Run_OPENCV(int argc, char** argv) {
-    //GOpenCVUi()->Run(argc, argv);
+    GOpenCVUi()->Run(argc, argv);
     m_GProcessUiO->G_STATE = "S_SAVE";
 }
 //===============================================
