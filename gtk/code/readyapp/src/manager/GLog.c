@@ -12,17 +12,29 @@ static GLogO* m_GLogO = 0;
 //===============================================
 typedef int (*GLOG_FUNC)(char* buffer, int index, void* obj);
 //===============================================
-static void GLog_Test(int argc, char* argv);
+typedef struct _sGPerson sGPerson;
+//===============================================
+static void GLog_Test(int argc, char** argv);
 static void GLog_Write(int key, ...);
+static void GLog_Sep();
 static void GLog_Buffer(char* buffer);
 static FILE* GLog_Open();
 static void GLog_Close(FILE* file);
 static char* GLog_Date();
+static int GLog_OnTest(char* buffer, int index, void* obj);
+//===============================================
+struct _sGPerson {
+    char* firstname;
+    char* lastname;
+    char* email;
+    int code;
+};
 //===============================================
 GLogO* GLog_New() {
     GLogO* lObj = (GLogO*)malloc(sizeof(GLogO));
     lObj->Delete = GLog_Delete;
     lObj->Test = GLog_Test;
+    lObj->Sep = GLog_Sep;
     lObj->Write = GLog_Write;
     return lObj;
 }
@@ -40,10 +52,24 @@ GLogO* GLog() {
 //===============================================
 // method
 //===============================================
-static void GLog_Test(int argc, char* argv) {
-    GLog()->Write(3, "# afficher un entier : ", 1, 10000, 0);
-    GLog()->Write(3, "# afficher un reel : ", 2, 3.14, 0);
-    GLog()->Write(3, "# afficher un chaine : ", 3, "Bonjour tout le monde", 0);
+static void GLog_Test(int argc, char** argv) {
+    sGPerson lPerson = {"Gerard", "KESSE", "gerard.kesse@outlook.fr", 1234};
+    
+    GLog()->Sep();
+    GLog()->Write(30, -25, "afficher un entier ", 3, " : ", 1, 10000, 0);
+    GLog()->Write(30, -25, "afficher un reel ", 3, " : ", 2, 3.14, 0);
+    GLog()->Write(30, -25, "afficher un chaine ", 3, " : ", 3, "Bonjour tout le monde", 0);
+    GLog()->Write(30, -25, "afficher une structure ", 3, " : ", 3, "\n", 4, GLog_OnTest, &lPerson, 0);
+    GLog()->Sep();
+}
+//===============================================
+static int GLog_OnTest(char* buffer, int index, void* obj) {
+    sGPerson* lPerson = obj;
+    index += sprintf(&buffer[index], "%*s%*s : %s\n", 5, "", -10, "Nom", lPerson->lastname);
+    index += sprintf(&buffer[index], "%*s%*s : %s\n", 5, "", -10, "Prenom", lPerson->firstname);
+    index += sprintf(&buffer[index], "%*s%*s : %s\n", 5, "", -10, "Email", lPerson->email);
+    index += sprintf(&buffer[index], "%*s%*s : %d\n", 5, "", -10, "Code", lPerson->code);
+    return index;
 }
 //===============================================
 static void GLog_Write(int key, ...) {
@@ -103,6 +129,14 @@ static void GLog_Write(int key, ...) {
     GLog_Buffer(lBuffer);
 }
 //===============================================
+static void GLog_Sep() {
+    char lBuffer[256];
+    for(int i = 0; i < 50; i++) {
+        sprintf(&lBuffer[i], "=");
+    }
+    GLog_Buffer(lBuffer);
+}
+//===============================================
 static void GLog_Buffer(char* buffer) {
     FILE* lFile = GLog_Open();
     char* lDate = GLog_Date();
@@ -147,7 +181,7 @@ static void GLog_Close(FILE* file) {
 }
 //===============================================
 static char* GLog_Date() {
-    char lBuffer[256];
+    char lBuffer[B_LOG+1];
     time_t lTime;
     time(&lTime);
     struct tm* lTimeInfo = localtime(&lTime);

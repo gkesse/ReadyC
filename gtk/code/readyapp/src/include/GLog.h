@@ -10,6 +10,7 @@ struct _GLogO {
     void (*Delete)();
     void (*Test)(int argc, char** argv);
     void (*Write)(int key, ...);
+    void (*Sep)();
 };
 //===============================================
 GLogO* GLog_New();
