@@ -6,6 +6,7 @@
 #include "GManager.h"
 #include "GMap.h"
 #include "GList.h"
+#include "GLog.h"
 //===============================================
 GDECLARE_MAP(GProcess, GVOID_PTR, GVOID_PTR)
 GDEFINE_MAP(GProcess, GVOID_PTR, GVOID_PTR)
@@ -48,7 +49,7 @@ static void GProcess_Run(int argc, char** argv) {
 }
 //===============================================
 static void GProcess_RunTest(int argc, char** argv) {
-    printf("GProcess_RunTest\n");
+    GLog()->Test(argc, argv);
 }
 //===============================================
 static void GProcess_RunUi(int argc, char** argv) {

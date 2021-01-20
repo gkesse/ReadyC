@@ -14,6 +14,7 @@ GLIBS = \
 
 GOBJS = \
     $(patsubst $(GSRC)/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/*.c)) \
+    $(patsubst $(GSRC)/manager/%.c, $(GBUILD)/%.o, $(wildcard $(GSRC)/manager/*.c)) \
 
 GCFLAGS = \
     -std=gnu18 \

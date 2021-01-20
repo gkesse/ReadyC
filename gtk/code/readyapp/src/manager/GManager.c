@@ -130,9 +130,12 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->picto_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
     obj->mgr->app->path_sep = GManager_GetEnv("GPATH_SEP");
     obj->mgr->app->sqlite_db_path = GManager_GetEnv("GSQLITE_DB_PATH");
+    obj->mgr->app->log_on = GManager_GetEnv("GLOG_ON");
+    obj->mgr->app->log_mode = GManager_GetEnv("GLOG_MODE");
+    obj->mgr->app->log_path = GManager_GetEnv("GLOG_PATH");
 }
 //===============================================
-// data
+// gtk
 //===============================================
 static void GManager_LoadData() {
     g_object_set(gtk_settings_get_default(), "gtk-button-images", 1, NULL);

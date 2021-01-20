@@ -8,6 +8,10 @@ export "GDATA_PATH=${GPROJECT_PATH}/data"
 export "GSTYLE_PATH=${GDATA_PATH}/css/gtk/style.css"
 export "GIMG_PATH=${GDATA_PATH}/img"
 export "GSQLITE_DB_PATH=${GDATA_PATH}/sqlite/config.dat"
+export "GLOG_PATH=${GDATA_PATH}/log/log.txt"
+#================================================
+export "GLOG_ON=off"
+export "GLOG_MODE=stdout"
 #================================================
 export "GPACMAN_PACKAGE_INSTALL=mingw-w64-i686-gtk3"
 export "GPKGCONFIG_PACKAGE_SEARCH=gtk"

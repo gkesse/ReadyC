@@ -96,6 +96,10 @@ struct _sGApp {
     char* path_sep;
     // sqlite
     char* sqlite_db_path;
+    // log
+    char* log_on;
+    char* log_mode;
+    char* log_path;
 };
 //===============================================
 #endif
