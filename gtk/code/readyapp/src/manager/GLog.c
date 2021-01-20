@@ -41,7 +41,9 @@ GLogO* GLog() {
 // method
 //===============================================
 static void GLog_Test(int argc, char* argv) {
-    GLog()->Write(1, 10000, 0);
+    GLog()->Write(3, "# afficher un entier : ", 1, 10000, 0);
+    GLog()->Write(3, "# afficher un reel : ", 2, 3.14, 0);
+    GLog()->Write(3, "# afficher un chaine : ", 3, "Bonjour tout le monde", 0);
 }
 //===============================================
 static void GLog_Write(int key, ...) {
