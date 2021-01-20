@@ -57,7 +57,7 @@ static void GLog_Test(int argc, char** argv) {
     
     GLog()->Sep();
     GLog()->Write(30, -25, "afficher un entier ", 3, " : ", 1, 10000, 0);
-    GLog()->Write(30, -25, "afficher un reel ", 3, " : ", 2, 3.14, 0);
+    GLog()->Write(30, -25, "afficher un reel ", 3, " : ", 20, 2, 3.14, 0);
     GLog()->Write(30, -25, "afficher un chaine ", 3, " : ", 3, "Bonjour tout le monde", 0);
     GLog()->Write(30, -25, "afficher une structure ", 3, " : ", 3, "\n", 4, GLog_OnTest, &lPerson, 0);
     GLog()->Sep();
