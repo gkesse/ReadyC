@@ -33,7 +33,7 @@ GPictoO* GPicto() {
 // method
 //===============================================
 static void GPicto_Load() {
-    sGApp* lApp = GManager()->mgr->app;;
+    sGApp* lApp = GManager()->mgr->app;
     GMapO(GPicto, GVOID_PTR, GVOID_PTR)* lPictoMap = lApp->picto_map;
     lPictoMap->SetData(lPictoMap, "fa_500px", "\uf26e", lPictoMap->EqualChar);
     lPictoMap->SetData(lPictoMap, "addressbook", "\uf2b9", lPictoMap->EqualChar);
@@ -824,7 +824,7 @@ static void GPicto_Load() {
 }
 //===============================================
 static char* GPicto_Get(char* key) {
-    sGApp* lApp = GManager()->mgr->app;;
+    sGApp* lApp = GManager()->mgr->app;
     GMapO(GPicto, GVOID_PTR, GVOID_PTR)* lPictoMap = lApp->picto_map;
     char* lValue = (char*)lPictoMap->GetData(lPictoMap, (void*)key, lPictoMap->EqualChar);
     return lValue;

@@ -42,7 +42,7 @@ clean_exe:
 clean:
 	@if ! [ -d $(GBIN) ] ; then mkdir -p $(GBIN) ; fi
 	@if ! [ -d $(GBUILD) ] ; then mkdir -p $(GBUILD) ; fi
-	rm -f $(GBUILD)/*.o $(GBIN)/*
+	rm -f $(GBUILD)/* $(GBIN)/*
 #================================================
 # c
 c_install:

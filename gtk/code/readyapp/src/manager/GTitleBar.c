@@ -24,7 +24,7 @@ void GTitleBar_Delete(GWidgetO* obj) {
 // method
 //===============================================
 static void GTitleBar_Widget(GWidgetO* obj) {
-    sGApp* lApp = GManager()->mgr->app;;
+    sGApp* lApp = GManager()->mgr->app;
     GtkWidget* lWidget = gtk_hbox_new(0, 0);
     obj->widget = lWidget;
     gtk_widget_set_name(lWidget, "GTitleBar");

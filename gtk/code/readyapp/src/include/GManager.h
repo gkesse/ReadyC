@@ -5,6 +5,8 @@
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
+#define GFORMAT_SIZE (1024)
+//===============================================
 typedef struct _GManagerO GManagerO;
 //===============================================
 typedef struct _sGManager sGManager;
@@ -22,6 +24,7 @@ struct _GManagerO {
     char* (*TrimRight)(char* strIn);
     int (*GetWidth)(char* widthMap, int index, int defaultWidth);
     int (*IsNumber)(char* strIn);
+    char* (*Format)(const char* format, ...);
     // page
     void (*SetPage)(char* address);
     // layout
@@ -70,8 +73,8 @@ struct _sGApp {
     // win
     int win_width;
     int win_height;
-    // string
-    char format[256];
+    // format
+    char format[GFORMAT_SIZE+1];
     // title
     GtkWidget* title;
     void* title_map;

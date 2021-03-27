@@ -8,7 +8,7 @@ typedef struct _GSQLiteO GSQLiteO;
 //===============================================
 struct _GSQLiteO {
     void (*Delete)(); 
-    void (*Test)(int argc, char** argv);
+    void (*ShowVersion)();
     void (*QueryShow)(char* sqlQuery, char* widthMap, int defaultWidth);
     void (*QueryWrite)(char* sqlQuery);
     void* (*QueryValue)(char* sqlQuery);

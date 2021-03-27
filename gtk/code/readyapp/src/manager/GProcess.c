@@ -1,7 +1,7 @@
 //===============================================
 #include "GProcess.h"
 #include "GProcessUi.h"
-#include "GSQLite.h"
+#include "GSQLitePc.h"
 #include "GGtk.h"
 #include "GManager.h"
 #include "GMap.h"
@@ -21,6 +21,7 @@ static void GProcess_Run(int argc, char** argv);
 static void GProcess_RunTest(int argc, char** argv);
 static void GProcess_RunUi(int argc, char** argv);
 static void GProcess_RunGtk(int argc, char** argv);
+static void GProcess_RunSQLite(int argc, char** argv);
 //===============================================
 GProcessO* GProcess_New() {
     GProcessO* lObj = (GProcessO*)malloc(sizeof(GProcessO));
@@ -46,11 +47,12 @@ static void GProcess_Run(int argc, char** argv) {
     if(!strcmp(lKey, "test")) {GProcess_RunTest(argc, argv); return;}
     if(!strcmp(lKey, "ui")) {GProcess_RunUi(argc, argv); return;}
     if(!strcmp(lKey, "gtk")) {GProcess_RunGtk(argc, argv); return;}
+    if(!strcmp(lKey, "sqlite")) {GProcess_RunSQLite(argc, argv); return;}
     GProcess_RunTest(argc, argv);
 }
 //===============================================
 static void GProcess_RunTest(int argc, char** argv) {
-    GGtk()->Test(argc, argv);
+
 }
 //===============================================
 static void GProcess_RunUi(int argc, char** argv) {
@@ -59,5 +61,9 @@ static void GProcess_RunUi(int argc, char** argv) {
 //===============================================
 static void GProcess_RunGtk(int argc, char** argv) {
     GGtk()->Run(argc, argv);
+}
+//===============================================
+static void GProcess_RunSQLite(int argc, char** argv) {
+    GSQLitePc()->Run(argc, argv);
 }
 //===============================================

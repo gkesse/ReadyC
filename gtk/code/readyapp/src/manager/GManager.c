@@ -24,6 +24,7 @@ static char* GManager_TrimLeft(char* strIn);
 static char* GManager_TrimRight(char* strIn);
 static int GManager_GetWidth(char* widthMap, int index, int defaultWidth);
 static int GManager_IsNumber(char* strIn);
+static char* GManager_Format(const char* format, ...);
 // page
 static void GManager_SetPage(char* address);
 // layout
@@ -67,6 +68,7 @@ GManagerO* GManager_New() {
     lObj->TrimRight = GManager_TrimRight;
     lObj->GetWidth = GManager_GetWidth;
     lObj->IsNumber = GManager_IsNumber;
+    lObj->Format = GManager_Format;
     // page
     lObj->SetPage = GManager_SetPage;
     // layout
@@ -201,10 +203,19 @@ static int GManager_IsNumber(char* strIn) {
     return 1;
 }
 //===============================================
+static char* GManager_Format(const char* format, ...) {
+    sGApp* lApp = GManager()->mgr->app;
+    va_list lArgs;
+    va_start(lArgs, format);
+    vsprintf(lApp->format, format, lArgs);
+    va_end(lArgs);
+    return lApp->format;
+}
+//===============================================
 // page
 //===============================================
 static void GManager_SetPage(char* address) {
-    sGApp* lApp = GManager()->mgr->app;;
+    sGApp* lApp = GManager()->mgr->app;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
     int lPageIndex = (int)lPageId->GetData(lPageId, address, lPageId->EqualChar);
@@ -252,7 +263,7 @@ static void GManager_SetFont(GtkWidget* widget, char* font) {
 // style
 //===============================================
 static void GManager_LoadStyle() {
-    sGApp* lApp = GManager()->mgr->app;;
+    sGApp* lApp = GManager()->mgr->app;
     GtkCssProvider* lCssProvider = gtk_css_provider_new();
     gtk_css_provider_load_from_path(lCssProvider, lApp->style_path, 0);
     GdkScreen* lScreen = gdk_screen_get_default();
@@ -269,7 +280,7 @@ static char* GManager_GetEnv(char* key) {
 // img
 //===============================================
 static void GManager_LoadImg() {
-    sGApp* lApp = GManager()->mgr->app;;
+    sGApp* lApp = GManager()->mgr->app;
     GDir* lDir = g_dir_open(lApp->img_path, 0, NULL);
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lImgMap = lApp->img_map;
     if(lDir != 0) {
@@ -287,7 +298,7 @@ static void GManager_LoadImg() {
 }
 //===============================================
 static GtkWidget* GManager_GetImg(char* img, int scale, int width, int height) {
-    sGApp* lApp = GManager()->mgr->app;;
+    sGApp* lApp = GManager()->mgr->app;
     GMapO(GManager, GVOID_PTR, GVOID_PTR)* lImgMap = lApp->img_map;
     char* lImgFile = lImgMap->GetData(lImgMap, img, lImgMap->EqualChar);
     GdkPixbuf* lPixbuf = gdk_pixbuf_new_from_file(lImgFile, NULL);

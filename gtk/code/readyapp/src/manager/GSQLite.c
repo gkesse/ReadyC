@@ -25,6 +25,7 @@ struct _sGSQLiteData {
 };
 //===============================================
 static void GSQLite_Init(GSQLiteO* obj);
+static void GSQLite_ShowVersion();
 static void* GSQLite_Open();
 static void GSQLite_Exec(char* sqlQuery, void* onExec, void* params);
 //===============================================
@@ -45,6 +46,7 @@ GSQLiteO* GSQLite_New() {
 	GSQLiteO* lObj = (GSQLiteO*)malloc(sizeof(GSQLiteO));
 
 	lObj->Delete = GSQLite_Delete;
+	lObj->ShowVersion = GSQLite_ShowVersion;
 	lObj->QueryShow = GSQLite_QueryShow;
 	lObj->QueryWrite = GSQLite_QueryWrite;
 	lObj->QueryValue = GSQLite_QueryValue;
@@ -70,14 +72,17 @@ GSQLiteO* GSQLite() {
 // method
 //===============================================
 static void GSQLite_Init(GSQLiteO* obj) {
-    char lQuery[256];
     // config_data
-    sprintf(lQuery, "\
+    obj->QueryWrite(GManager()->Format("\
     create table if not exists config_data (\n\
     config_key text,\n\
     config_value text\n\
-    )");
-    obj->QueryWrite(lQuery);
+    )"));
+}
+//===============================================
+static void GSQLite_ShowVersion() {
+    const char* lShowVersion = sqlite3_libversion();
+    printf("SQLite version %s\n", lShowVersion);
 }
 //===============================================
 static void* GSQLite_Open() {
