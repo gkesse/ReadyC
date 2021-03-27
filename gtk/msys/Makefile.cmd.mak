@@ -1,7 +1,7 @@
 GSRC = $(GPROJECT_SRC)
 GBIN = bin
 GBUILD = build
-GTARGET = $(GBIN)/rdc 
+GTARGET = $(GBIN)/rdc.exe
 
 GINCS = \
     -I$(GSRC)/include \
@@ -42,7 +42,7 @@ clean_exe:
 clean:
 	@if ! [ -d $(GBIN) ] ; then mkdir -p $(GBIN) ; fi
 	@if ! [ -d $(GBUILD) ] ; then mkdir -p $(GBUILD) ; fi
-	rm -f $(GBUILD)/*.o $(GBIN)/*.exe
+	rm -f $(GBUILD)/*.o $(GBIN)/*
 #================================================
 # c
 c_install:

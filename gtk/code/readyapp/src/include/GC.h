@@ -1,20 +1,19 @@
 //===============================================
-#ifndef _GGtk_
-#define _GGtk_
+#ifndef _GC_
+#define _GC_
 //===============================================
 #include "GInclude.h"
 //===============================================
-typedef struct _GGtkO GGtkO;
+typedef struct _GCO GCO;
 //===============================================
-struct _GGtkO {
+struct _GCO {
     void (*Delete)();
     void (*Test)(int argc, char** argv);
-    void (*Run)(int argc, char** argv);
 };
 //===============================================
-GGtkO* GGtk_New();
-void GGtk_Delete();
-GGtkO* GGtk();
+GCO* GC_New();
+void GC_Delete();
+GCO* GC();
 //===============================================
 #endif
 //===============================================
