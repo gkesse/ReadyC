@@ -1,14 +1,15 @@
 #================================================
-export "GPROJECT_ROOT=/c/Users/Admin/Downloads/Programs"
-export "GPROJECT_PATH=${GPROJECT_ROOT}/ReadyC"
-export "GPROJECT_SRC=${GPROJECT_PATH}/gtk/code/readyapp/src"
+export "PATH=/mingw32/bin:$PATH"
 #================================================
-export "GPATH_SEP=//"
-export "GDATA_PATH=${GPROJECT_PATH}/data"
-export "GSTYLE_PATH=${GDATA_PATH}/css/gtk/style.css"
-export "GIMG_PATH=${GDATA_PATH}/img"
-export "GSQLITE_DB_PATH=${GDATA_PATH}/sqlite/config.dat"
-export "GLOG_PATH=${GDATA_PATH}/log/log.txt"
+export "GPROJECT_ROOT=/c/Users/Admin/Downloads/Programs"
+export "GPROJECT_PATH=$GPROJECT_ROOT/ReadyC"
+export "GPROJECT_SRC=$GPROJECT_PATH/gtk/code/readyapp/src"
+export "GPROJECT_DATA=$GPROJECT_PATH/data"
+#================================================
+export "GSTYLE_PATH=$GPROJECT_DATA/css/gtk/style.css"
+export "GIMG_PATH=$GPROJECT_DATA/img"
+export "GSQLITE_DB_PATH=$GPROJECT_DATA/sqlite/config.dat"
+export "GLOG_PATH=$GPROJECT_DATA/log/log.txt"
 #================================================
 export "GLOG_ON=off"
 export "GLOG_MODE=file"
