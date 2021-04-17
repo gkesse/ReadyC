@@ -6,8 +6,10 @@ GDECLARE_MAP(GStackWidget, GVOID_PTR, GVOID_PTR)
 GDEFINE_MAP(GStackWidget, GVOID_PTR, GVOID_PTR)
 //===============================================
 static void GStackWidget_Widget(GWidgetO* obj);
-static void GStackWidget_AddWidget(GWidgetO* obj, GtkWidget* widget);
-static void GStackWidget_SetCurrentIndex(GWidgetO* obj, int index);
+static void GStackWidget_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault);
+static void GStackWidget_SetCurrentPage(GWidgetO* obj, char* key);
+static char* GStackWidget_GetTitle(GWidgetO* obj, char* key);
+static char* GStackWidget_GetDefaultKey(GWidgetO* obj);
 static int GStackWidget_Count(GWidgetO* obj);
 //===============================================
 GWidgetO* GStackWidget_New() {
@@ -16,14 +18,19 @@ GWidgetO* GStackWidget_New() {
     
     lChild->parent = lParent;
     lChild->count = 0;
-    lChild->currentIndex = 0;
+    lChild->currentKeyFlag = 1;
+    lChild->defaultKey = "";
+    lChild->currentKey = "";
     lChild->widgetMap = GMap_New(GStackWidget, GVOID_PTR, GVOID_PTR)();
+    lChild->titleMap = GMap_New(GStackWidget, GVOID_PTR, GVOID_PTR)();
     
     lParent->child = lChild;
         
     lParent->Delete = GStackWidget_Delete;
-    lParent->AddWidget = GStackWidget_AddWidget;
-    lParent->SetCurrentIndex = GStackWidget_SetCurrentIndex;
+    lParent->AddPage = GStackWidget_AddPage;
+    lParent->SetCurrentPage = GStackWidget_SetCurrentPage;
+    lParent->GetTitle = GStackWidget_GetTitle;
+    lParent->GetDefaultKey = GStackWidget_GetDefaultKey;
     lParent->Count = GStackWidget_Count;
 
     GStackWidget_Widget(lParent);
@@ -41,24 +48,43 @@ static void GStackWidget_Widget(GWidgetO* obj) {
     obj->widget = lWidget;
 }
 //===============================================
-static void GStackWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {
+static void GStackWidget_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault) {
     GStackWidgetO* lChild = obj->child;
     GMapO(GStackWidget, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
+    GMapO(GStackWidget, GVOID_PTR, GVOID_PTR)* lTitleMap = lChild->titleMap;
+    
+    lWidgetMap->SetData(lWidgetMap, key, widget, lWidgetMap->EqualChar);
+    lTitleMap->SetData(lTitleMap, key, title, lTitleMap->EqualChar);
+
     gtk_box_pack_start(GTK_BOX(obj->widget), widget, 0, 0, 0);
-    lWidgetMap->SetData(lWidgetMap,(void*)lChild->count, widget, 0);
     gtk_widget_hide(widget);
-    if(lChild->count == lChild->currentIndex) {gtk_widget_show_all(widget);}
+    
+    if(lChild->currentKeyFlag == 1) {lChild->defaultKey = key; lChild->currentKey = key; lChild->currentKeyFlag = 0;}
+    
+    if(isDefault == 1) {lChild->defaultKey = key;}
     lChild->count++;
 }
 //===============================================
-static void GStackWidget_SetCurrentIndex(GWidgetO* obj, int index) {
+static void GStackWidget_SetCurrentPage(GWidgetO* obj, char* key) {
     GStackWidgetO* lChild = obj->child;
     GMapO(GStackWidget, GVOID_PTR, GVOID_PTR)* lWidgetMap = lChild->widgetMap;
-    GtkWidget* lWidget = lWidgetMap->GetData(lWidgetMap,(void*)lChild->currentIndex, 0);
+    GtkWidget* lWidget = lWidgetMap->GetData(lWidgetMap, lChild->currentKey, lWidgetMap->EqualChar);
     gtk_widget_hide(lWidget);
-    lChild->currentIndex = index;
-    lWidget = lWidgetMap->GetData(lWidgetMap,(void*)lChild->currentIndex, 0);
+    lChild->currentKey = key;
+    lWidget = lWidgetMap->GetData(lWidgetMap, lChild->currentKey, lWidgetMap->EqualChar);
     gtk_widget_show_all(lWidget);
+}
+//===============================================
+static char* GStackWidget_GetTitle(GWidgetO* obj, char* key) {
+    GStackWidgetO* lChild = obj->child;
+    GMapO(GStackWidget, GVOID_PTR, GVOID_PTR)* lTitleMap = lChild->titleMap;
+    char* lTitle = lTitleMap->GetData(lTitleMap, key, lTitleMap->EqualChar);
+    return lTitle;
+}
+//===============================================
+static char* GStackWidget_GetDefaultKey(GWidgetO* obj) {
+    GStackWidgetO* lChild = obj->child;
+    return lChild->defaultKey;
 }
 //===============================================
 static int GStackWidget_Count(GWidgetO* obj) {

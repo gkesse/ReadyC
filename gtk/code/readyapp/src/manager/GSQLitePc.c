@@ -46,12 +46,21 @@ static void GSQLitePc_RunTest(int argc, char** argv) {
     where type = 'table'\n\
     "), "10;15;15;10", 20);
     printf("\n");
+    //
     GSQLite()->QueryShow(GManager()->Format("\
     select sql\n\
     from sqlite_master\n\
     where type = 'table'\n\
     and name = 'config_data'\n\
-    "), "10;15;15;10", 20);
+    "), "50", 20);
+    printf("\n");
+    //
+    GSQLite()->QueryValue(GManager()->Format("\
+    select sql\n\
+    from sqlite_master\n\
+    where type = 'table'\n\
+    and name = 'config_data'\n\
+    "));
     printf("\n");
 }
 //===============================================

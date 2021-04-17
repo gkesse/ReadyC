@@ -21,8 +21,10 @@ GDECLARE_LIST(GWidget, GVOID_PTR)
 GDEFINE_LIST(GWidget, GVOID_PTR)
 //===============================================
 static void GWidget_SetContent(GWidgetO* obj, char* text);
-static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget);
-static void GWidget_SetCurrentIndex(GWidgetO* obj, int index);
+static void GWidget_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault);
+static void GWidget_SetCurrentPage(GWidgetO* obj, char* key);
+static char* GWidget_GetTitle(GWidgetO* obj, char* key);
+static char* GWidget_GetDefaultKey(GWidgetO* obj);
 static int GWidget_Count(GWidgetO* obj);
 static void GWidget_AddItem(GWidgetO* obj, char* key, char* text, char* icon);
 static void GWidget_AddItemClick(GWidgetO* obj, GWidgetO* obs);
@@ -39,8 +41,10 @@ GWidgetO* GWidget_New() {
     //
     lObj->Delete = GWidget_Delete;
     lObj->SetContent = GWidget_SetContent;
-    lObj->AddWidget = GWidget_AddWidget;
-    lObj->SetCurrentIndex = GWidget_SetCurrentIndex;
+    lObj->AddPage = GWidget_AddPage;
+    lObj->SetCurrentPage = GWidget_SetCurrentPage;
+    lObj->GetTitle = GWidget_GetTitle;
+    lObj->GetDefaultKey = GWidget_GetDefaultKey;
     lObj->Count = GWidget_Count;
     lObj->AddItem = GWidget_AddItem;
     lObj->AddItemClick = GWidget_AddItemClick;
@@ -92,10 +96,11 @@ static void GWidget_EmitItemClick(GWidgetO* obj) {
 //===============================================
 // interface
 //===============================================
-static void GWidget_SetContent(GWidgetO* obj, char* text) {    printf("GWidget_SetContentoooooooooooooooooooooo\n");
-}
-static void GWidget_AddWidget(GWidgetO* obj, GtkWidget* widget) {}
-static void GWidget_SetCurrentIndex(GWidgetO* obj, int index) {}
+static void GWidget_SetContent(GWidgetO* obj, char* text) {}
+static void GWidget_AddPage(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault) {}
+static void GWidget_SetCurrentPage(GWidgetO* obj, char* key) {}
+static char* GWidget_GetTitle(GWidgetO* obj, char* key) {return "";}
+static char* GWidget_GetDefaultKey(GWidgetO* obj) {return "";}
 static int GWidget_Count(GWidgetO* obj) {return 0;}
 static void GWidget_AddItem(GWidgetO* obj, char* key, char* text, char* icon) {}
 static void GWidget_OnItemClickObs(GWidgetO* obj) {}

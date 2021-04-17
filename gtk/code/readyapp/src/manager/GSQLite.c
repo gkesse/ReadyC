@@ -43,19 +43,19 @@ static int GSQLite_OnQueryRow(void* params, int rows, char** values, char** fiel
 static int GSQLite_OnQueryMap(void* params, int rows, char** values, char** fields);
 //===============================================
 GSQLiteO* GSQLite_New() {
-	GSQLiteO* lObj = (GSQLiteO*)malloc(sizeof(GSQLiteO));
+    GSQLiteO* lObj = (GSQLiteO*)malloc(sizeof(GSQLiteO));
 
-	lObj->Delete = GSQLite_Delete;
-	lObj->ShowVersion = GSQLite_ShowVersion;
-	lObj->QueryShow = GSQLite_QueryShow;
-	lObj->QueryWrite = GSQLite_QueryWrite;
-	lObj->QueryValue = GSQLite_QueryValue;
-	lObj->QueryCol = GSQLite_QueryCol;
-	lObj->QueryRow = GSQLite_QueryRow;
-	lObj->QueryMap = GSQLite_QueryMap;
+    lObj->Delete = GSQLite_Delete;
+    lObj->ShowVersion = GSQLite_ShowVersion;
+    lObj->QueryShow = GSQLite_QueryShow;
+    lObj->QueryWrite = GSQLite_QueryWrite;
+    lObj->QueryValue = GSQLite_QueryValue;
+    lObj->QueryCol = GSQLite_QueryCol;
+    lObj->QueryRow = GSQLite_QueryRow;
+    lObj->QueryMap = GSQLite_QueryMap;
     
     GSQLite_Init(lObj);
-	return lObj;
+    return lObj;
 }
 //===============================================
 void GSQLite_Delete() {
@@ -63,15 +63,19 @@ void GSQLite_Delete() {
 }
 //===============================================
 GSQLiteO* GSQLite() {
-	if(m_GSQLiteO == 0) {
-		m_GSQLiteO = GSQLite_New();
-	}
-	return m_GSQLiteO;
+    if(m_GSQLiteO == 0) {
+        m_GSQLiteO = GSQLite_New();
+    }
+    return m_GSQLiteO;
 }
 //===============================================
 // method
 //===============================================
 static void GSQLite_Init(GSQLiteO* obj) {
+    // drop_table
+    obj->QueryWrite(GManager()->Format("\
+    drop table if exists config_data\n\
+    "));
     // config_data
     obj->QueryWrite(GManager()->Format("\
     create table if not exists config_data (\n\
@@ -88,16 +92,16 @@ static void GSQLite_ShowVersion() {
 static void* GSQLite_Open() {
     sGApp* lApp = GManager()->mgr->app;
     sqlite3* lDb;
-	int lOk = sqlite3_open(lApp->sqlite_db_path, &lDb);
-	if(lOk != SQLITE_OK) {printf("[error] %s() : %s\n", __FUNCTION__, lApp->sqlite_db_path);}
+    int lOk = sqlite3_open(lApp->sqlite_db_path, &lDb);
+    if(lOk != SQLITE_OK) {printf("[error] %s() : %s\n", __FUNCTION__, lApp->sqlite_db_path);}
     return lDb; 
 }
 //===============================================
 static void GSQLite_Exec(char* sqlQuery, void* onExec, void* params) {
-	sqlite3* lDb = GSQLite_Open();
+    sqlite3* lDb = GSQLite_Open();
     char* lError;
-	int lOk = sqlite3_exec(lDb, sqlQuery, onExec, params, &lError);
-	if(lOk != SQLITE_OK) {printf("[error] %s() : %s\n", __FUNCTION__, lError);}
+    int lOk = sqlite3_exec(lDb, sqlQuery, onExec, params, &lError);
+    if(lOk != SQLITE_OK) {printf("[error] %s() : %s\n", __FUNCTION__, lError);}
     sqlite3_close(lDb);
 }
 //===============================================
@@ -150,7 +154,7 @@ static void* GSQLite_QueryMap(char* sqlQuery) {
 }
 //===============================================
 static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char** colName) {
-	sGSQLiteShow* lParams = (sGSQLiteShow*)params;
+    sGSQLiteShow* lParams = (sGSQLiteShow*)params;
     if(lParams->onHeader == 1) {
         printf("+-");
         for(int i = 0; i < colCount; i++) {
@@ -186,7 +190,7 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
         printf("\n");
     } 
     printf("| ");
-	for(int i = 0; i < colCount; i++) {
+    for(int i = 0; i < colCount; i++) {
         char* lColValue = colValue[i] ? colValue[i] : "NULL";
         if(i != 0) printf(" | ");
         int lWidth = GManager()->GetWidth(lParams->widthMap, i, lParams->defaultWidth);
@@ -197,7 +201,7 @@ static int GSQLite_OnQueryShow(void* params, int colCount, char** colValue, char
     lParams->onHeader = 0;
     lParams->onGrid = 0;
     lParams->colCount = colCount;
-	return 0; 
+    return 0; 
 }
 //===============================================
 static int GSQLite_OnQueryValue(void* params, int colCount, char** colValue, char** colName) {

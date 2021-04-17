@@ -10,8 +10,11 @@ typedef struct _GStackWidgetO GStackWidgetO;
 struct _GStackWidgetO {
     void* parent;
     int count;
-    int currentIndex;
+    int currentKeyFlag;
+    char* defaultKey;
+    char* currentKey;
     void* widgetMap;
+    void* titleMap;
 };
 //===============================================
 GWidgetO* GStackWidget_New();

@@ -11,8 +11,10 @@ struct _GWidgetO {
     //
     void (*Delete)(GWidgetO* obj);
     void (*SetContent)(GWidgetO* obj, char* text);
-    void (*AddWidget)(GWidgetO* obj, GtkWidget* widget);
-    void (*SetCurrentIndex)(GWidgetO* obj, int index);
+    void (*AddPage)(GWidgetO* obj, char* key, char* title, GtkWidget* widget, int isDefault);
+    void (*SetCurrentPage)(GWidgetO* obj, char* key);
+    char* (*GetTitle)(GWidgetO* obj, char* key);
+    char* (*GetDefaultKey)(GWidgetO* obj);
     int (*Count)(GWidgetO* obj);
     void (*AddItem)(GWidgetO* obj, char* key, char* text, char* icon);
     void (*AddItemClick)(GWidgetO* obj, GWidgetO* obs);

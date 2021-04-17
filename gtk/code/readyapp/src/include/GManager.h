@@ -16,6 +16,9 @@ struct _GManagerO {
     void (*Delete)();
     // data
     void (*LoadData)();
+    void (*ShowData)(void* data);
+    void (*ShowList)(void* data);
+    void (*ShowMap)(void* data);
     // string
     char* (*CopyStr)(const char* strIn);
     void* (*Split)(char* strIn, char* sep);
@@ -77,13 +80,11 @@ struct _sGApp {
     char format[GFORMAT_SIZE+1];
     // title
     GtkWidget* title;
-    void* title_map;
     // address
     GtkWidget* address_bar;
     GWidgetO* address_key;
     // page
     GWidgetO* page_map;
-    void* page_id;
     // widget
     char* widget_id;
     // color

@@ -16,6 +16,7 @@ static GManagerO* m_GManagerO = 0;
 static void GManager_Init(GManagerO* obj);
 // data
 static void GManager_LoadData();
+static void GManager_ShowData(void* data);
 // string
 static char* GManager_CopyStr(const char* strIn);
 static void* GManager_Split(char* strIn, char* sep);
@@ -60,6 +61,7 @@ GManagerO* GManager_New() {
     lObj->Delete = GManager_Delete;
     // data
     lObj->LoadData = GManager_LoadData;
+    lObj->ShowData = GManager_ShowData;
     // string
     lObj->CopyStr = GManager_CopyStr;
     lObj->Split = GManager_Split;
@@ -123,8 +125,6 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->app_name = "ReadyApp";
     obj->mgr->app->win_width = 600;
     obj->mgr->app->win_height = 330;
-    obj->mgr->app->page_id = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
-    obj->mgr->app->title_map = GMap_New(GManager, GVOID_PTR, GVOID_PTR)();
     obj->mgr->app->bg_color = "#103030";
     obj->mgr->app->style_path = GManager_GetEnv("GSTYLE_PATH");
     obj->mgr->app->img_path = GManager_GetEnv("GIMG_PATH");
@@ -135,6 +135,13 @@ static void GManager_Init(GManagerO* obj) {
     obj->mgr->app->log_on = GManager_GetEnv("GLOG_ON");
     obj->mgr->app->log_mode = GManager_GetEnv("GLOG_MODE");
     obj->mgr->app->log_path = GManager_GetEnv("GLOG_PATH");
+}
+//===============================================
+// data
+//===============================================
+static void GManager_ShowData(void* data) {
+    char* lData = data;
+    printf("[%s]\n", lData); 
 }
 //===============================================
 // gtk
@@ -216,11 +223,8 @@ static char* GManager_Format(const char* format, ...) {
 //===============================================
 static void GManager_SetPage(char* address) {
     sGApp* lApp = GManager()->mgr->app;
-    GMapO(GManager, GVOID_PTR, GVOID_PTR)* lPageId = lApp->page_id;
-    GMapO(GManager, GVOID_PTR, GVOID_PTR)* lTitleMap = lApp->title_map;
-    int lPageIndex = (int)lPageId->GetData(lPageId, address, lPageId->EqualChar);
-    char* lTitle = lTitleMap->GetData(lTitleMap, address, lTitleMap->EqualChar);
-    lApp->page_map->SetCurrentIndex(lApp->page_map, lPageIndex);
+    char* lTitle = lApp->page_map->GetTitle(lApp->page_map, address);
+    lApp->page_map->SetCurrentPage(lApp->page_map, address);
     gtk_label_set_text(GTK_LABEL(lApp->title), lTitle);
     lApp->address_key->SetContent(lApp->address_key, address);
     gtk_entry_set_text(GTK_ENTRY(lApp->address_bar), address);
