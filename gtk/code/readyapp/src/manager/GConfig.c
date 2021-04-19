@@ -68,56 +68,48 @@ static void GConfig_SetData(char* key, char* value) {
 static char* GConfig_GetData(char* key) {
     GMapO(GConfig, GVOID_PTR, GVOID_PTR)* lDataMap = m_GConfigO->dataMap;
     char* lValue = lDataMap->GetData(lDataMap, key, lDataMap->EqualChar);
-    if(lValue == 0) lValue = "";
+    if(lValue == 0) {lValue = "";}
     return lValue;
 }
 //===============================================
 static void GConfig_SaveData(char* key) {
     char* lValue = GConfig_GetData(key);
-    if(GConfig_CountData(key) == 0) GConfig_InsertData(key, lValue);
-    else GConfig_UpdateData(key, lValue);
+    if(GConfig_CountData(key) == 0) {GConfig_InsertData(key, lValue);}
+    else {GConfig_UpdateData(key, lValue);}
 }
 //===============================================
 static void GConfig_LoadData(char* key) {
-    char lQuery[256];
-    sprintf(lQuery, "\
+    char* lValue = GSQLite()->QueryValue(GManager()->Format("\
     select config_value from config_data\n\
     where config_key = '%s'\n\
-    ", key);
-    char* lValue = GSQLite()->QueryValue(lQuery);
+    ", key));
     GConfig_SetData(key, lValue);
     free(lValue);
 }
 //===============================================
 static int GConfig_CountData(char* key) {
-    char lQuery[256];
-    sprintf(lQuery, "\
+    char* lValue = GSQLite()->QueryValue(GManager()->Format("\
     select count(*) from config_data\n\
     where config_key = '%s'\n\
-    ", key);
-    char* lValue = GSQLite()->QueryValue(lQuery);
+    ", key));
     int lCount = atoi(lValue);
     free(lValue);
     return lCount;
 }
 //===============================================
 static void GConfig_InsertData(char* key, char* value) {
-    char lQuery[256]; lQuery[0] = 0;
-    sprintf(lQuery, "\
+    GSQLite()->QueryValue(GManager()->Format("\
     insert into config_data (config_key, config_value)\n\
     values ('%s','%s')\n\
-    ", key, value);
-    GSQLite()->QueryWrite(lQuery);
+    ", key, value));
 }
 //===============================================
 static void GConfig_UpdateData(char* key, char* value) {
-    char lQuery[256];
-    sprintf(lQuery, "\
+    GSQLite()->QueryValue(GManager()->Format("\
     update config_data\n\
     set config_value = '%s'\n\
     where config_key = '%s'\n\
-    ", value, key);
-    GSQLite()->QueryWrite(lQuery);
+    ", value, key));
 }
 //===============================================
 static int GConfig_Size() {

@@ -35,7 +35,7 @@ static void GHome_Widget(GWidgetO* obj) {
     lListBox->AddItem(lListBox, "home/login", "Connexion", "user");
     lListBox->AddItem(lListBox, "home/sqlite", "SQLite", "database");
     lListBox->AddItem(lListBox, "home/opencv", "OpenCV", "camera");
-    lListBox->AddItem(lListBox, "home/debug", "Debug", "filetexto");
+    lListBox->AddItem(lListBox, "home/opengl", "OpenGL", "cube");
     
     gtk_box_pack_start(GTK_BOX(lWidget), lListBox->widget, 0, 0, 0);
 }

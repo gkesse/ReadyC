@@ -61,8 +61,8 @@ static void GWindow_Widget(GWidgetO* obj) {
     lWorkspace->AddPage(lWorkspace, "home", "Accueil", GWidget("home")->widget, 1);
     lWorkspace->AddPage(lWorkspace, "home/login", "Connexion", GWidget("login")->widget, 0);
     lWorkspace->AddPage(lWorkspace, "home/sqlite", "SQLite", GWidget("sqlite")->widget, 0);
-    lWorkspace->AddPage(lWorkspace, "home/opencv", "OpenCV", GWidget("opencv")->widget, 1);
-    lWorkspace->AddPage(lWorkspace, "home/debug", "Debug", GWidget("debug")->widget, 0);
+    lWorkspace->AddPage(lWorkspace, "home/opencv", "OpenCV", GWidget("opencv")->widget, 0);
+    lWorkspace->AddPage(lWorkspace, "home/opengl", "OpenGL", GWidget("opengl")->widget, 1);
     
     GManager()->SetPage(lWorkspace->GetDefaultKey(lWorkspace));
     

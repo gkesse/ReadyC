@@ -12,7 +12,7 @@
 #include "GLogin.h"
 #include "GSQLiteGtk.h"
 #include "GOpenCVGtk.h"
-#include "GDebug.h"
+#include "GOpenGLGtk.h"
 //===============================================
 #include "GList.h"
 #include "GManager.h"
@@ -73,7 +73,7 @@ GWidgetO* GWidget(const char* key) {
     if(!strcmp(key, "login")) {return GLogin_New();}
     if(!strcmp(key, "sqlite")) {return GSQLiteGtk_New();}
     if(!strcmp(key, "opencv")) {return GOpenCVGtk_New();}
-    if(!strcmp(key, "debug")) {return GDebug_New();}
+    if(!strcmp(key, "opengl")) {return GOpenGLGtk_New();}
     // default
     return GWidget_New();
 }

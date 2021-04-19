@@ -74,7 +74,7 @@ GSQLiteO* GSQLite() {
 static void GSQLite_Init(GSQLiteO* obj) {
     // drop_table
     obj->QueryWrite(GManager()->Format("\
-    drop table if exists config_data\n\
+    drop table if exists config_data_o\n\
     "));
     // config_data
     obj->QueryWrite(GManager()->Format("\

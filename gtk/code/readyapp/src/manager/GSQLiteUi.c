@@ -106,53 +106,44 @@ static void GSQLiteUi_Run_CHOICE(int argc, char** argv) {
 //===============================================
 static void GSQLiteUi_Run_TABLES_SHOW(int argc, char** argv) {
     printf("\n");
-    char lQuery[256];
-
-    sprintf(lQuery, "\
+    
+    GSQLite()->QueryShow(GManager()->Format("\
     select name from sqlite_master\n\
     where type='table'\n\
-    ");
-    
-    GSQLite()->QueryShow(lQuery, "20;30", 25);
+    "), "20;30", 20);
     
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GSQLiteUi_Run_CONFIG_DATA_CREATE(int argc, char** argv) {
     printf("\n");
-    char lQuery[256];
 
-    sprintf(lQuery, "\
+    GSQLite()->QueryWrite(GManager()->Format("\
     create table if not exists config_data (\n\
-    CONFIG_KEY text unique not null,\n\
-    CONFIG_VALUE text\n\
-    )");
+    config_key text,\n\
+    config_value text\n\
+    )"));
     
-    GSQLite()->QueryWrite(lQuery);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GSQLiteUi_Run_CONFIG_DATA_DROP(int argc, char** argv) {
     printf("\n");
-    char lQuery[256];
-
-    sprintf(lQuery, "\
-    drop table config_data\n\
-    ");
     
-    GSQLite()->QueryWrite(lQuery);
+    GSQLite()->QueryWrite(GManager()->Format("\
+    drop table if exists config_data\n\
+    "));
+
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================
 static void GSQLiteUi_Run_CONFIG_DATA_SHOW(int argc, char** argv) {
     printf("\n");
-    char lQuery[256];
 
-    sprintf(lQuery, "\
+    GSQLite()->QueryShow(GManager()->Format("\
     select * from config_data\n\
-    ");
+    "), "20;30", 25);
     
-    GSQLite()->QueryShow(lQuery, "20;30", 25);
     m_GSQLiteUiO->G_STATE = "S_SAVE";
 }
 //===============================================

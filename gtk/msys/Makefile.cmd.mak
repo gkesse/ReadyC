@@ -46,12 +46,12 @@ clean:
 #================================================
 # c
 c_install:
-	@pacman -S --needed -y make
-	@pacman -S --needed -y gcc
+	@pacman -S --needed --noconfirm make
+	@pacman -S --needed --noconfirm gcc
 #================================================
 # sqlite
 sqlite_install:
-	@pacman -S --needed -y mingw-w64-i686-sqlite3
+	@pacman -S --needed --noconfirm mingw-w64-i686-sqlite3
 sqlite_libs:
 	@pkg-config --libs sqlite3
 sqlite_flags:
@@ -61,7 +61,7 @@ sqlite_search:
 #================================================
 # gtk
 gtk_install:
-	@pacman -S --needed -y mingw-w64-i686-gtk3
+	@pacman -S --needed --noconfirm mingw-w64-i686-gtk3
 gtk_libs:
 	@pkg-config --libs gtk+-3.0
 gtk_flags:
@@ -69,10 +69,33 @@ gtk_flags:
 gtk_search:
 	pkg-config --list-all | grep -ie "gtk"
 #================================================
+# opengl
+opengl_install:
+	@pacman -S --needed --noconfirm mingw-w64-i686-mesa
+	@pacman -S --needed --noconfirm mingw-w64-i686-freeglut
+	@pacman -S --needed --noconfirm mingw-w64-i686-glew
+opengl_search:
+	pkg-config --list-all | grep -ie "mesa"
+#================================================
+# opencv (no work)
+opencv_deps:
+	@pacman -S --needed --noconfirm zlib-devel
+	@pacman -S --needed --noconfirm mingw-w64-i686-libtiff
+opencv_clone:
+	@if ! [ -d $(GOPENCV_ROOT) ] ; then mkdir -p $(GOPENCV_ROOT) ; fi
+	@cd $(GOPENCV_ROOT) && git clone -b 2.4.13.7 https://github.com/opencv/opencv
+opencv_cmake:
+	@if ! [ -d $(GOPENCV_BUILD) ] ; then mkdir -p $(GOPENCV_BUILD) ; fi
+	@cd $(GOPENCV_BUILD) && cmake $(GOPENCV_SRC) \
+	-DCMAKE_INSTALL_PREFIX=$(GOPENCV_INSTALL) \
+	-G "Unix Makefiles"
+opencv_make:
+	@cd $(GOPENCV_BUILD) && make
+#================================================
 # git
 git_install:
-	@pacman -S --needed -y git
-	@pacman -S --needed -y vim
+	@pacman -S --needed --noconfirm git
+	@pacman -S --needed --noconfirm vim
 git_config:
 	@git config --global user.name "Gerard KESSE"
 	@git config --global user.email "tiakagerard@hotmail.com"

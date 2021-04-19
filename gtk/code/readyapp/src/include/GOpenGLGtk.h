@@ -1,18 +1,18 @@
 //===============================================
-#ifndef _GDebug_
-#define _GDebug_
+#ifndef _GOpenGLGtk_
+#define _GOpenGLGtk_
 //===============================================
 #include "GInclude.h"
 #include "GWidget.h"
 //===============================================
-typedef struct _GDebugO GDebugO;
+typedef struct _GOpenGLGtkO GOpenGLGtkO;
 //===============================================
-struct _GDebugO {
+struct _GOpenGLGtkO {
     void* parent;
 };
 //===============================================
-GWidgetO* GDebug_New();
-void GDebug_Delete(GWidgetO* obj);
+GWidgetO* GOpenGLGtk_New();
+void GOpenGLGtk_Delete(GWidgetO* obj);
 //===============================================
 #endif
 //===============================================
